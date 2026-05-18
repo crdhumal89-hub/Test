@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SHINE — Financial Statements Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================================================ -->
+  <!-- TOP NAV                                                       -->
+  <!-- ============================================================ -->
+  <header class="topnav" id="topnav">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div class="brand-text">
+        <div class="brand-name">SHINE</div>
+        <div class="brand-tag">Statement Health Intelligence</div>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-view="reviews">Reviews</button>
+      <button class="nav-tab" data-view="dashboard">Dashboard</button>
+      <button class="nav-tab" data-view="coverage">Coverage</button>
+      <button class="nav-tab" data-view="settings">Settings</button>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="icon-btn" id="btn-import" title="Import findings.json">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-theme" title="Toggle theme">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.95l-1.41-1.41M5.46 5.46L4.05 4.05m15.9 0l-1.41 1.41M5.46 18.54l-1.41 1.41"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-help" title="Help">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- VIEW: REVIEWS LIST                                            -->
+  <!-- ============================================================ -->
+  <section class="view view-reviews active" id="view-reviews">
+    <div class="view-header">
+      <h1>Reviews</h1>
+      <p class="muted">Active and recently completed financial statement reviews.</p>
+    </div>
+
+    <div class="reviews-toolbar">
+      <input type="search" class="search" id="reviews-search" placeholder="Search by fund, period, reviewer..." />
+      <div class="filter-pills">
+        <button class="pill active" data-readiness-filter="all">All</button>
+        <button class="pill" data-readiness-filter="NOT_READY">Not ready</button>
+        <button class="pill" data-readiness-filter="READY_WITH_EXCEPTIONS">With exceptions</button>
+        <button class="pill" data-readiness-filter="READY">Ready</button>
+      </div>
+      <button class="btn-primary" id="btn-new-review">New review</button>
+    </div>
+
+    <div class="reviews-grid" id="reviews-grid"><!-- populated by app.js --></div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- VIEW: DASHBOARD (the SHINE review)                            -->
+  <!-- ============================================================ -->
+  <section class="view view-dashboard" id="view-dashboard">
+
+    <!-- Sticky banner: fund identity + readiness verdict -->
+    <div class="dashboard-banner" id="dashboard-banner">
+      <div class="banner-fund">
+        <div class="banner-fund-name" id="banner-fund-name">—</div>
+        <div class="banner-fund-meta" id="banner-fund-meta">—</div>
+      </div>
+      <div class="banner-readiness" id="banner-readiness">
+        <div class="readiness-state" id="readiness-state">—</div>
+        <div class="readiness-detail" id="readiness-detail">—</div>
+      </div>
+    </div>
+
+    <!-- CFO Summary: five-line structured block -->
+    <div class="cfo-summary" id="cfo-summary">
+      <div class="cfo-row"><span class="cfo-label">Entity</span><span class="cfo-value" id="cfo-entity">—</span></div>
+      <div class="cfo-row"><span class="cfo-label">Materiality</span><span class="cfo-value" id="cfo-materiality">—</span></div>
+      <div class="cfo-row"><span class="cfo-label">Findings</span><span class="cfo-value" id="cfo-findings">—</span></div>
+      <div class="cfo-row"><span class="cfo-label">Coverage</span><span class="cfo-value" id="cfo-coverage">—</span></div>
+      <div class="cfo-row"><span class="cfo-label">Residual risk</span><span class="cfo-value" id="cfo-residual">—</span></div>
+    </div>
+
+    <!-- Degradation chip bar -->
+    <div class="chip-bar" id="chip-bar"><!-- populated --></div>
+
+    <!-- Toolbar: filters + group toggle + bulk actions + export -->
+    <div class="dashboard-toolbar">
+      <div class="toolbar-left">
+        <input type="search" class="search" id="findings-search" placeholder="Search findings, citations, line items..." />
+        <div class="filter-pills" id="severity-filter">
+          <button class="pill active" data-severity="all">All</button>
+          <button class="pill" data-severity="CRITICAL"><span class="dot crit"></span>Critical</button>
+          <button class="pill" data-severity="HIGH"><span class="dot high"></span>High</button>
+          <button class="pill" data-severity="MEDIUM"><span class="dot med"></span>Medium</button>
+          <button class="pill" data-severity="LOW"><span class="dot low"></span>Low</button>
+        </div>
+        <div class="filter-pills" id="state-filter">
+          <button class="pill" data-state="OPEN">Open</button>
+          <button class="pill" data-state="ACCEPTED">Accepted</button>
+          <button class="pill" data-state="RESOLVED">Resolved</button>
+          <button class="pill" data-state="DISCARDED">Discarded</button>
+        </div>
+      </div>
+      <div class="toolbar-right">
+        <div class="seg" id="group-mode">
+          <button class="seg-opt active" data-group="statement">By statement</button>
+          <button class="seg-opt" data-group="severity">By severity</button>
+          <button class="seg-opt" data-group="layer">By layer</button>
+        </div>
+        <button class="btn-ghost" id="btn-export-preparer">Preparer PDF</button>
+        <button class="btn-ghost" id="btn-export-audit">Audit file PDF</button>
+      </div>
+    </div>
+
+    <!-- Findings list -->
+    <div class="findings-list" id="findings-list"><!-- populated --></div>
+
+    <!-- Footer -->
+    <footer class="attribution">
+      <span id="discard-rate">Discard rate: —</span>
+      <span class="attribution-text">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · <span id="build-date">—</span></span>
+    </footer>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- VIEW: COVERAGE                                                -->
+  <!-- ============================================================ -->
+  <section class="view view-coverage" id="view-coverage">
+    <div class="view-header">
+      <h1>Coverage manifest</h1>
+      <p class="muted">100% applicable coverage trace — every applicable ASC paragraph checked or skipped with a reason.</p>
+    </div>
+    <div class="coverage-grid" id="coverage-grid"><!-- populated --></div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- VIEW: SETTINGS                                                -->
+  <!-- ============================================================ -->
+  <section class="view view-settings" id="view-settings">
+    <div class="view-header">
+      <h1>Settings</h1>
+      <p class="muted">Review preferences, evergreen acceptances, and platform info.</p>
+    </div>
+    <div class="settings-grid">
+      <div class="settings-card">
+        <h3>Voice annotation</h3>
+        <p class="muted">When the orchestrator polishes a finding, the dashboard shows the original by default and offers a side-by-side comparison.</p>
+        <label class="toggle"><input type="checkbox" id="opt-show-polished" checked /> Default to polished text when available</label>
+      </div>
+      <div class="settings-card">
+        <h3>Theme</h3>
+        <p class="muted">Light is the default for FS review (high contrast on printed PDFs).</p>
+        <div class="seg" id="theme-seg">
+          <button class="seg-opt active" data-theme="light">Light</button>
+          <button class="seg-opt" data-theme="dark">Dark</button>
+        </div>
+      </div>
+      <div class="settings-card">
+        <h3>Data</h3>
+        <p class="muted">Local state is persisted in your browser keyed by review_id. Clear to reset all dispositions on the current review.</p>
+        <button class="btn-ghost danger" id="btn-clear-state">Clear local state</button>
+      </div>
+      <div class="settings-card">
+        <h3>About</h3>
+        <p class="muted">SHINE v8.1 — Statement Health Intelligence &amp; Notation Engine. Built per the council-remediated v8.1 architecture.</p>
+        <p class="mono muted">Build date: <span id="settings-build-date">—</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- DRAWER: Finding detail                                        -->
+  <!-- ============================================================ -->
+  <aside class="drawer" id="finding-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <span id="drawer-id" class="mono">F-???</span>
+        <span id="drawer-statement-location">—</span>
+      </div>
+      <button class="icon-btn" id="drawer-close" title="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body" id="drawer-body"><!-- populated --></div>
+  </aside>
+
+  <!-- ============================================================ -->
+  <!-- MODAL: Evergreen-accept                                       -->
+  <!-- ============================================================ -->
+  <div class="modal-bg" id="modal-evergreen">
+    <div class="modal">
+      <h3>Mark as evergreen-accepted</h3>
+      <p class="muted">This finding will skip severity escalation in future reviews and be excluded from the readiness gate.</p>
+      <label>Acceptance reason</label>
+      <textarea id="evergreen-reason" placeholder="e.g., Auditor accepted in FY2024; brevity is intentional and aligned with elected-out status."></textarea>
+      <div class="modal-actions">
+        <button class="btn-ghost" data-modal-close>Cancel</button>
+        <button class="btn-primary" id="evergreen-confirm">Mark evergreen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL: Discard attestation                                    -->
+  <!-- ============================================================ -->
+  <div class="modal-bg" id="modal-discard">
+    <div class="modal">
+      <h3>Discard attestation required</h3>
+      <p class="muted">Discard rate on this review exceeds 20%. Per Stewardship policy, each discard requires a one-line attestation.</p>
+      <label>Why is this finding being discarded?</label>
+      <textarea id="discard-reason" placeholder="e.g., False positive — VPM permits the alternative classification at page 14."></textarea>
+      <div class="modal-actions">
+        <button class="btn-ghost" data-modal-close>Cancel</button>
+        <button class="btn-primary" id="discard-confirm">Discard with attestation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TOAST                                                          -->
+  <!-- ============================================================ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Hidden file input for import -->
+  <input type="file" id="file-input" accept=".json" style="display:none" />
+
+  <!-- jsPDF for export (Tier 1 of 3-tier fallback) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="sample-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
