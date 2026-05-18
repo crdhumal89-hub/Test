@@ -1,0 +1,27 @@
+{
+  "$schema_version": "8.1",
+  "description": "Tier-1 library manifest. The orchestrator reads this at Stage 1 to enumerate available reference libraries beyond the canonical reference/ corpus. Funds drop fund-agnostic or fund-specific templates and disclosure libraries into the subdirectories below.",
+  "tiers": {
+    "tier_1_templates": {
+      "path": "_LIBRARY/templates/",
+      "description": "Statement and note templates used by Mechanical (L4 template compliance) for caption / ordering checks. Apollo controllership maintains a default ASC 946 LP template; fund-specific overrides land beside it with the fund-code suffix.",
+      "default_template": "asc-946-lp-default-v1.md",
+      "fund_overrides_accepted": true
+    },
+    "tier_1_note_libraries": {
+      "path": "_LIBRARY/note_libraries/",
+      "description": "Disclosure libraries used by Narrative (L3 disclosure completeness) for inventory of expected disclosures per topic. Apollo controllership maintains a default disclosure library; fund-specific additions are merged at read time.",
+      "default_library": "disclosure-inventory-v1.md",
+      "fund_overrides_accepted": true
+    }
+  },
+  "policy_memos_directory": {
+    "path": "<fund-folder>/policy_memos/",
+    "description": "Per-fund policy memos (LPA, VPM, expense allocation memo, side-letter equivalent treatment). NOT part of _LIBRARY because they are fund-specific. Subagents read from the manifest's policy_memos array."
+  },
+  "version_attestation": {
+    "templates_last_reviewed": "2026-05-17",
+    "note_libraries_last_reviewed": "2026-05-17",
+    "reviewer": "Steward (per OWNERSHIP.md)"
+  }
+}

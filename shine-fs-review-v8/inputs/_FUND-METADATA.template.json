@@ -1,0 +1,79 @@
+{
+  "$schema_version": "8.1",
+  "$comment": "Template for a per-fund metadata file. The controller fills this file once per fund (lives at <fund-folder>/_FUND-METADATA.json) and updates it when fund facts change. SHINE is fund-agnostic; all fund-specific behavior reads from this file (invariant rule 5).",
+
+  "fund_code": "<short identifier, e.g., AAA-COINV-A>",
+  "fund_legal_name": "<full legal name, e.g., AAA Coinvest Fund A LP>",
+  "alternate_names": [
+    "<any short forms used in disclosures>"
+  ],
+
+  "domicile": "<e.g., Cayman Islands | Delaware | Luxembourg>",
+  "structure_type": "<e.g., closed-end PE LP | open-end hedge LP | master fund | feeder | AIV | blocker>",
+  "fiscal_year_end": "<MM-DD, e.g., 12-31>",
+  "inception_date": "<YYYY-MM-DD>",
+  "term_expiration_date": "<YYYY-MM-DD or null if open-end>",
+  "investment_period_expiration": "<YYYY-MM-DD or null>",
+
+  "regulatory_jurisdictions": [
+    "CIMA",
+    "SEC",
+    "IRS"
+  ],
+  "$comment_jurisdictions": "Subset of the jurisdiction keys in reference/regulatory-corpus/_index.json. Defense subagent walks these.",
+
+  "presentation": {
+    "framework": "US GAAP / ASC 946",
+    "currency": "USD",
+    "reporting_basis": "Investment company at fair value"
+  },
+
+  "materiality": {
+    "planning_pct_of_nav": 0.0075,
+    "clearly_trivial_pct_of_materiality": 0.05,
+    "qualitative_materiality_topics": [
+      "Wrong entity name",
+      "Wrong period",
+      "Wrong domicile",
+      "Placeholder text in final draft"
+    ]
+  },
+
+  "structure_facts": {
+    "general_partner": "<GP legal name>",
+    "investment_manager": "<Manager legal name>",
+    "auditor": "<audit firm name>",
+    "auditor_pcaob_registered": true,
+    "administrator": "<administrator name>",
+    "custodian": "<custodian name, if applicable>"
+  },
+
+  "linked_entities": [
+    {
+      "code": "<code>",
+      "legal_name": "<legal name>",
+      "relationship": "<master | feeder | parallel | AIV | blocker | rated-note-feeder>",
+      "domicile": "<...>",
+      "fs_path": "<box or relative path, if available>"
+    }
+  ],
+
+  "known_post_balance_sheet_events": [
+    {
+      "date": "<YYYY-MM-DD>",
+      "type": "<e.g., GP change, large redemption, partial wind-down>",
+      "description": "<one-line description>"
+    }
+  ],
+  "$comment_events": "Populate when known events have occurred after the fiscal year end. SHINE's reconciler Pattern 09 looks for ASC 855 disclosure of these events.",
+
+  "evergreen_acceptances": [
+    {
+      "merge_key_prefix": "<statement::section::line_id_or_norm>",
+      "reason": "<one-line justification>",
+      "accepted_date": "<YYYY-MM-DD>",
+      "accepted_by": "<controller email>"
+    }
+  ],
+  "$comment_evergreen": "Controller's accepted-practice findings. Loaded by the orchestrator at Stage 1 and applied during Stage 5f prior-review escalation. Eligible only for LOW or MEDIUM impact findings (per reference/prior-review-escalation.md)."
+}

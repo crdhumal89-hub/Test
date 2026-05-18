@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://apollo.internal/shine/finding-schema-v8.1.json",
+  "title": "SHINE Finding — v8.1",
+  "description": "Schema for a single finding emitted by a SHINE subagent and validated by the orchestrator at Stage 5a. v8.1 introduces structured location, three-field provenance (subagentRaw / voiceNormalized / controllerEdited), mandatory version stamps, evergreen-accepted state, reconciler attribution, and citation discipline for L9/L12.",
+  "type": "object",
+  "required": [
+    "id",
+    "subagent",
+    "layer",
+    "statement",
+    "section",
+    "sortOrder",
+    "location",
+    "severity",
+    "subagentRaw",
+    "fix",
+    "fixSubagentRaw",
+    "merge_key",
+    "subagent_version",
+    "prompt_version",
+    "reference_versions"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^F-[0-9]{3,}$",
+      "description": "Stable insertion-order identifier assigned by the orchestrator at Stage 5b. Subagents leave this null; orchestrator fills it."
+    },
+    "subagent": {
+      "type": "string",
+      "enum": ["mechanical", "narrative", "standards", "comparative", "defense", "orchestrator"]
+    },
+    "layer": {
+      "type": "string",
+      "pattern": "^L(1[0-4]|[1-9])$",
+      "description": "L1..L14 per the 14-layer model. L0 reserved for orchestrator-emitted entity-verification findings."
+    },
+    "statement": {
+      "type": "string",
+      "enum": [
+        "Cover",
+        "Statement of Assets and Liabilities",
+        "Statement of Operations",
+        "Statement of Changes in Partners Capital",
+        "Statement of Cash Flows",
+        "Schedule of Investments",
+        "Notes to Financial Statements",
+        "Financial Highlights",
+        "Cross-Statement"
+      ],
+      "description": "FS statement group. Drives v7 statement-grouped dashboard rendering. Cross-Statement is reserved for findings spanning multiple statements that cannot be cleanly localized."
+    },
+    "section": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Statement-internal section label (e.g., 'Investments at fair value', 'Level 3 reconciliation', 'Related party transactions'). Required — Stage 5a rejects findings without this."
+    },
+    "sortOrder": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Within-statement sort key. Orchestrator sorts findings in FS page order using sortOrder ascending within a statement group. Required."
+    },
+    "location": {
+      "type": "object",
+      "required": ["statement"],
+      "properties": {
+        "statement": { "type": "string" },
+        "page": { "type": ["integer", "null"], "minimum": 1 },
+        "note_ref": { "type": ["string", "null"], "description": "Note number reference, e.g., 'Note 4', 'Note 7(b)'" },
+        "line_id": { "type": ["string", "null"], "description": "Specific line item, e.g., 'Total investments at fair value', 'Management fee'" },
+        "column": { "type": ["string", "null"], "description": "Column label when relevant, e.g., 'Current Year', 'Prior Year'" },
+        "xlsx_cell": { "type": ["string", "null"], "description": "Workbook cell reference if sourced from workbook, e.g., 'BS!C24'" }
+      },
+      "description": "v8.1 structured location. Required object with at minimum a statement key. Stage 5a rejects findings missing this."
+    },
+    "severity": {
+      "type": "object",
+      "required": ["impact", "confidence"],
+      "properties": {
+        "impact": { "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] },
+        "confidence": { "enum": ["CERTAIN", "PROBABLE", "POSSIBLE"] }
+      }
+    },
+    "subagentRaw": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Immutable original finding text from the subagent. NEVER overwritten."
+    },
+    "voiceNormalized": {
+      "type": ["string", "null"],
+      "description": "Optional polished version produced by orchestrator Stage 5g voice annotation. Null when no polish was warranted. Polish removes hedging on CERTAIN only; PROBABLE/POSSIBLE keep their hedging."
+    },
+    "controllerEdited": {
+      "type": ["string", "null"],
+      "description": "Controller's edited text from inline-edit mode. Null when the controller has not edited. When set, dashboard displays this version with an '(edited)' badge."
+    },
+    "fix": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Recommended remediation. Backward-compat field that mirrors the active fix (controller edited > polished > raw)."
+    },
+    "fixSubagentRaw": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Immutable original fix text from the subagent."
+    },
+    "fixVoiceNormalized": {
+      "type": ["string", "null"]
+    },
+    "fixControllerEdited": {
+      "type": ["string", "null"]
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "asc_reference": {
+          "type": ["string", "null"],
+          "description": "Required on every L9 finding. Pattern: 'ASC <topic>-<subtopic>-<section>-<paragraph>' e.g., 'ASC 820-10-50-2'."
+        },
+        "regulatory_citation": {
+          "type": ["string", "null"],
+          "description": "Required on every L12 finding. Format '<JURISDICTION>:<KEY>' e.g., 'CIMA:MFA-4', 'SEC:RULE-206-4-2'. Must resolve to an entry in reference/regulatory-corpus/_index.json."
+        },
+        "quoted_text": {
+          "type": ["string", "null"],
+          "description": "Excerpt from the FS draft supporting the finding."
+        },
+        "xlsx_proof": {
+          "type": ["string", "null"],
+          "description": "Workbook cell reference and value proving the tie-out break."
+        },
+        "prior_text": {
+          "type": ["string", "null"],
+          "description": "Excerpt from prior FS or sibling FS used in comparative findings."
+        }
+      },
+      "additionalProperties": false
+    },
+    "merge_key": {
+      "type": "string",
+      "pattern": "^[^:]+::[^:]+::[^:]+::[^:]+$",
+      "description": "Computed at Stage 5c. Format: '<statement>::<section>::<line_id_or_norm>::<finding_class>'. Used for dedup and reconciler clustering."
+    },
+    "finding_class": {
+      "type": "string",
+      "enum": [
+        "tie_out_break",
+        "template_deviation",
+        "disclosure_gap",
+        "language_error",
+        "forensic_ghost",
+        "asc_mapping_gap",
+        "comparative_movement",
+        "inter_entity_break",
+        "regulatory_gap",
+        "valuation_governance",
+        "audit_defense",
+        "formatting"
+      ]
+    },
+    "prior_review_recurrence": {
+      "type": ["string", "null"],
+      "enum": ["NEW", "RECURRING", "REGRESSED", "EVERGREEN_ACCEPTED", null]
+    },
+    "evergreen_accepted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Controller mark indicating this finding represents an accepted documented practice. Skips severity escalation; excluded from readiness-gate count."
+    },
+    "evergreen_acceptance_reason": { "type": ["string", "null"] },
+    "evergreen_acceptance_date": { "type": ["string", "null"], "format": "date" },
+    "reconciler_pattern": {
+      "type": ["string", "null"],
+      "description": "Name of cross-layer pattern that collapsed constituent findings into this root cause. Null when no collapse occurred."
+    },
+    "reconciler_specificity_score": { "type": ["number", "null"] },
+    "constituent_findings": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^F-[0-9]{3,}$" },
+      "description": "When reconciler_pattern is non-null, this lists the constituent finding IDs collapsed into this root cause. Dashboard exposes via 'Show constituents' toggle and allows decoupling."
+    },
+    "subagent_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$",
+      "description": "Version of the subagent SKILL.md that produced this finding. Required for audit reproducibility."
+    },
+    "prompt_version": {
+      "type": "string",
+      "description": "Version tag of the dispatch prompt template used by the orchestrator."
+    },
+    "reference_versions": {
+      "type": "object",
+      "description": "Map of reference file name → version/date hash for every reference doc the subagent consulted in producing this finding.",
+      "additionalProperties": { "type": "string" }
+    },
+    "state": {
+      "type": "string",
+      "enum": ["OPEN", "ACCEPTED", "RESOLVED", "DISCARDED"],
+      "default": "OPEN",
+      "description": "Disposition state set by controller via dashboard at Stage 8."
+    },
+    "disposition_notes": { "type": ["string", "null"] },
+    "discard_attestation": {
+      "type": ["string", "null"],
+      "description": "Required one-line attestation when a finding is DISCARDED if the review's discard rate exceeds 20%."
+    },
+    "detail": { "type": ["string", "null"], "description": "Supplementary structured detail, cross-references to sibling findings, etc." }
+  },
+  "additionalProperties": false
+}

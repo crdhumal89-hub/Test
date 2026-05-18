@@ -1,0 +1,77 @@
+{
+  "$schema_version": "8.1",
+  "$comment": "Template for a per-review manifest. The controller copies this file into <draft-folder>/inputs/_REVIEW-MANIFEST.json and fills the values for the specific review. The orchestrator reads this file at Stage 1 as the authoritative input list. Only fs_draft_pdf is halt-required (invariant rule 15); every other required input degrades with a controller prompt.",
+
+  "review_id": "<unique review id, e.g., AAA-COINV-A-FY2025-D1.1>",
+  "fund_code": "<from _FUND-METADATA.json, e.g., AAA-COINV-A>",
+  "period": "<e.g., FY2025>",
+  "draft": "<e.g., Draft 1.1>",
+  "review_date": "<YYYY-MM-DD>",
+  "reviewer": "<controller email>",
+
+  "inputs": {
+    "fs_draft_pdf": {
+      "required": true,
+      "halt_if_missing": true,
+      "path": "<box path or relative path to the draft FS PDF>",
+      "description": "The financial statement draft under review. Halt-required (invariant rule 15)."
+    },
+    "fs_workbook_xlsx": {
+      "required": true,
+      "halt_if_missing": false,
+      "path": "<path to the supporting workbook, if available>",
+      "description": "Excel workbook with the supporting calculation. Used by Mechanical for L8 (hidden-row forensic). Soft-required — degrades L8 with reason_code NO_WORKBOOK if absent."
+    },
+    "consolidation_memo": {
+      "required": true,
+      "halt_if_missing": false,
+      "path": "<path to the consolidation memo, if applicable>",
+      "description": "Consolidation memo describing the entity tree. Used by Mechanical (cross-statement) and Comparative (L11 multi-entity). Soft-required — degrades L11 if absent."
+    },
+    "policy_memos": {
+      "required": false,
+      "halt_if_missing": false,
+      "paths": {
+        "lpa": "<path to LPA, if available>",
+        "vpm": "<path to Valuation Policy Memo, if available>",
+        "expense_allocation_memo": "<path, if available>"
+      },
+      "description": "Fund-specific policy memos. Mechanical uses VPM for L4 compliance and consults the LPA/expense allocation memo for allocation checks. Degrades L4 if VPM absent (reason_code NO_VPM)."
+    },
+    "lpa_or_fee_summary": {
+      "required": true,
+      "halt_if_missing": false,
+      "path": "<path to LPA or distilled fee summary>",
+      "description": "Used by Narrative for L3 (fee / carried interest narrative). Soft-required — degrades L3 fee-related checks with reason_code NO_LPA if absent."
+    },
+    "prior_fs_pdf": {
+      "required": true,
+      "halt_if_missing": false,
+      "path": "<path to prior period FS PDF>",
+      "description": "Prior period FS for L10 comparative. Soft-required — degrades L10 with reason_code NO_PRIOR_FS if absent."
+    },
+    "sibling_entity_fs": {
+      "required": false,
+      "halt_if_missing": false,
+      "paths": [
+        "<path to sibling 1 FS>",
+        "<path to sibling 2 FS>"
+      ],
+      "description": "FS of master, feeder, parallel, AIV, or blocker entities for L11. Optional. Each missing entity gets a reason_code NO_SIBLING_FS entry in the coverage manifest."
+    },
+    "prior_review_output": {
+      "required": false,
+      "halt_if_missing": false,
+      "path": "<path to prior SHINE review output findings.json>",
+      "description": "Prior SHINE review findings for prior-review escalation (Stage 5f). Optional — without it, all findings are recurrence NEW."
+    }
+  },
+
+  "options": {
+    "materiality_planning_pct_override": null,
+    "$comment_options": "Set to a decimal (e.g., 0.0075) to override the default planning materiality from _FUND-METADATA.json. Leave null to use metadata default.",
+    "voice_polish_enabled": true,
+    "preparer_export_on_completion": false,
+    "audit_file_export_on_completion": false
+  }
+}
