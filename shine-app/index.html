@@ -354,6 +354,25 @@
     <div class="popover-body"></div>
   </div>
 
+  <!-- ============================================================ -->
+  <!-- REPORT PREVIEW MODAL (premium McKinsey-grade report)          -->
+  <!-- ============================================================ -->
+  <div class="report-modal" id="report-modal" role="dialog" aria-modal="true" aria-label="Report preview">
+    <div class="report-modal-panel">
+      <div class="report-modal-head">
+        <div class="report-modal-title">Report preview — <span id="report-mode-label">Preparer Export</span></div>
+        <div class="report-modal-actions">
+          <button class="btn-ghost" id="report-download-html">Download HTML</button>
+          <button class="btn-primary" id="report-download-pdf">Download PDF</button>
+          <button class="icon-btn" id="report-close" aria-label="Close preview">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      </div>
+      <iframe class="report-frame" id="report-frame" title="Report preview"></iframe>
+    </div>
+  </div>
+
   <!-- Hidden file input for import -->
   <input type="file" id="file-input" accept=".json" style="display:none" />
 

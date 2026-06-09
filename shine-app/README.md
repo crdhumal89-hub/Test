@@ -26,10 +26,18 @@ npm start          # serves at http://localhost:3000
 - Recurring / regressed / evergreen badges
 - Discard-rate surveillance (>20% triggers attestation modal)
 - Ctrl+Z undo (depth 20)
-- 3-tier PDF export (jsPDF → print → Blob) — Preparer and Audit file modes
-- localStorage persistence keyed by `review_id`
+- **Premium report export** — clicking "Preparer PDF" / "Audit file PDF" opens a McKinsey-grade
+  report preview (cover page, executive summary with severity + disposition charts, table of
+  contents, numbered statement sections, Appendix A coverage, Appendix B evergreen), then
+  "Download PDF" (jsPDF, real .pdf with running headers/footers and page numbers) or
+  "Download HTML". Same report model drives both renderers.
+- Command palette (Ctrl/Cmd+K), full keyboard shortcuts (? for help), bulk actions, saved views,
+  per-finding comments + review-wide Activity timeline, evidence drill-down, portfolio table,
+  materiality chips, sticky statement nav, density toggle
+- localStorage persistence keyed by `review_id` (schema v2, auto-migrates v1)
 - Light / dark theme
 - Import real `findings.json` (top-right import icon)
+- Fully offline (jsPDF vendored, system fonts, no CDN)
 
 ## Real reviews
 

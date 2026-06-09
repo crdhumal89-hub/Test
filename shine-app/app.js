@@ -188,6 +188,7 @@
     bindStatementNav();
     bindEvidencePopover();
     bindOnboarding();
+    bindReportPreview();
 
     // Theme
     const savedTheme = localStorage.getItem('shine:theme') || 'light';
@@ -1413,6 +1414,8 @@
         }
         const pop = document.getElementById('evidence-popover');
         if (pop && pop.classList.contains('open')) pop.classList.remove('open');
+        const reportModal = document.getElementById('report-modal');
+        if (reportModal && reportModal.classList.contains('open')) reportModal.classList.remove('open');
         // Also blur the global search input if focused (so subsequent shortcuts work)
         if (document.activeElement && document.activeElement.tagName === 'INPUT' &&
             document.activeElement.id === 'findings-search') {
@@ -1507,255 +1510,667 @@
   // ============================================================
   // PDF EXPORT
   // ============================================================
+  // Export now opens a premium report PREVIEW first (review-before-send). The preview
+  // renders the same report model that the PDF download uses, so the two never drift.
   function exportPDF(mode) {
-    if (!state.review) { toast('No active review'); return; }
-    // POL-002 fix: loading state during export
-    const btn = document.getElementById(mode === 'preparer' ? 'btn-export-preparer' : 'btn-export-audit');
-    const prevLabel = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Generating…';
-    setTimeout(() => {
-      try {
-        if (window.jspdf) {
-          tier1PDF(mode);
-        } else {
-          // jsPDF didn't load (CDN blocked / offline). Skip Tier 2 (browser print is not a true
-          // PDF download) and go straight to Tier 3 (Blob HTML), which always produces a file.
-          console.warn('jsPDF unavailable; using Tier 3 Blob fallback');
-          tier3Blob(mode);
-        }
-      } catch (e) {
-        console.error('Tier 1 failed', e);
-        try { tier3Blob(mode); }
-        catch (e2) { console.error('Tier 3 failed', e2); toast('Export failed: ' + e2.message); }
-      } finally {
-        btn.disabled = false;
-        btn.textContent = prevLabel;
-      }
-    }, 50);
+    openReportPreview(mode);
   }
 
-  // Tier 2 (`window.print()`) is intentionally not part of the automatic fallback chain.
-  // It does not produce a file download (it opens a dialog) so it can't satisfy the export
-  // contract automatically; users who prefer print can use browser Ctrl+P directly.
-  function tier1PDF(mode) {
-    if (!window.jspdf) throw new Error('jsPDF not loaded');
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ unit: 'pt', format: 'letter' });
-    const pageW = pdf.internal.pageSize.getWidth();
-    const pageH = pdf.internal.pageSize.getHeight();
-    const marginX = 36;
-    const marginY = 48;
-    const usableW = pageW - marginX * 2;
-    let y = marginY;
+  function openReportPreview(mode) {
+    if (!state.review) { toast('No active review'); return; }
+    state._reportMode = mode;
+    const model = buildReportModel(mode);
+    state._reportModel = model;
+    const frame = document.getElementById('report-frame');
+    frame.srcdoc = renderReportHTML(model, mode);
+    const label = document.getElementById('report-mode-label');
+    if (label) label.textContent = mode === 'preparer' ? 'Preparer Export' : 'Audit File Export';
+    document.getElementById('report-modal').classList.add('open');
+  }
 
+  function bindReportPreview() {
+    const m = document.getElementById('report-modal');
+    if (!m) return;
+    const close = () => m.classList.remove('open');
+    document.getElementById('report-close').addEventListener('click', close);
+    m.addEventListener('click', e => { if (e.target === m) close(); });
+    document.getElementById('report-download-pdf').addEventListener('click', () => {
+      const btn = document.getElementById('report-download-pdf');
+      const prev = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Generating…';
+      setTimeout(() => {
+        try {
+          if (window.jspdf) renderReportPDF(state._reportModel, state._reportMode);
+          else { console.warn('jsPDF unavailable; downloading HTML report'); downloadReportHTML(); }
+        } catch (e) {
+          console.error('PDF render failed', e);
+          try { downloadReportHTML(); } catch (e2) { toast('Export failed: ' + e2.message); }
+        } finally { btn.disabled = false; btn.textContent = prev; }
+      }, 40);
+    });
+    document.getElementById('report-download-html').addEventListener('click', downloadReportHTML);
+  }
+
+  function downloadReportHTML() {
+    const model = state._reportModel, mode = state._reportMode;
+    if (!model) return;
+    const html = renderReportHTML(model, mode);
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${model.meta.fund_code}-${model.meta.period}-shine-${mode === 'preparer' ? 'preparer' : 'audit-file'}-report-${model.meta.build_date.replace(/-/g, '')}.html`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('Downloaded HTML report');
+  }
+
+  // ============================================================
+  // REPORT MODEL (shared by HTML preview + PDF renderer)
+  // ============================================================
+  function buildReportModel(mode) {
+    const b = state.review.brief, c = state.review.coverage;
     const findings = filterForExport(mode);
     const groups = groupByStatement(findings);
-    const b = state.review.brief;
-
-    // Header
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(16);
-    pdf.text(b.fund_legal_name, marginX, y);
-    y += 18;
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(10);
-    pdf.setTextColor(110);
-    pdf.text(`${b.period} · ${b.draft} · ${b.domicile} · ${b.structure_type}`, marginX, y);
-    y += 14;
-    pdf.text(`${mode === 'preparer' ? 'Preparer export' : 'Audit file export'} · Build ${b.build_date}`, marginX, y);
-    y += 18;
-    pdf.setTextColor(0);
-
-    // Readiness
+    const all = state.findings;
+    const by = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+    findings.forEach(f => by[f.severity.impact]++);
+    const byState = { open: 0, accepted: 0, resolved: 0, discarded: 0 };
+    all.forEach(f => { const s = (f.state || '').toLowerCase(); if (byState[s] != null) byState[s]++; });
     const verdict = computeReadiness();
-    pdf.setFontSize(11);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Readiness: ${verdict.label}`, marginX, y);
-    pdf.setFont('helvetica', 'normal');
-    y += 14;
-    pdf.setFontSize(9);
-    pdf.setTextColor(110);
-    pdf.text(verdict.driver, marginX, y, { maxWidth: usableW });
-    y += 22;
-    pdf.setTextColor(0);
+    const evergreen = all.filter(f => f.prior_review_recurrence === 'EVERGREEN_ACCEPTED');
+    const recurring = all.filter(f => f.prior_review_recurrence === 'RECURRING').length;
+    const regressed = all.filter(f => f.prior_review_recurrence === 'REGRESSED').length;
+    let topSection = null, topScore = -1;
+    groups.forEach(g => { let s = 0; g.findings.forEach(f => s += (SEVERITY_RANK[f.severity.impact] || 0)); if (s > topScore) { topScore = s; topSection = g.label; } });
+    const summary = {
+      total: findings.length,
+      bySeverity: by,
+      byState,
+      coverage_pct: c.coverage_completeness_pct,
+      asc_checked: c.asc_paragraphs_checked_count,
+      asc_applicable: c.asc_paragraphs_applicable_count,
+      materiality: { planning: b.materiality_planning_value, trivial: b.clearly_trivial_value, pct: b.materiality_planning_pct },
+      jurisdictions: b.regulatory_jurisdictions || [],
+      recurring, regressed, evergreen: evergreen.length
+    };
+    const narrative = buildNarrative(b, summary, verdict, topSection, mode, groups.length);
+    return { meta: { ...b, report_title: 'Financial Statement Review', mode }, verdict, summary, groups, evergreen, coverage: c, narrative };
+  }
 
-    // Groups
-    groups.forEach(g => {
-      if (y > pageH - 100) { pdf.addPage(); y = marginY; }
-      // Gold-tinted statement header
-      pdf.setFillColor(255, 248, 225);
-      pdf.setDrawColor(212, 175, 55);
-      pdf.rect(marginX, y - 12, usableW, 24, 'FD');
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(11);
-      pdf.text(g.label, marginX + 8, y + 4);
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(9);
-      pdf.text(`${g.findings.length} finding${g.findings.length === 1 ? '' : 's'}`, pageW - marginX - 8, y + 4, { align: 'right' });
-      y += 26;
+  function buildNarrative(b, s, verdict, topSection, mode, groupCount) {
+    const parts = [];
+    parts.push(`This report presents the SHINE review of ${b.fund_legal_name} for ${b.period} (${b.draft}).`);
+    parts.push(`${s.total} finding${s.total === 1 ? '' : 's'} ${s.total === 1 ? 'was' : 'were'} identified across ${groupCount} financial-statement area${groupCount === 1 ? '' : 's'}, of which ${s.bySeverity.CRITICAL} ${s.bySeverity.CRITICAL === 1 ? 'is' : 'are'} rated critical and ${s.bySeverity.HIGH} high.`);
+    if (topSection) parts.push(`The most significant concentration sits in ${topSection}.`);
+    parts.push(`Coverage of applicable ASC guidance stands at ${Math.round(s.coverage_pct * 100)}%, assessed against a planning materiality of ${fmtMoney(s.materiality.planning)} (${(s.materiality.pct * 100).toFixed(2)}% of net assets).`);
+    if (s.recurring || s.regressed) parts.push(`${s.recurring} finding${s.recurring === 1 ? '' : 's'} recurred from the prior review and ${s.regressed} regressed after a prior resolution — control points that warrant management attention.`);
+    const goal = mode === 'preparer' ? 'release to the fund administrator' : 'audit-file distribution';
+    const stateWord = verdict.state === 'READY' ? 'READY' : verdict.state === 'READY_WITH_EXCEPTIONS' ? 'READY WITH EXCEPTIONS' : 'NOT READY';
+    parts.push(`On the combined severity-and-coverage gate, the statements are assessed ${stateWord} for ${goal}; the determining factor is ${verdict.driver.toLowerCase()}.`);
+    return parts.join(' ');
+  }
+
+  // ============================================================
+  // PREMIUM PDF REPORT (jsPDF) — cover · exec summary · TOC · sections · appendix
+  // ============================================================
+  function renderReportPDF(model, mode) {
+    if (!window.jspdf) throw new Error('jsPDF not loaded');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    const PW = doc.internal.pageSize.getWidth();   // 612
+    const PH = doc.internal.pageSize.getHeight();  // 792
+    const MX = 56;
+    const CONTENT_TOP = 88;
+    const CONTENT_BOTTOM = PH - 64;
+    const CW = PW - MX * 2;
+
+    // Palette (RGB)
+    const INK = [26, 32, 44], NAVY = [26, 43, 74], GOLD = [184, 144, 46], GRAY = [110, 116, 128],
+      FAINT = [150, 154, 162], HAIR = [214, 214, 208], PANEL = [247, 247, 244], GHOST = [228, 228, 222];
+    const SEV = { CRITICAL: [192, 57, 43], HIGH: [201, 110, 8], MEDIUM: [168, 138, 0], LOW: [107, 114, 128] };
+    const fill = c => doc.setFillColor(c[0], c[1], c[2]);
+    const stroke = c => doc.setDrawColor(c[0], c[1], c[2]);
+    const ink = c => doc.setTextColor(c[0], c[1], c[2]);
+    const tw = s => doc.getTextWidth(s);
+
+    let y = CONTENT_TOP;
+    const toc = [];
+
+    function ensure(needed) { if (y + needed > CONTENT_BOTTOM) { doc.addPage(); y = CONTENT_TOP; } }
+    function eyebrow(text, x, yy, color) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); ink(color || GRAY);
+      doc.text(String(text).toUpperCase(), x, yy, { charSpace: 1.4 });
+    }
+    function sectionTitle(num, title, recordToc) {
+      ensure(64);
+      if (recordToc) toc.push({ label: title, page: doc.internal.getNumberOfPages() });
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(34); ink(GHOST);
+      doc.text(num, MX, y + 6);
+      ink(NAVY); doc.setFontSize(17);
+      doc.text(title, MX + 56, y);
+      stroke(GOLD); doc.setLineWidth(1.5); doc.line(MX + 56, y + 10, MX + 56 + 42, y + 10);
+      y += 40; ink(INK);
+    }
+    function readinessPill(v, x, yy) {
+      const fg = { READY: [22, 101, 52], READY_WITH_EXCEPTIONS: [146, 64, 14], NOT_READY: [153, 27, 27] }[v.state];
+      const bg = { READY: [220, 252, 231], READY_WITH_EXCEPTIONS: [254, 243, 199], NOT_READY: [254, 226, 226] }[v.state];
+      const label = { READY: 'READY', READY_WITH_EXCEPTIONS: 'READY WITH EXCEPTIONS', NOT_READY: 'NOT READY' }[v.state];
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+      const w = tw(label) + 26;
+      fill(bg); doc.roundedRect(x, yy - 13, w, 22, 11, 11, 'F');
+      ink(fg); doc.text(label, x + 13, yy + 1);
+      return w;
+    }
+
+    // ---------------- COVER (page 1) ----------------
+    fill(NAVY); doc.rect(0, 0, PW, 7, 'F');
+    let cy = 150;
+    eyebrow('SHINE  ·  Statement Health Intelligence', MX, cy);
+    cy += 50;
+    doc.setFont('times', 'bold'); doc.setFontSize(32); ink(INK);
+    const nameLines = doc.splitTextToSize(model.meta.fund_legal_name, CW);
+    doc.text(nameLines, MX, cy);
+    cy += nameLines.length * 34 + 4;
+    stroke(GOLD); doc.setLineWidth(2); doc.line(MX, cy, MX + 70, cy);
+    cy += 30;
+    doc.setFont('times', 'normal'); doc.setFontSize(17); ink(NAVY);
+    doc.text(model.meta.report_title + (mode === 'audit' ? ' · Audit File' : ' · Preparer Edition'), MX, cy);
+    cy += 26;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(11); ink(GRAY);
+    doc.text(`${model.meta.period}   ·   ${model.meta.draft}   ·   ${model.meta.domicile}   ·   ${model.meta.structure_type}`, MX, cy);
+    cy += 42;
+    readinessPill(model.verdict, MX, cy);
+    // bottom meta block
+    const by = PH - 132;
+    stroke(HAIR); doc.setLineWidth(0.5); doc.line(MX, by, PW - MX, by);
+    const metaCol = (label, value, x) => {
+      eyebrow(label, x, by + 22); ink(INK); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+      doc.text(value, x, by + 38);
+    };
+    metaCol('Prepared by', 'Apollo Mumbai Controllership', MX);
+    metaCol('Report date', model.meta.build_date, MX + 210);
+    metaCol('Classification', 'Confidential — Internal', MX + 370);
+    eyebrow('Architecture', MX, by + 66);
+    ink(GRAY); doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+    doc.text('Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1', MX, by + 80);
+
+    // ---------------- TOC reserved (page 2) ----------------
+    doc.addPage(); const tocPage = doc.internal.getNumberOfPages();
+
+    // ---------------- EXECUTIVE SUMMARY ----------------
+    doc.addPage(); y = CONTENT_TOP;
+    sectionTitle('01', 'Executive Summary', true);
+    // narrative
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); ink(INK);
+    const narr = doc.splitTextToSize(model.narrative, CW);
+    doc.text(narr, MX, y, { lineHeightFactor: 1.5 });
+    y += narr.length * 15 + 22;
+
+    // stat cards
+    const s = model.summary;
+    (function statCards() {
+      ensure(86);
+      const gap = 12, n = 4, cwId = (CW - gap * (n - 1)) / n;
+      const cards = [
+        { label: 'Total findings', value: String(s.total), sub: `${s.byState.open} open · ${s.byState.accepted} accepted` },
+        { label: 'Critical / High', value: `${s.bySeverity.CRITICAL} / ${s.bySeverity.HIGH}`, sub: 'in this export' },
+        { label: 'Coverage', value: Math.round(s.coverage_pct * 100) + '%', sub: `${s.asc_checked}/${s.asc_applicable} ASC ¶` },
+        { label: 'Materiality', value: fmtMoney(s.materiality.planning), sub: (s.materiality.pct * 100).toFixed(2) + '% of NAV' }
+      ];
+      cards.forEach((c, i) => {
+        const x = MX + i * (cwId + gap);
+        fill(PANEL); doc.roundedRect(x, y, cwId, 72, 4, 4, 'F');
+        stroke(HAIR); doc.setLineWidth(0.5); doc.roundedRect(x, y, cwId, 72, 4, 4, 'S');
+        eyebrow(c.label, x + 12, y + 18);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(19); ink(INK);
+        doc.text(c.value, x + 12, y + 45);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); ink(GRAY);
+        doc.text(c.sub, x + 12, y + 61);
+      });
+      y += 72 + 28;
+    })();
+
+    // severity bar chart
+    (function severityChart() {
+      ensure(110);
+      eyebrow('Findings by severity', MX, y); y += 16;
+      const order = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
+      const max = Math.max(1, ...order.map(k => s.bySeverity[k] || 0));
+      const barH = 15, gap = 9, labelW = 76, valGap = 10, trackW = CW - labelW - 28;
+      order.forEach(k => {
+        const v = s.bySeverity[k] || 0;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); ink(GRAY);
+        doc.text(k.charAt(0) + k.slice(1).toLowerCase(), MX, y + barH - 4);
+        fill([237, 237, 233]); doc.roundedRect(MX + labelW, y, trackW, barH, 2, 2, 'F');
+        const w = trackW * (v / max);
+        if (w > 0) { fill(SEV[k]); doc.roundedRect(MX + labelW, y, Math.max(w, 2), barH, 2, 2, 'F'); }
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); ink(INK);
+        doc.text(String(v), MX + labelW + trackW + valGap, y + barH - 4);
+        y += barH + gap;
+      });
+      y += 14;
+    })();
+
+    // disposition stacked bar
+    (function dispositionChart() {
+      ensure(64);
+      eyebrow('Disposition of population', MX, y); y += 14;
+      const segs = [['Open', s.byState.open, [148, 150, 156]], ['Accepted', s.byState.accepted, NAVY], ['Resolved', s.byState.resolved, [22, 101, 52]], ['Discarded', s.byState.discarded, [206, 206, 200]]];
+      const total = Math.max(1, segs.reduce((a, x) => a + x[1], 0));
+      const barH = 16; let x = MX;
+      segs.forEach(seg => { const w = CW * (seg[1] / total); if (w > 0.5) { fill(seg[2]); doc.rect(x, y, w, barH, 'F'); } x += w; });
+      y += barH + 14;
+      doc.setFontSize(8); let lx = MX;
+      segs.forEach(seg => {
+        fill(seg[2]); doc.rect(lx, y - 7, 8, 8, 'F');
+        ink(GRAY); doc.setFont('helvetica', 'normal');
+        const t = `${seg[0]}  ${seg[1]}`; doc.text(t, lx + 12, y);
+        lx += tw(t) + 36;
+      });
+      y += 18;
+    })();
+
+    // ---------------- FINDINGS SECTIONS ----------------
+    let sectionNum = 2;
+    model.groups.forEach(g => {
+      doc.addPage(); y = CONTENT_TOP;
+      sectionTitle(String(sectionNum).padStart(2, '0'), g.label, true);
+      sectionNum++;
+      // section meta line: count + severity tally
+      const tally = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+      g.findings.forEach(f => tally[f.severity.impact]++);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); ink(GRAY);
+      const tallyParts = [];
+      if (tally.CRITICAL) tallyParts.push(tally.CRITICAL + ' critical');
+      if (tally.HIGH) tallyParts.push(tally.HIGH + ' high');
+      if (tally.MEDIUM) tallyParts.push(tally.MEDIUM + ' medium');
+      if (tally.LOW) tallyParts.push(tally.LOW + ' low');
+      doc.text(`${g.findings.length} finding${g.findings.length === 1 ? '' : 's'}${tallyParts.length ? '  ·  ' + tallyParts.join(' · ') : ''}`, MX, y);
+      y += 14;
       if (g.note) {
-        pdf.setFontSize(8);
-        pdf.setTextColor(110);
-        pdf.setFont('helvetica', 'italic');
-        const lines = pdf.splitTextToSize(g.note, usableW);
-        pdf.text(lines, marginX, y);
-        y += lines.length * 10 + 4;
-        pdf.setTextColor(0);
-        pdf.setFont('helvetica', 'normal');
-      }
+        doc.setFont('times', 'italic'); doc.setFontSize(9.5); ink(GRAY);
+        const nl = doc.splitTextToSize(g.note, CW);
+        doc.text(nl, MX, y, { lineHeightFactor: 1.4 }); y += nl.length * 12 + 12;
+        doc.setFont('helvetica', 'normal');
+      } else { y += 6; }
 
       g.findings.forEach(f => {
-        const minRoom = 90;
-        if (y > pageH - minRoom) { pdf.addPage(); y = marginY; }
-        // ID + severity
-        pdf.setFont('helvetica', 'bold');
-        pdf.setFontSize(10);
-        pdf.text(`${f.id}  ${f.severity.impact}/${f.severity.confidence}  ${f.state}`, marginX, y);
-        y += 12;
-        // Location
-        const loc = [
-          f.section,
-          f.location && f.location.note_ref,
-          f.location && f.location.page ? `p. ${f.location.page}` : null,
-          f.location && f.location.line_id
-        ].filter(Boolean).join(' · ');
-        pdf.setFont('helvetica', 'normal');
-        pdf.setFontSize(8);
-        pdf.setTextColor(110);
-        pdf.text(loc, marginX, y, { maxWidth: usableW });
-        y += 10;
-        pdf.setTextColor(0);
-        // Text
-        const txt = mode === 'audit'
-          ? (f.controllerEdited || f.subagentRaw)
-          : (f.controllerEdited || f.voiceNormalized || f.subagentRaw);
-        pdf.setFontSize(9);
-        const tLines = pdf.splitTextToSize(txt, usableW);
-        pdf.text(tLines, marginX, y);
-        y += tLines.length * 11 + 4;
-        // Citation
-        if (f.evidence && (f.evidence.asc_reference || f.evidence.regulatory_citation)) {
-          pdf.setFontSize(8);
-          pdf.setTextColor(110);
-          const cites = [f.evidence.asc_reference, f.evidence.regulatory_citation].filter(Boolean).join(' · ');
-          pdf.text(`Citation: ${cites}`, marginX, y);
-          y += 10;
-          pdf.setTextColor(0);
+        const text = mode === 'audit' ? (f.controllerEdited || f.subagentRaw) : (f.controllerEdited || f.voiceNormalized || f.subagentRaw);
+        const fix = f.fixControllerEdited || f.fixVoiceNormalized || f.fix;
+        doc.setFontSize(9.5);
+        const tLines = doc.splitTextToSize(text, CW - 18);
+        const fxLines = doc.splitTextToSize(fix, CW - 36);
+        const cites = [f.evidence && f.evidence.asc_reference, f.evidence && f.evidence.regulatory_citation].filter(Boolean);
+        const needed = 18 + 16 + 14 + tLines.length * 13 + 8 + (cites.length ? 14 : 0) + (fxLines.length * 12 + 26) + 18;
+        ensure(needed);
+        // top hairline
+        stroke(HAIR); doc.setLineWidth(0.5); doc.line(MX, y, MX + CW, y); y += 18;
+        // severity square + id + meta
+        fill(SEV[f.severity.impact]); doc.rect(MX, y - 8, 9, 9, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); ink(INK);
+        doc.text(f.id, MX + 17, y);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); ink(GRAY);
+        doc.text(`${f.severity.impact} · ${f.severity.confidence} · ${f.state}`, MX + 17 + tw(f.id) + 10, y);
+        ink(FAINT); doc.text(`${f.subagent} · ${f.layer}`, MX + CW, y, { align: 'right' });
+        y += 15;
+        // location
+        const loc = [f.section, f.location && f.location.note_ref, f.location && f.location.page ? `p. ${f.location.page}` : null, f.location && f.location.line_id].filter(Boolean).join('  ·  ');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); ink(NAVY);
+        doc.text(loc, MX + 17, y); y += 15;
+        // body
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); ink(INK);
+        doc.text(tLines, MX + 17, y, { lineHeightFactor: 1.4 }); y += tLines.length * 13 + 6;
+        // citation
+        if (cites.length) {
+          doc.setFont('courier', 'normal'); doc.setFontSize(8); ink(GRAY);
+          doc.text(cites.join('     '), MX + 17, y); doc.setFont('helvetica', 'normal'); y += 14;
         }
-        // Fix
-        pdf.setFontSize(9);
-        pdf.setFont('helvetica', 'italic');
-        const fixTxt = f.fixControllerEdited || f.fixVoiceNormalized || f.fix;
-        const fLines = pdf.splitTextToSize('Fix: ' + fixTxt, usableW);
-        pdf.text(fLines, marginX, y);
-        y += fLines.length * 11 + 6;
-        pdf.setFont('helvetica', 'normal');
-        // Reconciler (audit mode only)
+        // fix panel
+        const panelH = fxLines.length * 12 + 22;
+        fill(PANEL); doc.roundedRect(MX + 17, y - 2, CW - 17, panelH, 3, 3, 'F');
+        fill(NAVY); doc.rect(MX + 17, y - 2, 3, panelH, 'F');
+        eyebrow('Recommended fix', MX + 28, y + 12, NAVY);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); ink(INK);
+        doc.text(fxLines, MX + 28, y + 26, { lineHeightFactor: 1.35 });
+        y += panelH + 12;
+        // reconciler (audit only)
         if (mode === 'audit' && f.reconciler_pattern) {
-          pdf.setFontSize(8);
-          pdf.setTextColor(60, 60, 100);
-          pdf.text(`Reconciler: ${f.reconciler_pattern} · constituents: ${f.constituent_findings.join(', ')}`, marginX, y, { maxWidth: usableW });
-          y += 10;
-          pdf.setTextColor(0);
+          doc.setFontSize(8); ink(GRAY);
+          const r = doc.splitTextToSize(`Reconciler · ${f.reconciler_pattern} · constituents ${f.constituent_findings.join(', ')}`, CW - 17);
+          doc.text(r, MX + 17, y); y += r.length * 10 + 8;
         }
-        y += 6;
       });
-      y += 8;
     });
 
-    // Audit-file extras: evergreen section
-    if (mode === 'audit') {
-      const evergreen = state.findings.filter(f => f.prior_review_recurrence === 'EVERGREEN_ACCEPTED');
-      if (evergreen.length) {
-        if (y > pageH - 120) { pdf.addPage(); y = marginY; }
-        pdf.setFontSize(12);
-        pdf.setFont('helvetica', 'bold');
-        pdf.text('Evergreen-accepted findings', marginX, y);
-        y += 16;
-        pdf.setFontSize(9);
-        pdf.setFont('helvetica', 'normal');
-        evergreen.forEach(f => {
-          if (y > pageH - 60) { pdf.addPage(); y = marginY; }
-          pdf.text(`${f.id} · ${f.statement} · ${f.section}`, marginX, y);
-          y += 11;
-          pdf.setTextColor(110);
-          pdf.setFontSize(8);
-          const r = pdf.splitTextToSize(`Reason: ${f.evergreen_acceptance_reason} (${f.evergreen_acceptance_date})`, usableW);
-          pdf.text(r, marginX, y);
-          y += r.length * 10 + 8;
-          pdf.setTextColor(0);
-          pdf.setFontSize(9);
-        });
-      }
+    // ---------------- APPENDIX A — COVERAGE ----------------
+    doc.addPage(); y = CONTENT_TOP;
+    sectionTitle(String(sectionNum).padStart(2, '0'), 'Appendix A — Coverage', true); sectionNum++;
+    const c = model.coverage;
+    function kvRow(k, v) {
+      ensure(20);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); ink(GRAY);
+      doc.text(k, MX, y);
+      ink(INK); doc.text(String(v), MX + CW, y, { align: 'right' });
+      stroke(HAIR); doc.setLineWidth(0.4); doc.line(MX, y + 6, MX + CW, y + 6);
+      y += 20;
+    }
+    kvRow('Coverage completeness', Math.round(c.coverage_completeness_pct * 100) + '%');
+    kvRow('ASC paragraphs applicable', c.asc_paragraphs_applicable_count);
+    kvRow('ASC paragraphs checked', c.asc_paragraphs_checked_count);
+    kvRow('Layers covered', (c.layers_covered || []).length + ' of 14');
+    kvRow('Schema rejections', (c.schema_rejections && c.schema_rejections.total) || 0);
+    kvRow('Regulatory jurisdictions', (model.summary.jurisdictions || []).join(', ') || '—');
+    y += 8;
+    if (c.asc_paragraphs_skipped_with_reason && c.asc_paragraphs_skipped_with_reason.length) {
+      eyebrow('ASC paragraphs not checked (with reason)', MX, y); y += 16;
+      c.asc_paragraphs_skipped_with_reason.forEach(sk => {
+        ensure(26);
+        doc.setFont('courier', 'normal'); doc.setFontSize(8.5); ink(INK);
+        doc.text(sk.paragraph, MX, y);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); ink(GRAY);
+        const r = doc.splitTextToSize(`${sk.reason_code}: ${sk.reason}`, CW - 130);
+        doc.text(r, MX + 130, y);
+        y += Math.max(14, r.length * 11) + 4;
+      });
     }
 
-    // Attribution footer on every page
-    const pageCount = pdf.internal.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      pdf.setPage(i);
-      pdf.setFontSize(8);
-      pdf.setTextColor(140);
-      pdf.text(
-        `Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · ${b.build_date}`,
-        marginX, pageH - 24
-      );
-      pdf.text(`Page ${i} of ${pageCount}`, pageW - marginX, pageH - 24, { align: 'right' });
-      pdf.setTextColor(0);
+    // ---------------- APPENDIX B — EVERGREEN (audit only) ----------------
+    if (mode === 'audit' && model.evergreen.length) {
+      doc.addPage(); y = CONTENT_TOP;
+      sectionTitle(String(sectionNum).padStart(2, '0'), 'Appendix B — Evergreen-Accepted', true); sectionNum++;
+      doc.setFont('times', 'italic'); doc.setFontSize(9.5); ink(GRAY);
+      const intro = doc.splitTextToSize('Findings the controller has accepted as documented practice. These skip severity escalation and are excluded from the readiness gate, but are recorded here for the audit file.', CW);
+      doc.text(intro, MX, y, { lineHeightFactor: 1.4 }); y += intro.length * 12 + 14;
+      doc.setFont('helvetica', 'normal');
+      model.evergreen.forEach(f => {
+        ensure(50);
+        fill([255, 248, 225]); doc.rect(MX, y - 10, 3, 30, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); ink(INK);
+        doc.text(`${f.id} · ${f.statement} · ${f.section}`, MX + 12, y);
+        y += 14;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); ink(GRAY);
+        const r = doc.splitTextToSize(`${f.evergreen_acceptance_reason} (accepted ${f.evergreen_acceptance_date})`, CW - 12);
+        doc.text(r, MX + 12, y); y += r.length * 11 + 14;
+      });
     }
 
-    const filename = `${b.fund_code}-${b.period}-shine-${mode === 'preparer' ? 'preparer' : 'audit-file'}-export-${b.build_date.replace(/-/g, '')}.pdf`;
-    pdf.save(filename);
+    // ---------------- TOC fill (go back to page 2) ----------------
+    doc.setPage(tocPage);
+    let ty = CONTENT_TOP;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(34); ink(GHOST);
+    doc.text('00', MX, ty + 6);
+    ink(NAVY); doc.setFontSize(17); doc.text('Contents', MX + 56, ty);
+    stroke(GOLD); doc.setLineWidth(1.5); doc.line(MX + 56, ty + 10, MX + 56 + 42, ty + 10);
+    ty += 48;
+    toc.forEach(entry => {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); ink(INK);
+      doc.text(entry.label, MX, ty);
+      ink(GRAY); doc.text(String(entry.page), MX + CW, ty, { align: 'right' });
+      // dotted leader
+      stroke([220, 220, 214]); doc.setLineWidth(0.4);
+      doc.setLineDashPattern([1, 2], 0);
+      const labelW = tw(entry.label); const numW = tw(String(entry.page));
+      doc.line(MX + labelW + 8, ty - 3, MX + CW - numW - 8, ty - 3);
+      doc.setLineDashPattern([], 0);
+      ty += 26;
+    });
+
+    // ---------------- Running header / footer on all pages except cover ----------------
+    const total = doc.internal.getNumberOfPages();
+    const shortName = model.meta.fund_legal_name.length > 46 ? model.meta.fund_legal_name.slice(0, 44) + '…' : model.meta.fund_legal_name;
+    for (let i = 2; i <= total; i++) {
+      doc.setPage(i);
+      // header
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); ink(FAINT);
+      doc.text(shortName, MX, 46, { charSpace: 0.3 });
+      doc.text((mode === 'audit' ? 'Audit File' : 'Preparer') + ' · ' + model.meta.period, PW - MX, 46, { align: 'right' });
+      stroke(HAIR); doc.setLineWidth(0.5); doc.line(MX, 54, PW - MX, 54);
+      // footer
+      stroke(HAIR); doc.line(MX, PH - 52, PW - MX, PH - 52);
+      doc.setFontSize(7.5); ink(FAINT);
+      doc.text('Confidential — Internal', MX, PH - 38);
+      doc.text(`${i} / ${total}`, PW / 2, PH - 38, { align: 'center' });
+      doc.text('SHINE v8.1 · Apollo Mumbai Controllership', PW - MX, PH - 38, { align: 'right' });
+    }
+
+    const filename = `${model.meta.fund_code}-${model.meta.period}-shine-${mode === 'preparer' ? 'preparer' : 'audit-file'}-report-${model.meta.build_date.replace(/-/g, '')}.pdf`;
+    doc.save(filename);
     toast(`Exported ${filename}`);
   }
 
-  function tier3Blob(mode) {
-    const b = state.review.brief;
-    const verdict = computeReadiness();
-    const findings = filterForExport(mode);
-    const groups = groupByStatement(findings);
-    const css = `body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:780px;margin:24px auto;padding:0 16px;color:#1A1A1A;font-size:13px;line-height:1.5}
-h1{font-size:22px;margin:0 0 6px}h2{font-size:14px;background:#FFF8E1;border:1px solid #D4AF37;padding:8px 12px;margin:24px 0 8px;border-radius:4px}
-.meta{color:#666;font-size:12px;margin-bottom:16px}.verdict{padding:8px 12px;border-radius:4px;background:#F4F4F1;font-weight:600;margin-bottom:20px}
-.f{border:1px solid #E5E5E0;padding:12px;margin:8px 0;border-radius:4px}.id{font-family:'JetBrains Mono',monospace;font-size:11px;color:#666}
-.chips{margin:4px 0 8px}.chip{display:inline-block;padding:2px 8px;font-size:11px;border-radius:4px;margin-right:4px}.chip-crit{background:#FDEDEC;color:#C0392B}.chip-high{background:#FEF3E0;color:#D97706}.chip-med{background:#FCF6D8;color:#B59500}.chip-low{background:#F0F0EE;color:#6B7280}
-.loc{color:#666;font-size:11px;margin-bottom:6px}.cite{font-family:'JetBrains Mono',monospace;font-size:11px;background:#F4F4F1;padding:2px 6px;border-radius:3px;color:#666;margin-right:4px}
-.fix{font-style:italic;color:#444;margin-top:6px}hr{border:0;border-top:1px solid #E5E5E0;margin:32px 0 16px}
-.footer{color:#999;font-size:10px;text-align:center;font-family:'JetBrains Mono',monospace}`;
-    const sevChipClass = (s) => ({CRITICAL:'chip-crit',HIGH:'chip-high',MEDIUM:'chip-med',LOW:'chip-low'})[s];
-    const renderFinding = (f) => {
-      const loc = [f.section, f.location && f.location.note_ref, f.location && f.location.page && ('p. ' + f.location.page), f.location && f.location.line_id].filter(Boolean).map(escapeHtml).join(' · ');
+  // ============================================================
+  // PREMIUM HTML REPORT (preview modal + HTML download)
+  // ============================================================
+  function renderReportHTML(model, mode) {
+    const m = model.meta, s = model.summary, v = model.verdict;
+    const modeLabel = mode === 'audit' ? 'Audit File' : 'Preparer Edition';
+    const verdictLabel = { READY: 'Ready', READY_WITH_EXCEPTIONS: 'Ready with Exceptions', NOT_READY: 'Not Ready' }[v.state];
+    const sevClass = imp => ({ CRITICAL: 'crit', HIGH: 'high', MEDIUM: 'med', LOW: 'low' }[imp]);
+    const maxSev = Math.max(1, s.bySeverity.CRITICAL, s.bySeverity.HIGH, s.bySeverity.MEDIUM, s.bySeverity.LOW);
+
+    const findingHTML = (f) => {
+      const loc = [f.section, f.location && f.location.note_ref, f.location && f.location.page && ('p. ' + f.location.page), f.location && f.location.line_id].filter(Boolean).map(escapeHtml).join('  ·  ');
       const cites = [];
       if (f.evidence && f.evidence.asc_reference) cites.push(`<span class="cite">${escapeHtml(f.evidence.asc_reference)}</span>`);
       if (f.evidence && f.evidence.regulatory_citation) cites.push(`<span class="cite">${escapeHtml(f.evidence.regulatory_citation)}</span>`);
       const text = mode === 'audit' ? (f.controllerEdited || f.subagentRaw) : (f.controllerEdited || f.voiceNormalized || f.subagentRaw);
       const fix = f.fixControllerEdited || f.fixVoiceNormalized || f.fix;
-      return `<div class="f"><span class="id">${f.id}</span>
-        <div class="chips"><span class="chip ${sevChipClass(f.severity.impact)}">${f.severity.impact}</span><span class="chip">${f.severity.confidence}</span><span class="chip">${f.state}</span></div>
-        <div class="loc">${loc}</div>
-        <div>${escapeHtml(text)}</div>
-        ${cites.length ? `<div style="margin-top:6px">${cites.join('')}</div>` : ''}
-        <div class="fix"><strong>Fix:</strong> ${escapeHtml(fix)}</div>
-      </div>`;
+      const ev = [];
+      if (f.evidence && f.evidence.quoted_text) ev.push(`<div class="evid">&ldquo;${escapeHtml(f.evidence.quoted_text)}&rdquo;</div>`);
+      if (f.evidence && f.evidence.xlsx_proof) ev.push(`<div class="evid mono">${escapeHtml(f.evidence.xlsx_proof)}</div>`);
+      if (f.evidence && f.evidence.prior_text) ev.push(`<div class="evid">Prior / sibling: &ldquo;${escapeHtml(f.evidence.prior_text)}&rdquo;</div>`);
+      return `<article class="finding sev-${sevClass(f.severity.impact)}">
+        <div class="finding-top">
+          <span class="fid">${escapeHtml(f.id)}</span>
+          <span class="sev-tag sev-${sevClass(f.severity.impact)}">${escapeHtml(f.severity.impact)}</span>
+          <span class="conf">${escapeHtml(f.severity.confidence)}</span>
+          <span class="state">${escapeHtml(f.state)}</span>
+          <span class="agent">${escapeHtml(f.subagent)} · ${escapeHtml(f.layer)}</span>
+        </div>
+        <div class="finding-loc">${loc}</div>
+        <p class="finding-body">${escapeHtml(text)}</p>
+        ${cites.length ? `<div class="cites">${cites.join('')}</div>` : ''}
+        ${ev.length ? `<div class="evidence-block">${ev.join('')}</div>` : ''}
+        <div class="fix"><span class="fix-label">Recommended fix</span>${escapeHtml(fix)}</div>
+        ${mode === 'audit' && f.reconciler_pattern ? `<div class="recon">Reconciler · ${escapeHtml(f.reconciler_pattern)} · constituents ${escapeHtml((f.constituent_findings || []).join(', '))}</div>` : ''}
+      </article>`;
     };
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>SHINE ${mode} export — ${escapeHtml(b.fund_legal_name)}</title><style>${css}</style></head><body>
-<h1>${escapeHtml(b.fund_legal_name)}</h1>
-<div class="meta">${escapeHtml(b.period)} · ${escapeHtml(b.draft)} · ${escapeHtml(b.domicile)} · ${mode === 'preparer' ? 'Preparer export' : 'Audit file export'} · Build ${escapeHtml(b.build_date)}</div>
-<div class="verdict">Readiness: ${verdict.label} — ${escapeHtml(verdict.driver)}</div>
-${groups.map(g => `<h2>${escapeHtml(g.label)} — ${g.findings.length} finding${g.findings.length === 1 ? '' : 's'}</h2>${g.findings.map(renderFinding).join('')}`).join('')}
-<hr>
-<div class="footer">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · ${escapeHtml(b.build_date)}</div>
+
+    let sectionNum = 2;
+    const sectionsHTML = model.groups.map(g => {
+      const tally = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+      g.findings.forEach(f => tally[f.severity.impact]++);
+      const badges = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].filter(k => tally[k]).map(k => `<span class="badge ${sevClass(k)}">${tally[k]} ${k.charAt(0)}</span>`).join('');
+      const num = String(sectionNum).padStart(2, '0'); sectionNum++;
+      return `<section class="report-section">
+        <div class="section-head">
+          <span class="section-num">${num}</span>
+          <div><h2>${escapeHtml(g.label)}</h2><div class="rule"></div></div>
+        </div>
+        <div class="section-meta">${g.findings.length} finding${g.findings.length === 1 ? '' : 's'} ${badges}</div>
+        ${g.note ? `<p class="section-note">${escapeHtml(g.note)}</p>` : ''}
+        ${g.findings.map(findingHTML).join('')}
+      </section>`;
+    }).join('');
+
+    const tocItems = ['Executive Summary', ...model.groups.map(g => g.label), 'Appendix A — Coverage'];
+    if (mode === 'audit' && model.evergreen.length) tocItems.push('Appendix B — Evergreen-Accepted');
+
+    const coverageRows = [
+      ['Coverage completeness', Math.round(model.coverage.coverage_completeness_pct * 100) + '%'],
+      ['ASC paragraphs applicable', model.coverage.asc_paragraphs_applicable_count],
+      ['ASC paragraphs checked', model.coverage.asc_paragraphs_checked_count],
+      ['Layers covered', (model.coverage.layers_covered || []).length + ' of 14'],
+      ['Schema rejections', (model.coverage.schema_rejections && model.coverage.schema_rejections.total) || 0],
+      ['Regulatory jurisdictions', (s.jurisdictions || []).join(', ') || '—']
+    ].map(([k, val]) => `<div class="kv"><span>${escapeHtml(k)}</span><strong>${escapeHtml(String(val))}</strong></div>`).join('');
+
+    const skippedHTML = (model.coverage.asc_paragraphs_skipped_with_reason || []).map(sk =>
+      `<div class="skip"><span class="mono">${escapeHtml(sk.paragraph)}</span><span>${escapeHtml(sk.reason_code)}: ${escapeHtml(sk.reason)}</span></div>`).join('');
+
+    const evergreenHTML = (mode === 'audit' && model.evergreen.length) ? `
+      <section class="report-section">
+        <div class="section-head"><span class="section-num">${String(model.groups.length + 3).padStart(2, '0')}</span><div><h2>Appendix B — Evergreen-Accepted</h2><div class="rule"></div></div></div>
+        <p class="section-note">Findings accepted as documented practice. Excluded from the readiness gate; recorded for the audit file.</p>
+        ${model.evergreen.map(f => `<div class="evergreen-item"><strong>${escapeHtml(f.id)} · ${escapeHtml(f.statement)} · ${escapeHtml(f.section)}</strong><div>${escapeHtml(f.evergreen_acceptance_reason || '')} <span class="muted">(accepted ${escapeHtml(f.evergreen_acceptance_date || '')})</span></div></div>`).join('')}
+      </section>` : '';
+
+    const dispoTotal = Math.max(1, s.byState.open + s.byState.accepted + s.byState.resolved + s.byState.discarded);
+    const pct = n => (100 * n / dispoTotal).toFixed(1) + '%';
+
+    const css = `
+:root{--ink:#1a202c;--navy:#1a2b4a;--gold:#b8902e;--gray:#6e7480;--faint:#9a9ea6;--hair:#d6d6d0;--panel:#f7f7f4;--crit:#c0392b;--high:#c96e08;--med:#a88a00;--low:#6b7280}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#eceae4}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);font-size:13.5px;line-height:1.55}
+.page{background:#fff;width:8.5in;min-height:11in;margin:24px auto;padding:0;box-shadow:0 4px 24px rgba(0,0,0,.12);position:relative;overflow:hidden}
+.serif{font-family:Georgia,'Times New Roman',serif}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--gray)}
+.cover{padding:0 0.9in}
+.cover .bar{height:7px;background:var(--navy);margin:0 -0.9in 1.1in}
+.cover .mark{margin-top:0.3in}
+.cover h1{font-family:Georgia,serif;font-size:34px;font-weight:700;line-height:1.15;margin:30px 0 0}
+.cover .accent{width:70px;height:3px;background:var(--gold);margin:14px 0 22px}
+.cover .subtitle{font-family:Georgia,serif;font-size:18px;color:var(--navy);margin:0 0 8px}
+.cover .coverline{color:var(--gray);font-size:13px}
+.cover .pill-wrap{margin:34px 0}
+.cover .meta-block{position:absolute;bottom:1in;left:0.9in;right:0.9in;border-top:1px solid var(--hair);padding-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cover .meta-block .col .eyebrow{margin-bottom:5px}
+.cover .attrib{position:absolute;bottom:0.5in;left:0.9in;color:var(--faint);font-size:10px}
+.pill{display:inline-block;padding:6px 16px;border-radius:14px;font-weight:700;font-size:12px;letter-spacing:.5px}
+.pill.READY{background:#dcfce7;color:#166534}.pill.READY_WITH_EXCEPTIONS{background:#fef3c7;color:#92400e}.pill.NOT_READY{background:#fee2e2;color:#991b1b}
+.pill-driver{color:var(--gray);font-size:12px;margin-top:10px;max-width:80%}
+.content{padding:0.7in 0.9in 0.9in}
+.section-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:6px}
+.section-num{font-size:34px;font-weight:700;color:#e4e4de;line-height:1;font-family:Georgia,serif}
+.section-head h2{font-family:Georgia,serif;font-size:20px;color:var(--navy);margin:0}
+.section-head .rule{width:42px;height:2px;background:var(--gold);margin-top:8px}
+.narrative{font-size:14px;line-height:1.65;margin:14px 0 26px}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 26px}
+.stat{background:var(--panel);border:1px solid var(--hair);border-radius:6px;padding:14px}
+.stat .eyebrow{margin-bottom:8px}
+.stat .num{font-size:24px;font-weight:700;line-height:1}
+.stat .sub{font-size:11px;color:var(--gray);margin-top:6px}
+.chart{margin:8px 0 26px}
+.chart .eyebrow{margin-bottom:12px}
+.bar-row{display:grid;grid-template-columns:80px 1fr 32px;align-items:center;gap:10px;margin-bottom:9px}
+.bar-row .lbl{font-size:12px;color:var(--gray)}
+.bar-track{background:#ededea;border-radius:3px;height:16px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.bar-fill.crit{background:var(--crit)}.bar-fill.high{background:var(--high)}.bar-fill.med{background:var(--med)}.bar-fill.low{background:var(--low)}
+.bar-row .val{font-weight:700;font-size:13px;text-align:right}
+.dispo{display:flex;height:18px;border-radius:3px;overflow:hidden;margin-bottom:12px}
+.dispo span{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:11px;color:var(--gray)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.toc-item{display:flex;align-items:baseline;justify-content:space-between;padding:9px 0;border-bottom:1px dotted var(--hair);font-size:14px}
+.toc-item .pnum{color:var(--gray);font-size:12px}
+.report-section{margin-top:30px}
+.section-meta{font-size:12px;color:var(--gray);margin:8px 0 4px}
+.badge{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:700;margin-left:4px}
+.badge.crit{background:#fdedec;color:var(--crit)}.badge.high{background:#fef3e0;color:var(--high)}.badge.med{background:#fcf6d8;color:var(--med)}.badge.low{background:#f0f0ee;color:var(--low)}
+.section-note{font-family:Georgia,serif;font-style:italic;color:var(--gray);font-size:13px;margin:6px 0 14px}
+.finding{border-top:1px solid var(--hair);padding:16px 0 4px;page-break-inside:avoid}
+.finding-top{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.fid{font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700}
+.sev-tag{padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700}
+.sev-tag.crit{background:#fdedec;color:var(--crit)}.sev-tag.high{background:#fef3e0;color:var(--high)}.sev-tag.med{background:#fcf6d8;color:var(--med)}.sev-tag.low{background:#f0f0ee;color:var(--low)}
+.conf,.state{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px}
+.agent{margin-left:auto;font-size:10px;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.finding-loc{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px}
+.finding-body{margin:0 0 10px;font-size:13px;line-height:1.6}
+.cites{margin-bottom:10px}
+.cite{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--panel);border:1px solid var(--hair);padding:2px 7px;border-radius:3px;margin-right:6px}
+.evidence-block{border-left:3px solid var(--hair);padding:4px 0 4px 12px;margin:0 0 10px}
+.evid{font-style:italic;color:var(--gray);font-size:12px;margin:2px 0}.evid.mono{font-style:normal;font-family:ui-monospace,Menlo,monospace}
+.fix{background:var(--panel);border-left:3px solid var(--navy);border-radius:3px;padding:11px 14px;font-size:12.5px;line-height:1.5}
+.fix-label{display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--navy);margin-bottom:5px}
+.recon{font-size:11px;color:var(--gray);margin-top:8px}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.kv span{color:var(--gray)}
+.skip{display:flex;gap:16px;padding:7px 0;border-bottom:1px dotted var(--hair);font-size:12px}
+.skip .mono{font-family:ui-monospace,Menlo,monospace;min-width:130px;color:var(--ink)}
+.skip span:last-child{color:var(--gray)}
+.evergreen-item{border-left:3px solid var(--gold);padding:8px 0 8px 12px;margin:10px 0;font-size:12.5px}
+.muted{color:var(--faint)}.mono{font-family:ui-monospace,Menlo,monospace}
+.report-footer{border-top:1px solid var(--hair);margin-top:36px;padding-top:14px;color:var(--faint);font-size:10px;text-align:center;font-family:ui-monospace,Menlo,monospace}
+@media print{
+  body{background:#fff}
+  .page{box-shadow:none;margin:0;width:auto;min-height:auto}
+  .cover{page-break-after:always}
+  @page{size:letter;margin:0.6in 0.7in 0.8in}
+}`;
+
+    return `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>SHINE Report — ${escapeHtml(m.fund_legal_name)}</title><style>${css}</style></head><body>
+<div class="page cover">
+  <div class="bar"></div>
+  <div class="mark eyebrow">SHINE · Statement Health Intelligence</div>
+  <h1>${escapeHtml(m.fund_legal_name)}</h1>
+  <div class="accent"></div>
+  <div class="subtitle serif">${escapeHtml(m.report_title)} · ${escapeHtml(modeLabel)}</div>
+  <div class="coverline">${escapeHtml(m.period)}  ·  ${escapeHtml(m.draft)}  ·  ${escapeHtml(m.domicile)}  ·  ${escapeHtml(m.structure_type)}</div>
+  <div class="pill-wrap">
+    <span class="pill ${v.state}">${verdictLabel.toUpperCase()}</span>
+    <div class="pill-driver">${escapeHtml(v.driver)}</div>
+  </div>
+  <div class="meta-block">
+    <div class="col"><div class="eyebrow">Prepared by</div><div>Apollo Mumbai Controllership</div></div>
+    <div class="col"><div class="eyebrow">Report date</div><div>${escapeHtml(m.build_date)}</div></div>
+    <div class="col"><div class="eyebrow">Classification</div><div>Confidential — Internal</div></div>
+  </div>
+  <div class="attrib">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1</div>
+</div>
+
+<div class="page"><div class="content">
+  <div class="section-head"><span class="section-num">01</span><div><h2>Executive Summary</h2><div class="rule"></div></div></div>
+  <p class="narrative">${escapeHtml(model.narrative)}</p>
+  <div class="stat-row">
+    <div class="stat"><div class="eyebrow">Total findings</div><div class="num">${s.total}</div><div class="sub">${s.byState.open} open · ${s.byState.accepted} accepted</div></div>
+    <div class="stat"><div class="eyebrow">Critical / High</div><div class="num">${s.bySeverity.CRITICAL} / ${s.bySeverity.HIGH}</div><div class="sub">in this export</div></div>
+    <div class="stat"><div class="eyebrow">Coverage</div><div class="num">${Math.round(s.coverage_pct * 100)}%</div><div class="sub">${s.asc_checked}/${s.asc_applicable} ASC &para;</div></div>
+    <div class="stat"><div class="eyebrow">Materiality</div><div class="num">${fmtMoney(s.materiality.planning)}</div><div class="sub">${(s.materiality.pct * 100).toFixed(2)}% of NAV</div></div>
+  </div>
+  <div class="chart">
+    <div class="eyebrow">Findings by severity</div>
+    ${['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(k => `
+      <div class="bar-row"><span class="lbl">${k.charAt(0) + k.slice(1).toLowerCase()}</span>
+      <div class="bar-track"><div class="bar-fill ${sevClass(k)}" style="width:${(100 * (s.bySeverity[k] || 0) / maxSev).toFixed(1)}%"></div></div>
+      <span class="val">${s.bySeverity[k] || 0}</span></div>`).join('')}
+  </div>
+  <div class="chart">
+    <div class="eyebrow">Disposition of population</div>
+    <div class="dispo">
+      <span style="width:${pct(s.byState.open)};background:#94969c"></span>
+      <span style="width:${pct(s.byState.accepted)};background:#1a2b4a"></span>
+      <span style="width:${pct(s.byState.resolved)};background:#166534"></span>
+      <span style="width:${pct(s.byState.discarded)};background:#cecec4"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:#94969c"></i>Open ${s.byState.open}</span>
+      <span><i style="background:#1a2b4a"></i>Accepted ${s.byState.accepted}</span>
+      <span><i style="background:#166534"></i>Resolved ${s.byState.resolved}</span>
+      <span><i style="background:#cecec4"></i>Discarded ${s.byState.discarded}</span>
+    </div>
+  </div>
+
+  <div class="section-head" style="margin-top:30px"><span class="section-num">00</span><div><h2>Contents</h2><div class="rule"></div></div></div>
+  ${tocItems.map(t => `<div class="toc-item"><span>${escapeHtml(t)}</span></div>`).join('')}
+
+  ${sectionsHTML}
+
+  <section class="report-section">
+    <div class="section-head"><span class="section-num">${String(model.groups.length + 2).padStart(2, '0')}</span><div><h2>Appendix A — Coverage</h2><div class="rule"></div></div></div>
+    <div style="margin-top:12px">${coverageRows}</div>
+    ${skippedHTML ? `<div class="eyebrow" style="margin:18px 0 8px">ASC paragraphs not checked (with reason)</div>${skippedHTML}` : ''}
+  </section>
+
+  ${evergreenHTML}
+
+  <div class="report-footer">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · ${escapeHtml(m.build_date)}</div>
+</div></div>
 </body></html>`;
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${b.fund_code}-${b.period}-shine-${mode === 'preparer' ? 'preparer' : 'audit-file'}-export-${b.build_date.replace(/-/g, '')}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    toast('Downloaded HTML export (open and Ctrl+P → Save as PDF for a true PDF).');
   }
 
   function filterForExport(mode) {

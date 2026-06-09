@@ -172,17 +172,29 @@ const warnings = [];
     await page.setViewportSize({ width: 1440, height: 900 });
   });
 
-  await step('PDF export — preparer', async () => {
+  await step('PDF export — preparer (preview → download)', async () => {
     await page.click('.nav-tab[data-view="dashboard"]');
     await page.waitForTimeout(120);
-    const downloadPromise = page.waitForEvent('download', { timeout: 10000 });
     await page.click('#btn-export-preparer');
+    await page.waitForSelector('#report-modal.open');
+    // Verify the premium report rendered in the iframe: cover title present
+    const frame = page.frameLocator('#report-frame');
+    await frame.locator('.cover h1').waitFor({ timeout: 5000 });
+    const coverTitle = await frame.locator('.cover h1').textContent();
+    if (!coverTitle.includes('AAA Coinvest Fund A')) throw new Error('report cover title missing/incorrect: ' + coverTitle);
+    // Verify exec summary stat cards + severity chart present
+    const statCount = await frame.locator('.stat').count();
+    if (statCount < 4) throw new Error('exec summary stat cards missing: ' + statCount);
+    await shot('report-preview-preparer');
+    const downloadPromise = page.waitForEvent('download', { timeout: 12000 });
+    await page.click('#report-download-pdf');
     const dl = await downloadPromise;
     const dest = path.join(SCREENSHOTS_DIR, 'preparer-export.pdf');
     await dl.saveAs(dest);
     const sz = fs.statSync(dest).size;
-    if (sz < 500) throw new Error('PDF too small: ' + sz + ' bytes');
+    if (sz < 800) throw new Error('PDF too small: ' + sz + ' bytes');
     console.log('     (' + sz + ' bytes saved)');
+    await page.keyboard.press('Escape');
   });
 
   await step('discard >20% triggers attestation modal', async () => {
@@ -517,15 +529,38 @@ const warnings = [];
     await page.waitForTimeout(150);
   });
 
-  await step('PDF export — audit', async () => {
-    const downloadPromise = page.waitForEvent('download', { timeout: 10000 });
+  await step('PDF export — audit (preview → download)', async () => {
     await page.click('#btn-export-audit');
+    await page.waitForSelector('#report-modal.open');
+    const frame = page.frameLocator('#report-frame');
+    await frame.locator('.cover h1').waitFor({ timeout: 5000 });
+    // Audit mode shows Audit File in subtitle
+    const subtitle = await frame.locator('.cover .subtitle').textContent();
+    if (!subtitle.includes('Audit File')) throw new Error('audit subtitle missing: ' + subtitle);
+    await shot('report-preview-audit');
+    const downloadPromise = page.waitForEvent('download', { timeout: 12000 });
+    await page.click('#report-download-pdf');
     const dl = await downloadPromise;
     const dest = path.join(SCREENSHOTS_DIR, 'audit-file-export.pdf');
     await dl.saveAs(dest);
     const sz = fs.statSync(dest).size;
-    if (sz < 500) throw new Error('PDF too small: ' + sz + ' bytes');
+    if (sz < 800) throw new Error('PDF too small: ' + sz + ' bytes');
     console.log('     (' + sz + ' bytes saved)');
+    await page.keyboard.press('Escape');
+  });
+
+  await step('HTML report download works', async () => {
+    await page.click('#btn-export-preparer');
+    await page.waitForSelector('#report-modal.open');
+    const downloadPromise = page.waitForEvent('download', { timeout: 12000 });
+    await page.click('#report-download-html');
+    const dl = await downloadPromise;
+    const dest = path.join(SCREENSHOTS_DIR, 'preparer-report.html');
+    await dl.saveAs(dest);
+    const sz = fs.statSync(dest).size;
+    if (sz < 2000) throw new Error('HTML report too small: ' + sz + ' bytes');
+    console.log('     (' + sz + ' bytes saved)');
+    await page.keyboard.press('Escape');
   });
 
   // === Report ===
