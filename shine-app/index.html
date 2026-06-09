@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SHINE — Financial Statements Review</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Inline SVG favicon — no extra HTTP request, no 404. -->
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230F172A'/><text x='16' y='22' font-family='system-ui,sans-serif' font-size='18' font-weight='700' text-anchor='middle' fill='white'>S</text></svg>" />
+  <!-- Fonts: system stack — looks great on every OS, zero external requests, fully offline-capable. -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -184,25 +184,26 @@
   <!-- ============================================================ -->
   <!-- DRAWER: Finding detail                                        -->
   <!-- ============================================================ -->
-  <aside class="drawer" id="finding-drawer">
+  <aside class="drawer" id="finding-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-id" aria-hidden="true">
     <div class="drawer-header">
       <div class="drawer-title">
         <span id="drawer-id" class="mono">F-???</span>
         <span id="drawer-statement-location">—</span>
       </div>
-      <button class="icon-btn" id="drawer-close" title="Close">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <button class="icon-btn" id="drawer-close" title="Close" aria-label="Close finding details">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
     <div class="drawer-body" id="drawer-body"><!-- populated --></div>
   </aside>
+  <div class="drawer-overlay" id="drawer-overlay"></div>
 
   <!-- ============================================================ -->
   <!-- MODAL: Evergreen-accept                                       -->
   <!-- ============================================================ -->
-  <div class="modal-bg" id="modal-evergreen">
+  <div class="modal-bg" id="modal-evergreen" role="dialog" aria-modal="true" aria-labelledby="modal-evergreen-title">
     <div class="modal">
-      <h3>Mark as evergreen-accepted</h3>
+      <h3 id="modal-evergreen-title">Mark as evergreen-accepted</h3>
       <p class="muted">This finding will skip severity escalation in future reviews and be excluded from the readiness gate.</p>
       <label>Acceptance reason</label>
       <textarea id="evergreen-reason" placeholder="e.g., Auditor accepted in FY2024; brevity is intentional and aligned with elected-out status."></textarea>
@@ -216,9 +217,9 @@
   <!-- ============================================================ -->
   <!-- MODAL: Discard attestation                                    -->
   <!-- ============================================================ -->
-  <div class="modal-bg" id="modal-discard">
+  <div class="modal-bg" id="modal-discard" role="dialog" aria-modal="true" aria-labelledby="modal-discard-title">
     <div class="modal">
-      <h3>Discard attestation required</h3>
+      <h3 id="modal-discard-title">Discard attestation required</h3>
       <p class="muted">Discard rate on this review exceeds 20%. Per Stewardship policy, each discard requires a one-line attestation.</p>
       <label>Why is this finding being discarded?</label>
       <textarea id="discard-reason" placeholder="e.g., False positive — VPM permits the alternative classification at page 14."></textarea>
@@ -237,8 +238,9 @@
   <!-- Hidden file input for import -->
   <input type="file" id="file-input" accept=".json" style="display:none" />
 
-  <!-- jsPDF for export (Tier 1 of 3-tier fallback) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- jsPDF (Tier 1 export): vendored locally so the app works fully offline.
+       If the local script ever fails to load, the app falls back to the Tier 3 Blob HTML export. -->
+  <script src="lib/jspdf.umd.min.js"></script>
   <script src="sample-data.js"></script>
   <script src="app.js"></script>
 </body>

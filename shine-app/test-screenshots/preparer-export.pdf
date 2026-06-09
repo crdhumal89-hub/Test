@@ -1,0 +1,1002 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 5883
+>>
+stream
+0.200025 w
+0 G
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0 g
+36. 744. Td
+(AAA Coinvest Fund A LP) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.431 g
+36. 726. Td
+(FY2025 · Draft 1.1 · Cayman Islands · Closed-end PE LP) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.431 g
+36. 712. Td
+(Preparer export · Build 2026-05-17) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+36. 694. Td
+(Readiness: RED) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.431 g
+36. 680. Td
+(3 CRITICAL unresolved · 7 HIGH unresolved) Tj
+ET
+1. 0.97 0.88 rg
+0.83 0.69 0.22 RG
+36. 670. 540. -24. re
+B
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+44. 654. Td
+(Cover) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+534.25 654. Td
+(1 finding) Tj
+ET
+BT
+/F3 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 632. Td
+(Entity identity, period, presentation header. Qualitative mismatches are ALWAYS CRITICAL regardless of dollar impact.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 618. Td
+(F-001  CRITICAL/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 606. Td
+(Cover page · p. 1 · Domicile statement) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 596. Td
+(Cover page lists domicile as Delaware. Fund metadata records domicile as Cayman Islands. Qualitative materiality applies — this is) Tj
+T* (CRITICAL regardless of dollar impact.) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 570. Td
+(Fix: Confirm correct domicile with fund formation documents; correct the cover page \(and any internal references\) before issuance.) Tj
+ET
+1. 0.97 0.88 rg
+0.83 0.69 0.22 RG
+36. 551. 540. -24. re
+B
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+44. 535. Td
+(Statement of Assets and Liabilities) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+534.25 535. Td
+(1 finding) Tj
+ET
+BT
+/F3 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 513. Td
+(Balance-sheet equivalent. Tie-out to Schedule of Investments mandatory.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 499. Td
+(F-002  HIGH/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 487. Td
+(Investments at fair value · p. 3 · Investments at fair value) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 477. Td
+(The Statement of Assets and Liabilities omits the parallel cost column for investments. ASC 946-210-45-1 requires both cost and fair) Tj
+T* (value when the fund holds investments measured at fair value.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 451. Td
+(Citation: ASC 946-210-45-1) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 441. Td
+(Fix: Add a 'Cost' column adjacent to 'Fair value' for investments, with the corresponding aggregate cost figure tied to the Schedule of) Tj
+T* (Investments.) Tj
+ET
+1. 0.97 0.88 rg
+0.83 0.69 0.22 RG
+36. 411. 540. -24. re
+B
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+44. 395. Td
+(Statement of Operations) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+534.25 395. Td
+(1 finding) Tj
+ET
+BT
+/F3 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 373. Td
+(Net change must tie to Statement of Changes.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 359. Td
+(F-003  HIGH/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 347. Td
+(Realized and unrealized gain/loss · p. 4 · Net realized and unrealized gain/loss) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 337. Td
+(Realized vs unrealized gain/loss on investments is combined into a single line \($142.3M\). Bifurcation is required and available — split) Tj
+T* (into Realized $61.2M and Unrealized $81.1M.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 311. Td
+(Citation: ASC 946-220-45-3) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 301. Td
+(Fix: Bifurcate the combined line on the face of the Statement of Operations: 'Net realized gain \(loss\) on investments' and 'Net change in) Tj
+T* (unrealized appreciation \(depreciation\) on investments' shown separately.) Tj
+ET
+1. 0.97 0.88 rg
+0.83 0.69 0.22 RG
+36. 271. 540. -24. re
+B
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+44. 255. Td
+(Schedule of Investments) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+529.75 255. Td
+(2 findings) Tj
+ET
+BT
+/F3 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 233. Td
+(>5% of net assets MUST be disclosed by name per ASC 946-210-50-6.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 219. Td
+(F-011  CRITICAL/PROBABLE  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 207. Td
+(Level 3 designation · p. 13 · Project Titan Holdings) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 197. Td
+(Hidden workbook row at SOI!47 classifies Project Titan Holdings as Level 2. Visible row at SOI!46 \(same investment\) shows Level 3.) Tj
+T* (The published FS shows Level 3. The hidden row may indicate either a working-paper override or an unresolved valuation question.) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 171. Td
+(Fix: Resolve the Level classification with the valuation committee. Document the rationale in the VPM file. Hide the inactive row OR) Tj
+T* (delete the row to remove the contradiction signal.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 137. Td
+(F-005  HIGH/CERTAIN  ACCEPTED) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 125. Td
+(Concentration · p. 12 · Other private equity investments \(aggregated\)) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 115. Td
+(The Schedule of Investments aggregates $158M \(6.3% of NAV\) under 'Other private equity investments' without name-level disclosure.) Tj
+T* (ASC 946-210-50-6 requires name-level disclosure of any investment >5% of net assets.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 89. Td
+(Citation: ASC 946-210-50-6) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 79. Td
+(Fix: Break out the constituent investments within the aggregated line by name; verify any single name >5% of NAV is separately) Tj
+T* (disclosed.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.549 g
+36. 24. Td
+(Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · 2026-05-17) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.549 g
+535.3600000000000136 24. Td
+(Page 1 of 3) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 6696
+>>
+stream
+0.200025 w
+0.83 0.69 0.22 RG
+1. 0.97 0.88 rg
+0.83 0.69 0.22 RG
+36. 756. 540. -24. re
+B
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+44. 740. Td
+(Notes to Financial Statements) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+529.75 740. Td
+(7 findings) Tj
+ET
+BT
+/F3 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 718. Td
+(Disclosure infrastructure. Significant accounting policies through subsequent events.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 704. Td
+(F-013  HIGH/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 692. Td
+(Significant accounting policies · Note 2 · p. 15) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 682. Td
+(The Significant Accounting Policies note references 'the Fund's investments in AAA Coinvest Fund III portfolio companies' — AAA) Tj
+T* (Coinvest Fund III is a different vehicle. This appears to be carried-over language from a prior draft of a different fund's FS.) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 656. Td
+(Fix: Replace 'AAA Coinvest Fund III' with the correct entity name \('AAA Coinvest Fund A LP' or 'the Fund'\). Scan the entire note set for) Tj
+T* (additional cross-fund residue.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 622. Td
+(F-004  CRITICAL/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 610. Td
+(Fair value measurements · Note 4\(b\) · p. 17) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 600. Td
+(The Level 3 reconciliation roll-forward in Note 4\(b\) presents opening balance, purchases, and ending balance. ASC 820-10-50-2\(c\)) Tj
+T* (requires opening balance, purchases, sales, settlements, issuances, transfers in/out, realized gain/loss, unrealized gain/loss, and ending) Tj
+T* (balance. The still-held subset of realized/unrealized per -2\(d\) is also absent.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 563. Td
+(Citation: ASC 820-10-50-2c) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 553. Td
+(Fix: Expand the Level 3 roll-forward to include all eight required movement columns and the still-held subset disclosure. Verify the) Tj
+T* (resulting ending balance ties to the Schedule of Investments Level 3 subtotal \($412.4M\).) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 519. Td
+(F-006  MEDIUM/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 507. Td
+(Organization · Note 1 · p. 14) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 497. Td
+(The Organization note does not reference Cayman Private Funds Act registration. The Fund is a Cayman exempted limited partnership) Tj
+T* (formed post-2020 — PFA registration disclosure is the standard expectation.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 471. Td
+(Citation: CIMA:PFA) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 461. Td
+(Fix: Add a sentence to the Organization note: 'The Fund is registered with the Cayman Islands Monetary Authority under the Private) Tj
+T* (Funds Act \(registration number [X]\).' Verify the registration number from formation documents.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 427. Td
+(F-007  HIGH/PROBABLE  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 415. Td
+(Related party transactions · Note 8 · p. 22) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 405. Td
+(The Related Party Transactions note discloses the General Partner and Investment Manager relationships but does not disclose the) Tj
+T* (Fund's relationship to AAA Portfolio Operations LLC, which is named in the Schedule of Investments as the operating-services) Tj
+T* (counterparty for two portfolio companies. The auditor will likely push back on this.) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 368. Td
+(Fix: Confirm whether AAA Portfolio Operations LLC is an affiliate of the GP/Manager. If yes, expand Note 8 to disclose: nature of) Tj
+T* (relationship, terms of services, period amount, and balance receivable/payable at period end.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 334. Td
+(F-008  HIGH/PROBABLE  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 322. Td
+(Income taxes · Note 9 · p. 25) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 312. Td
+(The Income Taxes note states the Fund has no uncertain tax positions. The Schedule of Investments shows non-US corporate) Tj
+T* (investments. The note does not address PFIC treatment for US investors. If any non-US corporate investment qualifies as a PFIC, the) Tj
+T* (disclosure regime under IRC §1297–1298 applies.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 275. Td
+(Citation: IRS:PFIC) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 265. Td
+(Fix: Confirm with tax counsel which non-US corporate investments qualify as PFICs. Add disclosure covering: \(a\) presence of PFIC) Tj
+T* (investments, \(b\) treatment \(mark-to-market under §1296 / QEF under §1295 / default §1291\), \(c\) whether elections have been made on) Tj
+T* (investors' behalf.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 220. Td
+(F-009  MEDIUM/PROBABLE  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 208. Td
+(Recently issued accounting standards · Note 13 · p. 30) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 198. Td
+(The 'Recently issued accounting standards' note mentions ASU 2022-03 but does not address ASU 2023-09 \(income tax disclosures,) Tj
+T* (effective FY 2025+\) — which may be applicable if the Fund has taxable blocker subsidiaries.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 172. Td
+(Citation: ASC 105-10-65) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 162. Td
+(Fix: Confirm with tax team whether ASU 2023-09 applies \(taxable blocker subsidiaries with rate reconciliation\). If applicable, add the) Tj
+T* (ASU 2023-09 effective-date and expected-effect disclosure to Note 13.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 128. Td
+(F-010  MEDIUM/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 116. Td
+(Subsequent events · Note 14 · p. 31) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 106. Td
+(The Subsequent Events note states events were evaluated through April 15, 2026. The draft is dated May 17, 2026 — the evaluation) Tj
+T* (date precedes the draft date by over a month. Either the evaluation date is stale or the draft date is pre-dated.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 80. Td
+(Citation: ASC 855-10-50-4) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 70. Td
+(Fix: Update the subsequent-events evaluation date to the expected issuance date. Re-evaluate events occurring between the prior date) Tj
+T* (and the new date.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.549 g
+36. 24. Td
+(Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · 2026-05-17) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.549 g
+535.3600000000000136 24. Td
+(Page 2 of 3) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 2312
+>>
+stream
+0.200025 w
+0.83 0.69 0.22 RG
+1. 0.97 0.88 rg
+0.83 0.69 0.22 RG
+36. 756. 540. -24. re
+B
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+44. 740. Td
+(Financial Highlights) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+534.25 740. Td
+(1 finding) Tj
+ET
+BT
+/F3 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 718. Td
+(ASC 946-205-50 ratios. Per-class breakouts when capital structure differs.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 704. Td
+(F-016  LOW/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 692. Td
+(Per-class ratios · p. 33 · Expense ratio) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 682. Td
+(Financial Highlights expense ratio for Class A is presented as 1.85 with no percent sign. All other ratios on the same page use) Tj
+T* (percentage notation. Cosmetic inconsistency.) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 656. Td
+(Fix: Add the percent sign to the Class A expense ratio for typographic consistency.) Tj
+ET
+1. 0.97 0.88 rg
+0.83 0.69 0.22 RG
+36. 637. 540. -24. re
+B
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0. g
+44. 621. Td
+(Cross-Statement) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+534.25 621. Td
+(1 finding) Tj
+ET
+BT
+/F3 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 599. Td
+(Findings spanning multiple statements that cannot be cleanly localized.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0. g
+36. 585. Td
+(F-012  HIGH/CERTAIN  OPEN) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.431 g
+36. 573. Td
+(Carried interest reconciliation · Carried interest accrual) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0. g
+36. 563. Td
+(AAA Coinvest Fund A LP records carried interest accrual of $34.2M on the Statement of Changes. The sibling AIV vehicle \(AAA) Tj
+T* (Coinvest Fund A AIV LP\) FS records zero carried interest accrual. Per the LPA, the AIV applies a parallel waterfall — a proportional) Tj
+T* (accrual is expected.) Tj
+ET
+BT
+/F3 9 Tf
+10.3499999999999996 TL
+0. g
+36. 526. Td
+(Fix: Reconcile the carried interest accrual between Fund A and Fund A AIV. Either correct one of them or document the timing/policy) Tj
+T* (reason for the difference in both sets of FS.) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.549 g
+36. 24. Td
+(Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · 2026-05-17) Tj
+ET
+BT
+/F1 8 Tf
+9.1999999999999993 TL
+0.549 g
+535.3600000000000136 24. Td
+(Page 3 of 3) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R ]
+/Count 3
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+21 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+22 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 9 0 R
+/F2 10 0 R
+/F3 11 0 R
+/F4 12 0 R
+/F5 13 0 R
+/F6 14 0 R
+/F7 15 0 R
+/F8 16 0 R
+/F9 17 0 R
+/F10 18 0 R
+/F11 19 0 R
+/F12 20 0 R
+/F13 21 0 R
+/F14 22 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+23 0 obj
+<<
+/Producer (jsPDF 4.2.1)
+/CreationDate (D:20260609215243-00'00')
+>>
+endobj
+24 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 25
+0000000000 65535 f 
+0000015377 00000 n 
+0000017210 00000 n 
+0000000015 00000 n 
+0000000120 00000 n 
+0000006055 00000 n 
+0000006160 00000 n 
+0000012908 00000 n 
+0000013013 00000 n 
+0000015446 00000 n 
+0000015571 00000 n 
+0000015702 00000 n 
+0000015836 00000 n 
+0000015974 00000 n 
+0000016098 00000 n 
+0000016227 00000 n 
+0000016359 00000 n 
+0000016495 00000 n 
+0000016623 00000 n 
+0000016750 00000 n 
+0000016879 00000 n 
+0000017012 00000 n 
+0000017114 00000 n 
+0000017462 00000 n 
+0000017548 00000 n 
+trailer
+<<
+/Size 25
+/Root 24 0 R
+/Info 23 0 R
+/ID [ <45B9B144259E7BCF311039B0F7795AEB> <45B9B144259E7BCF311039B0F7795AEB> ]
+>>
+startxref
+17652
+%%EOF

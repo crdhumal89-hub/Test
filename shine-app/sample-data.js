@@ -202,6 +202,24 @@ window.SHINE_SAMPLE = {
         reconciler_pattern: "Pattern 06 — Level 3 Reconciliation Decomposition",
         reconciler_specificity_score: 24,
         constituent_findings: ["F-004a", "F-004b"],
+        constituent_details: [
+          {
+            id: "F-004a",
+            subagent: "mechanical",
+            layer: "L2",
+            severity: { impact: "CRITICAL", confidence: "CERTAIN" },
+            subagentRaw: "Level 3 reconciliation ending balance ($412.4M) does not foot to the Schedule of Investments Level 3 subtotal ($408.9M); break $3.5M.",
+            consumed_by_pattern: true
+          },
+          {
+            id: "F-004b",
+            subagent: "standards",
+            layer: "L9",
+            severity: { impact: "HIGH", confidence: "CERTAIN" },
+            subagentRaw: "Significant unobservable inputs table at Note 4(c) lists valuation technique and range but omits the weighted-average column required by ASC 820-10-50-2(f).",
+            consumed_by_pattern: true
+          }
+        ],
         subagent_version: "8.1.0",
         prompt_version: "v8.1.0",
         reference_versions: { "asc-matrices.md": "8.1.0", "cross-layer-patterns.md": "8.1.0" },

@@ -50,9 +50,9 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --topnav-h: 56px;
 
-  /* Type */
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* Type — system stack, no CDN dependency */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 [data-theme="dark"] {
@@ -200,9 +200,25 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
 }
 .pill:hover { color: var(--text); border-color: var(--border-strong); }
 .pill.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+/* A11Y: visible focus indicator for keyboard users (not just default outline) */
+.pill:focus-visible,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.seg-opt:focus-visible,
+.icon-btn:focus-visible,
+.nav-tab:focus-visible,
+.finding-card:focus-visible,
+.finding-actions button:focus-visible,
+.polished-toggle:focus-visible,
+.constituents-toggle:focus-visible,
+.decouple-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .pill .dot { width: 6px; height: 6px; border-radius: 50%; }
 .dot.crit { background: var(--crit); }
 .dot.high { background: var(--high); }
@@ -504,9 +520,19 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   color: var(--text-muted);
   margin-right: 6px;
 }
-.finding-meta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font-size: 11px; color: var(--text-muted); }
-.polished-toggle { color: var(--accent); cursor: pointer; font-weight: 500; }
-.polished-toggle:hover { text-decoration: underline; }
+.finding-meta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.finding-cites { margin-bottom: 8px; }
+.polished-toggle,
+.constituents-toggle {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 500;
+}
+.polished-toggle:hover, .constituents-toggle:hover { text-decoration: underline; }
 .reconciler-attr {
   margin-top: 10px;
   padding: 8px 12px;
@@ -538,9 +564,11 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   border-radius: var(--radius-sm);
   font-weight: 500;
   transition: all 0.12s ease;
+  cursor: pointer;
 }
 .finding-actions button:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-2); }
-.finding-actions button.primary { color: var(--accent); border-color: var(--accent); }
+.finding-actions button.btn-primary { color: var(--accent); border-color: var(--accent); background: none; }
+.finding-actions button.btn-primary:hover { background: var(--accent-soft); }
 .finding-actions button.danger:hover { color: var(--danger); border-color: var(--danger); }
 
 /* ============================================================= */
@@ -673,16 +701,63 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   padding: 12px;
   font-size: 12px;
 }
+.constituents-header { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
 .constituent-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 6px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 8px 12px;
+  padding: 10px 0;
   border-bottom: 1px dashed rgba(0,0,0,0.06);
 }
 .constituent-row:last-child { border-bottom: 0; }
-.decouple-btn { background: none; border: 0; color: var(--accent); cursor: pointer; font-size: 11px; font-weight: 500; }
+.constituent-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.constituent-text { grid-column: 1 / 2; font-size: 12px; color: var(--text); line-height: 1.5; margin-top: 2px; }
+.constituents-detail { margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.08); font-size: 11px; color: var(--text-muted); font-style: italic; }
+.decouple-btn {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  align-self: start;
+  white-space: nowrap;
+}
+.decouple-btn:hover { background: var(--accent); color: var(--accent-text); }
+
+/* ============================================================= */
+/* Empty state                                                    */
+/* ============================================================= */
+.empty-state {
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.empty-title { font-size: 15px; font-weight: 500; }
+.empty-detail { font-size: 12px; }
+
+/* ============================================================= */
+/* Drawer overlay (click-outside-to-close on mobile)              */
+/* ============================================================= */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+  z-index: 199;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: auto; }
 
 /* ============================================================= */
 /* Modal                                                          */
@@ -750,18 +825,38 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 /* ============================================================= */
 /* Responsive                                                     */
 /* ============================================================= */
+/* Tablet breakpoint — CFO row stacks earlier; toolbar wraps */
+@media (max-width: 900px) {
+  .cfo-row { grid-template-columns: 110px 1fr; gap: 12px; }
+  .dashboard-toolbar { flex-direction: column; align-items: stretch; }
+  .toolbar-right { justify-content: space-between; }
+}
+/* Phone breakpoint */
 @media (max-width: 720px) {
   .topnav { gap: 12px; padding: 0 12px; }
   .brand-text { display: none; }
-  .nav-tabs { overflow-x: auto; flex: 1; }
-  .nav-tab { padding: 8px 10px; }
-  .view { padding: 20px 12px 60px; }
-  .dashboard-banner { flex-direction: column; align-items: flex-start; }
+  .nav-tabs { overflow-x: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+  .nav-tab { padding: 8px 10px; font-size: 12px; white-space: nowrap; }
+  .view { padding: 16px 12px 80px; }
+  .dashboard-banner { flex-direction: column; align-items: flex-start; padding: 16px; }
   .banner-readiness { text-align: left; }
+  .banner-fund-name { font-size: 18px; }
+  .cfo-summary { padding: 16px; }
   .cfo-row { grid-template-columns: 1fr; gap: 2px; padding: 8px 0; }
-  .cfo-label { padding-top: 0; }
+  .cfo-label { padding-top: 0; font-size: 10px; }
   .drawer { width: 100%; }
+  .drawer-body { padding: 16px; }
   .toolbar-left, .toolbar-right { width: 100%; }
+  .toolbar-right { flex-wrap: wrap; gap: 6px; }
+  .reviews-toolbar { flex-direction: column; align-items: stretch; }
+  .search { min-width: 0; width: 100%; }
+  .group-header { padding: 10px 12px; }
+  .group-header-right { flex-direction: column; align-items: flex-end; gap: 4px; }
+  .finding-card { padding: 14px 16px; }
+  .finding-actions { flex-wrap: wrap; }
+  .attribution { flex-direction: column; gap: 4px; }
+  .modal { padding: 18px; }
+  .reviews-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================= */

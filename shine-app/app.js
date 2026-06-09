@@ -56,13 +56,16 @@
   };
 
   // ============================================================
-  // STORAGE
+  // STORAGE (schema-versioned; mismatches discarded — SEC-002)
   // ============================================================
+  const STORAGE_SCHEMA_VERSION = 1;
   const storageKey = (reviewId) => `shine:state:${reviewId}`;
 
   function persist() {
     if (!state.currentReviewId) return;
     const payload = {
+      _schema: STORAGE_SCHEMA_VERSION,
+      _savedAt: Date.now(),
       findings: state.findings.map(f => ({
         id: f.id,
         state: f.state,
@@ -84,7 +87,13 @@
     try {
       const raw = localStorage.getItem(storageKey(reviewId));
       if (!raw) return null;
-      return JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      if (parsed._schema !== STORAGE_SCHEMA_VERSION) {
+        console.warn('Discarding persisted state with incompatible schema', parsed._schema);
+        localStorage.removeItem(storageKey(reviewId));
+        return null;
+      }
+      return parsed;
     } catch (e) { return null; }
   }
 
@@ -144,6 +153,7 @@
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById('view-' + view).classList.add('active');
     if (view === 'coverage') renderCoverage();
+    if (view === 'reviews') renderReviewsList();
   }
 
   // ============================================================
@@ -186,17 +196,17 @@
       return;
     }
     grid.innerHTML = items.map(r => `
-      <div class="review-card" data-rid="${r.review_id}">
+      <div class="review-card" data-rid="${escapeHtml(r.review_id)}">
         <div class="review-card-head">
           <div>
             <div class="review-card-name">${escapeHtml(r.fund_legal_name)}</div>
-            <div class="review-card-meta">${r.period} · ${r.draft} · ${r.review_date}</div>
+            <div class="review-card-meta">${escapeHtml(r.period)} · ${escapeHtml(r.draft)} · ${escapeHtml(r.review_date)}</div>
           </div>
           ${readinessChip(r.readiness)}
         </div>
         <div class="review-card-stats">
           <div class="review-stat">
-            <div class="review-stat-num">${r.finding_count}</div>
+            <div class="review-stat-num">${Number(r.finding_count) || 0}</div>
             <div class="review-stat-label">findings</div>
           </div>
           <div class="review-stat">
@@ -204,7 +214,7 @@
             <div class="review-stat-label">coverage</div>
           </div>
           <div class="review-stat" style="margin-left:auto;text-align:right">
-            <div class="review-stat-num mono" style="font-size:11px">${r.fund_code}</div>
+            <div class="review-stat-num mono" style="font-size:11px">${escapeHtml(r.fund_code)}</div>
             <div class="review-stat-label">${escapeHtml(r.reviewer || '')}</div>
           </div>
         </div>
@@ -418,7 +428,18 @@
     else grouped = groupByLayer(filtered);
 
     if (filtered.length === 0) {
-      list.innerHTML = '<div class="muted" style="padding:32px;text-align:center">No findings match the current filters.</div>';
+      // UX-003 fix: context-aware empty state with one-click reset
+      const activeFilters = [];
+      if (state.filters.search) activeFilters.push(`search "${state.filters.search}"`);
+      if (state.filters.severity !== 'all') activeFilters.push(`severity ${state.filters.severity}`);
+      if (state.filters.states.size > 0) activeFilters.push(`state ${[...state.filters.states].join(' / ')}`);
+      list.innerHTML = `<div class="empty-state">
+        <div class="empty-title">No findings match the current filters.</div>
+        ${activeFilters.length ? `<div class="empty-detail muted">Filters active: ${activeFilters.join(' · ')}</div>
+        <button class="btn-ghost" id="empty-reset">Clear filters</button>` : ''}
+      </div>`;
+      const reset = document.getElementById('empty-reset');
+      if (reset) reset.addEventListener('click', clearFilters);
       return;
     }
 
@@ -438,11 +459,15 @@
       </div>
     `).join('');
 
-    // Bind card interactions
+    // Bind card interactions (mouse + keyboard)
     list.querySelectorAll('.finding-card').forEach(card => {
-      card.addEventListener('click', (e) => {
+      const open = (e) => {
         if (e.target.closest('.finding-actions') || e.target.closest('.polished-toggle') || e.target.closest('.constituents-toggle')) return;
         openDrawer(card.dataset.fid);
+      };
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(e); }
       });
     });
     list.querySelectorAll('.polished-toggle').forEach(t => {
@@ -450,17 +475,16 @@
         e.stopPropagation();
         const fid = t.dataset.fid;
         const f = state.findings.find(x => x.id === fid);
-        const textEl = document.querySelector(`[data-fid="${fid}"] .finding-text`);
-        if (textEl) {
-          if (textEl.dataset.showing === 'polished') {
-            textEl.textContent = f.subagentRaw;
-            textEl.dataset.showing = 'raw';
-            t.textContent = 'Show polished';
-          } else {
-            textEl.textContent = f.voiceNormalized;
-            textEl.dataset.showing = 'polished';
-            t.textContent = 'Show original';
-          }
+        const textEl = document.querySelector(`.finding-card[data-fid="${fid}"] .finding-text`);
+        if (!textEl) return;
+        if (textEl.dataset.showing === 'polished') {
+          textEl.textContent = f.subagentRaw;
+          textEl.dataset.showing = 'raw';
+          t.textContent = 'Show polished';
+        } else {
+          textEl.textContent = f.voiceNormalized;
+          textEl.dataset.showing = 'polished';
+          t.textContent = 'Show original';
         }
       });
     });
@@ -479,6 +503,16 @@
         applyAction(fid, action);
       });
     });
+  }
+
+  function clearFilters() {
+    state.filters.search = '';
+    state.filters.severity = 'all';
+    state.filters.states.clear();
+    document.getElementById('findings-search').value = '';
+    document.querySelectorAll('#severity-filter .pill').forEach(p => p.classList.toggle('active', p.dataset.severity === 'all'));
+    document.querySelectorAll('#state-filter .pill').forEach(p => p.classList.remove('active'));
+    renderFindings();
   }
 
   function applyFilters(findings) {
@@ -575,7 +609,7 @@
 
   function findingCardHTML(f) {
     const activeText = getActiveText(f);
-    const showPolishedToggle = f.voiceNormalized && state.showPolished;
+    const showingPolished = !f.controllerEdited && state.showPolished && !!f.voiceNormalized;
     const loc = [
       f.location && f.location.note_ref,
       f.location && f.location.page ? `p. ${f.location.page}` : null,
@@ -587,8 +621,11 @@
     if (f.evidence && f.evidence.asc_reference) cites.push(`<span class="finding-citation">${escapeHtml(f.evidence.asc_reference)}</span>`);
     if (f.evidence && f.evidence.regulatory_citation) cites.push(`<span class="finding-citation">${escapeHtml(f.evidence.regulatory_citation)}</span>`);
 
+    // Polish toggle text is consistent with what's currently shown.
+    const polishToggleLabel = showingPolished ? 'Show original' : 'Show polished';
+
     return `
-      <div class="finding-card state-${f.state}" data-fid="${f.id}">
+      <article class="finding-card state-${f.state}" data-fid="${f.id}" tabindex="0" role="button" aria-label="Finding ${f.id} — ${escapeHtml(f.severity.impact)} ${escapeHtml(f.section)} — open details">
         <div class="finding-card-head">
           <span class="finding-id">${f.id}</span>
           <span class="chip-sev ${sevClass(f.severity.impact)}">${f.severity.impact}</span>
@@ -596,25 +633,24 @@
           <span class="chip-state ${f.state}">${f.state}</span>
           ${f.prior_review_recurrence && f.prior_review_recurrence !== 'NEW'
             ? `<span class="chip-rec ${f.prior_review_recurrence}">${recurrenceLabel(f.prior_review_recurrence)}</span>` : ''}
-          <span class="finding-subagent">${f.subagent} · ${f.layer}</span>
+          <span class="finding-subagent">${escapeHtml(f.subagent)} · ${escapeHtml(f.layer)}</span>
         </div>
         ${loc ? `<div class="finding-location">${escapeHtml(f.section)} · ${escapeHtml(loc)}</div>` : `<div class="finding-location">${escapeHtml(f.section)}</div>`}
-        <div class="finding-text ${f.controllerEdited ? 'edited' : ''}" data-showing="${f.controllerEdited ? 'edited' : (showPolishedToggle ? 'polished' : 'raw')}">${escapeHtml(activeText)}</div>
-        ${cites.length ? `<div style="margin-bottom:8px">${cites.join('')}</div>` : ''}
+        <div class="finding-text ${f.controllerEdited ? 'edited' : ''}" data-showing="${f.controllerEdited ? 'edited' : (showingPolished ? 'polished' : 'raw')}">${escapeHtml(activeText)}</div>
+        ${cites.length ? `<div class="finding-cites">${cites.join('')}</div>` : ''}
         <div class="finding-meta">
-          ${f.voiceNormalized && !f.controllerEdited ? `<span class="polished-toggle" data-fid="${f.id}">Show ${state.showPolished ? 'original' : 'polished'}</span>` : ''}
+          ${f.voiceNormalized && !f.controllerEdited ? `<button type="button" class="polished-toggle" data-fid="${f.id}">${polishToggleLabel}</button>` : ''}
           ${f.reconciler_pattern
-            ? `<span class="constituents-toggle" data-fid="${f.id}">Reconciler · ${escapeHtml(f.reconciler_pattern)} · ${f.constituent_findings.length} constituents</span>`
+            ? `<button type="button" class="constituents-toggle" data-fid="${f.id}">Reconciler · ${escapeHtml(f.reconciler_pattern)} · ${f.constituent_findings.length} constituent${f.constituent_findings.length === 1 ? '' : 's'}</button>`
             : ''}
         </div>
-        <div class="finding-actions">
-          ${f.state === 'OPEN' ? '<button class="primary" data-action="accept">Accept</button>' : ''}
-          ${f.state !== 'RESOLVED' ? '<button data-action="resolve">Resolve</button>' : ''}
-          ${f.state !== 'DISCARDED' ? '<button class="danger" data-action="discard">Discard</button>' : ''}
-          ${(f.state === 'RESOLVED' || f.state === 'DISCARDED') ? '<button data-action="reopen">Reopen</button>' : ''}
-          <button data-action="open">Open</button>
+        <div class="finding-actions" role="group" aria-label="Disposition for ${f.id}">
+          ${f.state === 'OPEN' ? `<button class="btn-primary" data-action="accept" aria-label="Accept ${f.id}">Accept</button>` : ''}
+          ${f.state !== 'RESOLVED' ? `<button data-action="resolve" aria-label="Resolve ${f.id}">Resolve</button>` : ''}
+          ${f.state !== 'DISCARDED' ? `<button class="danger" data-action="discard" aria-label="Discard ${f.id}">Discard</button>` : ''}
+          ${(f.state === 'RESOLVED' || f.state === 'DISCARDED') ? `<button data-action="reopen" aria-label="Reopen ${f.id}">Reopen</button>` : ''}
         </div>
-      </div>
+      </article>
     `;
   }
 
@@ -638,31 +674,32 @@
   function applyAction(fid, action) {
     const f = state.findings.find(x => x.id === fid);
     if (!f) return;
-    pushUndo(f);
-    if (action === 'accept') f.state = 'ACCEPTED';
-    else if (action === 'resolve') f.state = 'RESOLVED';
-    else if (action === 'reopen') f.state = 'OPEN';
-    else if (action === 'discard') {
-      // Check discard rate
-      const rate = computeDiscardRate({ excluding: fid });
-      if (rate > 0.20) {
+    if (action === 'open') { openDrawer(fid); return; }
+    if (action === 'discard') {
+      // Gate at >20% projected discard rate — modal handles the actual transition.
+      // SPEC-002 fix: do NOT push undo or mutate state until the discard is confirmed.
+      const projectedRate = projectedDiscardRate(fid);
+      if (projectedRate > 0.20) {
         state.pendingFindingId = fid;
         openModal('modal-discard');
         return;
       }
-      f.state = 'DISCARDED';
-    } else if (action === 'open') {
-      openDrawer(fid);
-      return;
     }
+    pushUndo(f);
+    if (action === 'accept') f.state = 'ACCEPTED';
+    else if (action === 'resolve') f.state = 'RESOLVED';
+    else if (action === 'reopen') { f.state = 'OPEN'; f.discard_attestation = null; }
+    else if (action === 'discard') f.state = 'DISCARDED';
     persist();
     renderDashboard();
     toast(`${fid} → ${f.state}`);
   }
 
-  function computeDiscardRate({ excluding } = {}) {
-    const eligible = state.findings.filter(f => f.id !== excluding);
-    const discarded = eligible.filter(f => f.state === 'DISCARDED').length + 1; // +1 for the one being discarded
+  // B-001 fix: count current discarded + 1 (the pending one), divide by total.
+  function projectedDiscardRate(pendingId) {
+    const f = state.findings.find(x => x.id === pendingId);
+    const alreadyCounted = f && f.state === 'DISCARDED' ? 1 : 0;
+    const discarded = state.findings.filter(x => x.state === 'DISCARDED').length - alreadyCounted + 1;
     return discarded / Math.max(state.findings.length, 1);
   }
 
@@ -707,14 +744,23 @@
   // ============================================================
   function bindDrawer() {
     document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+    const overlay = document.getElementById('drawer-overlay');
+    if (overlay) overlay.addEventListener('click', closeDrawer);
   }
 
   function openDrawer(fid) {
     const f = state.findings.find(x => x.id === fid);
     if (!f) return;
     const drawer = document.getElementById('finding-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    const body = document.getElementById('drawer-body');
+    // B-003 fix: preserve scroll if re-opening same drawer after a mutation
+    const sameFid = drawer.dataset.fid === fid && drawer.classList.contains('open');
+    const scrollY = sameFid ? body.scrollTop : 0;
     drawer.dataset.fid = fid;
     drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    if (overlay) overlay.classList.add('open');
     document.getElementById('drawer-id').textContent = f.id;
     const loc = [
       f.statement, f.section,
@@ -724,8 +770,19 @@
     ].filter(Boolean).join(' · ');
     document.getElementById('drawer-statement-location').textContent = loc;
     renderDrawerBody(f);
+    if (sameFid) body.scrollTop = scrollY;
+    // Focus the close button for keyboard users (basic focus management)
+    if (!sameFid) {
+      setTimeout(() => document.getElementById('drawer-close').focus(), 60);
+    }
   }
-  function closeDrawer() { document.getElementById('finding-drawer').classList.remove('open'); }
+  function closeDrawer() {
+    const drawer = document.getElementById('finding-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    if (overlay) overlay.classList.remove('open');
+  }
 
   function renderDrawerBody(f) {
     const body = document.getElementById('drawer-body');
@@ -780,14 +837,19 @@
         <div class="drawer-section">
           <div class="drawer-section-label">Reconciler attribution</div>
           <div class="constituents">
-            <div style="margin-bottom:8px"><strong>${escapeHtml(f.reconciler_pattern)}</strong> · specificity ${f.reconciler_specificity_score}</div>
-            ${f.constituent_findings.map(cid => `
+            <div class="constituents-header"><strong>${escapeHtml(f.reconciler_pattern)}</strong> <span class="muted">· specificity ${f.reconciler_specificity_score}</span></div>
+            ${(f.constituent_details && f.constituent_details.length ? f.constituent_details : f.constituent_findings.map(cid => ({ id: cid }))).map(c => `
               <div class="constituent-row">
-                <span class="mono">${cid}</span>
-                <button class="decouple-btn" data-decouple="${cid}">Decouple</button>
+                <div class="constituent-meta">
+                  <span class="mono">${escapeHtml(c.id)}</span>
+                  ${c.subagent ? `<span class="muted">${escapeHtml(c.subagent)} · ${escapeHtml(c.layer || '')}</span>` : ''}
+                  ${c.severity ? `<span class="chip-sev ${sevClass(c.severity.impact)}">${escapeHtml(c.severity.impact)}</span>` : ''}
+                </div>
+                ${c.subagentRaw ? `<div class="constituent-text">${escapeHtml(c.subagentRaw)}</div>` : ''}
+                <button class="decouple-btn" data-decouple="${escapeHtml(c.id)}" aria-label="Decouple ${escapeHtml(c.id)} from root cause">Decouple</button>
               </div>
             `).join('')}
-            ${f.detail ? `<div style="margin-top:8px;font-size:11px;color:var(--text-muted);font-style:italic">${escapeHtml(f.detail)}</div>` : ''}
+            ${f.detail ? `<div class="constituents-detail">${escapeHtml(f.detail)}</div>` : ''}
           </div>
         </div>
       ` : ''}
@@ -891,14 +953,14 @@
         <h3>Subagent SLA</h3>
         <div class="coverage-list">
           ${Object.entries(c.subagent_elapsed_seconds).map(([k, v]) => `
-            <div class="coverage-list-item"><span>${k}</span><span class="mono">${v}s</span></div>
+            <div class="coverage-list-item"><span>${escapeHtml(k)}</span><span class="mono">${escapeHtml(String(v))}s</span></div>
           `).join('')}
         </div>
       </div>
       <div class="coverage-card">
         <h3>Layers covered</h3>
         <div class="coverage-list">
-          ${c.layers_covered.map(l => `<div class="coverage-list-item"><span class="mono">${l}</span><span class="muted">${escapeHtml(layerLabel(l))}</span></div>`).join('')}
+          ${c.layers_covered.map(l => `<div class="coverage-list-item"><span class="mono">${escapeHtml(l)}</span><span class="muted">${escapeHtml(layerLabel(l))}</span></div>`).join('')}
         </div>
       </div>
       <div class="coverage-card">
@@ -932,6 +994,12 @@
   function bindModals() {
     document.querySelectorAll('[data-modal-close]').forEach(b => {
       b.addEventListener('click', () => closeModal(b.closest('.modal-bg').id));
+    });
+    // B-002 fix: clicking the backdrop closes the modal; clicking the modal itself does not bubble.
+    document.querySelectorAll('.modal-bg').forEach(bg => {
+      bg.addEventListener('click', e => { if (e.target === bg) closeModal(bg.id); });
+      const inner = bg.querySelector('.modal');
+      if (inner) inner.addEventListener('click', e => e.stopPropagation());
     });
     document.getElementById('evergreen-confirm').addEventListener('click', () => {
       const fid = state.pendingFindingId;
@@ -1047,6 +1115,8 @@
             state.currentReviewId = parsed.brief.review_id;
             state.review = parsed;
             state.findings = parsed.findings.map(f => ({ ...f }));
+            // B-005 fix: clear undo across review boundaries to prevent cross-review state contamination
+            state.undoStack = [];
             // Add to reviews index if missing
             if (!window.SHINE_SAMPLE.reviews_index.find(r => r.review_id === parsed.brief.review_id)) {
               window.SHINE_SAMPLE.reviews_index.unshift({
@@ -1081,18 +1151,35 @@
   // ============================================================
   function exportPDF(mode) {
     if (!state.review) { toast('No active review'); return; }
-    try {
-      tier1PDF(mode);
-    } catch (e) {
-      console.error(e);
-      try { tier2Print(mode); }
-      catch (e2) {
-        console.error(e2);
-        tier3Blob(mode);
+    // POL-002 fix: loading state during export
+    const btn = document.getElementById(mode === 'preparer' ? 'btn-export-preparer' : 'btn-export-audit');
+    const prevLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Generating…';
+    setTimeout(() => {
+      try {
+        if (window.jspdf) {
+          tier1PDF(mode);
+        } else {
+          // jsPDF didn't load (CDN blocked / offline). Skip Tier 2 (browser print is not a true
+          // PDF download) and go straight to Tier 3 (Blob HTML), which always produces a file.
+          console.warn('jsPDF unavailable; using Tier 3 Blob fallback');
+          tier3Blob(mode);
+        }
+      } catch (e) {
+        console.error('Tier 1 failed', e);
+        try { tier3Blob(mode); }
+        catch (e2) { console.error('Tier 3 failed', e2); toast('Export failed: ' + e2.message); }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = prevLabel;
       }
-    }
+    }, 50);
   }
 
+  // Tier 2 (`window.print()`) is intentionally not part of the automatic fallback chain.
+  // It does not produce a file download (it opens a dialog) so it can't satisfy the export
+  // contract automatically; users who prefer print can use browser Ctrl+P directly.
   function tier1PDF(mode) {
     if (!window.jspdf) throw new Error('jsPDF not loaded');
     const { jsPDF } = window.jspdf;
@@ -1264,25 +1351,53 @@
     toast(`Exported ${filename}`);
   }
 
-  function tier2Print(mode) {
-    toast('Falling back to browser print (Tier 2). Choose "Save as PDF" in the dialog.');
-    setTimeout(() => window.print(), 200);
-  }
-
   function tier3Blob(mode) {
-    const html = `<!doctype html><meta charset="utf-8"><title>SHINE Export</title>
-<style>body{font-family:system-ui;max-width:780px;margin:24px auto;padding:0 16px}h2{border-bottom:1px solid #ccc;padding-bottom:4px;background:#FFF8E1;padding:8px}.f{border:1px solid #eee;padding:8px;margin:6px 0;border-radius:4px}</style>
-<h1>SHINE export — ${escapeHtml(state.review.brief.fund_legal_name)}</h1>
-${groupByStatement(filterForExport(mode)).map(g => `<h2>${escapeHtml(g.label)}</h2>${g.findings.map(f => `<div class="f"><strong>${f.id}</strong> · ${f.severity.impact}/${f.severity.confidence} · ${f.state}<br><em>${escapeHtml(f.section)}</em><p>${escapeHtml(f.controllerEdited || f.voiceNormalized || f.subagentRaw)}</p><p><em>Fix:</em> ${escapeHtml(f.fix)}</p></div>`).join('')}`).join('')}
-<hr><small>Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · ${state.review.brief.build_date}</small>`;
+    const b = state.review.brief;
+    const verdict = computeReadiness();
+    const findings = filterForExport(mode);
+    const groups = groupByStatement(findings);
+    const css = `body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:780px;margin:24px auto;padding:0 16px;color:#1A1A1A;font-size:13px;line-height:1.5}
+h1{font-size:22px;margin:0 0 6px}h2{font-size:14px;background:#FFF8E1;border:1px solid #D4AF37;padding:8px 12px;margin:24px 0 8px;border-radius:4px}
+.meta{color:#666;font-size:12px;margin-bottom:16px}.verdict{padding:8px 12px;border-radius:4px;background:#F4F4F1;font-weight:600;margin-bottom:20px}
+.f{border:1px solid #E5E5E0;padding:12px;margin:8px 0;border-radius:4px}.id{font-family:'JetBrains Mono',monospace;font-size:11px;color:#666}
+.chips{margin:4px 0 8px}.chip{display:inline-block;padding:2px 8px;font-size:11px;border-radius:4px;margin-right:4px}.chip-crit{background:#FDEDEC;color:#C0392B}.chip-high{background:#FEF3E0;color:#D97706}.chip-med{background:#FCF6D8;color:#B59500}.chip-low{background:#F0F0EE;color:#6B7280}
+.loc{color:#666;font-size:11px;margin-bottom:6px}.cite{font-family:'JetBrains Mono',monospace;font-size:11px;background:#F4F4F1;padding:2px 6px;border-radius:3px;color:#666;margin-right:4px}
+.fix{font-style:italic;color:#444;margin-top:6px}hr{border:0;border-top:1px solid #E5E5E0;margin:32px 0 16px}
+.footer{color:#999;font-size:10px;text-align:center;font-family:'JetBrains Mono',monospace}`;
+    const sevChipClass = (s) => ({CRITICAL:'chip-crit',HIGH:'chip-high',MEDIUM:'chip-med',LOW:'chip-low'})[s];
+    const renderFinding = (f) => {
+      const loc = [f.section, f.location && f.location.note_ref, f.location && f.location.page && ('p. ' + f.location.page), f.location && f.location.line_id].filter(Boolean).map(escapeHtml).join(' · ');
+      const cites = [];
+      if (f.evidence && f.evidence.asc_reference) cites.push(`<span class="cite">${escapeHtml(f.evidence.asc_reference)}</span>`);
+      if (f.evidence && f.evidence.regulatory_citation) cites.push(`<span class="cite">${escapeHtml(f.evidence.regulatory_citation)}</span>`);
+      const text = mode === 'audit' ? (f.controllerEdited || f.subagentRaw) : (f.controllerEdited || f.voiceNormalized || f.subagentRaw);
+      const fix = f.fixControllerEdited || f.fixVoiceNormalized || f.fix;
+      return `<div class="f"><span class="id">${f.id}</span>
+        <div class="chips"><span class="chip ${sevChipClass(f.severity.impact)}">${f.severity.impact}</span><span class="chip">${f.severity.confidence}</span><span class="chip">${f.state}</span></div>
+        <div class="loc">${loc}</div>
+        <div>${escapeHtml(text)}</div>
+        ${cites.length ? `<div style="margin-top:6px">${cites.join('')}</div>` : ''}
+        <div class="fix"><strong>Fix:</strong> ${escapeHtml(fix)}</div>
+      </div>`;
+    };
+    const html = `<!doctype html><html><head><meta charset="utf-8"><title>SHINE ${mode} export — ${escapeHtml(b.fund_legal_name)}</title><style>${css}</style></head><body>
+<h1>${escapeHtml(b.fund_legal_name)}</h1>
+<div class="meta">${escapeHtml(b.period)} · ${escapeHtml(b.draft)} · ${escapeHtml(b.domicile)} · ${mode === 'preparer' ? 'Preparer export' : 'Audit file export'} · Build ${escapeHtml(b.build_date)}</div>
+<div class="verdict">Readiness: ${verdict.label} — ${escapeHtml(verdict.driver)}</div>
+${groups.map(g => `<h2>${escapeHtml(g.label)} — ${g.findings.length} finding${g.findings.length === 1 ? '' : 's'}</h2>${g.findings.map(renderFinding).join('')}`).join('')}
+<hr>
+<div class="footer">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · ${escapeHtml(b.build_date)}</div>
+</body></html>`;
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `shine-${mode}-export.html`;
+    a.download = `${b.fund_code}-${b.period}-shine-${mode === 'preparer' ? 'preparer' : 'audit-file'}-export-${b.build_date.replace(/-/g, '')}.html`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast('Tier 3 fallback: HTML downloaded. Open and print to PDF.');
+    toast('Downloaded HTML export (open and Ctrl+P → Save as PDF for a true PDF).');
   }
 
   function filterForExport(mode) {
