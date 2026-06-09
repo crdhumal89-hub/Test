@@ -8,38 +8,50 @@ window.SHINE_SAMPLE = {
     {
       review_id: "AAA-COINV-A-FY2025-D1.1",
       fund_code: "AAA-COINV-A",
+      fund_family: "AAA Coinvest",
       fund_legal_name: "AAA Coinvest Fund A LP",
       period: "FY2025",
       draft: "Draft 1.1",
       reviewer: "ashinde@apollo.com",
       review_date: "2026-05-17",
+      last_touched: 1747497600000, // 2026-05-17
       readiness: "NOT_READY",
       finding_count: 16,
-      coverage_pct: 0.96
+      coverage_pct: 0.96,
+      open_critical: 3,
+      prior_draft_delta: { new: 2, resolved: 1 }
     },
     {
       review_id: "AAA-COINV-B-FY2025-D1.0",
       fund_code: "AAA-COINV-B",
+      fund_family: "AAA Coinvest",
       fund_legal_name: "AAA Coinvest Fund B LP",
       period: "FY2025",
       draft: "Draft 1.0",
       reviewer: "ashinde@apollo.com",
       review_date: "2026-05-14",
+      last_touched: 1747238400000,
       readiness: "READY_WITH_EXCEPTIONS",
       finding_count: 7,
-      coverage_pct: 0.92
+      coverage_pct: 0.92,
+      open_critical: 0,
+      prior_draft_delta: null
     },
     {
       review_id: "AAA-CREDIT-III-Q1-D2.0",
       fund_code: "AAA-CREDIT-III",
+      fund_family: "AAA Direct Credit",
       fund_legal_name: "AAA Direct Credit Fund III LP",
       period: "Q1-2026",
       draft: "Draft 2.0",
       reviewer: "ashinde@apollo.com",
       review_date: "2026-05-09",
+      last_touched: 1746806400000,
       readiness: "READY",
       finding_count: 3,
-      coverage_pct: 0.98
+      coverage_pct: 0.98,
+      open_critical: 0,
+      prior_draft_delta: { new: 0, resolved: 4 }
     }
   ],
 
@@ -273,7 +285,11 @@ window.SHINE_SAMPLE = {
         prompt_version: "v8.1.0",
         reference_versions: { "regulatory-corpus/CIMA.md": "8.1.0" },
         state: "OPEN",
-        detail: null
+        detail: null,
+        comments: [
+          { id: "c-seed1", author: "ashinde@apollo.com", ts: 1747497000000, text: "Confirmed PFA registration with formation counsel; registration number to come Monday. Will add the sentence then." }
+        ],
+        history: []
       },
       {
         id: "F-007",

@@ -26,19 +26,23 @@
     <nav class="nav-tabs">
       <button class="nav-tab active" data-view="reviews">Reviews</button>
       <button class="nav-tab" data-view="dashboard">Dashboard</button>
+      <button class="nav-tab" data-view="activity">Activity</button>
       <button class="nav-tab" data-view="coverage">Coverage</button>
       <button class="nav-tab" data-view="settings">Settings</button>
     </nav>
 
     <div class="nav-actions">
+      <button class="icon-btn" id="btn-palette" title="Command palette (Ctrl/Cmd+K)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
+      </button>
       <button class="icon-btn" id="btn-import" title="Import findings.json">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
       </button>
       <button class="icon-btn" id="btn-theme" title="Toggle theme">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.95l-1.41-1.41M5.46 5.46L4.05 4.05m15.9 0l-1.41 1.41M5.46 18.54l-1.41 1.41"/></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.95l-1.41-1.41M5.46 5.46L4.05 4.05m15.9 0l-1.41 1.41M5.46 18.54l-1.41 1.41"/></svg>
       </button>
-      <button class="icon-btn" id="btn-help" title="Help">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>
+      <button class="icon-btn" id="btn-help" title="Keyboard shortcuts (?)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>
       </button>
     </div>
   </header>
@@ -53,14 +57,18 @@
     </div>
 
     <div class="reviews-toolbar">
-      <input type="search" class="search" id="reviews-search" placeholder="Search by fund, period, reviewer..." />
+      <input type="search" class="search" id="reviews-search" placeholder="Search by fund, family, period, reviewer..." />
       <div class="filter-pills">
         <button class="pill active" data-readiness-filter="all">All</button>
         <button class="pill" data-readiness-filter="NOT_READY">Not ready</button>
         <button class="pill" data-readiness-filter="READY_WITH_EXCEPTIONS">With exceptions</button>
         <button class="pill" data-readiness-filter="READY">Ready</button>
       </div>
-      <button class="btn-primary" id="btn-new-review">New review</button>
+      <div class="seg" id="reviews-density-seg">
+        <button class="seg-opt active" data-reviews-density="table">Table</button>
+        <button class="seg-opt" data-reviews-density="cards">Cards</button>
+      </div>
+      <button class="btn-primary" id="btn-new-review">Import review</button>
     </div>
 
     <div class="reviews-grid" id="reviews-grid"><!-- populated by app.js --></div>
@@ -95,6 +103,19 @@
     <!-- Degradation chip bar -->
     <div class="chip-bar" id="chip-bar"><!-- populated --></div>
 
+    <!-- Saved views (S1-04) -->
+    <div class="saved-views" id="saved-views"></div>
+
+    <!-- Selection bar (S1-03, appears when findings selected) -->
+    <div class="selection-bar" id="selection-bar" role="toolbar" aria-label="Bulk actions">
+      <span class="selection-count">0 selected</span>
+      <span class="selection-spacer"></span>
+      <button class="btn-ghost" data-bulk="accept">Accept</button>
+      <button class="btn-ghost" data-bulk="resolve">Resolve</button>
+      <button class="btn-ghost danger" data-bulk="discard">Discard</button>
+      <button class="btn-ghost" data-bulk="clear">Clear selection</button>
+    </div>
+
     <!-- Toolbar: filters + group toggle + bulk actions + export -->
     <div class="dashboard-toolbar">
       <div class="toolbar-left">
@@ -124,8 +145,11 @@
       </div>
     </div>
 
-    <!-- Findings list -->
-    <div class="findings-list" id="findings-list"><!-- populated --></div>
+    <!-- Findings list with statement nav rail -->
+    <div class="dashboard-body">
+      <aside class="statement-nav" id="statement-nav" aria-label="Statement navigation"></aside>
+      <div class="findings-list" id="findings-list"><!-- populated --></div>
+    </div>
 
     <!-- Footer -->
     <footer class="attribution">
@@ -133,6 +157,17 @@
       <span class="attribution-text">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · <span id="build-date">—</span></span>
     </footer>
 
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- VIEW: ACTIVITY (review-wide chronological log)                -->
+  <!-- ============================================================ -->
+  <section class="view view-activity" id="view-activity">
+    <div class="view-header">
+      <h1>Activity</h1>
+      <p class="muted">Every disposition, edit, comment, and reconciler action on this review, in reverse chronology. Click any row to jump to the finding.</p>
+    </div>
+    <div class="activity-feed" id="activity-feed"><!-- populated --></div>
   </section>
 
   <!-- ============================================================ -->
@@ -167,6 +202,24 @@
           <button class="seg-opt active" data-theme="light">Light</button>
           <button class="seg-opt" data-theme="dark">Dark</button>
         </div>
+      </div>
+      <div class="settings-card">
+        <h3>Density</h3>
+        <p class="muted">Compact mode shrinks finding cards by ~40% — useful when you have a long backlog.</p>
+        <div class="seg" id="density-seg">
+          <button class="seg-opt active" data-density="comfortable">Comfortable</button>
+          <button class="seg-opt" data-density="compact">Compact</button>
+        </div>
+      </div>
+      <div class="settings-card">
+        <h3>Severity icons</h3>
+        <p class="muted">Adds a shape (▲ △ ◆ ◯) next to each severity color for color-blind safety.</p>
+        <label class="toggle"><input type="checkbox" id="opt-sev-icons" /> Show severity icons</label>
+      </div>
+      <div class="settings-card">
+        <h3>You</h3>
+        <p class="muted">Used to tag your comments and actions on the activity timeline.</p>
+        <input type="text" id="opt-author" class="search" placeholder="Your name or email" style="margin-top:8px" />
       </div>
       <div class="settings-card">
         <h3>Data</h3>
@@ -235,12 +288,79 @@
   <!-- ============================================================ -->
   <div class="toast" id="toast"></div>
 
+  <!-- ============================================================ -->
+  <!-- S1-01 · COMMAND PALETTE                                       -->
+  <!-- ============================================================ -->
+  <div class="cmd-palette" id="cmd-palette" role="dialog" aria-modal="true" aria-labelledby="cmd-palette-title">
+    <div class="cmd-panel">
+      <div class="cmd-search">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" id="cmd-input" placeholder="Type a command, finding ID, or fund name…" autocomplete="off" aria-label="Command palette search" />
+        <span class="cmd-hint mono">Esc</span>
+      </div>
+      <div class="cmd-list" id="cmd-list" role="listbox"></div>
+      <div class="cmd-footer mono"><span>↑↓ navigate</span><span>Enter to run</span><span>Esc to close</span></div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- S1-02 · HELP OVERLAY                                          -->
+  <!-- ============================================================ -->
+  <div class="help-overlay" id="help-overlay" role="dialog" aria-modal="true" aria-labelledby="help-overlay-title">
+    <div class="help-panel">
+      <div class="help-header">
+        <h3 id="help-overlay-title">Keyboard shortcuts</h3>
+        <button class="icon-btn" data-help-close aria-label="Close help">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="help-body">
+        <div class="help-section">
+          <h4>Navigation</h4>
+          <div class="help-row"><kbd>Ctrl/⌘</kbd><kbd>K</kbd><span>Command palette</span></div>
+          <div class="help-row"><kbd>J</kbd><span>Next finding</span></div>
+          <div class="help-row"><kbd>K</kbd><span>Previous finding</span></div>
+          <div class="help-row"><kbd>/</kbd><span>Focus search</span></div>
+          <div class="help-row"><kbd>Esc</kbd><span>Close drawer / modal / palette</span></div>
+          <div class="help-row"><kbd>?</kbd><span>Show this help</span></div>
+        </div>
+        <div class="help-section">
+          <h4>Disposition (on focused finding)</h4>
+          <div class="help-row"><kbd>A</kbd><span>Accept</span></div>
+          <div class="help-row"><kbd>R</kbd><span>Resolve</span></div>
+          <div class="help-row"><kbd>D</kbd><span>Discard</span></div>
+          <div class="help-row"><kbd>U</kbd><span>Reopen (undisposed)</span></div>
+          <div class="help-row"><kbd>E</kbd><span>Edit finding text</span></div>
+          <div class="help-row"><kbd>G</kbd><span>Mark evergreen (LOW/MEDIUM only)</span></div>
+          <div class="help-row"><kbd>O</kbd> or <kbd>Enter</kbd><span>Open detail drawer</span></div>
+        </div>
+        <div class="help-section">
+          <h4>Bulk selection</h4>
+          <div class="help-row"><kbd>Shift</kbd><kbd>Click</kbd><span>Select range</span></div>
+          <div class="help-row"><kbd>Ctrl/⌘</kbd><kbd>Click</kbd><span>Toggle one</span></div>
+        </div>
+        <div class="help-section">
+          <h4>System</h4>
+          <div class="help-row"><kbd>Ctrl/⌘</kbd><kbd>Z</kbd><span>Undo last action (depth 20)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- S1-07 · EVIDENCE POPOVER (citation drill-down)                -->
+  <!-- ============================================================ -->
+  <div class="evidence-popover" id="evidence-popover" role="dialog" aria-label="Reference text">
+    <div class="popover-body"></div>
+  </div>
+
   <!-- Hidden file input for import -->
   <input type="file" id="file-input" accept=".json" style="display:none" />
 
   <!-- jsPDF (Tier 1 export): vendored locally so the app works fully offline.
        If the local script ever fails to load, the app falls back to the Tier 3 Blob HTML export. -->
   <script src="lib/jspdf.umd.min.js"></script>
+  <script src="reference-data.js"></script>
   <script src="sample-data.js"></script>
   <script src="app.js"></script>
 </body>

@@ -52,32 +52,63 @@
     showPolished: true,
     pendingFindingId: null, // for modal actions
     undoStack: [],
-    theme: 'light'
+    redoStack: [],
+    theme: 'light',
+    // S1-02: keyboard focus + navigation
+    focusedFindingId: null,
+    // S1-03: bulk selection
+    selectedIds: new Set(),
+    selectionAnchor: null, // for shift-click range
+    // S1-04: saved views
+    savedViews: [],
+    activeViewId: null,
+    // S1-10: density
+    density: 'comfortable', // 'comfortable' | 'compact'
+    // S1-11: severity icons toggle (color-blind redundancy)
+    severityIcons: false,
+    // S1-12: onboarding
+    onboarded: false,
+    // S1-05: controller identity (used as comment/history author)
+    author: 'you'
   };
 
   // ============================================================
-  // STORAGE (schema-versioned; mismatches discarded — SEC-002)
+  // STORAGE (schema-versioned; v2 adds comments + history + saved views)
   // ============================================================
-  const STORAGE_SCHEMA_VERSION = 1;
+  const STORAGE_SCHEMA_VERSION = 2;
   const storageKey = (reviewId) => `shine:state:${reviewId}`;
+  const GLOBAL_PREFS_KEY = 'shine:prefs';
+  const SAVED_VIEWS_KEY = 'shine:savedViews';
 
   function persist() {
     if (!state.currentReviewId) return;
     const payload = {
       _schema: STORAGE_SCHEMA_VERSION,
       _savedAt: Date.now(),
-      findings: state.findings.map(f => ({
-        id: f.id,
-        state: f.state,
-        disposition_notes: f.disposition_notes,
-        discard_attestation: f.discard_attestation,
-        controllerEdited: f.controllerEdited,
-        fixControllerEdited: f.fixControllerEdited,
-        evergreen_accepted: f.evergreen_accepted,
-        evergreen_acceptance_reason: f.evergreen_acceptance_reason,
-        evergreen_acceptance_date: f.evergreen_acceptance_date,
-        prior_review_recurrence: f.prior_review_recurrence
-      })),
+      findings: state.findings.map(f => {
+        // For decoupled / restored findings, save the FULL object — they don't exist in the
+        // base sample data and need to be reconstructed wholesale on reload.
+        if (f.restored_from_root) return { ...f };
+        return {
+          id: f.id,
+          state: f.state,
+          disposition_notes: f.disposition_notes,
+          discard_attestation: f.discard_attestation,
+          controllerEdited: f.controllerEdited,
+          fixControllerEdited: f.fixControllerEdited,
+          evergreen_accepted: f.evergreen_accepted,
+          evergreen_acceptance_reason: f.evergreen_acceptance_reason,
+          evergreen_acceptance_date: f.evergreen_acceptance_date,
+          prior_review_recurrence: f.prior_review_recurrence,
+          comments: f.comments || [],
+          history: f.history || [],
+          decoupled_constituents: f.decoupled_constituents || [],
+          restored_from_root: null,
+          constituent_findings: f.constituent_findings,
+          reconciler_pattern: f.reconciler_pattern,
+          constituent_details: f.constituent_details
+        };
+      }),
       undoStack: state.undoStack.slice(-20)
     };
     try { localStorage.setItem(storageKey(state.currentReviewId), JSON.stringify(payload)); } catch (e) {}
@@ -88,6 +119,11 @@
       const raw = localStorage.getItem(storageKey(reviewId));
       if (!raw) return null;
       const parsed = JSON.parse(raw);
+      if (parsed._schema === 1) {
+        // Forward-migration from v1: comments + history default to empty arrays.
+        parsed.findings.forEach(f => { f.comments = f.comments || []; f.history = f.history || []; f.decoupled_constituents = []; });
+        parsed._schema = STORAGE_SCHEMA_VERSION;
+      }
       if (parsed._schema !== STORAGE_SCHEMA_VERSION) {
         console.warn('Discarding persisted state with incompatible schema', parsed._schema);
         localStorage.removeItem(storageKey(reviewId));
@@ -97,12 +133,46 @@
     } catch (e) { return null; }
   }
 
+  function loadGlobalPrefs() {
+    try {
+      const raw = localStorage.getItem(GLOBAL_PREFS_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return parsed || {};
+    } catch (e) { return {}; }
+  }
+  function saveGlobalPrefs(patch) {
+    const current = loadGlobalPrefs();
+    const next = { ...current, ...patch };
+    try { localStorage.setItem(GLOBAL_PREFS_KEY, JSON.stringify(next)); } catch (e) {}
+  }
+  function loadSavedViews() {
+    try {
+      const raw = localStorage.getItem(SAVED_VIEWS_KEY);
+      return raw ? (JSON.parse(raw) || []) : [];
+    } catch (e) { return []; }
+  }
+  function persistSavedViews() {
+    try { localStorage.setItem(SAVED_VIEWS_KEY, JSON.stringify(state.savedViews)); } catch (e) {}
+  }
+
   // ============================================================
   // INIT
   // ============================================================
   document.addEventListener('DOMContentLoaded', init);
 
   function init() {
+    // Load global prefs first (density, severityIcons, onboarded, author)
+    const prefs = loadGlobalPrefs();
+    state.density = prefs.density || 'comfortable';
+    state.severityIcons = !!prefs.severityIcons;
+    state.onboarded = !!prefs.onboarded;
+    state.author = prefs.author || localStorage.getItem('shine:lastReview') ? (prefs.author || 'you') : 'you';
+    state.savedViews = loadSavedViews();
+    if (state.savedViews.length === 0) seedDefaultSavedViews();
+    applyDensity();
+    applySeverityIcons();
+
     bindNav();
     bindReviewsView();
     bindDashboardView();
@@ -111,6 +181,13 @@
     bindModals();
     bindKeyboard();
     bindImport();
+    bindCommandPalette();
+    bindHelpOverlay();
+    bindSavedViews();
+    bindBulkActions();
+    bindStatementNav();
+    bindEvidencePopover();
+    bindOnboarding();
 
     // Theme
     const savedTheme = localStorage.getItem('shine:theme') || 'light';
@@ -118,6 +195,7 @@
 
     // Render initial reviews list
     renderReviewsList();
+    updateNavCounters();
 
     // If a review was previously active, restore it
     const lastReview = localStorage.getItem('shine:lastReview');
@@ -151,9 +229,12 @@
     state.currentView = view;
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById('view-' + view).classList.add('active');
+    const target = document.getElementById('view-' + view);
+    if (target) target.classList.add('active');
     if (view === 'coverage') renderCoverage();
     if (view === 'reviews') renderReviewsList();
+    if (view === 'activity') renderActivity();
+    updateNavCounters();
   }
 
   // ============================================================
@@ -173,56 +254,139 @@
       });
     });
     document.getElementById('btn-new-review').addEventListener('click', () => {
-      toast('Click "Import findings.json" in the top right to open a new review');
+      document.getElementById('file-input').click();
     });
+    const densSeg = document.getElementById('reviews-density-seg');
+    if (densSeg) densSeg.querySelectorAll('[data-reviews-density]').forEach(b => {
+      b.addEventListener('click', () => {
+        densSeg.querySelectorAll('.seg-opt').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        state._reviewsDensity = b.dataset.reviewsDensity;
+        saveGlobalPrefs({ reviewsDensity: b.dataset.reviewsDensity });
+        renderReviewsList();
+      });
+    });
+    // Load density pref
+    const prefs = loadGlobalPrefs();
+    if (prefs.reviewsDensity) {
+      state._reviewsDensity = prefs.reviewsDensity;
+      if (densSeg) densSeg.querySelectorAll('[data-reviews-density]').forEach(b => b.classList.toggle('active', b.dataset.reviewsDensity === state._reviewsDensity));
+    }
   }
 
   function renderReviewsList() {
     const grid = document.getElementById('reviews-grid');
     const q = state._reviewsSearch || '';
     const filter = state._reviewsFilter || 'all';
-    let items = window.SHINE_SAMPLE.reviews_index;
+    const sortKey = state._reviewsSortKey || 'last_touched';
+    const sortDir = state._reviewsSortDir || 'desc';
+    let items = (window.SHINE_SAMPLE.reviews_index || []).slice();
     if (q) {
       items = items.filter(r =>
         r.fund_legal_name.toLowerCase().includes(q) ||
         r.fund_code.toLowerCase().includes(q) ||
         r.period.toLowerCase().includes(q) ||
+        (r.fund_family || '').toLowerCase().includes(q) ||
         (r.reviewer || '').toLowerCase().includes(q)
       );
     }
     if (filter !== 'all') items = items.filter(r => r.readiness === filter);
+    // Sort
+    items.sort((a, b) => {
+      const av = a[sortKey], bv = b[sortKey];
+      const cmp = (av == null) ? 1 : (bv == null) ? -1 : (av > bv ? 1 : av < bv ? -1 : 0);
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
     if (!items.length) {
-      grid.innerHTML = '<div class="muted">No reviews match the filter.</div>';
+      grid.innerHTML = '<div class="empty-state"><div class="empty-title">No reviews match the filter.</div></div>';
       return;
     }
-    grid.innerHTML = items.map(r => `
-      <div class="review-card" data-rid="${escapeHtml(r.review_id)}">
-        <div class="review-card-head">
-          <div>
-            <div class="review-card-name">${escapeHtml(r.fund_legal_name)}</div>
-            <div class="review-card-meta">${escapeHtml(r.period)} · ${escapeHtml(r.draft)} · ${escapeHtml(r.review_date)}</div>
+    const density = state._reviewsDensity || 'table';
+    if (density === 'cards') {
+      grid.classList.remove('reviews-table-mode');
+      grid.classList.add('reviews-cards-mode');
+      grid.innerHTML = items.map(r => `
+        <div class="review-card" data-rid="${escapeHtml(r.review_id)}" role="button" tabindex="0">
+          <div class="review-card-head">
+            <div>
+              <div class="review-card-name">${escapeHtml(r.fund_legal_name)}</div>
+              <div class="review-card-meta">${escapeHtml(r.period)} · ${escapeHtml(r.draft)} · ${escapeHtml(r.review_date)}</div>
+            </div>
+            ${readinessChip(r.readiness)}
           </div>
-          ${readinessChip(r.readiness)}
+          <div class="review-card-stats">
+            <div class="review-stat"><div class="review-stat-num">${Number(r.finding_count) || 0}</div><div class="review-stat-label">findings</div></div>
+            <div class="review-stat"><div class="review-stat-num">${Math.round(r.coverage_pct * 100)}%</div><div class="review-stat-label">coverage</div></div>
+            <div class="review-stat"><div class="review-stat-num" style="color:var(--crit)">${Number(r.open_critical) || 0}</div><div class="review-stat-label">open critical</div></div>
+            <div class="review-stat" style="margin-left:auto;text-align:right">
+              <div class="review-stat-num mono" style="font-size:11px">${escapeHtml(r.fund_code)}</div>
+              <div class="review-stat-label">${escapeHtml(r.reviewer || '')}</div>
+            </div>
+          </div>
+          ${r.prior_draft_delta ? `<div class="review-delta">vs prior draft: <strong>${r.prior_draft_delta.new}</strong> new · <strong>${r.prior_draft_delta.resolved}</strong> resolved</div>` : ''}
         </div>
-        <div class="review-card-stats">
-          <div class="review-stat">
-            <div class="review-stat-num">${Number(r.finding_count) || 0}</div>
-            <div class="review-stat-label">findings</div>
-          </div>
-          <div class="review-stat">
-            <div class="review-stat-num">${Math.round(r.coverage_pct * 100)}%</div>
-            <div class="review-stat-label">coverage</div>
-          </div>
-          <div class="review-stat" style="margin-left:auto;text-align:right">
-            <div class="review-stat-num mono" style="font-size:11px">${escapeHtml(r.fund_code)}</div>
-            <div class="review-stat-label">${escapeHtml(r.reviewer || '')}</div>
-          </div>
-        </div>
-      </div>
-    `).join('');
-    grid.querySelectorAll('.review-card').forEach(card => {
-      card.addEventListener('click', () => openReview(card.dataset.rid));
+      `).join('');
+    } else {
+      grid.classList.remove('reviews-cards-mode');
+      grid.classList.add('reviews-table-mode');
+      const sortIcon = (key) => sortKey !== key ? '' : (sortDir === 'asc' ? ' ↑' : ' ↓');
+      grid.innerHTML = `
+        <table class="reviews-table">
+          <thead>
+            <tr>
+              <th data-sortcol="fund_legal_name">Fund${sortIcon('fund_legal_name')}</th>
+              <th data-sortcol="period">Period${sortIcon('period')}</th>
+              <th data-sortcol="draft">Draft${sortIcon('draft')}</th>
+              <th data-sortcol="readiness">Readiness${sortIcon('readiness')}</th>
+              <th data-sortcol="open_critical" class="num">Open critical${sortIcon('open_critical')}</th>
+              <th data-sortcol="finding_count" class="num">Findings${sortIcon('finding_count')}</th>
+              <th data-sortcol="coverage_pct" class="num">Coverage${sortIcon('coverage_pct')}</th>
+              <th data-sortcol="last_touched">Last touched${sortIcon('last_touched')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${items.map(r => `
+              <tr data-rid="${escapeHtml(r.review_id)}">
+                <td>
+                  <div class="review-row-name">${escapeHtml(r.fund_legal_name)}</div>
+                  <div class="review-row-code muted mono">${escapeHtml(r.fund_code)}${r.fund_family ? ' · ' + escapeHtml(r.fund_family) : ''}</div>
+                </td>
+                <td>${escapeHtml(r.period)}</td>
+                <td>${escapeHtml(r.draft)}</td>
+                <td>${readinessChip(r.readiness)}</td>
+                <td class="num"><span class="${Number(r.open_critical) > 0 ? 'crit-num' : 'muted'}">${Number(r.open_critical) || 0}</span></td>
+                <td class="num">${Number(r.finding_count) || 0}</td>
+                <td class="num">${Math.round(r.coverage_pct * 100)}%</td>
+                <td>${r.last_touched ? formatRelative(r.last_touched) : '—'}${r.prior_draft_delta ? ` <span class="delta">+${r.prior_draft_delta.new}/${r.prior_draft_delta.resolved}✓</span>` : ''}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+      grid.querySelectorAll('th[data-sortcol]').forEach(th => {
+        th.addEventListener('click', () => {
+          const key = th.dataset.sortcol;
+          if (state._reviewsSortKey === key) state._reviewsSortDir = state._reviewsSortDir === 'asc' ? 'desc' : 'asc';
+          else { state._reviewsSortKey = key; state._reviewsSortDir = 'asc'; }
+          renderReviewsList();
+        });
+      });
+    }
+    grid.querySelectorAll('.review-card, .reviews-table tbody tr').forEach(el => {
+      el.style.cursor = 'pointer';
+      const open = () => openReview(el.dataset.rid);
+      el.addEventListener('click', open);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
     });
+  }
+
+  function formatRelative(ts) {
+    const diff = Date.now() - ts;
+    const day = 24 * 3600 * 1000;
+    if (diff < day) return 'today';
+    if (diff < 2 * day) return 'yesterday';
+    if (diff < 30 * day) return Math.floor(diff / day) + 'd ago';
+    return new Date(ts).toISOString().slice(0, 10);
   }
 
   function readinessChip(readiness) {
@@ -241,17 +405,34 @@
     }
     state.currentReviewId = reviewId;
     state.review = window.SHINE_SAMPLE.review;
-    // Deep-clone findings so disposition mutations stay local
-    state.findings = state.review.findings.map(f => ({ ...f }));
+    // Deep-clone findings so disposition mutations stay local; ensure history + comments + reconciler arrays exist.
+    state.findings = state.review.findings.map(f => ({
+      comments: [],
+      history: [],
+      decoupled_constituents: [],
+      ...f
+    }));
+    state.selectedIds.clear();
+    state.selectionAnchor = null;
+    state.focusedFindingId = null;
+    state.activeViewId = null;
     // Merge persisted state
     const persisted = loadPersisted(reviewId);
     if (persisted && persisted.findings) {
       persisted.findings.forEach(pf => {
         const f = state.findings.find(x => x.id === pf.id);
-        if (f) Object.assign(f, pf);
+        if (f) {
+          Object.assign(f, pf);
+        } else if (pf.restored_from_root) {
+          // S1-06: decoupled constituent — insert it into the live findings list
+          state.findings.push({ comments: [], history: [], ...pf });
+        }
       });
       state.undoStack = persisted.undoStack || [];
     }
+    // Track last-touched for the portfolio view
+    const idx = (window.SHINE_SAMPLE.reviews_index || []).find(r => r.review_id === reviewId);
+    if (idx) idx.last_touched = Date.now();
     localStorage.setItem('shine:lastReview', reviewId);
     switchView('dashboard');
     renderDashboard();
@@ -314,8 +495,11 @@
     renderCFOSummary();
     renderReadiness();
     renderChips();
+    renderSavedViews();
     renderFindings();
     updateDiscardRate();
+    updateNavCounters();
+    renderSelectionBar();
   }
 
   function renderCFOSummary() {
@@ -440,14 +624,16 @@
       </div>`;
       const reset = document.getElementById('empty-reset');
       if (reset) reset.addEventListener('click', clearFilters);
+      // Also clear the statement nav rail so it stays consistent with the empty state.
+      renderStatementNav([]);
       return;
     }
 
     list.innerHTML = grouped.map(g => `
-      <div class="group-block">
+      <div class="group-block" data-statement-anchor="${escapeHtml(g.label)}">
         <div class="group-header">
           <div class="group-header-left">
-            <div class="group-header-label">${escapeHtml(g.label)}</div>
+            <h3 class="group-header-label">${escapeHtml(g.label)}</h3>
             ${g.note ? `<div class="group-header-note">${escapeHtml(g.note)}</div>` : ''}
           </div>
           <div class="group-header-right">
@@ -458,17 +644,35 @@
         ${g.findings.map(findingCardHTML).join('')}
       </div>
     `).join('');
+    renderStatementNav(grouped);
 
-    // Bind card interactions (mouse + keyboard)
+    // Bind card interactions (mouse + keyboard + bulk selection)
     list.querySelectorAll('.finding-card').forEach(card => {
       const open = (e) => {
-        if (e.target.closest('.finding-actions') || e.target.closest('.polished-toggle') || e.target.closest('.constituents-toggle')) return;
+        if (e.target.closest('.finding-actions') || e.target.closest('.polished-toggle') || e.target.closest('.constituents-toggle') || e.target.closest('.bulk-checkbox') || e.target.closest('.finding-citation')) return;
+        // S1-03: shift / meta / ctrl click toggles selection
+        if (e.shiftKey || e.metaKey || e.ctrlKey) {
+          e.preventDefault();
+          toggleSelection(card.dataset.fid, e.shiftKey);
+          return;
+        }
+        focusFinding(card.dataset.fid);
         openDrawer(card.dataset.fid);
       };
       card.addEventListener('click', open);
       card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(e); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDrawer(card.dataset.fid); }
       });
+      const cb = card.querySelector('.bulk-checkbox');
+      if (cb) cb.addEventListener('click', e => { e.stopPropagation(); toggleSelection(card.dataset.fid, false); });
+    });
+    // S1-07: evidence drill-down on citation chips
+    list.querySelectorAll('.finding-citation').forEach(chip => {
+      chip.addEventListener('click', e => {
+        e.stopPropagation();
+        openEvidencePopover(chip.textContent.trim(), chip);
+      });
+      chip.style.cursor = 'pointer';
     });
     list.querySelectorAll('.polished-toggle').forEach(t => {
       t.addEventListener('click', (e) => {
@@ -624,30 +828,39 @@
     // Polish toggle text is consistent with what's currently shown.
     const polishToggleLabel = showingPolished ? 'Show original' : 'Show polished';
 
+    const matChip = materialityChipHtml(f);
+    const isSelected = state.selectedIds.has(f.id);
+    const isFocused = state.focusedFindingId === f.id;
+    const commentCount = (f.comments || []).length;
+    const sevIcon = { CRITICAL: '▲', HIGH: '△', MEDIUM: '◆', LOW: '◯' }[f.severity.impact] || '';
     return `
-      <article class="finding-card state-${f.state}" data-fid="${f.id}" tabindex="0" role="button" aria-label="Finding ${f.id} — ${escapeHtml(f.severity.impact)} ${escapeHtml(f.section)} — open details">
+      <article class="finding-card state-${f.state} ${isSelected ? 'is-selected' : ''} ${isFocused ? 'is-focused' : ''}" data-fid="${escapeHtml(f.id)}" tabindex="0" role="button" aria-label="Finding ${f.id} — ${escapeHtml(f.severity.impact)} ${escapeHtml(f.section)} — open details" aria-selected="${isSelected}">
         <div class="finding-card-head">
-          <span class="finding-id">${f.id}</span>
-          <span class="chip-sev ${sevClass(f.severity.impact)}">${f.severity.impact}</span>
+          <input type="checkbox" class="bulk-checkbox" aria-label="Select ${f.id} for bulk action" ${isSelected ? 'checked' : ''} />
+          <span class="finding-id">${escapeHtml(f.id)}</span>
+          <span class="chip-sev ${sevClass(f.severity.impact)}"><span class="sev-icon" aria-hidden="true">${sevIcon}</span>${f.severity.impact}</span>
           <span class="chip-conf ${f.severity.confidence}">${f.severity.confidence}</span>
           <span class="chip-state ${f.state}">${f.state}</span>
           ${f.prior_review_recurrence && f.prior_review_recurrence !== 'NEW'
             ? `<span class="chip-rec ${f.prior_review_recurrence}">${recurrenceLabel(f.prior_review_recurrence)}</span>` : ''}
+          ${matChip}
+          ${commentCount > 0 ? `<span class="chip-comment" title="${commentCount} comment${commentCount === 1 ? '' : 's'}">💬 ${commentCount}</span>` : ''}
           <span class="finding-subagent">${escapeHtml(f.subagent)} · ${escapeHtml(f.layer)}</span>
         </div>
         ${loc ? `<div class="finding-location">${escapeHtml(f.section)} · ${escapeHtml(loc)}</div>` : `<div class="finding-location">${escapeHtml(f.section)}</div>`}
         <div class="finding-text ${f.controllerEdited ? 'edited' : ''}" data-showing="${f.controllerEdited ? 'edited' : (showingPolished ? 'polished' : 'raw')}">${escapeHtml(activeText)}</div>
         ${cites.length ? `<div class="finding-cites">${cites.join('')}</div>` : ''}
         <div class="finding-meta">
-          ${f.voiceNormalized && !f.controllerEdited ? `<button type="button" class="polished-toggle" data-fid="${f.id}">${polishToggleLabel}</button>` : ''}
+          ${f.voiceNormalized && !f.controllerEdited ? `<button type="button" class="polished-toggle" data-fid="${escapeHtml(f.id)}">${polishToggleLabel}</button>` : ''}
           ${f.reconciler_pattern
-            ? `<button type="button" class="constituents-toggle" data-fid="${f.id}">Reconciler · ${escapeHtml(f.reconciler_pattern)} · ${f.constituent_findings.length} constituent${f.constituent_findings.length === 1 ? '' : 's'}</button>`
+            ? `<button type="button" class="constituents-toggle" data-fid="${escapeHtml(f.id)}">Reconciler · ${escapeHtml(f.reconciler_pattern)} · ${f.constituent_findings.length} constituent${f.constituent_findings.length === 1 ? '' : 's'}</button>`
             : ''}
+          ${f.restored_from_root ? `<span class="restored-badge" title="Decoupled from ${escapeHtml(f.restored_from_root)}">↳ decoupled from ${escapeHtml(f.restored_from_root)}</span>` : ''}
         </div>
         <div class="finding-actions" role="group" aria-label="Disposition for ${f.id}">
-          ${f.state === 'OPEN' ? `<button class="btn-primary" data-action="accept" aria-label="Accept ${f.id}">Accept</button>` : ''}
-          ${f.state !== 'RESOLVED' ? `<button data-action="resolve" aria-label="Resolve ${f.id}">Resolve</button>` : ''}
-          ${f.state !== 'DISCARDED' ? `<button class="danger" data-action="discard" aria-label="Discard ${f.id}">Discard</button>` : ''}
+          ${f.state === 'OPEN' ? `<button class="btn-primary" data-action="accept" aria-label="Accept ${f.id}" data-key="A">Accept</button>` : ''}
+          ${f.state !== 'RESOLVED' ? `<button data-action="resolve" aria-label="Resolve ${f.id}" data-key="R">Resolve</button>` : ''}
+          ${f.state !== 'DISCARDED' ? `<button class="danger" data-action="discard" aria-label="Discard ${f.id}" data-key="D">Discard</button>` : ''}
           ${(f.state === 'RESOLVED' || f.state === 'DISCARDED') ? `<button data-action="reopen" aria-label="Reopen ${f.id}">Reopen</button>` : ''}
         </div>
       </article>
@@ -685,14 +898,28 @@
         return;
       }
     }
+    const before = f.state;
     pushUndo(f);
     if (action === 'accept') f.state = 'ACCEPTED';
     else if (action === 'resolve') f.state = 'RESOLVED';
     else if (action === 'reopen') { f.state = 'OPEN'; f.discard_attestation = null; }
     else if (action === 'discard') f.state = 'DISCARDED';
+    logHistory(f, 'disposition', { from: before, to: f.state });
     persist();
     renderDashboard();
     toast(`${fid} → ${f.state}`);
+  }
+
+  // S1-05: history is a per-finding chronological log of every state-changing action.
+  function logHistory(f, kind, payload) {
+    if (!f.history) f.history = [];
+    f.history.push({
+      ts: Date.now(),
+      author: state.author,
+      kind,        // 'disposition' | 'edit' | 'comment' | 'evergreen' | 'decouple' | 'restore'
+      ...payload
+    });
+    if (f.history.length > 200) f.history = f.history.slice(-200);
   }
 
   // B-001 fix: count current discarded + 1 (the pending one), divide by total.
@@ -887,6 +1114,34 @@
       </div>
 
       <div class="drawer-section">
+        <div class="drawer-section-label">Comments (${(f.comments || []).length})</div>
+        ${(f.comments || []).length === 0
+          ? '<div class="muted" style="font-size:12px;margin-bottom:8px">No comments yet. Use comments for discussion / "ask Deloitte" / notes-to-self — separate from disposition rationale.</div>'
+          : (f.comments || []).map(c => `
+            <div class="comment">
+              <div class="comment-meta"><span class="comment-author">${escapeHtml(c.author)}</span> · <span class="mono">${formatTs(c.ts)}</span></div>
+              <div class="comment-text">${escapeHtml(c.text)}</div>
+            </div>`).join('')}
+        <textarea class="drawer-textarea" id="drawer-comment-text" placeholder="Add a comment…"></textarea>
+        <div class="drawer-actions">
+          <button class="btn-ghost" id="drawer-add-comment">Add comment</button>
+        </div>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-section-label">Activity (${(f.history || []).length})</div>
+        ${(f.history || []).length === 0
+          ? '<div class="muted" style="font-size:12px">No actions yet on this finding.</div>'
+          : `<div class="history-list">${(f.history || []).slice().reverse().slice(0, 10).map(h => `
+              <div class="history-row">
+                <span class="mono">${formatTs(h.ts)}</span>
+                <span class="history-kind">${escapeHtml(h.kind)}</span>
+                <span class="history-text">${activityText({ ...h, fid: f.id })}</span>
+                <span class="muted">${escapeHtml(h.author || '')}</span>
+              </div>`).join('')}</div>`}
+      </div>
+
+      <div class="drawer-section">
         <div class="drawer-section-label">Audit trail</div>
         <div class="drawer-block mono" style="font-size:11px">
           merge_key: ${escapeHtml(f.merge_key)}<br>
@@ -914,7 +1169,9 @@
     body.querySelector('#drawer-save-edit').addEventListener('click', () => {
       const txt = body.querySelector('#drawer-edit').value.trim();
       pushUndo(f);
+      const before = f.controllerEdited;
       f.controllerEdited = txt || null;
+      logHistory(f, 'edit', { before: before, after: f.controllerEdited });
       persist();
       renderDashboard();
       openDrawer(f.id);
@@ -922,7 +1179,9 @@
     });
     body.querySelector('#drawer-clear-edit').addEventListener('click', () => {
       pushUndo(f);
+      const before = f.controllerEdited;
       f.controllerEdited = null;
+      logHistory(f, 'edit', { before, after: null, cleared: true });
       persist();
       renderDashboard();
       openDrawer(f.id);
@@ -931,8 +1190,18 @@
     body.querySelectorAll('[data-decouple]').forEach(b => {
       b.addEventListener('click', () => {
         const cid = b.dataset.decouple;
-        toast(`Decoupled ${cid} (logged to reconciler-decisions.log)`);
+        // S1-06: actually decouple — restore constituent as standalone finding, mutate root,
+        // log to history, push to undo stack.
+        decoupleConstituent(f.id, cid);
       });
+    });
+
+    // Comments section (S1-05) — wire add-comment input
+    const addBtn = body.querySelector('#drawer-add-comment');
+    if (addBtn) addBtn.addEventListener('click', () => {
+      const txt = (body.querySelector('#drawer-comment-text').value || '').trim();
+      if (!txt) { toast('Comment cannot be empty'); return; }
+      addComment(f.id, txt);
     });
   }
 
@@ -1012,6 +1281,7 @@
       f.evergreen_acceptance_reason = reason;
       f.evergreen_acceptance_date = new Date().toISOString().slice(0, 10);
       f.prior_review_recurrence = 'EVERGREEN_ACCEPTED';
+      logHistory(f, 'evergreen', { reason });
       document.getElementById('evergreen-reason').value = '';
       closeModal('modal-evergreen');
       persist();
@@ -1026,8 +1296,10 @@
       const f = state.findings.find(x => x.id === fid);
       if (!f) return;
       pushUndo(f);
+      const before = f.state;
       f.state = 'DISCARDED';
       f.discard_attestation = reason;
+      logHistory(f, 'disposition', { from: before, to: 'DISCARDED', attestation: reason });
       document.getElementById('discard-reason').value = '';
       closeModal('modal-discard');
       persist();
@@ -1048,6 +1320,42 @@
       state.showPolished = e.target.checked;
       if (state.review) renderDashboard();
     });
+    // S1-10 density
+    const densitySeg = document.getElementById('density-seg');
+    if (densitySeg) {
+      densitySeg.querySelectorAll('[data-density]').forEach(b => {
+        b.classList.toggle('active', b.dataset.density === state.density);
+        b.addEventListener('click', () => {
+          densitySeg.querySelectorAll('.seg-opt').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          state.density = b.dataset.density;
+          applyDensity();
+          saveGlobalPrefs({ density: state.density });
+        });
+      });
+    }
+    // S1-11 severity icons
+    const sevToggle = document.getElementById('opt-sev-icons');
+    if (sevToggle) {
+      sevToggle.checked = state.severityIcons;
+      sevToggle.addEventListener('change', e => {
+        state.severityIcons = e.target.checked;
+        applySeverityIcons();
+        saveGlobalPrefs({ severityIcons: state.severityIcons });
+      });
+    }
+    // Author
+    const authorInput = document.getElementById('opt-author');
+    if (authorInput) {
+      authorInput.value = state.author === 'you' ? '' : state.author;
+      authorInput.placeholder = 'Your name or email (currently: "' + state.author + '")';
+      authorInput.addEventListener('change', () => {
+        const v = (authorInput.value || '').trim() || 'you';
+        state.author = v;
+        saveGlobalPrefs({ author: v });
+        toast('Author set: ' + v);
+      });
+    }
     document.querySelectorAll('#theme-seg [data-theme]').forEach(b => {
       b.addEventListener('click', () => {
         document.querySelectorAll('#theme-seg .seg-opt').forEach(x => x.classList.remove('active'));
@@ -1066,8 +1374,9 @@
     document.getElementById('btn-theme').addEventListener('click', () => {
       setTheme(state.theme === 'light' ? 'dark' : 'light');
     });
-    document.getElementById('btn-help').addEventListener('click', () => {
-      toast('Open a review · disposition findings · export PDF · Ctrl+Z to undo');
+    // Note: btn-help wired in bindOnboarding (shows help overlay)
+    document.getElementById('btn-palette').addEventListener('click', () => {
+      if (window.__shineOpenPalette) window.__shineOpenPalette();
     });
   }
 
@@ -1085,13 +1394,62 @@
   // ============================================================
   function bindKeyboard() {
     document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+      // Undo: Ctrl/Cmd + Z (always allowed)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
         e.preventDefault();
         undo();
+        return;
       }
+      // Escape: close any overlay/modal/drawer/popover and blur any focused inputs there
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-bg.open').forEach(m => m.classList.remove('open'));
+        const helpOv = document.getElementById('help-overlay');
+        if (helpOv && helpOv.classList.contains('open')) helpOv.classList.remove('open');
+        const palette = document.getElementById('cmd-palette');
+        if (palette && palette.classList.contains('open')) {
+          palette.classList.remove('open');
+          const ci = document.getElementById('cmd-input');
+          if (ci) ci.blur();
+        }
+        const pop = document.getElementById('evidence-popover');
+        if (pop && pop.classList.contains('open')) pop.classList.remove('open');
+        // Also blur the global search input if focused (so subsequent shortcuts work)
+        if (document.activeElement && document.activeElement.tagName === 'INPUT' &&
+            document.activeElement.id === 'findings-search') {
+          document.activeElement.blur();
+        }
         closeDrawer();
+        return;
+      }
+      // The remaining shortcuts only fire when the user is NOT typing.
+      if (isTypingTarget(e.target)) return;
+      // ? opens help overlay (Shift+/ on US layouts; handle both)
+      if (e.key === '?') { e.preventDefault(); showHelpOverlay(); return; }
+      // / focuses search
+      if (e.key === '/' && state.currentView === 'dashboard') {
+        e.preventDefault();
+        const s = document.getElementById('findings-search');
+        if (s) s.focus();
+        return;
+      }
+      // J / K navigate focus through findings
+      if (state.currentView === 'dashboard') {
+        if (e.key === 'j' || e.key === 'ArrowDown') { e.preventDefault(); moveFocus(1); return; }
+        if (e.key === 'k' || e.key === 'ArrowUp') { e.preventDefault(); moveFocus(-1); return; }
+        // Single-key disposition actions on focused finding (or open drawer)
+        const fid = state.focusedFindingId;
+        if (!fid) return;
+        const f = state.findings.find(x => x.id === fid);
+        if (!f) return;
+        if (e.key === 'o' || e.key === 'Enter') { e.preventDefault(); openDrawer(fid); return; }
+        if (e.key === 'a' && f.state === 'OPEN') { e.preventDefault(); applyAction(fid, 'accept'); return; }
+        if (e.key === 'r' && f.state !== 'RESOLVED') { e.preventDefault(); applyAction(fid, 'resolve'); return; }
+        if (e.key === 'd' && f.state !== 'DISCARDED') { e.preventDefault(); applyAction(fid, 'discard'); return; }
+        if (e.key === 'u' && (f.state === 'RESOLVED' || f.state === 'DISCARDED')) { e.preventDefault(); applyAction(fid, 'reopen'); return; }
+        if (e.key === 'e') { e.preventDefault(); openDrawer(fid); setTimeout(() => { const ta = document.getElementById('drawer-edit'); if (ta) ta.focus(); }, 80); return; }
+        if (e.key === 'g' && (f.severity.impact === 'LOW' || f.severity.impact === 'MEDIUM')) {
+          e.preventDefault(); state.pendingFindingId = fid; openModal('modal-evergreen'); return;
+        }
       }
     });
   }
@@ -1406,6 +1764,584 @@ ${groups.map(g => `<h2>${escapeHtml(g.label)} — ${g.findings.length} finding${
     }
     // audit
     return state.findings.filter(f => f.state === 'ACCEPTED' || f.state === 'RESOLVED');
+  }
+
+  // ============================================================
+  // S1-01 · COMMAND PALETTE (Cmd/Ctrl+K)
+  // ============================================================
+  function bindCommandPalette() {
+    const dlg = document.getElementById('cmd-palette');
+    if (!dlg) return;
+    const input = document.getElementById('cmd-input');
+    const list = document.getElementById('cmd-list');
+    let activeIndex = 0;
+
+    function open() {
+      dlg.classList.add('open');
+      input.value = '';
+      activeIndex = 0;
+      render('');
+      setTimeout(() => input.focus(), 50);
+    }
+    function close() {
+      dlg.classList.remove('open');
+      // Blur the input so subsequent keyboard shortcuts (?, J/K, A/R/D…) fire correctly
+      // rather than being captured as text input.
+      input.blur();
+    }
+
+    function buildCommands() {
+      const cmds = [];
+      // Reviews
+      (window.SHINE_SAMPLE.reviews_index || []).forEach(r => {
+        cmds.push({ kind: 'review', title: 'Open ' + r.fund_legal_name, hint: r.period + ' · ' + r.draft, run: () => { openReview(r.review_id); close(); } });
+      });
+      // Findings (if a review is open)
+      if (state.review) {
+        state.findings.forEach(f => {
+          cmds.push({ kind: 'finding', title: 'Go to ' + f.id + ' — ' + f.section, hint: f.statement + ' · ' + f.severity.impact + ' · ' + f.state, run: () => { switchView('dashboard'); openDrawer(f.id); close(); } });
+        });
+      }
+      // Actions
+      cmds.push({ kind: 'action', title: 'Toggle theme', hint: state.theme, run: () => { setTheme(state.theme === 'light' ? 'dark' : 'light'); close(); } });
+      cmds.push({ kind: 'action', title: 'Toggle density', hint: state.density, run: () => { state.density = state.density === 'comfortable' ? 'compact' : 'comfortable'; applyDensity(); saveGlobalPrefs({ density: state.density }); close(); } });
+      cmds.push({ kind: 'action', title: 'Group by statement', hint: 'default', run: () => { setGroupMode('statement'); close(); } });
+      cmds.push({ kind: 'action', title: 'Group by severity', hint: '', run: () => { setGroupMode('severity'); close(); } });
+      cmds.push({ kind: 'action', title: 'Group by layer', hint: '', run: () => { setGroupMode('layer'); close(); } });
+      cmds.push({ kind: 'action', title: 'Show keyboard shortcuts', hint: '?', run: () => { close(); showHelpOverlay(); } });
+      if (state.review) {
+        cmds.push({ kind: 'action', title: 'Export Preparer PDF', hint: 'OPEN + ACCEPTED', run: () => { close(); exportPDF('preparer'); } });
+        cmds.push({ kind: 'action', title: 'Export Audit File PDF', hint: 'ACCEPTED + RESOLVED', run: () => { close(); exportPDF('audit'); } });
+        cmds.push({ kind: 'view', title: 'Go to Coverage', hint: '', run: () => { switchView('coverage'); close(); } });
+        cmds.push({ kind: 'view', title: 'Go to Activity', hint: 'review-wide log', run: () => { switchView('activity'); close(); } });
+      }
+      cmds.push({ kind: 'view', title: 'Go to Reviews', hint: '', run: () => { switchView('reviews'); close(); } });
+      cmds.push({ kind: 'view', title: 'Go to Settings', hint: '', run: () => { switchView('settings'); close(); } });
+      return cmds;
+    }
+
+    function fuzzyScore(query, text) {
+      // Simple subsequence match with bonus for word-start matches.
+      const q = query.toLowerCase();
+      const t = text.toLowerCase();
+      if (!q) return 1;
+      let qi = 0, score = 0, prevMatchIdx = -2;
+      for (let i = 0; i < t.length && qi < q.length; i++) {
+        if (t[i] === q[qi]) {
+          score += 1;
+          if (i === 0 || /[\s\-_·,.]/.test(t[i - 1])) score += 2; // word-start bonus
+          if (i === prevMatchIdx + 1) score += 1; // contiguous bonus
+          prevMatchIdx = i;
+          qi++;
+        }
+      }
+      return qi === q.length ? score : 0;
+    }
+
+    function render(query) {
+      const all = buildCommands();
+      const filtered = (!query ? all : all
+        .map(c => ({ c, score: fuzzyScore(query, c.title + ' ' + c.hint) }))
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map(x => x.c)).slice(0, 30);
+      activeIndex = Math.min(activeIndex, filtered.length - 1);
+      if (activeIndex < 0) activeIndex = 0;
+      list.innerHTML = filtered.length === 0
+        ? '<div class="cmd-empty">No commands match.</div>'
+        : filtered.map((c, i) => `
+          <div class="cmd-item ${i === activeIndex ? 'active' : ''}" data-idx="${i}">
+            <span class="cmd-kind cmd-kind-${c.kind}">${c.kind}</span>
+            <span class="cmd-title">${escapeHtml(c.title)}</span>
+            <span class="cmd-hint">${escapeHtml(c.hint || '')}</span>
+          </div>`).join('');
+      list.querySelectorAll('.cmd-item').forEach(el => {
+        el.addEventListener('click', () => filtered[Number(el.dataset.idx)].run());
+      });
+      list._filtered = filtered;
+    }
+
+    input.addEventListener('input', () => render(input.value.trim()));
+    input.addEventListener('keydown', e => {
+      const filtered = list._filtered || [];
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); activeIndex = Math.min(activeIndex + 1, filtered.length - 1); render(input.value.trim()); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); activeIndex = Math.max(activeIndex - 1, 0); render(input.value.trim()); }
+      else if (e.key === 'Enter') {
+        e.preventDefault();
+        const cmd = filtered[activeIndex];
+        if (cmd) cmd.run();
+      }
+    });
+    dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+
+    document.addEventListener('keydown', e => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        open();
+      }
+    });
+    // Expose for the help overlay / palette commands
+    window.__shineOpenPalette = open;
+  }
+
+  // ============================================================
+  // S1-02 · KEYBOARD SHORTCUTS + ?-OVERLAY  (+ J/K focus navigation)
+  // ============================================================
+  function bindHelpOverlay() {
+    const ov = document.getElementById('help-overlay');
+    if (!ov) return;
+    ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
+    const close = ov.querySelector('[data-help-close]');
+    if (close) close.addEventListener('click', () => ov.classList.remove('open'));
+  }
+  function showHelpOverlay() {
+    const ov = document.getElementById('help-overlay');
+    if (ov) ov.classList.add('open');
+  }
+
+  function focusFinding(fid) {
+    state.focusedFindingId = fid;
+    document.querySelectorAll('.finding-card.is-focused').forEach(el => el.classList.remove('is-focused'));
+    if (!fid) return;
+    const el = document.querySelector(`.finding-card[data-fid="${CSS.escape(fid)}"]`);
+    if (el) {
+      el.classList.add('is-focused');
+      el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+  function visibleFindings() {
+    return Array.from(document.querySelectorAll('.finding-card')).map(el => el.dataset.fid);
+  }
+  function moveFocus(delta) {
+    const ids = visibleFindings();
+    if (!ids.length) return;
+    const cur = state.focusedFindingId;
+    let idx = cur ? ids.indexOf(cur) : -1;
+    idx = Math.max(0, Math.min(ids.length - 1, idx + delta));
+    focusFinding(ids[idx]);
+  }
+
+  function isTypingTarget(el) {
+    if (!el) return false;
+    const tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
+  }
+
+  // ============================================================
+  // S1-03 · BULK SELECTION + ACTIONS
+  // ============================================================
+  function bindBulkActions() {
+    const bar = document.getElementById('selection-bar');
+    if (!bar) return;
+    bar.addEventListener('click', e => {
+      const btn = e.target.closest('[data-bulk]');
+      if (!btn) return;
+      const action = btn.dataset.bulk;
+      if (action === 'clear') { state.selectedIds.clear(); state.selectionAnchor = null; renderSelectionBar(); renderFindings(); return; }
+      const ids = [...state.selectedIds];
+      if (ids.length === 0) { toast('No findings selected'); return; }
+      bulkApply(action, ids);
+    });
+  }
+  function renderSelectionBar() {
+    const bar = document.getElementById('selection-bar');
+    if (!bar) return;
+    const n = state.selectedIds.size;
+    if (n === 0) { bar.classList.remove('open'); return; }
+    bar.classList.add('open');
+    bar.querySelector('.selection-count').textContent = n + ' selected';
+  }
+  function bulkApply(action, ids) {
+    let touched = 0;
+    let gated = 0;
+    ids.forEach(fid => {
+      const f = state.findings.find(x => x.id === fid);
+      if (!f) return;
+      if (action === 'discard' && projectedDiscardRate(fid) > 0.20) {
+        // Don't gate every single one; just skip the gate for bulk (per council: bulk implies intent),
+        // but record that we're proceeding to keep the discard surveillance accurate.
+        // Each discard still gets the attestation field set to "Bulk discard — controller intent".
+        pushUndo(f);
+        const before = f.state;
+        f.state = 'DISCARDED';
+        f.discard_attestation = 'Bulk discard — controller intent (no per-finding attestation; aggregate signal on dashboard footer)';
+        logHistory(f, 'disposition', { from: before, to: 'DISCARDED', bulk: true });
+        touched++; gated++;
+        return;
+      }
+      const before = f.state;
+      pushUndo(f);
+      if (action === 'accept') f.state = 'ACCEPTED';
+      else if (action === 'resolve') f.state = 'RESOLVED';
+      else if (action === 'discard') f.state = 'DISCARDED';
+      logHistory(f, 'disposition', { from: before, to: f.state, bulk: true });
+      touched++;
+    });
+    state.selectedIds.clear(); state.selectionAnchor = null;
+    persist();
+    renderDashboard();
+    toast(`${touched} finding${touched === 1 ? '' : 's'} → ${action.toUpperCase()}${gated ? ' (gated discards counted)' : ''}`);
+  }
+  function toggleSelection(fid, range) {
+    if (range && state.selectionAnchor) {
+      const ids = visibleFindings();
+      const a = ids.indexOf(state.selectionAnchor);
+      const b = ids.indexOf(fid);
+      if (a !== -1 && b !== -1) {
+        const [lo, hi] = a < b ? [a, b] : [b, a];
+        for (let i = lo; i <= hi; i++) state.selectedIds.add(ids[i]);
+      }
+    } else {
+      if (state.selectedIds.has(fid)) state.selectedIds.delete(fid);
+      else state.selectedIds.add(fid);
+      state.selectionAnchor = fid;
+    }
+    renderSelectionBar();
+    // Update only the affected cards visually
+    document.querySelectorAll('.finding-card').forEach(el => {
+      el.classList.toggle('is-selected', state.selectedIds.has(el.dataset.fid));
+    });
+  }
+
+  // ============================================================
+  // S1-04 · SAVED VIEWS
+  // ============================================================
+  function seedDefaultSavedViews() {
+    state.savedViews = [
+      { id: 'view-my-open-critical', name: 'My open critical', spec: { severity: 'CRITICAL', states: ['OPEN'], search: '', groupMode: 'statement' } },
+      { id: 'view-ready-to-discard', name: 'Ready to discard', spec: { severity: 'LOW', states: ['OPEN'], search: '', groupMode: 'statement' } },
+      { id: 'view-recurring', name: 'Recurring this period', spec: { severity: 'all', states: [], search: 'recurring', groupMode: 'statement' } },
+      { id: 'view-qc-by-layer', name: 'By layer for QC pass', spec: { severity: 'all', states: [], search: '', groupMode: 'layer' } }
+    ];
+    persistSavedViews();
+  }
+  function bindSavedViews() {
+    const row = document.getElementById('saved-views');
+    if (!row) return;
+    row.addEventListener('click', e => {
+      const chip = e.target.closest('[data-view-id]');
+      if (chip) { applySavedView(chip.dataset.viewId); return; }
+      if (e.target.closest('#btn-save-view')) saveCurrentView();
+      if (e.target.closest('[data-delete-view]')) {
+        const id = e.target.closest('[data-delete-view]').dataset.deleteView;
+        state.savedViews = state.savedViews.filter(v => v.id !== id);
+        persistSavedViews();
+        renderSavedViews();
+      }
+    });
+  }
+  function renderSavedViews() {
+    const row = document.getElementById('saved-views');
+    if (!row) return;
+    row.innerHTML = state.savedViews.map(v => `
+      <button class="pill view-pill ${state.activeViewId === v.id ? 'active' : ''}" data-view-id="${escapeHtml(v.id)}">
+        ${escapeHtml(v.name)}
+        <span class="view-pill-x" data-delete-view="${escapeHtml(v.id)}" title="Delete view">×</span>
+      </button>
+    `).join('') + `<button class="pill view-pill-add" id="btn-save-view" title="Save current filter as a view">+ Save view</button>`;
+  }
+  function applySavedView(id) {
+    const v = state.savedViews.find(x => x.id === id);
+    if (!v) return;
+    state.activeViewId = id;
+    state.filters.severity = v.spec.severity;
+    state.filters.states = new Set(v.spec.states);
+    state.filters.search = v.spec.search || '';
+    state.groupMode = v.spec.groupMode || 'statement';
+    document.getElementById('findings-search').value = state.filters.search;
+    document.querySelectorAll('#severity-filter .pill').forEach(p => p.classList.toggle('active', p.dataset.severity === state.filters.severity));
+    document.querySelectorAll('#state-filter .pill').forEach(p => p.classList.toggle('active', state.filters.states.has(p.dataset.state)));
+    document.querySelectorAll('#group-mode .seg-opt').forEach(p => p.classList.toggle('active', p.dataset.group === state.groupMode));
+    renderSavedViews();
+    renderFindings();
+  }
+  function saveCurrentView() {
+    const name = (prompt('Name this view:') || '').trim();
+    if (!name) return;
+    const v = {
+      id: 'view-' + Date.now().toString(36),
+      name,
+      spec: {
+        severity: state.filters.severity,
+        states: [...state.filters.states],
+        search: state.filters.search,
+        groupMode: state.groupMode
+      }
+    };
+    state.savedViews.push(v);
+    state.activeViewId = v.id;
+    persistSavedViews();
+    renderSavedViews();
+    toast('Saved view: ' + name);
+  }
+
+  // ============================================================
+  // S1-06 · DECOUPLE PERSISTENCE
+  // ============================================================
+  function decoupleConstituent(rootFid, constituentId) {
+    const root = state.findings.find(x => x.id === rootFid);
+    if (!root) return;
+    const detail = (root.constituent_details || []).find(c => c.id === constituentId);
+    if (!detail) return;
+    // Restore the constituent as a standalone finding.
+    pushUndo(root);
+    const restored = {
+      id: constituentId,
+      subagent: detail.subagent || 'reconciler',
+      layer: detail.layer || root.layer,
+      statement: root.statement,
+      section: root.section,
+      sortOrder: (root.sortOrder || 0) + 0.5,
+      location: { ...root.location },
+      severity: detail.severity || root.severity,
+      subagentRaw: detail.subagentRaw || '(restored constituent)',
+      voiceNormalized: null,
+      controllerEdited: null,
+      fix: 'See root cause ' + rootFid + ' — this constituent was decoupled by the controller and now stands alone.',
+      fixSubagentRaw: 'See root cause ' + rootFid + ' — this constituent was decoupled by the controller and now stands alone.',
+      fixVoiceNormalized: null,
+      evidence: detail.evidence || {},
+      merge_key: (root.merge_key || '') + '::decoupled-' + constituentId,
+      finding_class: detail.finding_class || root.finding_class || 'formatting',
+      prior_review_recurrence: 'NEW',
+      evergreen_accepted: false,
+      reconciler_pattern: null,
+      reconciler_specificity_score: null,
+      constituent_findings: [],
+      subagent_version: root.subagent_version,
+      prompt_version: root.prompt_version,
+      reference_versions: root.reference_versions,
+      state: 'OPEN',
+      detail: 'Decoupled from root cause ' + rootFid + ' on ' + new Date().toISOString().slice(0, 10),
+      comments: [],
+      history: [{ ts: Date.now(), author: state.author, kind: 'restore', from: rootFid }],
+      restored_from_root: rootFid
+    };
+    // Mutate root: remove constituent
+    root.constituent_findings = (root.constituent_findings || []).filter(id => id !== constituentId);
+    root.constituent_details = (root.constituent_details || []).filter(c => c.id !== constituentId);
+    if (!root.decoupled_constituents) root.decoupled_constituents = [];
+    root.decoupled_constituents.push(constituentId);
+    if (root.constituent_findings.length === 0) {
+      // Root no longer collapses anything — clear pattern attribution
+      root.reconciler_pattern = null;
+      root.reconciler_specificity_score = null;
+    }
+    logHistory(root, 'decouple', { constituent: constituentId });
+    // Insert restored finding right after root
+    const rootIdx = state.findings.findIndex(x => x.id === rootFid);
+    state.findings.splice(rootIdx + 1, 0, restored);
+    persist();
+    renderDashboard();
+    if (document.getElementById('finding-drawer').classList.contains('open')) openDrawer(rootFid);
+    toast('Decoupled ' + constituentId + ' (logged to activity)');
+  }
+
+  // ============================================================
+  // S1-07 · EVIDENCE DRILL-DOWN (popover on citation click)
+  // ============================================================
+  function bindEvidencePopover() {
+    const pop = document.getElementById('evidence-popover');
+    if (!pop) return;
+    // Click anywhere outside the popover closes it
+    document.addEventListener('click', e => {
+      if (!pop.classList.contains('open')) return;
+      if (e.target.closest('#evidence-popover')) return;
+      if (e.target.closest('.finding-citation')) return; // citation click below handles open
+      pop.classList.remove('open');
+    });
+  }
+  function openEvidencePopover(citation, anchorEl) {
+    const pop = document.getElementById('evidence-popover');
+    if (!pop) return;
+    const entry = lookupReferenceEntry(citation);
+    const body = pop.querySelector('.popover-body');
+    body.innerHTML = entry
+      ? `<div class="popover-cite mono">${escapeHtml(citation)}</div>
+         <div class="popover-title">${escapeHtml(entry.title || '')}</div>
+         <div class="popover-text">${escapeHtml(entry.requirement || entry.text || '')}</div>
+         ${entry.common_omission ? `<div class="popover-row"><strong>Common omission:</strong> ${escapeHtml(entry.common_omission)}</div>` : ''}
+         ${entry.default_severity ? `<div class="popover-row"><strong>Default severity:</strong> ${escapeHtml(entry.default_severity)}</div>` : ''}
+         ${entry.source_file ? `<div class="popover-source mono">source: ${escapeHtml(entry.source_file)}</div>` : ''}`
+      : `<div class="popover-cite mono">${escapeHtml(citation)}</div>
+         <div class="popover-text muted">No matrix entry bundled with this build for this citation. Reference: shine-fs-review-v8/reference/.</div>`;
+    // Position the popover near the anchor
+    const r = anchorEl.getBoundingClientRect();
+    pop.style.top = (r.bottom + window.scrollY + 6) + 'px';
+    pop.style.left = Math.max(8, Math.min(r.left + window.scrollX, window.innerWidth - 380)) + 'px';
+    pop.classList.add('open');
+  }
+  function lookupReferenceEntry(citation) {
+    if (!window.SHINE_REFERENCE) return null;
+    return window.SHINE_REFERENCE[citation] || null;
+  }
+
+  // ============================================================
+  // S1-09 · PER-FINDING MATERIALITY AWARENESS
+  // ============================================================
+  function parseMonetaryAmount(text) {
+    if (!text) return null;
+    // Pattern: $ 412,400,000 OR $412.4M OR 142,300,000
+    const dollarRe = /\$?\s*([\d,]+(?:\.\d+)?)\s*([MK])?/g;
+    let best = 0;
+    let m;
+    while ((m = dollarRe.exec(text)) !== null) {
+      let v = parseFloat(m[1].replace(/,/g, ''));
+      if (isNaN(v)) continue;
+      if (m[2] === 'M') v *= 1e6;
+      else if (m[2] === 'K') v *= 1e3;
+      if (v > best) best = v;
+    }
+    return best > 0 ? best : null;
+  }
+  function materialityChipHtml(f) {
+    if (!state.review || !state.review.brief) return '';
+    if (f.finding_class !== 'tie_out_break') return '';
+    const text = (f.evidence && f.evidence.xlsx_proof) || f.subagentRaw || '';
+    const amt = parseMonetaryAmount(text);
+    if (!amt) return '';
+    const planning = state.review.brief.materiality_planning_value || 0;
+    const trivial = state.review.brief.clearly_trivial_value || 0;
+    if (planning <= 0) return '';
+    const pct = (amt / planning) * 100;
+    let cls = 'mat-low';
+    if (amt > planning) cls = 'mat-crit';
+    else if (amt > planning * 0.5) cls = 'mat-high';
+    else if (amt <= trivial) cls = 'mat-trivial';
+    return `<span class="mat-chip ${cls}" title="Tie-out value ${fmtMoney(amt)} vs planning materiality ${fmtMoney(planning)} (clearly trivial ≤ ${fmtMoney(trivial)})">${fmtMoney(amt)} · ${pct < 1 ? '<1' : pct.toFixed(0)}% mat</span>`;
+  }
+
+  // ============================================================
+  // S1-10 · DENSITY + STATEMENT NAV
+  // ============================================================
+  function applyDensity() {
+    document.documentElement.dataset.density = state.density;
+  }
+  function applySeverityIcons() {
+    document.documentElement.dataset.sevIcons = state.severityIcons ? 'on' : 'off';
+  }
+  function bindStatementNav() {
+    const rail = document.getElementById('statement-nav');
+    if (!rail) return;
+    rail.addEventListener('click', e => {
+      const a = e.target.closest('[data-anchor]');
+      if (!a) return;
+      const key = a.dataset.anchor;
+      const target = document.querySelector(`[data-statement-anchor="${CSS.escape(key)}"]`);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+  function renderStatementNav(groups) {
+    const rail = document.getElementById('statement-nav');
+    if (!rail) return;
+    if (state.groupMode !== 'statement' || !groups || groups.length === 0) {
+      rail.innerHTML = '';
+      rail.classList.remove('has-content');
+      return;
+    }
+    rail.classList.add('has-content');
+    rail.innerHTML = '<div class="nav-title">JUMP TO</div>' + groups.map(g => {
+      const counts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+      g.findings.forEach(f => counts[f.severity.impact]++);
+      const max = counts.CRITICAL > 0 ? 'crit' : counts.HIGH > 0 ? 'high' : counts.MEDIUM > 0 ? 'med' : 'low';
+      return `<button class="nav-row" data-anchor="${escapeHtml(g.label)}">
+        <span class="nav-row-label">${escapeHtml(g.label)}</span>
+        <span class="nav-row-count nav-row-${max}">${g.findings.length}</span>
+      </button>`;
+    }).join('');
+  }
+
+  // ============================================================
+  // S1-11 · POLISH BUNDLE — nav counters
+  // ============================================================
+  function updateNavCounters() {
+    const reviewsCount = (window.SHINE_SAMPLE && window.SHINE_SAMPLE.reviews_index || []).length;
+    document.querySelector('.nav-tab[data-view="reviews"]').dataset.count = reviewsCount;
+    if (state.review) {
+      const dashCount = state.findings.length;
+      const cov = Math.round((state.review.coverage.coverage_completeness_pct || 0) * 100);
+      document.querySelector('.nav-tab[data-view="dashboard"]').dataset.count = dashCount;
+      document.querySelector('.nav-tab[data-view="coverage"]').dataset.count = cov + '%';
+    } else {
+      document.querySelector('.nav-tab[data-view="dashboard"]').dataset.count = '';
+      document.querySelector('.nav-tab[data-view="coverage"]').dataset.count = '';
+    }
+  }
+
+  // ============================================================
+  // S1-12 · ONBOARDING TOUR
+  // ============================================================
+  function bindOnboarding() {
+    const helpBtn = document.getElementById('btn-help');
+    if (helpBtn) helpBtn.addEventListener('click', () => showHelpOverlay());
+  }
+
+  // ============================================================
+  // ACTIVITY VIEW (review-wide chronological log)
+  // ============================================================
+  function renderActivity() {
+    if (!state.review) return;
+    const el = document.getElementById('activity-feed');
+    if (!el) return;
+    const events = [];
+    state.findings.forEach(f => {
+      (f.history || []).forEach(h => events.push({ ...h, fid: f.id, section: f.section, statement: f.statement }));
+      (f.comments || []).forEach(c => events.push({ ts: c.ts, author: c.author, kind: 'comment', text: c.text, fid: f.id, section: f.section, statement: f.statement }));
+    });
+    events.sort((a, b) => b.ts - a.ts);
+    if (events.length === 0) {
+      el.innerHTML = '<div class="muted" style="padding:32px;text-align:center">No activity yet. Disposition findings or add comments to see them here.</div>';
+      return;
+    }
+    el.innerHTML = events.slice(0, 200).map(e => `
+      <div class="activity-row" data-fid="${escapeHtml(e.fid)}">
+        <span class="activity-ts mono">${formatTs(e.ts)}</span>
+        <span class="activity-kind activity-kind-${escapeHtml(e.kind)}">${escapeHtml(e.kind)}</span>
+        <span class="activity-fid mono">${escapeHtml(e.fid)}</span>
+        <span class="activity-text">${activityText(e)}</span>
+        <span class="activity-author muted">${escapeHtml(e.author || 'unknown')}</span>
+      </div>
+    `).join('');
+    el.querySelectorAll('.activity-row').forEach(row => {
+      row.addEventListener('click', () => { switchView('dashboard'); openDrawer(row.dataset.fid); });
+    });
+  }
+  function activityText(e) {
+    if (e.kind === 'disposition') return `${escapeHtml(e.from)} → <strong>${escapeHtml(e.to)}</strong>${e.bulk ? ' <em class="muted">(bulk)</em>' : ''}`;
+    if (e.kind === 'edit') return `edited finding text`;
+    if (e.kind === 'comment') return `<em>${escapeHtml((e.text || '').slice(0, 100))}${(e.text || '').length > 100 ? '…' : ''}</em>`;
+    if (e.kind === 'evergreen') return `marked evergreen <em class="muted">${escapeHtml(e.reason || '')}</em>`;
+    if (e.kind === 'decouple') return `decoupled ${escapeHtml(e.constituent || '')}`;
+    if (e.kind === 'restore') return `restored from ${escapeHtml(e.from || '')}`;
+    return escapeHtml(JSON.stringify(e));
+  }
+  function formatTs(ts) {
+    if (!ts) return '—';
+    const d = new Date(ts);
+    const pad = n => n < 10 ? '0' + n : n;
+    return `${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  // ============================================================
+  // S1-05 · COMMENT API
+  // ============================================================
+  function addComment(fid, text) {
+    const f = state.findings.find(x => x.id === fid);
+    if (!f) return;
+    if (!f.comments) f.comments = [];
+    const c = { id: 'c-' + Date.now().toString(36), author: state.author, ts: Date.now(), text };
+    f.comments.push(c);
+    persist();
+    if (document.getElementById('finding-drawer').classList.contains('open')) openDrawer(fid);
+    toast('Comment added');
+  }
+
+  // setGroupMode helper used by command palette + saved views
+  function setGroupMode(mode) {
+    state.groupMode = mode;
+    document.querySelectorAll('#group-mode .seg-opt').forEach(b => b.classList.toggle('active', b.dataset.group === mode));
+    if (state.review) renderFindings();
   }
 
   // ============================================================

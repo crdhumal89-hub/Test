@@ -41,14 +41,15 @@ const warnings = [];
   // ============================================
   await step('load reviews list', async () => {
     await page.goto(BASE + '/index.html', { waitUntil: 'networkidle' });
-    await page.waitForSelector('.review-card');
-    const cards = await page.$$('.review-card');
-    if (cards.length !== 3) throw new Error('expected 3 review cards, got ' + cards.length);
+    // Portfolio renders as table by default (rows have data-rid); cards mode uses .review-card.
+    await page.waitForSelector('[data-rid]');
+    const rows = await page.$$('[data-rid]');
+    if (rows.length !== 3) throw new Error('expected 3 review rows, got ' + rows.length);
     await shot('01-reviews-list');
   });
 
   await step('open primary review', async () => {
-    await page.click('.review-card[data-rid="AAA-COINV-A-FY2025-D1.1"]');
+    await page.click('[data-rid="AAA-COINV-A-FY2025-D1.1"]');
     await page.waitForSelector('.finding-card');
     const cards = await page.$$('.finding-card');
     if (cards.length === 0) throw new Error('no findings rendered');
@@ -188,8 +189,8 @@ const warnings = [];
     // Reset to seed (F-016 already DISCARDED = 1/16 = 6.25%).
     await page.evaluate(() => localStorage.clear());
     await page.reload({ waitUntil: 'domcontentloaded' });
-    await page.waitForSelector('.review-card');
-    await page.click('.review-card[data-rid="AAA-COINV-A-FY2025-D1.1"]');
+    await page.waitForSelector('[data-rid]');
+    await page.click('[data-rid="AAA-COINV-A-FY2025-D1.1"]');
     await page.waitForSelector('.finding-card');
     // Two background discards land below the 20% gate:
     //   F-009 → projected 2/16 = 12.5%
@@ -304,13 +305,216 @@ const warnings = [];
     // Reload nav to render the reviews list with the malicious entry
     await page.click('.nav-tab[data-view="reviews"]');
     await page.waitForTimeout(200);
-    await page.click('.review-card[data-rid="XSS-TEST"]');
+    // Portfolio renders as table by default; cards selector still works as fallback (cards mode)
+    await page.click('[data-rid="XSS-TEST"]');
     await page.waitForSelector('.finding-card[data-fid="F-001"]');
     await page.click('.finding-card[data-fid="F-001"]');
     await page.waitForSelector('.drawer.open');
     const xssTriggered = await page.evaluate(() => window.__xss === 1);
     if (xssTriggered) throw new Error('XSS payload executed — escaping is broken');
     await page.keyboard.press('Escape');
+  });
+
+  // ────────────────────────────────────────────────────────────
+  // SPRINT 1 — new feature coverage
+  // ────────────────────────────────────────────────────────────
+
+  await step('S1-08 portfolio table sorts by column', async () => {
+    // Reset to primary review for the remaining Sprint 1 tests
+    await page.evaluate(() => localStorage.clear());
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('.reviews-table tbody tr');
+    const before = await page.$$eval('.reviews-table tbody tr', rows => rows.map(r => r.dataset.rid));
+    // Sort by open_critical (asc) — should put zero-critical rows first
+    await page.click('th[data-sortcol="open_critical"]');
+    await page.waitForTimeout(120);
+    const after = await page.$$eval('.reviews-table tbody tr', rows => rows.map(r => r.dataset.rid));
+    if (before.join(',') === after.join(',')) throw new Error('table sort did not change order: ' + before.join(',') + ' vs ' + after.join(','));
+    await shot('s1-portfolio-sorted');
+  });
+
+  await step('S1-01 command palette opens and runs commands', async () => {
+    await page.click('[data-rid="AAA-COINV-A-FY2025-D1.1"]');
+    await page.waitForSelector('.finding-card');
+    await page.keyboard.press('Control+k');
+    await page.waitForTimeout(200);
+    const open = await page.evaluate(() => document.getElementById('cmd-palette').classList.contains('open'));
+    if (!open) throw new Error('palette did not open');
+    await shot('s1-palette');
+    await page.fill('#cmd-input', 'F-004');
+    await page.waitForTimeout(120);
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(200);
+    const drawerOpen = await page.evaluate(() => document.getElementById('finding-drawer').classList.contains('open'));
+    if (!drawerOpen) throw new Error('palette did not navigate to F-004');
+    const drawerFid = await page.$eval('#finding-drawer', d => d.dataset.fid);
+    if (drawerFid !== 'F-004') throw new Error('palette opened wrong finding: ' + drawerFid);
+    await page.keyboard.press('Escape');
+  });
+
+  await step('S1-02 help overlay opens with ?', async () => {
+    await page.keyboard.press('?');
+    await page.waitForTimeout(200);
+    const open = await page.evaluate(() => document.getElementById('help-overlay').classList.contains('open'));
+    if (!open) throw new Error('? did not open help');
+    await shot('s1-help');
+    await page.keyboard.press('Escape');
+  });
+
+  await step('S1-02 keyboard A accepts focused finding', async () => {
+    await page.keyboard.press('j'); // focus first
+    await page.waitForTimeout(100);
+    const focused = await page.evaluate(() => state => document.querySelector('.finding-card.is-focused')?.dataset.fid);
+    // Use a clean accept on F-006 (Organization MEDIUM OPEN); navigate to it
+    await page.evaluate(() => document.querySelector('.finding-card[data-fid="F-006"]')?.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(100);
+    // Focus F-006 by Tab/click then A; easier: programmatically set focus then key
+    await page.click('.finding-card[data-fid="F-006"]');
+    await page.waitForTimeout(80);
+    await page.keyboard.press('Escape'); // close drawer that just opened
+    await page.waitForTimeout(80);
+    await page.keyboard.press('a');
+    await page.waitForTimeout(120);
+    const stateChip = await page.$eval('.finding-card[data-fid="F-006"] .chip-state', el => el.textContent.trim());
+    if (stateChip !== 'ACCEPTED') throw new Error('A keyboard did not accept; state = ' + stateChip);
+    await page.keyboard.press('Control+z');
+    await page.waitForTimeout(120);
+  });
+
+  await step('S1-03 bulk selection bar appears on shift-click', async () => {
+    await page.click('.finding-card[data-fid="F-008"]', { modifiers: ['Control'] });
+    await page.click('.finding-card[data-fid="F-010"]', { modifiers: ['Shift'] });
+    await page.waitForTimeout(150);
+    const open = await page.evaluate(() => document.getElementById('selection-bar').classList.contains('open'));
+    if (!open) throw new Error('selection bar did not open');
+    const count = await page.$eval('#selection-bar .selection-count', el => el.textContent);
+    if (!/\d+ selected/.test(count)) throw new Error('selection count missing');
+    await shot('s1-selection-bar');
+    await page.click('[data-bulk="clear"]');
+    await page.waitForTimeout(120);
+  });
+
+  await step('S1-04 saved view applies filter', async () => {
+    await page.click('[data-view-id="view-my-open-critical"]');
+    await page.waitForTimeout(150);
+    const cards = await page.$$('.finding-card');
+    if (cards.length === 0) throw new Error('saved view returned zero findings');
+    // Should only show CRITICAL OPEN findings
+    const states = await page.$$eval('.finding-card .chip-state', els => els.map(e => e.textContent.trim()));
+    if (!states.every(s => s === 'OPEN' || s === 'ACCEPTED')) throw new Error('saved view shows non-OPEN findings: ' + states.join(','));
+    // Clear the view
+    await page.click('[data-severity="all"]');
+    await page.waitForTimeout(120);
+  });
+
+  await step('S1-05 comment add appears in drawer', async () => {
+    await page.click('.finding-card[data-fid="F-007"]');
+    await page.waitForSelector('.drawer.open');
+    await page.fill('#drawer-comment-text', 'Confirmed with PCAOB-inspected auditor on the affiliate question.');
+    await page.click('#drawer-add-comment');
+    await page.waitForTimeout(150);
+    // Drawer re-renders; check comment is visible
+    const commentText = await page.$$eval('.comment .comment-text', els => els.map(e => e.textContent));
+    if (!commentText.some(t => t.includes('PCAOB-inspected'))) throw new Error('comment not rendered after add');
+    await page.keyboard.press('Escape');
+  });
+
+  await step('S1-06 decouple persists across reload', async () => {
+    await page.click('.finding-card[data-fid="F-004"]');
+    await page.waitForSelector('.drawer.open');
+    // Click first decouple button
+    await page.click('[data-decouple="F-004a"]');
+    await page.waitForTimeout(200);
+    // The restored constituent F-004a should appear as a standalone finding
+    const restored = await page.$('.finding-card[data-fid="F-004a"]');
+    if (!restored) throw new Error('decoupled constituent not restored as standalone finding');
+    await shot('s1-decoupled');
+    // Reload page to verify persistence
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('.finding-card');
+    const restoredAfterReload = await page.$('.finding-card[data-fid="F-004a"]');
+    if (!restoredAfterReload) throw new Error('decoupled constituent did not persist across reload');
+  });
+
+  await step('S1-07 evidence popover opens on citation click', async () => {
+    // Ensure all filters cleared so F-004 is visible
+    await page.evaluate(() => {
+      document.querySelectorAll('#severity-filter [data-severity="all"]')[0]?.click();
+      document.querySelectorAll('#state-filter .pill.active').forEach(p => p.click());
+    });
+    await page.waitForTimeout(120);
+    await page.waitForSelector('.finding-card[data-fid="F-004"]');
+    const citation = await page.$('.finding-card[data-fid="F-004"] .finding-citation');
+    if (!citation) {
+      const html = await page.$eval('.finding-card[data-fid="F-004"]', el => el.outerHTML.slice(0, 500));
+      throw new Error('no citation chip on F-004 card; html prefix: ' + html);
+    }
+    await citation.click();
+    await page.waitForTimeout(200);
+    const open = await page.evaluate(() => document.getElementById('evidence-popover').classList.contains('open'));
+    if (!open) throw new Error('evidence popover did not open');
+    const txt = await page.$eval('#evidence-popover .popover-text', el => el.textContent);
+    if (!txt.includes('Level 3') && !txt.includes('reconciliation')) throw new Error('popover content missing for ASC 820-10-50-2c');
+    await shot('s1-evidence');
+    await page.keyboard.press('Escape');
+  });
+
+  await step('S1-09 materiality chip on tie-out break', async () => {
+    // Ensure no filter is hiding F-003
+    await page.evaluate(() => {
+      document.querySelector('#severity-filter [data-severity="all"]')?.click();
+      document.querySelectorAll('#state-filter .pill.active').forEach(p => p.click());
+    });
+    await page.waitForTimeout(150);
+    const card = await page.$('.finding-card[data-fid="F-003"]');
+    if (!card) throw new Error('F-003 card not in DOM');
+    const chip = await page.$('.finding-card[data-fid="F-003"] .mat-chip');
+    if (!chip) {
+      // Diagnostic: inspect state via page.evaluate
+      const diag = await page.evaluate(() => {
+        const f = (window.SHINE_SAMPLE.review.findings || []).find(x => x.id === 'F-003');
+        return f ? { fc: f.finding_class, xlsx: (f.evidence && f.evidence.xlsx_proof) ? f.evidence.xlsx_proof.slice(0, 100) : null, plan: window.SHINE_SAMPLE.review.brief.materiality_planning_value } : 'no F-003';
+      });
+      throw new Error('materiality chip not present on F-003; diag: ' + JSON.stringify(diag));
+    }
+    const txt = await chip.evaluate(el => el.textContent);
+    if (!/\$|%/.test(txt)) throw new Error('materiality chip text malformed: ' + txt);
+  });
+
+  await step('S1-10 statement nav rail rendered', async () => {
+    // The nav is rendered whenever groupMode === 'statement' AND there are findings.
+    // Force a clean state: clear filters and ensure group is 'statement'.
+    await page.evaluate(() => {
+      document.querySelector('#severity-filter [data-severity="all"]')?.click();
+      document.querySelectorAll('#state-filter .pill.active').forEach(p => p.click());
+      document.querySelector('#group-mode [data-group="statement"]')?.click();
+    });
+    await page.waitForTimeout(150);
+    const navRows = await page.$$('#statement-nav .nav-row');
+    if (navRows.length < 4) {
+      const dbg = await page.evaluate(() => ({
+        groupMode: document.querySelector('#group-mode .seg-opt.active')?.dataset.group,
+        nFindings: document.querySelectorAll('.finding-card').length,
+        navHTML: document.getElementById('statement-nav')?.innerHTML.slice(0, 200)
+      }));
+      throw new Error('statement nav rail has too few rows: ' + navRows.length + '; diag: ' + JSON.stringify(dbg));
+    }
+  });
+
+  await step('S1-11 nav-tab counters present', async () => {
+    const dashCount = await page.$eval('.nav-tab[data-view="dashboard"]', el => el.dataset.count);
+    if (!dashCount || Number(dashCount) < 1) throw new Error('dashboard counter missing: ' + dashCount);
+  });
+
+  await step('Activity view shows entries', async () => {
+    await page.click('.nav-tab[data-view="activity"]');
+    await page.waitForTimeout(200);
+    const rows = await page.$$('.activity-row');
+    // At minimum, the decouple from S1-06 should be there
+    if (rows.length === 0) throw new Error('activity view has zero rows');
+    await shot('s1-activity');
+    await page.click('.nav-tab[data-view="dashboard"]');
+    await page.waitForTimeout(150);
   });
 
   await step('PDF export — audit', async () => {
