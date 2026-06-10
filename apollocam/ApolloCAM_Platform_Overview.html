@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApolloCAM — Fund Cash Management Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Tokens ─────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F2744; --navy2:#1E3A5F; --navy3:#2D5A8E;
+  --green:#007D55; --gold:#C9A227;
+  --s-red:#DC2626; --s-amber:#D97706; --s-green:#16A34A; --s-blue:#2563EB;
+  --s-red-bg:#FEF2F2; --s-amber-bg:#FFFBEB; --s-green-bg:#F0FDF4; --s-blue-bg:#EFF6FF;
+  --g50:#F8FAFC; --g100:#F1F5F9; --g200:#E2E8F0; --g300:#CBD5E1;
+  --g400:#94A3B8; --g500:#64748B; --g700:#334155; --g900:#0F172A;
+  --white:#FFFFFF;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --sh-sm:0 1px 4px rgba(0,0,0,.07);
+  --sh:0 4px 20px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --sh-lg:0 16px 48px rgba(0,0,0,.10),0 4px 16px rgba(0,0,0,.06);
+  --r:14px; --r-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--g50);color:var(--g900);line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* ── Typography ─────────────────────────────────────────────────────────── */
+h1{font-size:2.8rem;font-weight:900;line-height:1.15;letter-spacing:-0.04em}
+h2{font-size:1.8rem;font-weight:800;letter-spacing:-0.03em}
+h3{font-size:1.15rem;font-weight:700;letter-spacing:-0.01em}
+h4{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g500)}
+p{color:var(--g700);font-size:.95rem;line-height:1.75}
+.eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--gold)}
+
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+.container{max-width:1180px;margin:0 auto;padding:0 2rem}
+.section{padding:5rem 0}
+.section-sm{padding:3rem 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* ── Header / Hero ──────────────────────────────────────────────────────── */
+.site-header{
+  background:var(--navy);
+  padding:.85rem 0;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 12px rgba(0,0,0,.25)
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:.75rem}
+.logo-mark{
+  width:36px;height:36px;background:var(--gold);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1rem;color:var(--navy);letter-spacing:-.03em
+}
+.logo-text{color:var(--white);font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+.logo-sub{color:rgba(255,255,255,.45);font-size:.75rem;font-weight:400}
+.header-badge{
+  background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.35);
+  color:var(--gold);padding:.25rem .75rem;border-radius:50px;
+  font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em
+}
+
+/* ── Hero Section ───────────────────────────────────────────────────────── */
+.hero{
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 60%, #1a4a7a 100%);
+  padding:5.5rem 0 4.5rem;position:relative;overflow:hidden
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 70% 40%, rgba(45,90,142,.6) 0%, transparent 70%);
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:linear-gradient(to top, var(--g50), transparent)
+}
+.hero-inner{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 2rem}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.3);
+  color:var(--gold);padding:.3rem 1rem;border-radius:50px;
+  font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  margin-bottom:1.5rem
+}
+.hero-eyebrow span{width:6px;height:6px;background:var(--gold);border-radius:50%;display:inline-block}
+.hero h1{color:var(--white);max-width:700px;margin-bottom:1.25rem}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero-lead{color:rgba(255,255,255,.75);font-size:1.1rem;max-width:580px;margin-bottom:3rem;line-height:1.75}
+.hero-stats{display:flex;gap:3rem;flex-wrap:wrap}
+.hero-stat-val{font-size:2.4rem;font-weight:900;color:var(--white);line-height:1;letter-spacing:-.04em}
+.hero-stat-val sup{font-size:1.2rem;vertical-align:super}
+.hero-stat-label{color:rgba(255,255,255,.55);font-size:.78rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+
+/* ── Tab Navigation ─────────────────────────────────────────────────────── */
+.tab-nav{
+  background:var(--white);
+  border-bottom:2px solid var(--g200);
+  position:sticky;top:66px;z-index:90;
+  box-shadow:var(--sh-sm)
+}
+.tab-nav-inner{display:flex;gap:0;overflow-x:auto}
+.tab-btn{
+  padding:1.1rem 1.75rem;font-size:.88rem;font-weight:600;
+  color:var(--g500);border:none;background:transparent;cursor:pointer;
+  border-bottom:3px solid transparent;margin-bottom:-2px;
+  transition:all .2s;white-space:nowrap;letter-spacing:-.01em
+}
+.tab-btn:hover{color:var(--navy2)}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--gold)}
+
+/* ── Cards ──────────────────────────────────────────────────────────────── */
+.card{
+  background:var(--white);border-radius:var(--r);
+  box-shadow:var(--sh);padding:1.75rem;
+  border:1px solid var(--g200)
+}
+.card-navy{background:var(--navy);border-color:transparent;color:var(--white)}
+.card-navy p,.card-navy .eyebrow{color:rgba(255,255,255,.65)}
+.card-navy h3{color:var(--white)}
+.card-sm{padding:1.25rem}
+
+/* ── Status Badges ──────────────────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .7rem;border-radius:50px;font-size:.75rem;font-weight:700;letter-spacing:.04em}
+.badge-red{background:var(--s-red-bg);color:var(--s-red)}
+.badge-amber{background:var(--s-amber-bg);color:var(--s-amber)}
+.badge-green{background:var(--s-green-bg);color:var(--s-green)}
+.badge-blue{background:var(--s-blue-bg);color:var(--s-blue)}
+.badge-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.badge-red .badge-dot{background:var(--s-red)}
+.badge-amber .badge-dot{background:var(--s-amber)}
+.badge-green .badge-dot{background:var(--s-green)}
+.badge-blue .badge-dot{background:var(--s-blue)}
+
+/* ── Section Dividers ────────────────────────────────────────────────────── */
+.section-header{margin-bottom:3rem}
+.section-header h4{margin-bottom:.5rem}
+.section-header h2{margin-bottom:.75rem}
+.section-header p{max-width:560px;color:var(--g500)}
+hr.thin{border:none;border-top:1px solid var(--g200);margin:2.5rem 0}
+
+/* ── Architecture Diagram ────────────────────────────────────────────────── */
+.arch-diagram{
+  background:var(--white);border-radius:var(--r);
+  border:1px solid var(--g200);box-shadow:var(--sh);
+  padding:2.5rem;overflow-x:auto
+}
+.arch-row{display:flex;align-items:flex-start;justify-content:center;gap:0;margin:0}
+.arch-col{display:flex;flex-direction:column;align-items:center;min-width:160px;flex:1}
+.arch-col-label{
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--g500);background:var(--g100);border:1px solid var(--g200);
+  padding:.3rem .9rem;border-radius:50px;margin-bottom:1.25rem;white-space:nowrap
+}
+.arch-box{
+  background:var(--g50);border:1.5px solid var(--g200);border-radius:var(--r-sm);
+  padding:.6rem .9rem;font-size:.8rem;font-weight:600;color:var(--g700);
+  text-align:center;margin-bottom:.5rem;width:140px;
+  transition:all .2s;cursor:default
+}
+.arch-box:hover{border-color:var(--navy3);color:var(--navy);background:var(--white);box-shadow:var(--sh-sm)}
+.arch-box.primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.arch-box.primary:hover{background:var(--navy2)}
+.arch-box.accent{background:rgba(0,125,85,.08);border-color:rgba(0,125,85,.3);color:var(--green)}
+.arch-box.gold{background:rgba(201,162,39,.08);border-color:rgba(201,162,39,.4);color:var(--gold)}
+.arch-arrow{
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--g400);padding:0 .5rem;align-self:stretch;
+  position:relative;min-width:36px
+}
+.arch-arrow::before{
+  content:'';position:absolute;top:50%;left:0;right:0;height:1.5px;
+  background:var(--g300);transform:translateY(-50%)
+}
+.arch-arrow-txt{
+  background:var(--g50);padding:0 .3rem;position:relative;z-index:1;
+  font-size:.6rem;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.06em
+}
+
+/* ── Step Cards ──────────────────────────────────────────────────────────── */
+.step-list{display:flex;flex-direction:column;gap:1rem}
+.step-item{
+  display:flex;gap:1.25rem;align-items:flex-start;
+  background:var(--white);border:1px solid var(--g200);
+  border-radius:var(--r-sm);padding:1.25rem 1.5rem;
+  transition:all .2s;
+}
+.step-item:hover{box-shadow:var(--sh);border-color:var(--g300)}
+.step-num{
+  min-width:34px;height:34px;border-radius:50%;
+  background:var(--navy);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:800;flex-shrink:0;letter-spacing:-.02em
+}
+.step-body h3{font-size:.95rem;margin-bottom:.25rem}
+.step-body p{font-size:.85rem;color:var(--g500);line-height:1.65;margin:0}
+.step-note{
+  display:inline-block;background:var(--g100);border:1px solid var(--g200);
+  border-radius:var(--r-sm);padding:.3rem .75rem;
+  font-size:.75rem;color:var(--g600);margin-top:.5rem;font-weight:500
+}
+
+/* ── Status Model ─────────────────────────────────────────────────────────── */
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+@media(max-width:800px){.status-row{grid-template-columns:1fr 1fr}}
+.status-card{border-radius:var(--r-sm);padding:1.4rem;border:1.5px solid}
+.status-card.red{background:var(--s-red-bg);border-color:#FECACA}
+.status-card.amber{background:var(--s-amber-bg);border-color:#FDE68A}
+.status-card.green{background:var(--s-green-bg);border-color:#BBF7D0}
+.status-card.blue{background:var(--s-blue-bg);border-color:#BFDBFE}
+.status-card h3{font-size:1.1rem;margin-bottom:.4rem}
+.status-card.red h3{color:var(--s-red)}
+.status-card.amber h3{color:var(--s-amber)}
+.status-card.green h3{color:var(--s-green)}
+.status-card.blue h3{color:var(--s-blue)}
+.status-card p{font-size:.82rem;line-height:1.65;color:var(--g700);margin:0}
+.status-formula{font-size:.73rem;font-family:monospace;background:rgba(0,0,0,.05);padding:.2rem .5rem;border-radius:4px;display:inline-block;margin-top:.5rem}
+
+/* ── Capability Grid ─────────────────────────────────────────────────────── */
+.cap-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:.9rem;flex-shrink:0
+}
+.cap-navy{background:rgba(15,39,76,.08)}
+.cap-green{background:rgba(0,125,85,.1)}
+.cap-gold{background:rgba(201,162,39,.12)}
+.cap-blue{background:rgba(37,99,235,.08)}
+
+/* ── Page Modules ─────────────────────────────────────────────────────────── */
+.module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media(max-width:900px){.module-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.module-grid{grid-template-columns:1fr}}
+.module-card{
+  background:var(--white);border:1px solid var(--g200);
+  border-radius:var(--r-sm);padding:1.25rem;
+  transition:all .2s;
+}
+.module-card:hover{box-shadow:var(--sh);border-color:var(--navy3)}
+.module-num{
+  font-size:.68rem;font-weight:800;color:var(--g400);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem
+}
+.module-card h3{font-size:.9rem;margin-bottom:.35rem}
+.module-card p{font-size:.8rem;color:var(--g500);margin:0;line-height:1.6}
+.module-tag{
+  display:inline-block;font-size:.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.07em;padding:.15rem .5rem;
+  border-radius:4px;margin-top:.6rem
+}
+.tag-data{background:#EFF6FF;color:#2563EB}
+.tag-action{background:#F0FDF4;color:#16A34A}
+.tag-admin{background:#FFF7ED;color:#EA580C}
+.tag-output{background:#F8FAFC;color:#475569}
+
+/* ── Instruction Blocks ──────────────────────────────────────────────────── */
+.prereq-list{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.prereq-list li{
+  display:flex;align-items:flex-start;gap:.75rem;
+  font-size:.88rem;color:var(--g700);
+}
+.prereq-list li::before{
+  content:'✓';color:var(--green);font-weight:800;font-size:.8rem;
+  background:var(--s-green-bg);width:20px;height:20px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05rem
+}
+.code-block{
+  background:var(--g900);border-radius:var(--r-sm);padding:1.1rem 1.4rem;
+  font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.82rem;
+  color:#E2E8F0;margin:.75rem 0;line-height:1.8;overflow-x:auto
+}
+.code-block .cmd{color:#7DD3FC}
+.code-block .comment{color:#94A3B8}
+.code-block .path{color:#86EFAC}
+.inline-code{
+  background:var(--g100);border:1px solid var(--g200);
+  border-radius:4px;padding:.1rem .4rem;font-family:monospace;font-size:.83em;color:var(--g700)
+}
+.tip-box{
+  background:linear-gradient(135deg,rgba(0,125,85,.06),rgba(0,125,85,.03));
+  border:1px solid rgba(0,125,85,.2);border-left:4px solid var(--green);
+  border-radius:var(--r-sm);padding:1rem 1.25rem;margin:1rem 0
+}
+.tip-box strong{color:var(--green);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:.35rem}
+.tip-box p{font-size:.85rem;margin:0;color:var(--g700)}
+.warn-box{
+  background:rgba(217,119,6,.05);border:1px solid rgba(217,119,6,.2);
+  border-left:4px solid var(--s-amber);
+  border-radius:var(--r-sm);padding:1rem 1.25rem;margin:1rem 0
+}
+.warn-box strong{color:var(--s-amber);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:.35rem}
+.warn-box p{font-size:.85rem;margin:0;color:var(--g700)}
+
+/* ── Wire Flow Diagram ───────────────────────────────────────────────────── */
+.wire-flow{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin:1.25rem 0}
+.wire-node{
+  background:var(--g50);border:1.5px solid var(--g200);
+  border-radius:var(--r-sm);padding:.6rem 1rem;
+  font-size:.82rem;font-weight:600;color:var(--g700);
+  text-align:center;min-width:120px
+}
+.wire-node.source{border-color:rgba(0,125,85,.4);background:rgba(0,125,85,.06);color:var(--green)}
+.wire-node.deficit{border-color:rgba(220,38,38,.35);background:var(--s-red-bg);color:var(--s-red)}
+.wire-connector{color:var(--g400);font-size:1.1rem;font-weight:300}
+.wire-amount{
+  background:var(--navy);color:var(--white);
+  font-size:.75rem;font-weight:700;padding:.2rem .6rem;border-radius:50px
+}
+
+/* ── KPI Strip ───────────────────────────────────────────────────────────── */
+.kpi-strip{
+  background:var(--white);border-radius:var(--r);border:1px solid var(--g200);
+  box-shadow:var(--sh);padding:2rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0
+}
+.kpi-item{
+  text-align:center;padding:0 1.5rem;
+  border-right:1px solid var(--g200)
+}
+.kpi-item:last-child{border-right:none}
+.kpi-val{font-size:2.6rem;font-weight:900;letter-spacing:-.05em;color:var(--navy);line-height:1}
+.kpi-val sup{font-size:1.3rem;vertical-align:super}
+.kpi-label{font-size:.75rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.08em;margin-top:.4rem}
+@media(max-width:700px){.kpi-strip{grid-template-columns:1fr 1fr}.kpi-item:nth-child(2){border-right:none}.kpi-item:nth-child(3){border-top:1px solid var(--g200)}.kpi-item:nth-child(4){border-top:1px solid var(--g200)}}
+
+/* ── Tabs Content ─────────────────────────────────────────────────────────── */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer{background:var(--navy);padding:2.5rem 0;margin-top:0}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer p{color:rgba(255,255,255,.4);font-size:.78rem;margin:0}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{color:rgba(255,255,255,.4);font-size:.78rem;text-decoration:none}
+.footer-links a:hover{color:var(--gold)}
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .45s ease both}
+.tab-panel.active .card,.tab-panel.active .step-item,.tab-panel.active .module-card{
+  animation:fadeUp .4s ease both
+}
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+.data-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.data-table th{background:var(--navy);color:var(--white);padding:.65rem 1rem;text-align:left;font-weight:600;font-size:.78rem;letter-spacing:.04em}
+.data-table td{padding:.6rem 1rem;border-bottom:1px solid var(--g200);color:var(--g700)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--g50)}
+
+/* ── Kanban ──────────────────────────────────────────────────────────────── */
+.kanban{display:flex;gap:1rem;overflow-x:auto;padding-bottom:.5rem}
+.kanban-col{
+  min-width:160px;flex:1;background:var(--g100);
+  border-radius:var(--r-sm);padding:1rem;border:1px solid var(--g200)
+}
+.kanban-col-hdr{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g500);margin-bottom:.75rem;text-align:center}
+.kanban-card{
+  background:var(--white);border:1px solid var(--g200);
+  border-radius:var(--r-sm);padding:.75rem;font-size:.78rem;
+  color:var(--g700);margin-bottom:.5rem;box-shadow:var(--sh-sm)
+}
+.kanban-card:last-child{margin-bottom:0}
+.kanban-card strong{display:block;font-size:.8rem;color:var(--g900)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ SITE HEADER ══ -->
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="logo">
+      <div class="logo-mark">AC</div>
+      <div>
+        <div class="logo-text">ApolloCAM</div>
+        <div class="logo-sub">Cash Automation &amp; Management</div>
+      </div>
+    </div>
+    <div class="header-badge">Phase 2 — Production Ready</div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════ HERO ════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span>Apollo Global Management · Mumbai · Fund Controllership</div>
+    <h1>Automate <em>every</em> step of<br>daily cash management</h1>
+    <p class="hero-lead">
+      ApolloCAM eliminates manual Excel work across 11 AAA funds — from importing JPMorgan position files to generating IVP wire loaders — all in under 5 minutes per day.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val">11</div>
+        <div class="hero-stat-label">AAA Funds Managed</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">$25<sup>B+</sup></div>
+        <div class="hero-stat-label">Complex AUM Covered</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">&lt;5<sup>min</sup></div>
+        <div class="hero-stat-label">Daily Run Time</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">100<sup>%</sup></div>
+        <div class="hero-stat-label">EY-Auditable Trail</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ TAB NAV ════ -->
+<nav class="tab-nav">
+  <div class="container tab-nav-inner">
+    <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
+    <button class="tab-btn" onclick="switchTab('workflow', this)">How It Works</button>
+    <button class="tab-btn" onclick="switchTab('instructions', this)">How to Run</button>
+    <button class="tab-btn" onclick="switchTab('modules', this)">All Modules</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════ TAB: OVERVIEW ══════ -->
+<div id="tab-overview" class="tab-panel active">
+  <div class="container">
+
+    <!-- KPI Strip -->
+    <div style="padding:3rem 0 0">
+      <div class="kpi-strip">
+        <div class="kpi-item">
+          <div class="kpi-val">9</div>
+          <div class="kpi-label">App Pages</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">3</div>
+          <div class="kpi-label">Loader File Types</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">14</div>
+          <div class="kpi-label">Day Cash Forecast</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">0</div>
+          <div class="kpi-label">Manual Excel Steps</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem Statement -->
+    <div class="section-sm">
+      <div class="grid-2" style="align-items:center;gap:4rem">
+        <div>
+          <div class="section-header">
+            <h4>The Problem</h4>
+            <h2>Daily cash management was entirely manual</h2>
+            <p>Every morning, the fund controller at Apollo Mumbai would open a JPMorgan statement, copy 50+ balances into Excel, manually check each fund against floor thresholds, calculate wire amounts on a calculator, type SWIFT details by hand, and email a digest. One error could mean a fund going overdrawn.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="display:flex;align-items:center;gap:.75rem;font-size:.9rem;color:var(--g700)">
+              <span style="color:var(--s-red);font-size:1.1rem">✗</span>
+              <span>45–60 minutes of manual data entry every morning</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem;font-size:.9rem;color:var(--g700)">
+              <span style="color:var(--s-red);font-size:1.1rem">✗</span>
+              <span>Wire proposals typed manually into SWIFT templates</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem;font-size:.9rem;color:var(--g700)">
+              <span style="color:var(--s-red);font-size:1.1rem">✗</span>
+              <span>No audit trail for EY — calculations invisible in email threads</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem;font-size:.9rem;color:var(--g700)">
+              <span style="color:var(--s-red);font-size:1.1rem">✗</span>
+              <span>FX conversion for EUR/GBP accounts done manually</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card card-navy">
+            <div class="eyebrow" style="margin-bottom:1rem">The ApolloCAM Solution</div>
+            <div style="display:flex;flex-direction:column;gap:.9rem">
+              <div style="display:flex;align-items:flex-start;gap:.75rem">
+                <span style="color:var(--gold);font-size:1.1rem;margin-top:.1rem">✓</span>
+                <div><strong style="color:var(--white);font-size:.9rem">One-click import</strong><br><span style="color:rgba(255,255,255,.55);font-size:.83rem">Drag-drop JPM file → positions loaded in seconds</span></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:.75rem">
+                <span style="color:var(--gold);font-size:1.1rem;margin-top:.1rem">✓</span>
+                <div><strong style="color:var(--white);font-size:.9rem">Automatic RED/AMBER detection</strong><br><span style="color:rgba(255,255,255,.55);font-size:.83rem">11 funds assessed and colour-coded in real time</span></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:.75rem">
+                <span style="color:var(--gold);font-size:1.1rem;margin-top:.1rem">✓</span>
+                <div><strong style="color:var(--white);font-size:.9rem">Wire proposals generated instantly</strong><br><span style="color:rgba(255,255,255,.55);font-size:.83rem">Sorted by deficit, respecting fund routing rules</span></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:.75rem">
+                <span style="color:var(--gold);font-size:1.1rem;margin-top:.1rem">✓</span>
+                <div><strong style="color:var(--white);font-size:.9rem">IVP loader files auto-built</strong><br><span style="color:rgba(255,255,255,.55);font-size:.83rem">With SSI details, references, and batch IDs populated</span></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:.75rem">
+                <span style="color:var(--gold);font-size:1.1rem;margin-top:.1rem">✓</span>
+                <div><strong style="color:var(--white);font-size:.9rem">Immutable audit log</strong><br><span style="color:rgba(255,255,255,.55);font-size:.83rem">Every action timestamped, EY-reviewable</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="thin">
+
+    <!-- Architecture Diagram -->
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>System Architecture</h4>
+        <h2>Three-layer platform design</h2>
+        <p>Data flows from JPMorgan through the processing engine to IVP and trade systems — fully automated, fully auditable.</p>
+      </div>
+
+      <div class="arch-diagram">
+        <!-- Row 1: Labels -->
+        <div style="display:grid;grid-template-columns:200px 60px 200px 60px 200px 60px 200px;gap:0;align-items:center;margin-bottom:1.5rem">
+          <div style="text-align:center"><span class="arch-col-label">Data Sources</span></div>
+          <div></div>
+          <div style="text-align:center"><span class="arch-col-label">Core Engine</span></div>
+          <div></div>
+          <div style="text-align:center"><span class="arch-col-label">User Interface</span></div>
+          <div></div>
+          <div style="text-align:center"><span class="arch-col-label">Output Files</span></div>
+        </div>
+
+        <!-- Row 2: Nodes -->
+        <div style="display:grid;grid-template-columns:200px 60px 200px 60px 200px 60px 200px;gap:0;align-items:center">
+          <!-- Col 1: Sources -->
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="arch-box">📄 JPM Position File<br><small style="color:var(--g400);font-weight:400">CSV / Excel</small></div>
+            <div class="arch-box">💱 FX Rates<br><small style="color:var(--g400);font-weight:400">EUR, GBP → USD</small></div>
+            <div class="arch-box">🏦 Fund Master<br><small style="color:var(--g400);font-weight:400">11 AAA Funds</small></div>
+            <div class="arch-box">📆 Pipeline Events<br><small style="color:var(--g400);font-weight:400">Calls &amp; Distros</small></div>
+          </div>
+          <!-- Arrow 1 -->
+          <div class="arch-arrow"><span class="arch-arrow-txt">→</span></div>
+          <!-- Col 2: Engine -->
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="arch-box primary">⚙️ Status Engine<br><small style="opacity:.65;font-weight:400">RED/AMBER/GREEN/BLUE</small></div>
+            <div class="arch-box primary">📊 Wire Proposals<br><small style="opacity:.65;font-weight:400">Deficit → Source</small></div>
+            <div class="arch-box primary">💱 FX Conversion<br><small style="opacity:.65;font-weight:400">Spot sell proposals</small></div>
+            <div class="arch-box primary">📈 14-Day Forecast<br><small style="opacity:.65;font-weight:400">Pipeline projection</small></div>
+          </div>
+          <!-- Arrow 2 -->
+          <div class="arch-arrow"><span class="arch-arrow-txt">→</span></div>
+          <!-- Col 3: UI -->
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="arch-box accent">🏠 Dashboard</div>
+            <div class="arch-box accent">⚡ Proposals</div>
+            <div class="arch-box accent">🔍 Status Review</div>
+            <div class="arch-box accent">🔮 Forecast</div>
+          </div>
+          <!-- Arrow 3 -->
+          <div class="arch-arrow"><span class="arch-arrow-txt">→</span></div>
+          <!-- Col 4: Outputs -->
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="arch-box gold">📤 IVP Wire Loader<br><small style="color:rgba(201,162,39,.7);font-weight:400">.xlsx · 14 cols</small></div>
+            <div class="arch-box gold">📋 Trade Booking<br><small style="color:rgba(201,162,39,.7);font-weight:400">.csv · 12 cols</small></div>
+            <div class="arch-box gold">💵 Spot FX Loader<br><small style="color:rgba(201,162,39,.7);font-weight:400">.xlsx · 11 cols</small></div>
+            <div class="arch-box gold">📧 Email Alerts<br><small style="color:rgba(201,162,39,.7);font-weight:400">RED alerts + digest</small></div>
+          </div>
+        </div>
+
+        <!-- DB layer -->
+        <div style="margin-top:1.75rem;padding-top:1.5rem;border-top:1px dashed var(--g300);text-align:center">
+          <span class="arch-col-label" style="margin-bottom:.75rem;display:inline-block">Persistent Store</span>
+          <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
+            <div class="arch-box" style="width:auto;padding:.5rem 1rem">🗄️ SQLite Database</div>
+            <div class="arch-box" style="width:auto;padding:.5rem 1rem">🔒 Immutable Audit Log</div>
+            <div class="arch-box" style="width:auto;padding:.5rem 1rem">📅 Holiday Calendar</div>
+            <div class="arch-box" style="width:auto;padding:.5rem 1rem">⚙️ App Settings</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capabilities Grid -->
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Core Capabilities</h4>
+        <h2>Everything the controller needs, nothing extra</h2>
+      </div>
+      <div class="grid-4">
+        <div class="card card-sm">
+          <div class="cap-icon cap-navy">🎯</div>
+          <h3>4-Colour Status</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">Every fund gets RED / AMBER / GREEN / BLUE based on cash vs floor and ceiling thresholds. Matches the validated Excel model exactly.</p>
+        </div>
+        <div class="card card-sm">
+          <div class="cap-icon cap-green">⚡</div>
+          <h3>Wire Proposals</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">Automatically ranks RED funds by deficit size, finds the correct source fund, and calculates the exact wire amount — no manual maths.</p>
+        </div>
+        <div class="card card-sm">
+          <div class="cap-icon cap-gold">💱</div>
+          <h3>FX Conversion</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">Converts EUR and GBP balances to USD using live rates from the FX table. Spot sell proposals generated for excess non-USD holdings.</p>
+        </div>
+        <div class="card card-sm">
+          <div class="cap-icon cap-blue">🔮</div>
+          <h3>14-Day Forecast</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">Upload the JPM pipeline file and see projected cash for every fund up to two weeks out, with "days until RED" alerts.</p>
+        </div>
+        <div class="card card-sm">
+          <div class="cap-icon cap-navy">📤</div>
+          <h3>Loader Files</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">One click generates three ready-to-submit files: IVP wire loader, trade booking CSV, and spot FX loader — with SSI details pre-filled.</p>
+        </div>
+        <div class="card card-sm">
+          <div class="cap-icon cap-green">🔗</div>
+          <h3>Wire Tracker</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">Kanban board tracks each wire from PROPOSED → APPROVED → SUBMITTED → CONFIRMED. Never lose a wire in the approval chain.</p>
+        </div>
+        <div class="card card-sm">
+          <div class="cap-icon cap-gold">📋</div>
+          <h3>Audit Log</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">Every action is timestamped and stored in an immutable SQLite table — protected by database-level triggers. EY can review directly.</p>
+        </div>
+        <div class="card card-sm">
+          <div class="cap-icon cap-blue">📧</div>
+          <h3>Email Alerts</h3>
+          <p style="font-size:.83rem;margin-top:.35rem">Background daemon sends RED fund alerts (de-duplicated — one per fund per day) and a daily digest to the distribution list.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</div><!-- /tab-overview -->
+
+<!-- ═══════════════════════════════════════════ TAB: HOW IT WORKS ════ -->
+<div id="tab-workflow" class="tab-panel">
+  <div class="container">
+
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Daily Workflow</h4>
+        <h2>8 steps, fully guided by the app</h2>
+        <p>From opening the laptop to submitting wires to IVP — the entire morning routine, in order.</p>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Open ApolloCAM in your browser</h3>
+            <p>Run <span class="inline-code">streamlit run app.py</span> from the apollocam folder. The app opens at <span class="inline-code">http://localhost:8501</span>. The Dashboard loads and shows the last known positions.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>Import today's JPM position file</h3>
+            <p>Navigate to <strong>Import Data</strong>. Drag the JPMorgan daily statement (CSV or Excel). The app detects column names automatically — even if JPM changes the column order. Validates fund codes against the master and shows a preview before committing.</p>
+            <span class="step-note">ℹ️ Supports any JPM column naming convention — 20+ alias mappings built in</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Check the Dashboard for alerts</h3>
+            <p>Return to the <strong>Dashboard</strong>. The KPI strip shows RED / AMBER counts at a glance. Any RED fund triggers an alert banner with fund name and deficit amount. The 11-fund grid is colour-coded — no reading required.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>Review fund details on Status Review</h3>
+            <p>The <strong>Status Review</strong> page shows a full table with every fund's cash balance, floor, ceiling, and surplus/deficit. Filter by status, sort by priority or cash amount, and export as CSV for records.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <h3>Run Proposals and approve wires</h3>
+            <p>Navigate to <strong>Proposals</strong>. Click <em>Run Proposals</em> — the engine calculates which RED funds need wires, identifies the source fund, and computes the exact amount. Each proposal shows a before/after balance preview. Select APPROVE, SKIP, or HOLD per proposal, or click <em>Approve All Wires</em> for one-click sign-off.</p>
+            <span class="step-note">💡 FX conversion proposals appear below wire proposals — same approve/skip workflow</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">06</div>
+          <div class="step-body">
+            <h3>Generate loader files</h3>
+            <p>Navigate to <strong>Loaders</strong>. Click <em>Generate All Loaders</em>. Three files are built instantly with all SSI details, batch IDs, and references pre-populated. Download individually or as a ZIP. Each file shows an SHA-256 hash for integrity verification.</p>
+            <span class="step-note">📁 Files: IVP_B20260601-001.xlsx · Trade_B20260601-001.csv · SpotFX_B20260601-001.xlsx</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">07</div>
+          <div class="step-body">
+            <h3>Submit to IVP and update wire status</h3>
+            <p>Upload the IVP loader file to the IVP platform as usual. Then return to the <strong>Wire Status</strong> page and advance each wire from LOADER_GENERATED → SUBMITTED. When confirmations arrive, enter the confirmation reference and mark CONFIRMED.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">08</div>
+          <div class="step-body">
+            <h3>Review Audit Log (EY requirement)</h3>
+            <p>The <strong>Audit Log</strong> records every import, approval, override, and loader generation — immutably. Filter by date or action type. Export filtered results as CSV for EY review. No one can delete or modify entries — enforced at the database level.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="thin">
+
+    <!-- Status Model -->
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Status Model</h4>
+        <h2>Four colours. One look. Instant decision.</h2>
+        <p>Every fund is assessed against two thresholds: a floor (minimum safe cash) and a ceiling (maximum before BLUE alert). The AMBER buffer (default 110% of floor) gives an early warning zone.</p>
+      </div>
+
+      <div class="status-row">
+        <div class="status-card red">
+          <h3>🔴 RED</h3>
+          <p>Fund cash is below the minimum floor. A wire transfer is needed today. Immediately triggers a proposal and an email alert.</p>
+          <div class="status-formula">cash &lt; floor</div>
+        </div>
+        <div class="status-card amber">
+          <h3>🟡 AMBER</h3>
+          <p>Cash is above floor but below the early-warning threshold. Not critical yet, but worth watching — particularly if pipeline calls are expected.</p>
+          <div class="status-formula">floor ≤ cash &lt; floor × 1.10</div>
+        </div>
+        <div class="status-card green">
+          <h3>🟢 GREEN</h3>
+          <p>Cash is in the healthy operating band — above the AMBER threshold and below the ceiling. No action required.</p>
+          <div class="status-formula">floor × 1.10 ≤ cash ≤ ceiling</div>
+        </div>
+        <div class="status-card blue">
+          <h3>🔵 BLUE</h3>
+          <p>Cash exceeds the ceiling. The fund is over-capitalised and may be a candidate to source wires for RED funds elsewhere in the complex.</p>
+          <div class="status-formula">cash &gt; ceiling</div>
+        </div>
+      </div>
+
+      <!-- June 2026 example -->
+      <div class="card" style="margin-top:1.5rem">
+        <h4 style="margin-bottom:1rem">Example — June 2026 Seed Positions</h4>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead><tr><th>Fund</th><th>Cash (USD)</th><th>Floor</th><th>Ceiling</th><th>Status</th><th>Surplus / (Deficit)</th></tr></thead>
+            <tbody>
+              <tr><td>AAA-DL-Y</td><td style="color:var(--s-red)">($77,734)</td><td>$100,000</td><td>$300,000</td><td><span class="badge badge-red"><span class="badge-dot"></span>RED</span></td><td style="color:var(--s-red)">($177,734)</td></tr>
+              <tr><td>AAA-IDF-AGG</td><td style="color:var(--s-red)">$89,635</td><td>$150,000</td><td>$400,000</td><td><span class="badge badge-red"><span class="badge-dot"></span>RED</span></td><td style="color:var(--s-red)">($60,365)</td></tr>
+              <tr><td>AAA-SF1YS</td><td style="color:var(--s-red)">$53,101</td><td>$75,000</td><td>$200,000</td><td><span class="badge badge-red"><span class="badge-dot"></span>RED</span></td><td style="color:var(--s-red)">($21,899)</td></tr>
+              <tr><td>AAA-SF4Z</td><td>$121,002</td><td>$115,000</td><td>$250,000</td><td><span class="badge badge-amber"><span class="badge-dot"></span>AMBER</span></td><td>$6,002</td></tr>
+              <tr><td>AAA-SF2Y</td><td>$114,913</td><td>$110,000</td><td>$300,000</td><td><span class="badge badge-amber"><span class="badge-dot"></span>AMBER</span></td><td>$4,913</td></tr>
+              <tr><td>AAA-AGG</td><td>$2,192,987</td><td>$1,500,000</td><td>$3,000,000</td><td><span class="badge badge-green"><span class="badge-dot"></span>GREEN</span></td><td>$692,987</td></tr>
+              <tr><td>AAA-MACS-Z</td><td>$579,030*</td><td>$250,000</td><td>$650,000</td><td><span class="badge badge-green"><span class="badge-dot"></span>GREEN</span></td><td>$329,030</td></tr>
+              <tr><td>AAA-SF1Y</td><td>$9,281,309</td><td>$2,000,000</td><td>$5,000,000</td><td><span class="badge badge-blue"><span class="badge-dot"></span>BLUE</span></td><td>$7,281,309</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:.75rem;color:var(--g400);margin-top:.75rem;margin-bottom:0">* Multi-currency fund: $208,430 USD + €340,000 × 1.09 FX rate = $579,030</p>
+      </div>
+    </div>
+
+    <hr class="thin">
+
+    <!-- Wire Proposal Logic -->
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Wire Proposal Logic</h4>
+        <h2>How the engine picks which wire to send</h2>
+        <p>The engine sorts RED funds largest-deficit-first, then routes each wire from the fund's designated source — updating balances sequentially so no source is over-drawn.</p>
+      </div>
+
+      <div class="grid-2" style="gap:2.5rem">
+        <div>
+          <h3 style="margin-bottom:1rem">Step-by-step decision process</h3>
+          <div class="step-list">
+            <div class="step-item" style="padding:1rem">
+              <div class="step-num" style="width:28px;height:28px;font-size:.72rem;min-width:28px">1</div>
+              <div class="step-body">
+                <h3 style="font-size:.88rem">Identify all RED funds</h3>
+                <p style="font-size:.8rem">Find every fund where cash_balance &lt; floor</p>
+              </div>
+            </div>
+            <div class="step-item" style="padding:1rem">
+              <div class="step-num" style="width:28px;height:28px;font-size:.72rem;min-width:28px">2</div>
+              <div class="step-body">
+                <h3 style="font-size:.88rem">Sort by deficit — largest first</h3>
+                <p style="font-size:.8rem">Most urgent cash need gets funded first</p>
+              </div>
+            </div>
+            <div class="step-item" style="padding:1rem">
+              <div class="step-num" style="width:28px;height:28px;font-size:.72rem;min-width:28px">3</div>
+              <div class="step-body">
+                <h3 style="font-size:.88rem">Look up the source fund (routing_source)</h3>
+                <p style="font-size:.8rem">Each fund in the master table names its funding source</p>
+              </div>
+            </div>
+            <div class="step-item" style="padding:1rem">
+              <div class="step-num" style="width:28px;height:28px;font-size:.72rem;min-width:28px">4</div>
+              <div class="step-body">
+                <h3 style="font-size:.88rem">Wire = MIN(deficit, source available above floor)</h3>
+                <p style="font-size:.8rem">Never drain the source below its own floor</p>
+              </div>
+            </div>
+            <div class="step-item" style="padding:1rem">
+              <div class="step-num" style="width:28px;height:28px;font-size:.72rem;min-width:28px">5</div>
+              <div class="step-body">
+                <h3 style="font-size:.88rem">Update source balance and move to next RED fund</h3>
+                <p style="font-size:.8rem">Sequential logic prevents the same source being over-used</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom:1rem">June 2026 wire proposals</h3>
+          <div style="display:flex;flex-direction:column;gap:1rem">
+            <div class="card card-sm" style="border-left:4px solid var(--navy)">
+              <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g400);margin-bottom:.5rem">Priority 1 · Largest Deficit</div>
+              <div class="wire-flow">
+                <div class="wire-node source">AAA-SF1Y<br><small>Source fund</small></div>
+                <div class="wire-connector">→</div>
+                <div class="wire-amount">$177,734</div>
+                <div class="wire-connector">→</div>
+                <div class="wire-node deficit">AAA-DL-Y<br><small>Deficit fund</small></div>
+              </div>
+              <p style="font-size:.78rem;color:var(--g500);margin-top:.5rem;margin-bottom:0">SF1Y has $9.28M, floor $2M → $7.28M available. DL-Y deficit = $177,734.</p>
+            </div>
+            <div class="card card-sm" style="border-left:4px solid var(--navy)">
+              <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g400);margin-bottom:.5rem">Priority 2</div>
+              <div class="wire-flow">
+                <div class="wire-node source">AAA-AGG<br><small>Source fund</small></div>
+                <div class="wire-connector">→</div>
+                <div class="wire-amount">$60,365</div>
+                <div class="wire-connector">→</div>
+                <div class="wire-node deficit">AAA-IDF-AGG<br><small>Deficit fund</small></div>
+              </div>
+              <p style="font-size:.78rem;color:var(--g500);margin-top:.5rem;margin-bottom:0">AGG has $2.19M, floor $1.5M → $693K available. IDF-AGG deficit = $60,365.</p>
+            </div>
+            <div class="card card-sm" style="border-left:4px solid var(--navy)">
+              <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g400);margin-bottom:.5rem">Priority 3</div>
+              <div class="wire-flow">
+                <div class="wire-node source">AAA-SF1Y<br><small>Source fund</small></div>
+                <div class="wire-connector">→</div>
+                <div class="wire-amount">$21,899</div>
+                <div class="wire-connector">→</div>
+                <div class="wire-node deficit">AAA-SF1YS<br><small>Deficit fund</small></div>
+              </div>
+              <p style="font-size:.78rem;color:var(--g500);margin-top:.5rem;margin-bottom:0">SF1Y working balance after P1 = $9.10M → still $7.10M available. SF1YS deficit = $21,899.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB: HOW TO RUN ════════════ -->
+<div id="tab-instructions" class="tab-panel">
+  <div class="container">
+
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Setup Guide</h4>
+        <h2>From zero to running in 10 minutes</h2>
+        <p>ApolloCAM runs on a standard Windows laptop with Python installed. No cloud, no servers, no IT involvement required.</p>
+      </div>
+
+      <div class="grid-2" style="gap:3rem;align-items:start">
+        <!-- Prerequisites -->
+        <div>
+          <h3 style="margin-bottom:1.25rem">Prerequisites</h3>
+          <ul class="prereq-list">
+            <li>Python 3.11 or higher — <a href="#" style="color:var(--navy2);font-size:.83rem">python.org/downloads</a></li>
+            <li>Git installed (for cloning the repository)</li>
+            <li>Internet connection for first-time setup (downloads packages)</li>
+            <li>JPMorgan daily position file (CSV or Excel format)</li>
+            <li>Windows 10/11, macOS, or Linux laptop</li>
+          </ul>
+
+          <div class="tip-box" style="margin-top:1.5rem">
+            <strong>💡 Tip</strong>
+            <p>ApolloCAM stores everything in a single SQLite file (<span class="inline-code">data/apollocam.db</span>). Back this file up daily — it contains all your positions, proposals, and audit history.</p>
+          </div>
+
+          <div class="warn-box">
+            <strong>⚠️ Important</strong>
+            <p>Never commit <span class="inline-code">.env</span> or <span class="inline-code">apollocam.db</span> to version control. Both are in <span class="inline-code">.gitignore</span> by default.</p>
+          </div>
+        </div>
+
+        <!-- Installation Steps -->
+        <div>
+          <h3 style="margin-bottom:1.25rem">One-time installation</h3>
+          <div class="code-block">
+<span class="comment"># Step 1 — Clone the repository</span>
+<span class="cmd">git clone</span> https://github.com/your-org/ApolloCAM
+<span class="cmd">cd</span> <span class="path">ApolloCAM/apollocam</span>
+
+<span class="comment"># Step 2 — Create a virtual environment</span>
+<span class="cmd">python -m venv</span> .venv
+<span class="cmd">source</span> .venv/bin/activate  <span class="comment"># Windows: .venv\Scripts\activate</span>
+
+<span class="comment"># Step 3 — Install dependencies</span>
+<span class="cmd">pip install -r</span> requirements.txt
+
+<span class="comment"># Step 4 — Copy environment template</span>
+<span class="cmd">cp</span> .env.example .env
+<span class="comment"># Edit .env to add SMTP settings (optional)</span>
+
+<span class="comment"># Step 5 — Launch the app</span>
+<span class="cmd">streamlit run</span> app.py
+          </div>
+          <p style="font-size:.83rem;color:var(--g500);margin-top:.5rem">The browser opens automatically at <span class="inline-code">http://localhost:8501</span>. The database is created and seeded with all 11 fund masters on first run.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="thin">
+
+    <!-- Daily Usage -->
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Daily Usage</h4>
+        <h2>The morning routine — step by step</h2>
+      </div>
+
+      <div class="grid-2" style="gap:2.5rem;align-items:start">
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>Start the app</h3>
+              <div class="code-block" style="margin:.4rem 0;padding:.6rem 1rem;font-size:.78rem">
+<span class="cmd">cd</span> <span class="path">apollocam</span> &amp;&amp; <span class="cmd">streamlit run</span> app.py
+              </div>
+              <p style="font-size:.82rem">Opens at localhost:8501. Leave this terminal window open.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>Import Data → Upload JPM file</h3>
+              <p>Click <strong>Import Data</strong> in the sidebar. Drag your JPM position file. Review the column mapping preview. Click <strong>Confirm Import</strong>.</p>
+              <span class="step-note">Supports all JPM file formats — column names are auto-detected</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h3>Dashboard → Check fund statuses</h3>
+              <p>Look for RED/AMBER alerts in the banner. The 11-fund grid shows colour-coded status at a glance. KPI strip shows total counts.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h3>Proposals → Run &amp; Approve</h3>
+              <p>Click <strong>Run Proposals</strong>. Review each wire card. Click <strong>Approve All Wires</strong> or approve individually. Check the Post-Transfer Preview to confirm all funds resolve to GREEN.</p>
+            </div>
+          </div>
+        </div>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <h3>Loaders → Generate &amp; Download</h3>
+              <p>Click <strong>Generate All Loaders</strong>. Download the ZIP file or individual files. Upload <span class="inline-code">IVP_B*.xlsx</span> to the IVP platform as usual.</p>
+              <span class="step-note">Each file has an SHA-256 hash for integrity verification</span>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">6</div>
+            <div class="step-body">
+              <h3>Wire Status → Mark Submitted</h3>
+              <p>After IVP upload, go to <strong>Wire Status</strong>. Drag each wire to SUBMITTED. When confirmations come back, enter the reference and mark CONFIRMED.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">7</div>
+            <div class="step-body">
+              <h3>Optional: 14-Day Forecast</h3>
+              <p>Upload the JPM pipeline file (calls &amp; distributions) to <strong>Forecast</strong>. See which funds are trending toward RED in the next two weeks. Take pre-emptive action.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">8</div>
+            <div class="step-body">
+              <h3>Optional: Review Settings</h3>
+              <p>All thresholds, FX rates, AMBER buffer, email configuration, and holiday calendar are editable in <strong>Settings</strong> (admin password required). Every change is audit-logged.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="thin">
+
+    <!-- Configuration Reference -->
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Configuration Reference</h4>
+        <h2>Key settings explained</h2>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Setting</th><th>Default</th><th>What It Controls</th></tr></thead>
+          <tbody>
+            <tr><td><span class="inline-code">AMBER_BUFFER</span></td><td>1.10</td><td>Funds between floor and floor × 1.10 are AMBER. Increase to widen the warning zone.</td></tr>
+            <tr><td><span class="inline-code">SPOT_VALUE_LAG_DAYS</span></td><td>2</td><td>T+N settlement for spot FX. Standard FX market convention is T+2.</td></tr>
+            <tr><td><span class="inline-code">FX_STALE_DAYS</span></td><td>1</td><td>Alert if FX rates haven't been updated in this many days.</td></tr>
+            <tr><td><span class="inline-code">DIGEST_ENABLED</span></td><td>True</td><td>Toggle the daily email digest to the distribution list on/off.</td></tr>
+            <tr><td><span class="inline-code">DL_EMAIL</span></td><td>cash_mgmt_dl@…</td><td>Distribution list for daily digest and RED fund alerts.</td></tr>
+            <tr><td><span class="inline-code">SMTP_HOST</span></td><td>(blank)</td><td>Leave blank to use Windows Outlook. Fill to use SMTP relay.</td></tr>
+            <tr><td><span class="inline-code">ADMIN_PASSWORD</span></td><td>ApolloAdmin2026</td><td>Gates the Settings page. Change after first login.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2" style="margin-top:2rem;gap:1.5rem">
+        <div class="tip-box">
+          <strong>💡 Changing FX Rates</strong>
+          <p>Go to Settings → FX Rates tab. Update EUR/USD and GBP/USD rates. Click Save. All functional_usd calculations on the next import will use the new rates.</p>
+        </div>
+        <div class="tip-box">
+          <strong>💡 Running Tests</strong>
+          <p>From the <span class="inline-code">apollocam/</span> directory, run <span class="inline-code">python -m pytest tests/ -v</span>. All 38 tests should pass, validating core logic against the verified June 2026 dataset.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB: ALL MODULES ══════════ -->
+<div id="tab-modules" class="tab-panel">
+  <div class="container">
+
+    <div class="section-sm">
+      <div class="section-header">
+        <h4>Application Modules</h4>
+        <h2>9 pages + 5 core libraries</h2>
+        <p>Each page handles one part of the daily workflow. Core libraries handle data persistence, calculations, file generation, and notifications.</p>
+      </div>
+
+      <!-- UI Pages -->
+      <h3 style="margin-bottom:1.25rem">User Interface — 9 Pages</h3>
+      <div class="module-grid">
+        <div class="module-card">
+          <div class="module-num">Page 01</div>
+          <h3>🏠 Dashboard</h3>
+          <p>Fund status heatmap, KPI cards (RED/AMBER/GREEN/BLUE counts), alert banner for RED funds, data-as-of indicator.</p>
+          <span class="module-tag tag-data">View</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 02</div>
+          <h3>📥 Import Data</h3>
+          <p>Drag-drop JPM file upload, automatic column detection, validation preview, duplicate-run detection, import history.</p>
+          <span class="module-tag tag-action">Action</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 03</div>
+          <h3>🔍 Status Review</h3>
+          <p>Full fund table with sortable columns, multi-status filter, 7-day trend sparklines, CSV export.</p>
+          <span class="module-tag tag-data">View</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 04</div>
+          <h3>⚡ Proposals</h3>
+          <p>Wire + FX proposal cards with APPROVE / SKIP / HOLD decisions. Batch approve. Post-transfer position simulation. Proposals stored in DB immediately.</p>
+          <span class="module-tag tag-action">Action</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 05</div>
+          <h3>📤 Loaders</h3>
+          <p>Generates IVP wire loader (XLSX), trade booking CSV (2 rows per wire), and spot FX loader (XLSX). ZIP download. File hash display.</p>
+          <span class="module-tag tag-output">Output</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 06</div>
+          <h3>📈 14-Day Forecast</h3>
+          <p>Upload JPM pipeline file. Projects each fund's balance 14 days forward using calls and distributions. "Days until RED" countdown per fund.</p>
+          <span class="module-tag tag-data">View</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 07</div>
+          <h3>🔗 Wire Status</h3>
+          <p>Kanban tracker with 5 columns: PROPOSED → APPROVED → LOADER_GENERATED → SUBMITTED → CONFIRMED. Status update form with confirmation reference field.</p>
+          <span class="module-tag tag-action">Action</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 08</div>
+          <h3>📋 Audit Log</h3>
+          <p>Immutable event viewer. Filter by date range, action type, keyword. Export filtered records as CSV. No delete or edit buttons — append-only.</p>
+          <span class="module-tag tag-data">EY</span>
+        </div>
+        <div class="module-card">
+          <div class="module-num">Page 09</div>
+          <h3>⚙️ Settings</h3>
+          <p>Admin-gated (password required). Fund master CRUD, FX rates, FX thresholds, global settings key-value form, holiday calendar editor.</p>
+          <span class="module-tag tag-admin">Admin</span>
+        </div>
+      </div>
+
+      <hr class="thin" style="margin:2.5rem 0">
+
+      <!-- Core Libraries -->
+      <h3 style="margin-bottom:1.25rem">Core Libraries</h3>
+      <div class="grid-2" style="gap:1.25rem">
+        <div class="card">
+          <div class="module-num">core/engine.py</div>
+          <h3>Business Logic Engine</h3>
+          <p style="font-size:.85rem;margin-top:.35rem">Python equivalents of every Excel formula. <span class="inline-code">compute_status()</span>, <span class="inline-code">build_fund_view()</span>, <span class="inline-code">propose_wires()</span>, <span class="inline-code">propose_fx_conversions()</span>, <span class="inline-code">build_14day_forecast()</span>. All functions independently unit-tested.</p>
+          <span class="module-tag tag-data" style="margin-top:.75rem">38 tests passing</span>
+        </div>
+        <div class="card">
+          <div class="module-num">core/database.py</div>
+          <h3>Database &amp; Schema</h3>
+          <p style="font-size:.85rem;margin-top:.35rem">SQLite connection, full DDL (11 tables), immutability triggers, 11 fund master seed records, FX rates, 11 US market holidays, global settings. <span class="inline-code">init_db()</span> is idempotent — safe to call on every startup.</p>
+          <span class="module-tag tag-admin">SQLite + WAL mode</span>
+        </div>
+        <div class="card">
+          <div class="module-num">core/importer.py</div>
+          <h3>Position File Importer</h3>
+          <p style="font-size:.85rem;margin-top:.35rem">Handles CSV and Excel. Maps 20+ column name variants (JPM column names change without notice). Validates fund codes, parses negative balances in parenthesis format, computes functional USD. Atomic DELETE + INSERT transaction.</p>
+          <span class="module-tag tag-action">Dynamic column mapping</span>
+        </div>
+        <div class="card">
+          <div class="module-num">core/loader_gen.py</div>
+          <h3>Loader File Generator</h3>
+          <p style="font-size:.85rem;margin-top:.35rem">Generates all three loader files as in-memory BytesIO objects (no temp files on disk). Apollo-styled XLSX with NAVY header rows. Trade booking as UTF-8 CSV. SHA-256 hash for each file. Updates wire_status to LOADER_GENERATED atomically.</p>
+          <span class="module-tag tag-output">openpyxl + pandas</span>
+        </div>
+        <div class="card">
+          <div class="module-num">core/email_notify.py</div>
+          <h3>Email Notification System</h3>
+          <p style="font-size:.85rem;margin-top:.35rem">Background daemon thread — emails never block the UI. SMTP/SSL primary path, Windows Outlook COM fallback. Alert types: RED fund alert, daily digest, wire pending, FX stale, predictive RED. De-duplicated: one alert per fund per day maximum.</p>
+          <span class="module-tag tag-output">Non-blocking queue</span>
+        </div>
+        <div class="card">
+          <div class="module-num">vba/modApolloCAM.bas</div>
+          <h3>Excel VBA Companion (Phase 1.5)</h3>
+          <p style="font-size:.85rem;margin-top:.35rem">I/O-only VBA module for the Phase 1 Excel workbook. Ribbon buttons for Load Data, Archive, Export All, Send Digest. Dynamic column mapping (Scripting.Dictionary). All business logic stays in Excel formulas — VBA never computes status or wire amounts.</p>
+          <span class="module-tag tag-admin">EY non-negotiable</span>
+        </div>
+      </div>
+
+      <hr class="thin" style="margin:2.5rem 0">
+
+      <!-- Wire Status Kanban -->
+      <h3 style="margin-bottom:1.25rem">Wire Lifecycle — Kanban View</h3>
+      <div class="kanban">
+        <div class="kanban-col">
+          <div class="kanban-col-hdr">📝 Proposed</div>
+          <div class="kanban-card"><strong>P1: SF1Y → DL-Y</strong>$177,734 · B20260601-001</div>
+          <div class="kanban-card"><strong>P2: AGG → IDF-AGG</strong>$60,365 · B20260601-001</div>
+          <div class="kanban-card"><strong>P3: SF1Y → SF1YS</strong>$21,899 · B20260601-001</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-hdr">✅ Approved</div>
+          <div class="kanban-card" style="opacity:.5"><em>After controller review</em></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-hdr">📤 Loader Generated</div>
+          <div class="kanban-card" style="opacity:.5"><em>After Generate Loaders</em></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-hdr">🚀 Submitted to IVP</div>
+          <div class="kanban-card" style="opacity:.5"><em>After IVP upload</em></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-hdr">🎯 Confirmed</div>
+          <div class="kanban-card" style="opacity:.5"><em>After counterparty confirmation</em></div>
+        </div>
+      </div>
+
+      <hr class="thin" style="margin:2.5rem 0">
+
+      <!-- Tech Stack -->
+      <h3 style="margin-bottom:1.25rem">Technology Stack</h3>
+      <div class="grid-4">
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">🐍</div>
+          <h3>Python 3.11</h3>
+          <p style="font-size:.8rem">Core runtime</p>
+        </div>
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">📊</div>
+          <h3>Streamlit 1.35+</h3>
+          <p style="font-size:.8rem">Web UI framework</p>
+        </div>
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">🐼</div>
+          <h3>Pandas 2.0+</h3>
+          <p style="font-size:.8rem">Data transformation</p>
+        </div>
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">🗄️</div>
+          <h3>SQLite</h3>
+          <p style="font-size:.8rem">Local database</p>
+        </div>
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">📋</div>
+          <h3>openpyxl</h3>
+          <p style="font-size:.8rem">Excel file generation</p>
+        </div>
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">📧</div>
+          <h3>smtplib / Outlook</h3>
+          <p style="font-size:.8rem">Email notifications</p>
+        </div>
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">🧪</div>
+          <h3>pytest</h3>
+          <p style="font-size:.8rem">38 unit tests</p>
+        </div>
+        <div class="card card-sm" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:.5rem">📝</div>
+          <h3>VBA</h3>
+          <p style="font-size:.8rem">Excel Phase 1.5</p>
+        </div>
+      </div>
+
+    </div><!-- /section -->
+  </div><!-- /container -->
+</div><!-- /tab-modules -->
+
+<!-- ═══════════════════════════════════════════════════════ FOOTER ════ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.4rem">
+        <div class="logo-mark" style="width:28px;height:28px;font-size:.8rem">AC</div>
+        <span style="color:rgba(255,255,255,.7);font-weight:700;font-size:.9rem">ApolloCAM</span>
+      </div>
+      <p>Apollo Global Management · Mumbai · Fund Controllership</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Ashitosh Shinde</a>
+      <a href="#">Phase 2 — Production</a>
+      <a href="#">38 Tests Passing</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function switchTab(name, btn) {
+  // Hide all panels
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  // Show selected
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  // Scroll to top of tab area
+  document.querySelector('.tab-nav').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Staggered card animations on tab switch
+function animateCards() {
+  const cards = document.querySelectorAll('.tab-panel.active .card, .tab-panel.active .step-item, .tab-panel.active .module-card, .tab-panel.active .status-card');
+  cards.forEach((card, i) => {
+    card.style.animationDelay = (i * 0.04) + 's';
+  });
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => setTimeout(animateCards, 50));
+});
+animateCards(); // Run on load
+
+// Highlight table row on hover (already done via CSS, but ensure smooth)
+document.querySelectorAll('.data-table tr').forEach(row => {
+  row.addEventListener('mouseenter', () => row.style.transition = 'background .15s');
+});
+</script>
+</body>
+</html>
