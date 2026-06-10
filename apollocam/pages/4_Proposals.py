@@ -41,7 +41,14 @@ col_run, col_info = st.columns([2, 5])
 with col_run:
     if st.button("Run Proposals", type="primary",
                  help="Generate wire + FX proposals from current positions"):
-        # Clear existing PENDING proposals for this date
+        # Clear existing PENDING proposals for this date.
+        # Must delete wire_status rows first (FK: wire_status.proposal_id → proposals.id).
+        conn.execute(
+            """DELETE FROM wire_status WHERE proposal_id IN (
+                 SELECT id FROM proposals WHERE run_date = ? AND action = 'PENDING'
+               )""",
+            (run_date,)
+        )
         conn.execute(
             "DELETE FROM proposals WHERE run_date = ? AND action = 'PENDING'", (run_date,)
         )

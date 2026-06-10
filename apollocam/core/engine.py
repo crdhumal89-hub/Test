@@ -251,28 +251,28 @@ def propose_fx_conversions(conn: sqlite3.Connection,
 
 def save_proposals(conn: sqlite3.Connection, proposals: list[dict],
                    run_date: str, batch_id: str) -> None:
-    """Insert proposal list into the proposals table and create wire_status rows."""
-    for p in proposals:
-        cur = conn.execute(
-            """INSERT INTO proposals
-               (batch_id, run_date, proposal_type, from_fund, to_fund, sell_ccy,
-                sell_amount, buy_ccy, buy_amount, fx_rate, value_date, priority, action)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'PENDING')""",
-            (batch_id, run_date, p["proposal_type"], p["from_fund"], p["to_fund"],
-             p["sell_ccy"], p["sell_amount"], p["buy_ccy"], p.get("buy_amount"),
-             p.get("fx_rate"), p.get("value_date"), p.get("priority"))
-        )
-        proposal_id = cur.lastrowid
-
-        # Create wire_status tracking row for WIRE proposals
-        if p["proposal_type"] == "WIRE":
-            conn.execute(
-                """INSERT INTO wire_status(proposal_id, batch_id, status)
-                   VALUES (?, ?, 'PROPOSED')""",
-                (proposal_id, batch_id)
+    """Insert proposal list into the proposals table and create wire_status rows.
+    All inserts are wrapped in a single transaction — any failure rolls back entirely."""
+    with conn:
+        for p in proposals:
+            cur = conn.execute(
+                """INSERT INTO proposals
+                   (batch_id, run_date, proposal_type, from_fund, to_fund, sell_ccy,
+                    sell_amount, buy_ccy, buy_amount, fx_rate, value_date, priority, action)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'PENDING')""",
+                (batch_id, run_date, p["proposal_type"], p["from_fund"], p["to_fund"],
+                 p["sell_ccy"], p["sell_amount"], p["buy_ccy"], p.get("buy_amount"),
+                 p.get("fx_rate"), p.get("value_date"), p.get("priority"))
             )
+            proposal_id = cur.lastrowid
 
-    conn.commit()
+            # Create wire_status tracking row for WIRE proposals only
+            if p["proposal_type"] == "WIRE":
+                conn.execute(
+                    """INSERT INTO wire_status(proposal_id, batch_id, status)
+                       VALUES (?, ?, 'PROPOSED')""",
+                    (proposal_id, batch_id)
+                )
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -303,12 +303,11 @@ def build_14day_forecast(conn: sqlite3.Connection, df_fund_view: pd.DataFrame,
     fund_map = df_fund_view.set_index("fund_code")
 
     for fund_code, fund_row in fund_map.iterrows():
-        floor    = fund_row["cash_floor"]
-        ceiling  = fund_row["cash_ceiling"]
-        balance  = fund_row["cash_usd"]
+        floor   = fund_row["cash_floor"]
+        ceiling = fund_row["cash_ceiling"]
+        balance = fund_row["cash_usd"]
 
         fund_pipe = df_pipe[df_pipe["fund_code"] == fund_code]
-        first_red_day: Optional[int] = None
 
         for d in range(1, horizon + 1):
             target = today + timedelta(days=d)
@@ -318,30 +317,30 @@ def build_14day_forecast(conn: sqlite3.Connection, df_fund_view: pd.DataFrame,
             balance -= day_events["call_amount"].sum()
             balance += day_events["distro_amount"].sum()
 
-            status = compute_status(balance, floor, ceiling, amber_buffer)
-            if status == RED and first_red_day is None:
-                first_red_day = d
-
             rows.append({
                 "fund_code":        fund_code,
                 "target_date":      target_str,
                 "projected_cash":   round(balance, 2),
-                "projected_status": status,
+                "projected_status": compute_status(balance, floor, ceiling, amber_buffer),
             })
 
     df = pd.DataFrame(rows)
     if df.empty:
         return df
 
-    # Compute days_to_red per fund
-    def _first_red(group: pd.DataFrame) -> pd.Series:
-        red = group[group["projected_status"] == RED]
-        days = (len(red) > 0) and (
-            (pd.to_datetime(red["target_date"].iloc[0]) - pd.Timestamp(today)).days
-        ) or None
-        return group.assign(days_to_red=days)
+    # Compute days_to_red per fund: find the first RED date in the horizon.
+    # Avoid groupby.apply — pandas 3.0 drops the groupby key column from the output.
+    red_rows = df[df["projected_status"] == RED]
+    if not red_rows.empty:
+        first_red = (
+            red_rows.groupby("fund_code")["target_date"]
+            .first()
+            .map(lambda d: (pd.to_datetime(d) - pd.Timestamp(today)).days)
+        )
+        df["days_to_red"] = df["fund_code"].map(first_red)
+    else:
+        df["days_to_red"] = None
 
-    df = df.groupby("fund_code", group_keys=False).apply(_first_red)
     return df
 
 

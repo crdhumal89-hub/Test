@@ -91,16 +91,15 @@ def generate_ivp_loader(conn: sqlite3.Connection, run_date: str) -> tuple[io.Byt
     buf = _df_to_xlsx(df_out, sheet_name="IVP_Wire_Loader", run_date=run_date)
     file_hash = _sha256(buf)
 
-    log_audit(conn, "LOADER_GENERATE", "ivp", batch_id,
-              f"IVP loader: {len(rows)} rows | Batch: {batch_id}")
-
-    # Update wire_status to LOADER_GENERATED
+    # Update wire_status first, then audit — so audit reflects committed state
     for _, row in df_proposals.iterrows():
         conn.execute(
             "UPDATE wire_status SET status='LOADER_GENERATED', updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') "
             "WHERE proposal_id = ?", (int(row["id"]),)
         )
     conn.commit()
+    log_audit(conn, "LOADER_GENERATE", "ivp", batch_id,
+              f"IVP loader: {len(rows)} rows | Batch: {batch_id}")
 
     return buf, len(rows), file_hash
 
@@ -118,6 +117,7 @@ TRADE_COLUMNS = [
 def generate_trade_loader(conn: sqlite3.Connection, run_date: str) -> tuple[io.BytesIO, int, str]:
     """
     Two rows per approved wire (debit + credit legs), matching LOADERS Trade section.
+    Returns a UTF-8 CSV BytesIO (not XLSX) — trade booking systems consume CSV.
     """
     df_proposals = pd.read_sql(
         """SELECT p.id, p.batch_id, p.from_fund, p.to_fund, p.sell_amount, p.sell_ccy,
@@ -133,7 +133,7 @@ def generate_trade_loader(conn: sqlite3.Connection, run_date: str) -> tuple[io.B
     )
 
     if df_proposals.empty:
-        return _empty_xlsx(TRADE_COLUMNS, "Trade_Booking_Loader"), 0, ""
+        return _empty_csv(TRADE_COLUMNS), 0, ""
 
     holidays = _load_holidays(conn)
     settle_date = str(_workday(date.fromisoformat(run_date), 0, holidays))
@@ -174,7 +174,9 @@ def generate_trade_loader(conn: sqlite3.Connection, run_date: str) -> tuple[io.B
         })
 
     df_out = pd.DataFrame(rows, columns=TRADE_COLUMNS)
-    buf = _df_to_xlsx(df_out, sheet_name="Trade_Booking_Loader", run_date=run_date)
+    buf = io.BytesIO()
+    buf.write(df_out.to_csv(index=False).encode("utf-8"))
+    buf.seek(0)
     file_hash = _sha256(buf)
 
     log_audit(conn, "LOADER_GENERATE", "trade", batch_id,
@@ -294,6 +296,14 @@ def _df_to_xlsx(df: pd.DataFrame, sheet_name: str, run_date: str) -> io.BytesIO:
 def _empty_xlsx(columns: list[str], sheet_name: str) -> io.BytesIO:
     """Return an empty XLSX with headers only."""
     return _df_to_xlsx(pd.DataFrame(columns=columns), sheet_name, "")
+
+
+def _empty_csv(columns: list[str]) -> io.BytesIO:
+    """Return an empty CSV with headers only."""
+    buf = io.BytesIO()
+    buf.write((",".join(columns) + "\n").encode("utf-8"))
+    buf.seek(0)
+    return buf
 
 
 def _sha256(buf: io.BytesIO) -> str:

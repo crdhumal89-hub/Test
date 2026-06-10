@@ -180,10 +180,13 @@ with tab4:
             key = row["key"]
             if key == "ADMIN_PASSWORD":
                 continue  # never show admin password in UI
+            # Mask credential fields so they are not visible on screen
+            input_type = "password" if "PASSWORD" in key.upper() else "default"
             val = st.text_input(
                 f"{key}",
                 value=str(row["value"]),
                 help=row.get("description", ""),
+                type=input_type,
                 key=f"setting_{key}"
             )
             updated[key] = val

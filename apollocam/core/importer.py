@@ -165,26 +165,26 @@ def commit_positions(
     """
     rate_map = load_rate_map(conn)
 
+    df = df.copy()  # avoid mutating the caller's DataFrame
     df["functional_usd"] = df.apply(
         lambda r: compute_functional_usd(r["cash_balance_local"], r["ccy"], rate_map),
         axis=1
     )
 
-    # Delete existing positions for this run_date before replacing
-    conn.execute("DELETE FROM positions WHERE run_date = ?", (run_date,))
+    # Atomic: delete existing + insert new in a single transaction so a crash
+    # mid-loop cannot leave the table in a partially-replaced state.
+    with conn:
+        conn.execute("DELETE FROM positions WHERE run_date = ?", (run_date,))
+        for _, row in df.iterrows():
+            conn.execute(
+                """INSERT INTO positions
+                   (run_date, fund_code, account_name, ccy, local_balance, functional_usd, source_file)
+                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                (run_date, row["fund_code"], row.get("account_name", ""),
+                 row["ccy"], row["cash_balance_local"], row["functional_usd"], source_file)
+            )
 
-    rows_inserted = 0
-    for _, row in df.iterrows():
-        conn.execute(
-            """INSERT INTO positions
-               (run_date, fund_code, account_name, ccy, local_balance, functional_usd, source_file)
-               VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (run_date, row["fund_code"], row.get("account_name", ""),
-             row["ccy"], row["cash_balance_local"], row["functional_usd"], source_file)
-        )
-        rows_inserted += 1
-
-    conn.commit()
+    rows_inserted = len(df)
     log_audit(conn, "IMPORT_POSITIONS", "positions", run_date,
               f"File: {source_file} | Rows: {rows_inserted} | Date: {run_date}")
     return rows_inserted

@@ -211,7 +211,7 @@ END;
 
 CREATE TRIGGER IF NOT EXISTS trg_fund_threshold_audit
     AFTER UPDATE ON funds
-    WHEN OLD.cash_floor <> NEW.cash_floor OR OLD.cash_ceiling <> NEW.cash_ceiling
+    WHEN (OLD.cash_floor IS NOT NEW.cash_floor) OR (OLD.cash_ceiling IS NOT NEW.cash_ceiling)
 BEGIN
     INSERT INTO audit_log(action, entity_type, entity_id, before_state, after_state)
     VALUES(
@@ -266,12 +266,20 @@ INSERT OR IGNORE INTO app_settings(key, value, description) VALUES
   ('SMTP_PASSWORD',             '',                         'SMTP password (store in .env, not here)'),
   ('ADMIN_PASSWORD',            'ApolloAdmin2026',          'Admin password for settings changes');
 
--- US holidays 2026
+-- US market holidays 2026 (NYSE / Federal Reserve calendar)
+-- July 4 falls on Saturday; observed Friday July 3 is the market holiday
 INSERT OR IGNORE INTO holidays(holiday_date, description) VALUES
   ('2026-01-01', 'New Year''s Day'),
+  ('2026-01-19', 'Martin Luther King Jr. Day'),
+  ('2026-02-16', 'Presidents'' Day'),
   ('2026-05-25', 'Memorial Day'),
-  ('2026-07-04', 'Independence Day'),
-  ('2026-09-07', 'Labor Day');
+  ('2026-06-19', 'Juneteenth National Independence Day'),
+  ('2026-07-03', 'Independence Day (observed)'),
+  ('2026-09-07', 'Labor Day'),
+  ('2026-10-12', 'Columbus Day'),
+  ('2026-11-11', 'Veterans Day'),
+  ('2026-11-26', 'Thanksgiving Day'),
+  ('2026-12-25', 'Christmas Day');
 """
 
 

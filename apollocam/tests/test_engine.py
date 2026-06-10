@@ -14,15 +14,21 @@ Wire proposals:
   P3: AAA-SF1Y → AAA-SF1YS   $21,899
 """
 
+import io
 import sqlite3
+from datetime import date
+
 import pytest
 import pandas as pd
 
-from core.database import init_db, get_connection
+from core.database import init_db, get_connection, log_audit
 from core.engine import (
     compute_status, compute_functional_usd, build_fund_view,
-    propose_wires, status_summary, RED, AMBER, GREEN, BLUE
+    propose_wires, save_proposals, build_14day_forecast,
+    status_summary, _workday, _load_holidays,
+    RED, AMBER, GREEN, BLUE
 )
+from core.loader_gen import generate_trade_loader, generate_ivp_loader
 
 
 @pytest.fixture
@@ -215,3 +221,210 @@ class TestProposeWires:
             p["sell_amount"] for p in proposals if p["from_fund"] == "AAA-SF1Y"
         )
         assert sf1y_total <= available + 1  # allow 1 cent rounding
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Workday / holiday calendar tests
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestWorkday:
+    def test_simple_advance(self):
+        assert _workday(date(2026, 6, 1), 2, set()) == date(2026, 6, 3)
+
+    def test_skips_weekend(self):
+        # Friday June 5 + 2 business days = Tuesday June 9 (skips Sat/Sun)
+        assert _workday(date(2026, 6, 5), 2, set()) == date(2026, 6, 9)
+
+    def test_skips_holiday(self):
+        # Juneteenth June 19 (Friday) + lag 2 from June 17 (Wed) should skip June 19
+        juneteenth = {date(2026, 6, 19)}
+        # June 17 (Wed) + 2 biz days: June 18 (Thu, step 1), skip June 19 (holiday),
+        # June 22 (Mon, step 2) → June 22
+        assert _workday(date(2026, 6, 17), 2, juneteenth) == date(2026, 6, 22)
+
+    def test_lag_zero_returns_start(self):
+        # T+0 for wire value dates: returns the start date unchanged
+        assert _workday(date(2026, 6, 1), 0, set()) == date(2026, 6, 1)
+
+    def test_holidays_seeded_count(self, conn):
+        """Seed must have at least 11 holidays for 2026 (full US market calendar)."""
+        holidays = _load_holidays(conn)
+        holidays_2026 = {d for d in holidays if d.year == 2026}
+        assert len(holidays_2026) >= 11, (
+            f"Only {len(holidays_2026)} 2026 holidays seeded — need full NYSE calendar"
+        )
+
+    def test_juneteenth_seeded(self, conn):
+        """Juneteenth (June 19) must be seeded — it's relevant to June run dates."""
+        holidays = _load_holidays(conn)
+        assert date(2026, 6, 19) in holidays
+
+    def test_independence_day_observed_seeded(self, conn):
+        """July 4, 2026 is Saturday; the observed holiday (July 3) must be seeded."""
+        holidays = _load_holidays(conn)
+        assert date(2026, 7, 3) in holidays, (
+            "July 3, 2026 (observed Independence Day) must be in holiday calendar"
+        )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# save_proposals — transaction atomicity
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestSaveProposals:
+    def test_all_proposals_committed(self, conn):
+        """All proposals and wire_status rows are persisted after save_proposals."""
+        df = build_fund_view(conn, "2026-06-01")
+        proposals = propose_wires(df)
+        assert len(proposals) == 3
+
+        save_proposals(conn, proposals, "2026-06-01", "B20260601-001")
+
+        saved = conn.execute(
+            "SELECT COUNT(*) FROM proposals WHERE run_date = '2026-06-01'"
+        ).fetchone()[0]
+        assert saved == 3
+
+        wire_rows = conn.execute(
+            "SELECT COUNT(*) FROM wire_status WHERE batch_id = 'B20260601-001'"
+        ).fetchone()[0]
+        assert wire_rows == 3  # all three are WIRE type
+
+    def test_no_duplicate_on_rerun(self, conn):
+        """Running proposals twice (clearing PENDING first) should not double proposals."""
+        df = build_fund_view(conn, "2026-06-01")
+        proposals = propose_wires(df)
+
+        save_proposals(conn, proposals, "2026-06-01", "B20260601-001")
+        # Simulate clearing PENDING and re-running (as the Proposals page does).
+        # Must remove wire_status rows before proposals due to FK constraint.
+        conn.execute(
+            """DELETE FROM wire_status WHERE proposal_id IN (
+                 SELECT id FROM proposals WHERE run_date='2026-06-01' AND action='PENDING'
+               )"""
+        )
+        conn.execute("DELETE FROM proposals WHERE run_date='2026-06-01' AND action='PENDING'")
+        conn.commit()
+        save_proposals(conn, proposals, "2026-06-01", "B20260601-002")
+
+        count = conn.execute(
+            "SELECT COUNT(*) FROM proposals WHERE run_date='2026-06-01'"
+        ).fetchone()[0]
+        assert count == 3, f"Expected 3 proposals after re-run, got {count}"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 14-day forecast — days_to_red calculation
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestForecast:
+    def test_no_pipeline_no_red(self, conn):
+        """With no pipeline events all GREEN/BLUE funds stay non-RED; days_to_red is None."""
+        df = build_fund_view(conn, "2026-06-01")
+        forecast = build_14day_forecast(conn, df, "2026-06-01")
+
+        agg_rows = forecast[forecast["fund_code"] == "AAA-AGG"]
+        sf1y_rows = forecast[forecast["fund_code"] == "AAA-SF1Y"]
+        assert agg_rows["days_to_red"].isna().all()
+        assert sf1y_rows["days_to_red"].isna().all()
+
+    def test_pipeline_event_causes_red(self, conn):
+        """A large call draining a fund below floor should flag days_to_red = 1."""
+        # Insert a pipeline event that drains AAA-AGG below its floor of 1,500,000
+        conn.execute(
+            """INSERT INTO pipeline_events
+               (event_id, deal_name, ccy, call_amount, distro_amount, event_date, fund_code)
+               VALUES ('EVT-001', 'Test Call', 'USD', 2000000, 0, '2026-06-02', 'AAA-AGG')"""
+        )
+        conn.commit()
+
+        df = build_fund_view(conn, "2026-06-01")
+        forecast = build_14day_forecast(conn, df, "2026-06-01")
+
+        agg_rows = forecast[forecast["fund_code"] == "AAA-AGG"]
+        # After losing $2M: 2,192,987 - 2,000,000 = 192,987 < 1,500,000 floor → RED on day 1
+        agg_day2 = agg_rows[agg_rows["target_date"] == "2026-06-02"].iloc[0]
+        assert agg_day2["projected_status"] == RED
+        assert agg_rows["days_to_red"].iloc[0] == 1
+
+    def test_days_to_red_not_corrupted_when_nonzero(self, conn):
+        """days_to_red must be the actual day count, not None (regression for and/or idiom)."""
+        conn.execute(
+            """INSERT INTO pipeline_events
+               (event_id, deal_name, ccy, call_amount, distro_amount, event_date, fund_code)
+               VALUES ('EVT-002', 'Test Call', 'USD', 2000000, 0, '2026-06-05', 'AAA-AGG')"""
+        )
+        conn.commit()
+
+        df = build_fund_view(conn, "2026-06-01")
+        forecast = build_14day_forecast(conn, df, "2026-06-01")
+
+        agg_rows = forecast[forecast["fund_code"] == "AAA-AGG"]
+        days = agg_rows["days_to_red"].iloc[0]
+        assert days is not None, "days_to_red must not be None when fund goes RED"
+        assert days == 4  # June 1 → June 5 is 4 calendar days
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Trade loader format — must be CSV, not XLSX
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestTradeLoader:
+    def test_trade_loader_is_csv(self, conn):
+        """generate_trade_loader must return CSV bytes, not XLSX binary."""
+        df = build_fund_view(conn, "2026-06-01")
+        proposals = propose_wires(df)
+        save_proposals(conn, proposals, "2026-06-01", "B20260601-001")
+
+        # Approve all wires
+        conn.execute(
+            "UPDATE proposals SET action='APPROVE', approved_at='2026-06-01T09:00:00Z' "
+            "WHERE run_date='2026-06-01' AND proposal_type='WIRE'"
+        )
+        conn.commit()
+
+        buf, row_count, file_hash = generate_trade_loader(conn, "2026-06-01")
+
+        # A valid CSV starts with the header row, not XLSX magic bytes (PK\x03\x04)
+        buf.seek(0)
+        first_bytes = buf.read(4)
+        assert first_bytes != b"PK\x03\x04", "Trade loader must be CSV, not XLSX"
+
+        buf.seek(0)
+        first_line = buf.readline().decode("utf-8").strip()
+        expected_header = ",".join([
+            "Trade_Date", "Settle_Date", "Fund_Code", "Dr_Cr", "Amount", "CCY",
+            "Account", "GL_Account", "Counterparty", "Reference", "Cost_Centre", "Narrative"
+        ])
+        assert first_line == expected_header
+
+    def test_trade_loader_row_count(self, conn):
+        """3 approved wires → 6 trade rows (2 legs per wire)."""
+        df = build_fund_view(conn, "2026-06-01")
+        proposals = propose_wires(df)
+        save_proposals(conn, proposals, "2026-06-01", "B20260601-001")
+        conn.execute(
+            "UPDATE proposals SET action='APPROVE' WHERE run_date='2026-06-01' AND proposal_type='WIRE'"
+        )
+        conn.commit()
+
+        buf, row_count, _ = generate_trade_loader(conn, "2026-06-01")
+        assert row_count == 6
+
+        buf.seek(0)
+        df_csv = pd.read_csv(buf)
+        assert len(df_csv) == 6
+        assert set(df_csv["Dr_Cr"].unique()) == {"DR", "CR"}
+
+    def test_trade_loader_empty_returns_csv(self, conn):
+        """When no approved proposals exist, empty file must still be valid CSV."""
+        buf, row_count, file_hash = generate_trade_loader(conn, "2026-06-01")
+        assert row_count == 0
+        buf.seek(0)
+        # Should parse as CSV with zero data rows
+        df_csv = pd.read_csv(buf)
+        assert len(df_csv) == 0
+        assert list(df_csv.columns) == [
+            "Trade_Date", "Settle_Date", "Fund_Code", "Dr_Cr", "Amount", "CCY",
+            "Account", "GL_Account", "Counterparty", "Reference", "Cost_Centre", "Narrative"
+        ]
