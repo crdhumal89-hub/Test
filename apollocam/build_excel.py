@@ -143,7 +143,7 @@ def build_settings(ws):
         ("DIGEST_ENABLED",             "TRUE",           "Enable automated daily digest email"),
         ("ALERT_ONLY_WHEN_RED",        "TRUE",           "Only alert when fund status is RED"),
         ("MAX_ALERTS_PER_FUND_PER_DAY","1",              "Maximum threshold alerts per fund per day"),
-        ("ADMIN_PASSWORD",             "ApolloAdmin2026","Required to unlock Settings and override Loaders"),
+        ("ADMIN_PASSWORD",             "ApolloCAM_ChangeMe!","Required to unlock Settings and override Loaders"),
     ]
     for i, (k, v, d) in enumerate(params):
         r = 5 + i
@@ -780,7 +780,7 @@ def build_home(ws):
         "2. Press Alt+F11 to open the VBA editor",
         "3. File → Import File → select modApolloCAM.bas (from the vba/ folder)",
         "4. Save again as .xlsm — macro ribbon buttons become active",
-        "5. Admin password to unlock Loaders: ApolloAdmin2026",
+        "5. Admin password to unlock Loaders: see SETTINGS → ADMIN_PASSWORD",
     ]
     for i, step in enumerate(vba_steps):
         r = 27 + i

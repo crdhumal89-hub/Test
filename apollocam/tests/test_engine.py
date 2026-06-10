@@ -364,6 +364,42 @@ class TestForecast:
         assert days is not None, "days_to_red must not be None when fund goes RED"
         assert days == 4  # June 1 → June 5 is 4 calendar days
 
+    def test_nan_days_to_red_safe_for_page_rendering(self, conn):
+        """
+        Regression for C1: healthy funds have NaN (not None) in days_to_red.
+        The old page guard `if days_red is not None` failed because `float('nan') is not None`
+        evaluates True, causing int(NaN) to raise ValueError and crash the page for all funds.
+        The fixed guard `pd.isna(days_red)` correctly catches NaN.
+        """
+        df = build_fund_view(conn, "2026-06-01")
+        # Inject one RED event for AAA-AGG so the column is populated with a mix
+        conn.execute(
+            """INSERT INTO pipeline_events
+               (event_id, deal_name, ccy, call_amount, distro_amount, event_date, fund_code)
+               VALUES ('EVT-C1', 'C1 Regression', 'USD', 2000000, 0, '2026-06-02', 'AAA-AGG')"""
+        )
+        conn.commit()
+        forecast = build_14day_forecast(conn, df, "2026-06-01")
+
+        # AAA-SF1Y is BLUE (no pipeline events) — its days_to_red should be NaN
+        sf1y_days = forecast[forecast["fund_code"] == "AAA-SF1Y"]["days_to_red"].iloc[0]
+        assert pd.isna(sf1y_days), "Healthy fund must have NaN days_to_red, not a number"
+
+        # Demonstrate WHY the old guard was wrong: NaN is not None → True
+        assert (sf1y_days is not None), (
+            "NaN is not None == True: the old `is not None` guard was insufficient"
+        )
+
+        # Prove the fixed page code does NOT crash on NaN
+        display_val = "—" if pd.isna(sf1y_days) else int(sf1y_days)
+        assert display_val == "—", "Fixed page code must return '—' for NaN, not crash"
+
+        # AAA-AGG should have a valid integer days_to_red
+        agg_days = forecast[forecast["fund_code"] == "AAA-AGG"]["days_to_red"].iloc[0]
+        assert not pd.isna(agg_days), "Fund going RED must have a numeric days_to_red"
+        agg_display = "—" if pd.isna(agg_days) else int(agg_days)
+        assert agg_display == 1, "AAA-AGG drains on day 1 (June 2)"
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Trade loader format — must be CSV, not XLSX

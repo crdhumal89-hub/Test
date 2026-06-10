@@ -52,7 +52,7 @@ HEADER_ALIASES: dict[str, str] = {
 }
 
 
-class ImportError(Exception):
+class PositionImportError(Exception):
     pass
 
 
@@ -63,7 +63,7 @@ def parse_position_file(
     """
     Parse a JPM position file (CSV or Excel) into a clean DataFrame.
     Returns (df, warnings) where df has canonical column names.
-    Raises ImportError if required columns are missing.
+    Raises PositionImportError if required columns are missing.
     """
     warnings: list[str] = []
 
@@ -85,7 +85,7 @@ def parse_position_file(
             raw = pd.read_csv(source, dtype=str, keep_default_na=False)
 
     if raw.empty:
-        raise ImportError("File is empty or has no data rows.")
+        raise PositionImportError("File is empty or has no data rows.")
 
     # Normalise headers
     raw.columns = [str(c).strip().lower() for c in raw.columns]
@@ -95,7 +95,7 @@ def parse_position_file(
     # Check required columns
     missing = REQUIRED_HEADERS - set(raw.columns)
     if missing:
-        raise ImportError(
+        raise PositionImportError(
             f"Required columns not found: {', '.join(sorted(missing))}. "
             f"Available: {', '.join(sorted(raw.columns))}"
         )

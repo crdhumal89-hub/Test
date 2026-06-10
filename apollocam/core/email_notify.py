@@ -79,6 +79,9 @@ def enqueue_email(
     """
     _ensure_worker()
     body_hash = hashlib.sha256(html_body.encode()).hexdigest()[:16]
+    # Resolve SMTP config here in the calling (main) thread — the worker must never
+    # touch the shared Streamlit DB connection from a background thread.
+    smtp_cfg = _smtp_config(conn)
     job = {
         "email_type": email_type,
         "recipients": recipients,
@@ -87,7 +90,7 @@ def enqueue_email(
         "business_date": business_date or str(date.today()),
         "sent_by": sent_by,
         "body_hash": body_hash,
-        "conn": conn,
+        "smtp_cfg": smtp_cfg,
     }
     _email_queue.put(job)
 
@@ -206,7 +209,7 @@ def send_predictive_red_alert(conn, at_risk_funds: list[dict], run_date: str, se
 
 def _dispatch(job: dict):
     """Send via SMTP/SSL if configured, else fall back to Outlook COM."""
-    cfg = _smtp_config(job.get("conn"))
+    cfg = job["smtp_cfg"]  # pre-resolved in main thread; no DB access here
     if cfg["host"]:
         _send_smtp(job, cfg)
     else:

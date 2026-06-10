@@ -264,7 +264,7 @@ INSERT OR IGNORE INTO app_settings(key, value, description) VALUES
   ('SMTP_PORT',                 '587',                      'SMTP server port'),
   ('SMTP_USER',                 '',                         'SMTP username'),
   ('SMTP_PASSWORD',             '',                         'SMTP password (store in .env, not here)'),
-  ('ADMIN_PASSWORD',            'ApolloAdmin2026',          'Admin password for settings changes');
+  ('ADMIN_PASSWORD',            'ApolloCAM_ChangeMe!',       'Admin password — change this immediately after first login');
 
 -- US market holidays 2026 (NYSE / Federal Reserve calendar)
 -- July 4 falls on Saturday; observed Friday July 3 is the market holiday

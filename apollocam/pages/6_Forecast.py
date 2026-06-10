@@ -106,7 +106,7 @@ if not df_forecast.empty:
             "Today Status":    fund_row["status"],
             "14-Day Projected":last_day["projected_cash"],
             "14-Day Status":   last_day["projected_status"],
-            "Days to RED":     int(days_red) if days_red is not None else "—",
+            "Days to RED":     ("—" if pd.isna(days_red) else int(days_red)),
         })
 
     df_summary = pd.DataFrame(summary_rows)

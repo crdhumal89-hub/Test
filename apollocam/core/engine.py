@@ -295,9 +295,18 @@ def build_14day_forecast(conn: sqlite3.Connection, df_fund_view: pd.DataFrame,
     df_pipe = pd.read_sql(
         """SELECT fund_code, event_date, call_amount, distro_amount, ccy
            FROM pipeline_events
-           WHERE event_date > ? AND event_date <= ? AND ccy = 'USD'""",
+           WHERE event_date > ? AND event_date <= ?""",
         conn, params=[run_date, cutoff_str]
     )
+    # Convert all pipeline amounts to functional USD so EUR/GBP calls affect projections.
+    if not df_pipe.empty:
+        fx = load_rate_map(conn)
+        df_pipe["call_amount"]   = df_pipe.apply(
+            lambda r: compute_functional_usd(r["call_amount"],   r["ccy"], fx), axis=1
+        )
+        df_pipe["distro_amount"] = df_pipe.apply(
+            lambda r: compute_functional_usd(r["distro_amount"], r["ccy"], fx), axis=1
+        )
 
     rows = []
     fund_map = df_fund_view.set_index("fund_code")

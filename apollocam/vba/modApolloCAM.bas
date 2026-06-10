@@ -41,7 +41,7 @@ Option Explicit
 ' ─────────────────────────────────────────────────────────────────────────────
 ' CONSTANTS
 ' ─────────────────────────────────────────────────────────────────────────────
-Private Const ADMIN_PWD         As String = "ApolloAdmin2026"
+Private Const ADMIN_PWD         As String = "CHANGE_BEFORE_USE"
 Private Const SHEET_DATA        As String = "_DATA"
 Private Const SHEET_AUDIT       As String = "_AUDIT"
 Private Const SHEET_SETTINGS    As String = "SETTINGS"

@@ -22,7 +22,7 @@ if conn is None:
 # ─────────────────────────────────────────────────────────────────────────────
 # Admin authentication gate
 # ─────────────────────────────────────────────────────────────────────────────
-ADMIN_PWD = _get_setting(conn, "ADMIN_PASSWORD", "ApolloAdmin2026")
+ADMIN_PWD = _get_setting(conn, "ADMIN_PASSWORD", "UNCONFIGURED")
 
 if "settings_unlocked" not in st.session_state:
     st.session_state["settings_unlocked"] = False

@@ -8,7 +8,7 @@ import pandas as pd
 from datetime import date
 
 from ui.styles import inject_styles, page_header
-from core.importer import parse_position_file, validate_against_funds, commit_positions, ImportError
+from core.importer import parse_position_file, validate_against_funds, commit_positions, PositionImportError
 from core.database import log_audit
 
 inject_styles()
@@ -52,7 +52,7 @@ if uploaded is None:
 # ─────────────────────────────────────────────────────────────────────────────
 try:
     df_raw, warnings = parse_position_file(uploaded, filename=uploaded.name)
-except ImportError as e:
+except PositionImportError as e:
     st.error(f"Import failed: {e}")
     st.stop()
 
