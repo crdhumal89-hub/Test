@@ -579,58 +579,109 @@ footer a{color:#cfd2db; border-bottom-color:rgba(255,255,255,.2)}
       <div class="section-title">
         <h2>How to run it on your machine</h2>
         <div class="section-rule"></div>
-        <p class="section-sub">Two paths &mdash; one for the dashboard alone, one for the full SHINE skill that produces the findings the dashboard consumes.</p>
+        <p class="section-sub">Two paths. <strong>Path&nbsp;A</strong> &mdash; the dashboard alone, for exploring and sharing. <strong>Path&nbsp;B</strong> &mdash; the full SHINE skill running in Claude Code, for reviewing a real fund draft.</p>
       </div>
     </div>
 
-    <div class="prose">
-      <p><strong>Path&nbsp;A &mdash; just the dashboard.</strong> If you only want to explore the interface or share it with someone, you don&rsquo;t need anything but a browser.</p>
+    <h3 class="serif" style="font-size:24px;color:var(--navy);margin:30px 0 6px">Path A &mdash; just the dashboard</h3>
+    <p style="color:var(--gray);font-style:italic;margin:0 0 18px">For demos, training, and sharing with people who don&rsquo;t have Claude Code installed.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">A1</div>
+        <div class="step-body">
+          <h4>Get the files</h4>
+          <p>Clone the repo, or download the <span class="kbd">shine-app/</span> folder from the branch.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">A2</div>
+        <div class="step-body">
+          <h4>Open <span class="kbd">index.html</span></h4>
+          <p>Double&ndash;click it. Any modern browser will render the full app. No server, no install, no login.</p>
+          <p class="hint">If your browser blocks double&ndash;click of HTML files, open a terminal in <span class="kbd">shine-app/</span> and run <span class="kbd">npm start</span> &mdash; it serves at <span class="kbd">http://localhost:3000</span>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">A3</div>
+        <div class="step-body">
+          <h4>Click any demo review</h4>
+          <p>Three sample reviews are baked in so you can explore every screen without any data of your own. Start with <strong>AAA Coinvest Fund A LP</strong>.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="code"><span class="cmt"># 1. Clone or pull the branch</span>
-git clone &lt;repo&gt;
-git checkout claude/build-shine-v8-system-kzUiW
+    <h3 class="serif" style="font-size:24px;color:var(--navy);margin:48px 0 6px">Path B &mdash; the full skill in Claude Code</h3>
+    <p style="color:var(--gray);font-style:italic;margin:0 0 18px">For reviewing a real fund draft. The skill reads the FS, runs the five specialists, and emits findings you load in the dashboard.</p>
 
-<span class="cmt"># 2. Open the app &mdash; no install required</span>
-cd shine-app
-<span class="key">open index.html</span>            <span class="cmt"># macOS</span>
-<span class="key">start index.html</span>           <span class="cmt"># Windows</span>
-
-<span class="cmt"># Or run a local static server if you prefer</span>
-<span class="key">npm start</span>                  <span class="cmt"># serves at http://localhost:3000</span></div>
-
-    <div class="prose">
-      <p><strong>Path&nbsp;B &mdash; the full skill that generates real findings.</strong> SHINE is also a Claude Code <em>skill</em> that runs the orchestrator and five subagents against a real FS draft. The skill produces the <span class="mono">findings.json</span> you import into the dashboard.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">B1</div>
+        <div class="step-body">
+          <h4>Install Claude Code</h4>
+          <p>Download it from <strong>claude.ai/code</strong>. Available as a desktop app for Mac and Windows, a VS Code extension, and a CLI (<span class="kbd">npm install -g @anthropic-ai/claude-code</span>). Sign in with your Anthropic account.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B2</div>
+        <div class="step-body">
+          <h4>Drop the SHINE skill into your skills folder</h4>
+          <p>Copy the <span class="kbd">shine-fs-review-v8/</span> folder from this repo into your Claude Code skills directory. On macOS / Linux that&rsquo;s <span class="kbd">~/.claude/skills/</span>; on Windows it&rsquo;s <span class="kbd">%USERPROFILE%\.claude\skills\</span>. Rename the folder to <span class="kbd">shine-fs-review</span> so Claude finds it.</p>
+          <p class="hint">After copying, restart Claude Code so it picks up the new skill. You can verify by typing <span class="kbd">/skills</span> &mdash; <em>shine-fs-review</em> should appear in the list.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B3</div>
+        <div class="step-body">
+          <h4>Set up the fund (one&ndash;time, per fund)</h4>
+          <p>Create a folder for the fund and drop in a <span class="kbd">_FUND-METADATA.json</span> file with the static fund facts &mdash; legal name, domicile, structure type, fiscal year, jurisdictions, materiality benchmarks. Templates are in <span class="kbd">shine-fs-review-v8/inputs/</span>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B4</div>
+        <div class="step-body">
+          <h4>Prepare the review (per draft)</h4>
+          <p>Inside the fund folder, create a draft subfolder (e.g., <span class="kbd">2025-FY/Draft-1.1/</span>). Drop the draft FS PDF, workbook, prior FS, and any supporting documents into <span class="kbd">inputs/</span>. Add a <span class="kbd">_REVIEW-MANIFEST.json</span> listing the paths &mdash; this is the authoritative input list.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B5</div>
+        <div class="step-body">
+          <h4>Run the skill</h4>
+          <p>Open Claude Code, point it at the draft folder, and just say what you want done in plain language: <em>&ldquo;SHINE this draft&rdquo;</em>, or <em>&ldquo;Review AAA Coinvest Fund A for FY2025&rdquo;</em>. Claude recognises the trigger, loads the SHINE orchestrator, and runs all five subagents.</p>
+          <p class="hint">If a soft&ndash;required input is missing, Claude will ask: <em>&ldquo;Run anyway? Yes / Get the file first&rdquo;</em>. You stay in control of when to start.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B6</div>
+        <div class="step-body">
+          <h4>Open the dashboard</h4>
+          <p>When the skill finishes, it writes an <span class="kbd">outputs/</span> folder inside the draft folder. The dashboard opens itself &mdash; just open <span class="kbd">outputs/dashboard.html</span> in your browser and the review is loaded, ready to disposition. <strong>No import step.</strong></p>
+          <p class="hint">If you only have the JSON, drop the <span class="kbd">findings.json</span> file anywhere on the open dashboard &mdash; it auto&ndash;loads. Or pass <span class="kbd">?data=findings.json</span> as a URL parameter.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="code"><span class="cmt"># 1. Install Claude Code (CLI, desktop or web)</span>
-<span class="cmt"># 2. Drop the skill folder into your skills directory</span>
-cp -r shine-fs-review-v8 ~/.claude/skills/shine-fs-review
-
-<span class="cmt"># 3. For each fund you review, prepare two files</span>
-<span class="cmt">#    inputs/_REVIEW-MANIFEST.json    &mdash; paths to FS, workbook, prior FS</span>
-<span class="cmt">#    _FUND-METADATA.json             &mdash; static fund facts (one-time)</span>
-
-<span class="cmt"># 4. Trigger the skill in Claude Code</span>
-&gt; SHINE this draft at /path/to/fund/draft/folder
-
-<span class="cmt"># 5. Open the resulting findings.json in the dashboard via Import</span></div>
+    <div class="callout">
+      <div class="lbl">How loading a real review actually works</div>
+      <p>The dashboard supports <strong>three intuitive ways</strong> to ingest a real review &mdash; pick whichever fits the situation. <strong>(1) Bundled</strong>: the skill writes a self&ndash;contained <span class="mono">dashboard.html</span> with the data embedded; just open it. <strong>(2) Drag&ndash;and&ndash;drop</strong>: drop any <span class="mono">findings.json</span> file anywhere on the open dashboard &mdash; the whole window highlights as a drop zone, and the review loads. <strong>(3) URL</strong>: append <span class="mono">?data=path/to/findings.json</span> to the dashboard URL. The Reviews home screen also has a visible &ldquo;Open a SHINE review&rdquo; affordance with a file&ndash;picker as a fourth option.</p>
+    </div>
 
     <div class="callout">
       <div class="lbl">Architecture, restated</div>
-      <p>The <strong>skill</strong> at <span class="mono">shine&ndash;fs&ndash;review&ndash;v8/</span> is the brain &mdash; it produces the findings. The <strong>app</strong> at <span class="mono">shine&ndash;app/</span> is the workspace &mdash; the controller&rsquo;s interface for dispositioning, editing, and exporting. They share the JSON schema at <span class="mono">manifests/finding&ndash;schema.json</span>, which is the contract between them.</p>
+      <p>The <strong>skill</strong> at <span class="mono">shine-fs-review-v8/</span> is the brain &mdash; it reads, reasons, and emits findings. The <strong>app</strong> at <span class="mono">shine-app/</span> is the workspace &mdash; the controller&rsquo;s interface for dispositioning, editing, and exporting. They share one contract: the <span class="mono">findings.json</span> schema. The skill writes it; the dashboard reads it. That&rsquo;s the whole interface.</p>
     </div>
 
-    <h3 class="serif" style="font-size:22px;color:var(--navy);margin:40px 0 14px">When to use which path</h3>
+    <h3 class="serif" style="font-size:22px;color:var(--navy);margin:40px 0 14px">Which path do you need?</h3>
     <div class="prose">
-      <p><strong>You want to demo SHINE to your team.</strong> Path&nbsp;A. Send them the <span class="mono">shine&ndash;app/</span> folder, tell them to double&ndash;click <span class="mono">index.html</span>. The demo review walks through every feature.</p>
-      <p><strong>You want to review a real fund draft.</strong> Path&nbsp;B for the generation, Path&nbsp;A for the disposition. Run the skill in Claude Code; import the resulting <span class="mono">findings.json</span> in the dashboard; disposition, edit, export.</p>
-      <p><strong>You want to share the report with the audit firm.</strong> Run Path&nbsp;A and use the <strong>Audit file PDF</strong> export. That&rsquo;s the file you send.</p>
+      <p><strong>Demoing to colleagues or auditors.</strong> Path&nbsp;A. Share the <span class="mono">shine-app/</span> folder; they double&ndash;click <span class="mono">index.html</span>. No install, no Claude Code, no JSON. The three demo reviews walk through every feature.</p>
+      <p><strong>Reviewing a real fund.</strong> Path&nbsp;B to produce the findings, then Path&nbsp;A&rsquo;s dashboard to disposition them. The hand&ndash;off between the two is seamless &mdash; the skill emits a bundled <span class="mono">dashboard.html</span> you open directly, no manual import.</p>
+      <p><strong>Sending the audit file to Deloitte.</strong> Inside the dashboard, click <strong>Audit file PDF</strong>. Review the preview, click <strong>Download PDF</strong>. That single file is the deliverable &mdash; cover, executive summary with charts, numbered findings sections, evidence, citations, evergreen appendix, signed by the architecture attribution on every page.</p>
     </div>
 
     <div class="callout">
       <div class="lbl">Two minutes to first value</div>
-      <p>Path&nbsp;A takes under a minute &mdash; clone, open, click. The demo review will show every screen, every feature, every interaction. You don&rsquo;t need to install anything, you don&rsquo;t need Claude Code, and you don&rsquo;t need a real draft FS to understand what the tool does.</p>
+      <p>Path&nbsp;A takes under a minute. The demo review will show every screen, every feature, every interaction. Path&nbsp;B takes about ten minutes the first time (Claude Code install, copy the skill folder) and seconds after that &mdash; from <em>&ldquo;SHINE this draft&rdquo;</em> to the rendered dashboard.</p>
     </div>
   </div>
 </section>

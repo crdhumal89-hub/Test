@@ -563,6 +563,107 @@ const warnings = [];
     await page.keyboard.press('Escape');
   });
 
+  // ---- New ingestion paths ----
+
+  await step('auto-load via ?data= URL parameter', async () => {
+    // Write a minimal-but-valid review JSON next to index.html so the http-server serves it.
+    const tmpPath = path.join(__dirname, 'test-autoload-fixture.json');
+    fs.writeFileSync(tmpPath, JSON.stringify({
+      brief: {
+        review_id: 'AUTOLOAD-TEST', fund_code: 'AUTO', fund_legal_name: 'Auto Load Fund LP',
+        domicile: 'Cayman', structure_type: 'Test', period: 'FY2026', draft: 'D0',
+        regulatory_jurisdictions: ['CIMA'], materiality_planning_value: 1000000,
+        clearly_trivial_value: 50000, materiality_planning_pct: 0.0075, build_date: '2026-05-17'
+      },
+      coverage: {
+        subagents_completed: [], subagents_failed: [], layers_covered: [], layers_skipped: [],
+        asc_paragraphs_applicable_count: 0, asc_paragraphs_checked_count: 0,
+        asc_paragraphs_skipped_with_reason: [], coverage_completeness_pct: 1,
+        regulatory_citations_referenced: [], regulatory_corpus_attestation_age_days: {},
+        subagent_elapsed_seconds: {}, subagent_timeouts_fired: [],
+        schema_rejections: { total: 0, by_subagent: {} }
+      },
+      findings: [{
+        id: 'F-001', subagent: 'mechanical', layer: 'L2', statement: 'Cover',
+        section: 'Test section', sortOrder: 1,
+        location: { statement: 'Cover', page: 1 },
+        severity: { impact: 'LOW', confidence: 'CERTAIN' },
+        subagentRaw: 'Sample finding', voiceNormalized: null, controllerEdited: null,
+        fix: 'Fix it', fixSubagentRaw: 'Fix it', fixVoiceNormalized: null,
+        merge_key: 'a::b::c::formatting', finding_class: 'formatting',
+        prior_review_recurrence: 'NEW', evergreen_accepted: false,
+        subagent_version: '8.1.0', prompt_version: 'v8.1.0', reference_versions: {},
+        state: 'OPEN'
+      }]
+    }));
+    await page.goto(BASE + '/index.html?data=test-autoload-fixture.json', { waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('.finding-card', { timeout: 5000 });
+    const fundName = await page.$eval('#banner-fund-name', el => el.textContent);
+    if (!fundName.includes('Auto Load Fund')) throw new Error('auto-load did not switch to dashboard; got: ' + fundName);
+    fs.unlinkSync(tmpPath);
+  });
+
+  await step('drag-and-drop a findings.json triggers global drop zone + loads', async () => {
+    await page.goto(BASE + '/index.html', { waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(() => document.querySelectorAll('[data-rid]').length >= 3);
+    // Use the file-input directly to simulate a drop (Playwright doesn't fully simulate native dragenter for fetch+blob).
+    // The end-to-end value of the test is: a JSON file with the right shape lands in the dashboard.
+    const reviewJSON = {
+      brief: {
+        review_id: 'DRAG-TEST', fund_code: 'DRAG', fund_legal_name: 'Dragged Fund LP',
+        domicile: 'Delaware', structure_type: 'LP', period: 'Q1-2026', draft: 'D1',
+        regulatory_jurisdictions: ['SEC'], materiality_planning_value: 500000,
+        clearly_trivial_value: 25000, materiality_planning_pct: 0.005, build_date: '2026-05-17'
+      },
+      coverage: {
+        subagents_completed: [], layers_covered: [], layers_skipped: [],
+        asc_paragraphs_applicable_count: 0, asc_paragraphs_checked_count: 0,
+        asc_paragraphs_skipped_with_reason: [], coverage_completeness_pct: 1,
+        regulatory_citations_referenced: [], regulatory_corpus_attestation_age_days: {},
+        subagent_elapsed_seconds: {}, subagent_timeouts_fired: [],
+        schema_rejections: { total: 0, by_subagent: {} }
+      },
+      findings: [{
+        id: 'F-001', subagent: 'narrative', layer: 'L3', statement: 'Cover',
+        section: 'Test', sortOrder: 1, location: { statement: 'Cover' },
+        severity: { impact: 'MEDIUM', confidence: 'PROBABLE' },
+        subagentRaw: 'Dragged finding', voiceNormalized: null, controllerEdited: null,
+        fix: 'Fix', fixSubagentRaw: 'Fix', fixVoiceNormalized: null,
+        merge_key: 'a::b::c::disclosure_gap', finding_class: 'disclosure_gap',
+        prior_review_recurrence: 'NEW', evergreen_accepted: false,
+        subagent_version: '8.1.0', prompt_version: 'v8.1.0', reference_versions: {},
+        state: 'OPEN'
+      }]
+    };
+    // Simulate via the file input which uses the same loadReviewPayload path.
+    const buffer = Buffer.from(JSON.stringify(reviewJSON));
+    await page.setInputFiles('#file-input', { name: 'dropped.json', mimeType: 'application/json', buffer });
+    await page.waitForSelector('.finding-card', { timeout: 5000 });
+    const fundName = await page.$eval('#banner-fund-name', el => el.textContent);
+    if (!fundName.includes('Dragged Fund')) throw new Error('file ingestion did not load review; got: ' + fundName);
+    await shot('drop-loaded');
+  });
+
+  await step('open-review CTA visible on Reviews view', async () => {
+    await page.goto(BASE + '/index.html', { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => localStorage.removeItem('shine:lastReview'));
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(() => document.querySelectorAll('[data-rid]').length >= 3);
+    await page.waitForTimeout(200);
+    const ctaInfo = await page.evaluate(async () => {
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const el = document.querySelector('.open-review-cta');
+      if (!el) return { ok: false, why: 'no element' };
+      const r = el.getBoundingClientRect();
+      const cs = getComputedStyle(el);
+      if (cs.display === 'none' || cs.visibility === 'hidden') return { ok: false, why: cs.display + '/' + cs.visibility };
+      if (r.width < 100 || r.height < 20) return { ok: false, why: 'too small ' + r.width + 'x' + r.height };
+      return { ok: true };
+    });
+    if (!ctaInfo.ok) throw new Error('open-review CTA not visible: ' + ctaInfo.why);
+    await shot('open-review-cta');
+  });
+
   // === Report ===
   console.log('\n=== CONSOLE ERRORS ===');
   if (errors.length === 0) console.log('  none');

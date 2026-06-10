@@ -198,12 +198,18 @@
     renderReviewsList();
     updateNavCounters();
 
-    // If a review was previously active, restore it
-    const lastReview = localStorage.getItem('shine:lastReview');
-    if (lastReview) {
-      const r = window.SHINE_SAMPLE.reviews_index.find(x => x.review_id === lastReview);
-      if (r) openReview(lastReview);
-    }
+    // Auto-load: ?data=URL, ./findings.json, ./data/findings.json, ./outputs/findings.json.
+    // This is what makes the SHINE skill hand-off seamless — the skill writes findings.json
+    // next to index.html and the dashboard opens straight to it. Falls through to the
+    // restore-last-review path if nothing is auto-loadable.
+    tryAutoLoadReview().then(loaded => {
+      if (loaded) return;
+      const lastReview = localStorage.getItem('shine:lastReview');
+      if (lastReview) {
+        const r = window.SHINE_SAMPLE.reviews_index.find(x => x.review_id === lastReview);
+        if (r) openReview(lastReview);
+      }
+    });
   }
 
   // ============================================================
@@ -1460,6 +1466,37 @@
   // ============================================================
   // IMPORT
   // ============================================================
+  // Shared loader — used by file-picker, drag-and-drop, auto-fetch, and ?data= URL param.
+  function loadReviewPayload(parsed, source) {
+    if (!parsed || !parsed.brief || !parsed.findings) {
+      toast('Invalid review file — missing "brief" or "findings"');
+      return false;
+    }
+    window.SHINE_SAMPLE.review = parsed;
+    state.currentReviewId = parsed.brief.review_id;
+    state.review = parsed;
+    state.findings = parsed.findings.map(f => ({ ...f }));
+    state.undoStack = [];
+    if (!window.SHINE_SAMPLE.reviews_index.find(r => r.review_id === parsed.brief.review_id)) {
+      window.SHINE_SAMPLE.reviews_index.unshift({
+        review_id: parsed.brief.review_id,
+        fund_code: parsed.brief.fund_code,
+        fund_legal_name: parsed.brief.fund_legal_name,
+        period: parsed.brief.period,
+        draft: parsed.brief.draft,
+        reviewer: parsed.brief.reviewer,
+        review_date: parsed.brief.review_date,
+        readiness: 'NOT_READY',
+        finding_count: parsed.findings.length,
+        coverage_pct: (parsed.coverage && parsed.coverage.coverage_completeness_pct) || 1
+      });
+    }
+    switchView('dashboard');
+    renderDashboard();
+    toast('Loaded ' + (source || parsed.brief.review_id));
+    return true;
+  }
+
   function bindImport() {
     document.getElementById('btn-import').addEventListener('click', () => {
       document.getElementById('file-input').click();
@@ -1469,42 +1506,73 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = ev => {
-        try {
-          const parsed = JSON.parse(ev.target.result);
-          if (parsed.brief && parsed.findings) {
-            window.SHINE_SAMPLE.review = parsed;
-            state.currentReviewId = parsed.brief.review_id;
-            state.review = parsed;
-            state.findings = parsed.findings.map(f => ({ ...f }));
-            // B-005 fix: clear undo across review boundaries to prevent cross-review state contamination
-            state.undoStack = [];
-            // Add to reviews index if missing
-            if (!window.SHINE_SAMPLE.reviews_index.find(r => r.review_id === parsed.brief.review_id)) {
-              window.SHINE_SAMPLE.reviews_index.unshift({
-                review_id: parsed.brief.review_id,
-                fund_code: parsed.brief.fund_code,
-                fund_legal_name: parsed.brief.fund_legal_name,
-                period: parsed.brief.period,
-                draft: parsed.brief.draft,
-                reviewer: parsed.brief.reviewer,
-                review_date: parsed.brief.review_date,
-                readiness: 'NOT_READY',
-                finding_count: parsed.findings.length,
-                coverage_pct: (parsed.coverage && parsed.coverage.coverage_completeness_pct) || 1
-              });
-            }
-            switchView('dashboard');
-            renderDashboard();
-            toast(`Imported ${file.name}`);
-          } else {
-            toast('Invalid review file (missing brief or findings)');
-          }
-        } catch (err) {
-          toast('Could not parse JSON: ' + err.message);
-        }
+        try { loadReviewPayload(JSON.parse(ev.target.result), file.name); }
+        catch (err) { toast('Could not parse JSON: ' + err.message); }
       };
       reader.readAsText(file);
     });
+
+    // Drag-and-drop anywhere on the page (S2 simplification).
+    const dropZone = document.getElementById('global-drop-zone');
+    let dragDepth = 0;
+    window.addEventListener('dragenter', e => {
+      if (!e.dataTransfer || !Array.from(e.dataTransfer.types).includes('Files')) return;
+      e.preventDefault(); dragDepth++; if (dropZone) dropZone.classList.add('active');
+    });
+    window.addEventListener('dragover', e => {
+      if (!e.dataTransfer || !Array.from(e.dataTransfer.types).includes('Files')) return;
+      e.preventDefault();
+    });
+    window.addEventListener('dragleave', e => {
+      if (!e.dataTransfer || !Array.from(e.dataTransfer.types).includes('Files')) return;
+      dragDepth = Math.max(0, dragDepth - 1);
+      if (dragDepth === 0 && dropZone) dropZone.classList.remove('active');
+    });
+    window.addEventListener('drop', e => {
+      if (!e.dataTransfer || !e.dataTransfer.files.length) return;
+      e.preventDefault(); dragDepth = 0;
+      if (dropZone) dropZone.classList.remove('active');
+      const file = e.dataTransfer.files[0];
+      if (!file.name.toLowerCase().endsWith('.json')) { toast('Drop a .json file (a SHINE findings.json)'); return; }
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try { loadReviewPayload(JSON.parse(ev.target.result), file.name); }
+        catch (err) { toast('Could not parse JSON: ' + err.message); }
+      };
+      reader.readAsText(file);
+    });
+
+    // Empty-state "open" button on Reviews view (mirrors the top-right import icon).
+    const ctaBtn = document.getElementById('drop-cta-open');
+    if (ctaBtn) ctaBtn.addEventListener('click', () => document.getElementById('file-input').click());
+  }
+
+  // Auto-load — opt-in via two signals (no speculative probing, no console 404s):
+  //   1. ?data=<url>   — handy for ad-hoc links and bookmarks
+  //   2. <meta name="shine-data" content="./findings.json">  — what the SHINE skill emits
+  //      into the bundled dashboard.html (Stage 7 output) so opening that file just works.
+  // If neither is set (the demo case), we fall through to drag-and-drop / file-picker.
+  async function tryAutoLoadReview() {
+    const params = new URLSearchParams(window.location.search);
+    const fromParam = params.get('data');
+    const metaEl = document.querySelector('meta[name="shine-data"]');
+    const fromMeta = metaEl ? metaEl.getAttribute('content') : null;
+    const url = fromParam || fromMeta;
+    if (!url) return false;
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) { toast('Could not load ' + url + ' (' + res.status + ')'); return false; }
+      const parsed = await res.json();
+      if (parsed && parsed.brief && parsed.findings) {
+        loadReviewPayload(parsed, url);
+        return true;
+      }
+      toast('Loaded ' + url + ' but it is missing "brief" or "findings"');
+    } catch (e) {
+      console.warn('Auto-load failed for ' + url + ':', e.message);
+      toast('Auto-load failed — try drag-and-drop or the Import button');
+    }
+    return false;
   }
 
   // ============================================================

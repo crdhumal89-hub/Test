@@ -53,7 +53,16 @@
   <section class="view view-reviews active" id="view-reviews">
     <div class="view-header">
       <h1>Reviews</h1>
-      <p class="muted">Active and recently completed financial statement reviews.</p>
+      <p class="muted">Active and recently completed financial statement reviews. Drop a <code>findings.json</code> file anywhere on this page to open a real review.</p>
+    </div>
+
+    <!-- Open-a-review affordance (always visible above the list). -->
+    <div class="open-review-cta">
+      <div>
+        <div class="open-review-title">Open a SHINE review</div>
+        <div class="open-review-sub">Drag a <code>findings.json</code> here, or pick a file. The SHINE skill emits this file when you run a review in Claude Code.</div>
+      </div>
+      <button class="btn-primary" id="drop-cta-open">Pick findings.json</button>
     </div>
 
     <div class="reviews-toolbar">
@@ -73,6 +82,15 @@
 
     <div class="reviews-grid" id="reviews-grid"><!-- populated by app.js --></div>
   </section>
+
+  <!-- Global drop zone overlay — appears whenever a file is dragged over the window. -->
+  <div class="global-drop-zone" id="global-drop-zone">
+    <div class="global-drop-inner">
+      <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5-5 5 5M12 5v12"/></svg>
+      <div class="global-drop-title">Drop findings.json to open the review</div>
+      <div class="global-drop-sub">Any SHINE review JSON works — the dashboard reads it directly.</div>
+    </div>
+  </div>
 
   <!-- ============================================================ -->
   <!-- VIEW: DASHBOARD (the SHINE review)                            -->
