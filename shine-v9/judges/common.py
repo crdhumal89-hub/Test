@@ -91,6 +91,7 @@ def checklist_walk(items: list[dict], notes: dict, framework, versions: dict,
                             "reason": it["applicability_reason"]})
             continue
         checked.append(it["check_id"])
+        note = None
         if it["require_text_patterns"] == ["__POSITION_AGGREGATED__"]:
             # The item itself encodes a violation computed from the figures.
             satisfied = False
@@ -110,4 +111,8 @@ def checklist_walk(items: list[dict], notes: dict, framework, versions: dict,
                 note_id=None, citation_key=it["citation_key"],
                 legacy_layer=legacy_layer,
             ))
+            # Skeptic hooks: which check produced this, and whether the note
+            # existed (deficiency) or was absent entirely.
+            findings[-1]["check_id"] = it["check_id"]
+            findings[-1]["x_note_found"] = note is not None
     return findings, {"checked": checked, "skipped": skipped}
