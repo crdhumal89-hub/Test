@@ -157,7 +157,8 @@ def make_clean_notes(framework: str = "ASC946", domicile: str = "Cayman Islands"
     }[framework]
     notes = [
         {"id": "1", "title": "Organization",
-         "text": f"Golden Fund A LP (the Fund) is a closed-end investment vehicle. {org_reg}"},
+         "text": f"Golden Fund A LP (the Fund) is a closed-end investment vehicle. {org_reg} "
+                 "The Fund distributes annual audited financial statements to all investors."},
         {"id": "2", "title": "Significant accounting policies",
          "text": "The financial statements are prepared on a fair value basis. "
                  "Investments are measured at fair value with changes recognized in operations. "
