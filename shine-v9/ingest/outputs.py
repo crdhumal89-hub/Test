@@ -10,8 +10,26 @@ import json
 from pathlib import Path
 
 
-def outputs_dir(review_folder: str | Path) -> Path:
-    out = Path(review_folder) / "_outputs"
+def outputs_dir(review_folder: str | Path, config: dict | None = None,
+                reviewer: str | None = None, stamp: str | None = None) -> Path:
+    """Resolve the output directory.
+
+    simple mode (default, deterministic, used by the harness):
+        <review_folder>/_outputs/
+    audit_tree mode (the BASE convention for production):
+        <review_folder>/../_outputs/<review_folder.name>/<reviewer>-<stamp>/
+        where reviewer is the controller's email local-part and stamp is
+        YYYYMMDD-HHMM captured at run start. The BASE commitment holds:
+        input folders are never touched; runs never collide.
+    """
+    folder = Path(review_folder)
+    mode = ((config or {}).get("output", {}) or {}).get("mode", "simple")
+    if mode == "audit_tree":
+        if not reviewer or not stamp:
+            raise ValueError("audit_tree output mode requires reviewer and stamp")
+        out = folder.parent / "_outputs" / folder.name / f"{reviewer}-{stamp}"
+    else:
+        out = folder / "_outputs"
     out.mkdir(parents=True, exist_ok=True)
     return out
 

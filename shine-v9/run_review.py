@@ -27,7 +27,10 @@ from judges.common import PROMPT_VERSION                                  # noqa
 from judges.dispatch import run_judges                                    # noqa: E402
 from ledger.run_ledger import build_ledger, finalize_ledger, serialize_ledger  # noqa: E402
 from reconcile.calibration import apply_suppression                       # noqa: E402
+from reconcile.escalation import apply_escalation                         # noqa: E402
 from reconcile.reconciler import run_reconciler                           # noqa: E402
+from reconcile.voice import annotate                                      # noqa: E402
+from schema.compat import project_all                                     # noqa: E402
 from render.dashboard import render_dashboard                             # noqa: E402
 from render.exports import render_export                                  # noqa: E402
 from schema.validator import validate_all                                 # noqa: E402
@@ -39,11 +42,19 @@ def load_config(path: str | None = None) -> dict:
     return json.loads(config_path.read_text(encoding="utf-8"))
 
 
-def compute_readiness(findings: list[dict], completeness: float) -> dict:
+def compute_readiness(findings: list[dict], coverage: dict) -> dict:
+    """BASE invariant 17 (v8.1.1): READY requires clean severity AND
+    scope_coverage_pct >= 95% AND applicability_documented_pct = 100%.
+    Evergreen-accepted findings are excluded from the blocking count
+    (BASE invariant 16)."""
+    scope = coverage["scope_coverage_pct"]
+    documented = coverage["applicability_documented_pct"]
     blocking = [f for f in findings
                 if f["severity"] in ("CRITICAL", "HIGH")
-                and f["state"] in ("OPEN", "ACCEPTED") and not f.get("suppressed")]
-    if blocking or completeness < 0.85:
+                and f["state"] in ("OPEN", "ACCEPTED")
+                and not f.get("suppressed")
+                and f.get("prior_review_recurrence") != "EVERGREEN_ACCEPTED"]
+    if blocking or scope < 0.85 or documented < 1.0:
         drivers = []
         crit = sum(1 for f in blocking if f["severity"] == "CRITICAL")
         high = sum(1 for f in blocking if f["severity"] == "HIGH")
@@ -51,14 +62,16 @@ def compute_readiness(findings: list[dict], completeness: float) -> dict:
             drivers.append(f"{crit} critical unresolved")
         if high:
             drivers.append(f"{high} high unresolved")
-        if completeness < 0.85:
-            drivers.append(f"coverage {completeness:.0%} below 85 percent")
+        if scope < 0.85:
+            drivers.append(f"scope coverage {scope:.0%} below 85 percent")
+        if documented < 1.0:
+            drivers.append("silent skips present: applicability not fully documented")
         return {"state": "NOT_READY", "driver": " · ".join(drivers)}
-    if completeness < 0.95:
+    if scope < 0.95:
         return {"state": "READY_WITH_EXCEPTIONS",
-                "driver": f"only medium/low residual; coverage {completeness:.0%} between 85 and 95 percent"}
+                "driver": f"only medium/low residual; scope coverage {scope:.0%} between 85 and 95 percent"}
     return {"state": "READY",
-            "driver": "no unresolved critical or high findings; coverage at or above 95 percent"}
+            "driver": "no unresolved critical or high findings; scope coverage at or above 95 percent; every skip reason-coded"}
 
 
 def _sort_and_number(findings: list[dict], framework) -> list[dict]:
@@ -179,27 +192,41 @@ def run(review_folder: str | Path, config: dict | None = None) -> dict:
     timings["skeptic"] = time.monotonic() - t
 
     reconciled, reconciler_log = run_reconciler(surviving, framework)
+    reconciled, escalation_log = apply_escalation(reconciled, review.prior_findings, framework)
+    reconciled, polish_count = annotate(reconciled)
     reconciled, suppressed_count = apply_suppression(reconciled, config)
     findings = _sort_and_number(reconciled, framework)
 
-    # Coverage roll-up: every check either ran or carries a reason-coded skip.
+    # Coverage roll-up under the BASE invariant-17 split:
+    #   scope_coverage_pct          how much of the in-scope work actually ran
+    #                               (degraded skips, e.g. INPUT_MISSING, count
+    #                               against scope; out-of-scope skips do not)
+    #   applicability_documented_pct every skip carries a reason code; any
+    #                               silent skip is a control gap that blocks READY
+    OUT_OF_SCOPE_CODES = {"NOT_APPLICABLE", "SUBPOPULATION_ABSENT"}
     checked = list(core_coverage["checked"])
     skipped = list(core_coverage["skipped"])
     for judge, cov in judge_coverage.items():
         checked.extend(f"{judge}:{c}" for c in cov["checked"])
         skipped.extend({**s, "judge": judge} for s in cov["skipped"])
     unreasoned = [s for s in skipped if not s.get("reason_code")]
-    completeness = len(checked) / max(1, len(checked) + len(unreasoned))
+    degraded = [s for s in skipped
+                if s.get("reason_code") and s["reason_code"] not in OUT_OF_SCOPE_CODES]
+    scope_pct = len(checked) / max(1, len(checked) + len(degraded))
+    documented_pct = (len(skipped) - len(unreasoned)) / len(skipped) if skipped else 1.0
     coverage = {
         "checked": sorted(checked), "skipped": skipped,
         "checked_count": len(checked), "skipped_count": len(skipped),
         "skips_without_reason": len(unreasoned),
-        "completeness_pct": completeness,
+        "degraded_skips": len(degraded),
+        "scope_coverage_pct": scope_pct,
+        "applicability_documented_pct": documented_pct,
+        "completeness_pct": documented_pct,   # back-compat alias
         "citations": {"verified": sum(1 for e in verifier.log if e["verified"]),
                       "rejected": sum(1 for e in verifier.log if not e["verified"])},
         "degradation_chips": review.degradation_chips,
     }
-    verdict = compute_readiness(findings, completeness)
+    verdict = compute_readiness(findings, coverage)
 
     ledger = finalize_ledger(build_ledger(review.raw_files, config, versions),
                              findings, coverage)
@@ -209,16 +236,21 @@ def run(review_folder: str | Path, config: dict | None = None) -> dict:
             "draft": review.manifest.get("draft", ""),
             "review_id": review.manifest.get("review_id", "")}
 
-    out = outputs_dir(review.folder)
+    reviewer = config.get("reviewer") or "controller"
+    stamp = config.get("run_stamp")   # injected for audit_tree mode; tests fix it
+    out = outputs_dir(review.folder, config, reviewer=reviewer, stamp=stamp)
     write_json(out, "findings.json", findings)
+    write_json(out, "findings_v8compat.json", project_all(findings))
     write_json(out, "findings_app.json", _app_shape(findings, meta, coverage, verdict))
     write_json(out, "coverage_manifest.json", coverage)
     write_text(out, "ledger.json", serialize_ledger(ledger))
     write_json(out, "telemetry.json", {"timings_seconds": {k: round(v, 4) for k, v in timings.items()},
                                        "finding_count": len(findings),
-                                       "suppressed_count": suppressed_count})
+                                       "suppressed_count": suppressed_count,
+                                       "voice_polish_count": polish_count})
     write_json(out, "skeptic_decisions.json", skeptic_log)
     write_json(out, "reconciler_decisions.json", reconciler_log)
+    write_json(out, "escalation_log.json", escalation_log)
     write_json(out, "rejected_findings.json", rejected)
     write_text(out, "dashboard.html",
                render_dashboard(findings, meta, verdict, coverage, framework,
@@ -230,7 +262,8 @@ def run(review_folder: str | Path, config: dict | None = None) -> dict:
 
     return {"findings": findings, "coverage": coverage, "verdict": verdict,
             "ledger": ledger, "rejected": rejected, "skeptic_log": skeptic_log,
-            "reconciler_log": reconciler_log, "outputs_dir": str(out)}
+            "reconciler_log": reconciler_log, "escalation_log": escalation_log,
+            "outputs_dir": str(out)}
 
 
 def main(argv: list[str]) -> int:

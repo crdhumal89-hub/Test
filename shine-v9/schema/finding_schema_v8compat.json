@@ -1,0 +1,242 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://apollo.shine.v8/finding-schema.json",
+  "title": "SHINE v8.1 Finding Schema",
+  "version": "8.1",
+  "description": "Canonical finding contract. Every subagent MUST return findings conforming to this schema. The orchestrator REJECTS any non-conforming finding at Stage 5a and writes the rejection to outputs/rejected-findings.log. Schema v8.1 adds: canonical three-field provenance chain, structured location subfields, model+reference version stamps, evergreen_accepted state, regulatory_citation field, and elapsed_seconds telemetry on subagent envelopes.",
+  "type": "object",
+  "required": [
+    "id",
+    "subagent",
+    "subagent_version",
+    "prompt_version",
+    "reference_versions",
+    "layer",
+    "section",
+    "sortOrder",
+    "severity",
+    "confidence",
+    "state",
+    "statement",
+    "subagentRaw",
+    "fix",
+    "location",
+    "evidence"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable ID assigned by orchestrator on ingestion. Format: F-<seq>. Subagent leaves blank; orchestrator populates."
+    },
+    "subagent": {
+      "type": "string",
+      "enum": ["mechanical", "narrative", "standards", "comparative", "defense"],
+      "description": "Which subagent produced this finding. Required for merge logic and coverage audit."
+    },
+    "subagent_version": {
+      "type": "string",
+      "description": "Version stamp of the subagent that produced this finding. Format: 'mechanical@8.1.0'. Required for audit-trail reproducibility per v8.1 invariant."
+    },
+    "prompt_version": {
+      "type": "string",
+      "description": "Hash or version stamp of the subagent's persona prompt. Lets a reviewer reproduce historical reviews. Format: 'sha256:abc12345' or 'v8.1-prompt-rev3'."
+    },
+    "reference_versions": {
+      "type": "object",
+      "description": "Version stamps of every reference file the subagent consulted to produce this finding. e.g., {'asc-matrices': '2026-Q2-v1', 'regulatory-corpus/CIMA': '2026-Q2-v1'}.",
+      "additionalProperties": {"type": "string"}
+    },
+    "layer": {
+      "type": "string",
+      "pattern": "^L(1[0-4]|[1-9])$",
+      "description": "Originating SHINE layer (L1-L14). One layer per finding even if subagent owns multiple layers."
+    },
+    "section": {
+      "type": "string",
+      "description": "Human-readable FS location. Format: '[Statement or Note#] - [Sub-topic]'. Examples: 'Note 1 - Organization', 'SCF - Hidden Rows R7-R8', 'SOI - Concentration >5%'."
+    },
+    "sortOrder": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Render sequence within statement group. SAL findings < SOI < SOP < SOC < SCF < Notes (N1 < N2 < ... < NN) < FiHi. Orchestrator may rewrite to enforce canonical ordering."
+    },
+    "statement": {
+      "type": "string",
+      "enum": ["SAL", "SOI", "SOP", "SOC", "SCF", "Notes", "FiHi", "Cover", "MultiStatement"],
+      "description": "Which face statement or section. MultiStatement is reserved for cross-statement tie-outs (TIE-1 through TIE-10)."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+      "description": "Per SKILL.md severity classification. Orchestrator may escalate per prior-review matrix unless evergreen_accepted is true."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["CERTAIN", "PROBABLE", "POSSIBLE"],
+      "description": "CERTAIN = mathematically provable. PROBABLE = strong evidence needs confirmation. POSSIBLE = pattern-based suspicion warrants controller question."
+    },
+    "state": {
+      "type": "string",
+      "enum": ["OPEN"],
+      "description": "All subagent-returned findings are OPEN. State transitions happen in the dashboard disposition cycle (see SKILL.md Section 'Finding lifecycle')."
+    },
+    "subagentRaw": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 600,
+      "description": "PROVENANCE FIELD 1 of 3 (v8.1). The original text produced by the subagent. Immutable after Stage 5a validation. Never overwritten by voice normalization or controller edit."
+    },
+    "voiceNormalized": {
+      "type": ["string", "null"],
+      "maxLength": 600,
+      "default": null,
+      "description": "PROVENANCE FIELD 2 of 3 (v8.1). Populated by orchestrator Stage 5g if voice normalization changed the text. Null if subagentRaw passes voice rules unchanged. Annotation only - controller decides whether this version flows to export."
+    },
+    "controllerEdited": {
+      "type": ["string", "null"],
+      "maxLength": 600,
+      "default": null,
+      "description": "PROVENANCE FIELD 3 of 3 (v8.1). Populated when the controller edits the finding text in the dashboard. Null until first edit. Subsequent edits overwrite (undo stack preserves history)."
+    },
+    "text": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 600,
+      "description": "DEPRECATED in v8.1 - retained for backward compatibility. New flow: subagent populates subagentRaw; render layer selects from controllerEdited > voiceNormalized > subagentRaw."
+    },
+    "fix": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 400,
+      "description": "Specific corrective action. Quote the offending text where applicable and provide the replacement. Mirrors subagentRaw provenance chain via fixSubagentRaw / fixVoiceNormalized / fixControllerEdited (parallel optional fields)."
+    },
+    "fixSubagentRaw": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "PROVENANCE for fix text. Original subagent fix. Defaults to value of 'fix' on first ingestion."
+    },
+    "fixVoiceNormalized": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "Voice-normalized fix text. Null if no change."
+    },
+    "fixControllerEdited": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "Controller-edited fix text. Null until first edit."
+    },
+    "location": {
+      "type": "object",
+      "description": "MANDATORY structured location per v8.1. Subagent must populate every applicable sub-field. Schema rejects findings missing location.statement and location.page (or location.cell_ref for Excel-sourced findings).",
+      "required": ["statement"],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "description": "Canonical statement code (matches finding.statement field)."
+        },
+        "page": {
+          "type": ["integer", "null"],
+          "description": "PDF page number (1-indexed)."
+        },
+        "note_number": {
+          "type": ["string", "null"],
+          "description": "Note number if applicable. e.g., 'Note 7', 'Note 12'."
+        },
+        "line_label": {
+          "type": ["string", "null"],
+          "description": "Specific line label on the statement. e.g., 'Total assets', 'Energy Sector subtotal', 'Investments, at fair value'."
+        },
+        "paragraph": {
+          "type": ["string", "null"],
+          "description": "Paragraph reference within a note. e.g., '¶3', 'first paragraph'."
+        },
+        "cell_ref": {
+          "type": ["string", "null"],
+          "description": "Excel cell reference for L8 findings. e.g., 'SOI!K47'."
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["source"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Which input file (per _REVIEW-MANIFEST.json). e.g., 'fs_draft_pdf', 'fs_workbook_xlsx', 'prior_fs_pdf'."
+        },
+        "quoted_text": {
+          "type": "string",
+          "description": "Verbatim text from the source if applicable. Use UTF-8 characters directly - NEVER unicode escape sequences (per Rule 8)."
+        },
+        "expected_value": {
+          "type": ["string", "number", "null"],
+          "description": "What the value should be, if known."
+        },
+        "found_value": {
+          "type": ["string", "number", "null"],
+          "description": "What the value actually is."
+        },
+        "asc_reference": {
+          "type": ["string", "null"],
+          "description": "ASC paragraph if applicable. e.g., 'ASC 820-10-50-2E'. Mandatory for L9 findings (Stage 5a rejects L9 findings without this field)."
+        },
+        "regulatory_citation": {
+          "type": ["string", "null"],
+          "description": "Citation key from reference/regulatory-corpus/ (e.g., 'CIMA:MFA-4', 'CSSF:DEPOSITARY', 'SEC:RULE-206-4-2'). Mandatory for L12 findings (Stage 5a rejects L12 findings without this field). Orchestrator validates citation exists in corpus."
+        }
+      }
+    },
+    "detail": {
+      "type": "string",
+      "description": "Optional expandable computation breakdown or extended reasoning. Renders under 'Detail' toggle in dashboard."
+    },
+    "constituent_findings": {
+      "type": "array",
+      "description": "For root-cause findings produced by the reconciler (Stage 5d), this array preserves the original constituent finding IDs that were collapsed. Dashboard exposes via 'Show constituents' toggle.",
+      "items": {"type": "string"}
+    },
+    "reconciler_pattern": {
+      "type": ["string", "null"],
+      "description": "If this finding is a root-cause finding from the reconciler, name of the matching pattern (e.g., 'Pattern 1 - Undisclosed structural change'). Null otherwise."
+    },
+    "reconciler_specificity_score": {
+      "type": ["number", "null"],
+      "description": "Specificity score that selected the matching pattern. Logged in reconciler-decisions.log for audit."
+    },
+    "hidden_row_flag": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if finding relates to a hidden Excel row (XLSX-7 or XLSX-9 protocol). Triggers 'Hidden Row' dashed gold pill in dashboard."
+    },
+    "prior_review_recurrence": {
+      "type": "string",
+      "enum": ["NEW", "RECURRING", "RESOLVED", "REGRESSED", "EVERGREEN_ACCEPTED"],
+      "default": "NEW",
+      "description": "Cross-review state. NEW = not in prior. RECURRING = was OPEN/ACCEPTED in prior. RESOLVED = was OPEN/ACCEPTED, now absent. REGRESSED = was RESOLVED, now back. EVERGREEN_ACCEPTED (v8.1) = controller previously marked as acceptable practice; skip escalation."
+    },
+    "evergreen_accepted": {
+      "type": "boolean",
+      "default": false,
+      "description": "v8.1 flag. Controller-set in dashboard to mark a recurring finding as 'acceptable documented practice; do not escalate further.' Prior-review escalation skips findings where this is true. Dashboard displays them but excludes from readiness gate count. Audit trail logs the date and reason."
+    },
+    "evergreen_acceptance_reason": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "Required if evergreen_accepted is true. One-line controller justification, logged for audit."
+    },
+    "evergreen_acceptance_date": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "ISO-8601 date when evergreen flag was set. Logged for audit."
+    },
+    "merge_key": {
+      "type": "string",
+      "description": "Orchestrator-assigned dedup key. Format: '<statement>::<section>::<line_id>::<finding_class>'. Findings sharing a merge_key are candidates for collapse via cross-layer pattern reconciler."
+    },
+    "controller_question": {
+      "type": "string",
+      "description": "For PROBABLE/POSSIBLE findings, the specific question to ask the controller. Phrased so controller can answer without re-reading the FS."
+    }
+  },
+  "additionalProperties": false
+}

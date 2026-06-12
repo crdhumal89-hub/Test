@@ -27,6 +27,7 @@ class ReviewInputs:
     notes: dict
     prior_figures: dict | None = None
     sibling_figures: dict | None = None
+    prior_findings: list | None = None
     degradation_chips: list = field(default_factory=list)
     raw_files: dict = field(default_factory=dict)  # filename -> bytes, for hashing
 
@@ -70,9 +71,12 @@ def load_review(folder: str | Path) -> ReviewInputs:
     notes = read_required("notes.json", halt=False) or {"notes": []}
     prior = read_required("prior_figures.json", halt=False) if (inputs_dir / "prior_figures.json").exists() else None
     sibling = read_required("sibling_figures.json", halt=False) if (inputs_dir / "sibling_figures.json").exists() else None
+    prior_findings = read_required("prior_findings.json", halt=False) \
+        if (inputs_dir / "prior_findings.json").exists() else None
 
     return ReviewInputs(
         folder=folder, manifest=manifest, metadata=metadata, figures=figures,
         notes=notes, prior_figures=prior, sibling_figures=sibling,
+        prior_findings=prior_findings,
         degradation_chips=chips, raw_files=raw,
     )

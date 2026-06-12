@@ -39,6 +39,7 @@ def derive_flags(figures: dict) -> dict:
         "has_investments": bool(positions) or D(soi.get("total_fair_value", 0)) != 0,
         "has_level3": D(levels.get("3", 0)) > 0,
         "has_derivatives": any(p.get("type") == "derivative" for p in positions),
+        "has_fund_positions": any(p.get("type") == "fund" for p in positions),
         "has_due_to_affiliates": due_affiliates > 0,
         "aggregated_positions_over_5pct": aggregated_over_5pct,
         "scf_presented": bool(figures.get("cash_flows", {}).get("present", False)),

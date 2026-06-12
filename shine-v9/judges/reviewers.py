@@ -90,6 +90,45 @@ def review_presentation(ctx: dict):
                 fix=f"Present the {display} as part of the complete set of financial statements.",
                 framework_code=framework.code, versions=versions,
                 citation_key=req.get("citation_key"), legacy_layer="L4"))
+
+    # L4 formatting conventions (the BASE Mechanical cosmetics remit, the
+    # subset that is deterministically checkable from structured figures).
+    highlights = figures.get("financial_highlights") or {}
+    checked.append("FORMAT_RATIOS_ARE_FRACTIONS")
+    for ratio_field in ("expense_ratio", "nii_ratio"):
+        value = highlights.get(ratio_field)
+        if isinstance(value, (int, float)) and value >= 1:
+            findings.append(make_finding(
+                source="presentation", category="formatting", severity="LOW",
+                confidence_label="CERTAIN",
+                statement=framework.statement_name("highlights"),
+                section="Ratios", sort_order=72,
+                message=f"The {ratio_field.replace('_', ' ')} is stated as {value}, which reads as a percentage written into a fraction field. Ratios are presented as decimal fractions.",
+                fix="Restate the ratio as a decimal fraction (for example 0.0363, not 3.63).",
+                framework_code=framework.code, versions=versions,
+                line_id=ratio_field, legacy_layer="L4"))
+    checked.append("FORMAT_PERIOD_LABEL")
+    period = get_path(figures, "entity.period") or ""
+    if period and not re.fullmatch(r"FY\d{4}|Q[1-4]-\d{4}", period):
+        findings.append(make_finding(
+            source="presentation", category="formatting", severity="LOW",
+            confidence_label="CERTAIN", statement="Cover", section="Entity identity",
+            sort_order=3,
+            message=f"The period label {period!r} does not follow the house convention (FYyyyy or Qn-yyyy).",
+            fix="Restate the period label in the house convention.",
+            framework_code=framework.code, versions=versions,
+            line_id="Period", legacy_layer="L4"))
+    checked.append("FORMAT_CURRENCY_CODE")
+    currency = get_path(figures, "entity.currency") or ""
+    if currency and not re.fullmatch(r"[A-Z]{3}", currency):
+        findings.append(make_finding(
+            source="presentation", category="formatting", severity="LOW",
+            confidence_label="CERTAIN", statement="Cover", section="Entity identity",
+            sort_order=4,
+            message=f"The currency designation {currency!r} is not a three-letter ISO code.",
+            fix="Use the ISO 4217 currency code.",
+            framework_code=framework.code, versions=versions,
+            line_id="Currency", legacy_layer="L4"))
     return findings, {"checked": checked, "skipped": skipped}
 
 
