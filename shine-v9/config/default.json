@@ -1,0 +1,48 @@
+{
+  "config_version": "9.0.0",
+  "model_pin": "claude-fable-5",
+  "adapter": "rule_based",
+  "tolerances": {
+    "line_abs": 1.0,
+    "total_abs": 0.01,
+    "ratio_bps": 5.0,
+    "per_unit_abs": 0.01,
+    "inter_entity_abs": 1.0
+  },
+  "materiality": {
+    "default_planning_pct_of_nav": 0.0075,
+    "clearly_trivial_pct_of_materiality": 0.05
+  },
+  "suppression": {
+    "suppress_clearly_trivial": true,
+    "max_severity_suppressible": "LOW"
+  },
+  "skeptic": {
+    "enabled": true,
+    "challenge_severities": ["CRITICAL", "HIGH"]
+  },
+  "corpus": {
+    "authority_corpus_paths": [
+      "../shine-fs-review-v8/reference",
+      "evidence/corpus_data"
+    ],
+    "freshness_window_days": 180
+  },
+  "box": {
+    "review_root": "Apollo-Fund-Reviews",
+    "enabled": false
+  },
+  "golden_library_path": "golden",
+  "roles": {
+    "architect": "Ashitosh Shinde",
+    "steward": "Per OWNERSHIP.md rotation",
+    "approver": "VP Controllership designate"
+  },
+  "attribution_footer": "Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v9.0",
+  "acceptance": {
+    "must_catch_recall": 1.0,
+    "overall_recall_min": 0.95,
+    "overall_precision_min": 0.9,
+    "clean_draft_max_findings": 0
+  }
+}
