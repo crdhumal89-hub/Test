@@ -1,0 +1,9 @@
+[
+ {
+  "category": "inter_entity_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "feeder carries master interest 2M below master capital",
+  "relationship": null
+ }
+]

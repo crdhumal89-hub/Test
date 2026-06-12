@@ -1,0 +1,9 @@
+[
+ {
+  "category": "regulatory_gap",
+  "check_id": "REG_CIMA_PFA",
+  "must_catch": true,
+  "note": "post-2020 Cayman fund without PFA registration reference",
+  "relationship": null
+ }
+]

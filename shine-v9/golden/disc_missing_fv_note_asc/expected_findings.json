@@ -1,0 +1,23 @@
+[
+ {
+  "category": "standards_gap",
+  "check_id": "ASC946_HIERARCHY_TABLE",
+  "must_catch": true,
+  "note": "no leveling disclosure anywhere",
+  "relationship": null
+ },
+ {
+  "category": "standards_gap",
+  "check_id": "ASC946_LEVEL3_ROLLFORWARD",
+  "must_catch": true,
+  "note": "no Level 3 reconciliation anywhere",
+  "relationship": null
+ },
+ {
+  "category": "standards_gap",
+  "check_id": "ASC946_LEVEL3_INPUTS",
+  "must_catch": false,
+  "note": "no unobservable inputs disclosure anywhere",
+  "relationship": null
+ }
+]

@@ -1,0 +1,140 @@
+{
+ "balance_sheet": {
+  "assets": {
+   "cash": 5000000.0,
+   "investments_at_fair_value": 100000000.0,
+   "other_assets": 1000000.0,
+   "receivables": 2000000.0,
+   "total_assets": 108000000.0
+  },
+  "liabilities": {
+   "due_to_affiliates": 1000000.0,
+   "other_liabilities": 1000000.0,
+   "payables": 3000000.0,
+   "total_liabilities": 5000000.0
+  },
+  "partners_capital": 103000000.0
+ },
+ "cash_flows": {
+  "beginning_cash": 4000000.0,
+  "ending_cash": 5000000.0,
+  "net_change_in_cash": 1000000.0,
+  "present": true
+ },
+ "entity": {
+  "currency": "USD",
+  "fund_code": "GLD-FUND-A",
+  "legal_name": "Golden Fund A LP",
+  "period": "FY2025",
+  "period_end": "2025-12-31",
+  "units_outstanding": 1000000
+ },
+ "financial_highlights": {
+  "average_capital": 96500000.0,
+  "expense_ratio": 0.036269,
+  "nav_per_unit": 103.0,
+  "nii_ratio": 0.067358
+ },
+ "schedule_of_investments": {
+  "level_totals": {
+   "1": 10000000.0,
+   "2": 30000000.0,
+   "3": 60000000.0
+  },
+  "positions": [
+   {
+    "cost": 30000000.0,
+    "fair_value": 40000000.0,
+    "industry": "Industrials",
+    "level": 3,
+    "name": "Alpha Holdco",
+    "type": "equity"
+   },
+   {
+    "cost": 20000000.0,
+    "fair_value": 20000000.0,
+    "industry": "Financials",
+    "level": 3,
+    "name": "Beta Credit",
+    "type": "debt"
+   },
+   {
+    "cost": 8000000.0,
+    "fair_value": 10000000.0,
+    "industry": "Technology",
+    "level": 1,
+    "name": "Gamma Listed",
+    "type": "equity"
+   },
+   {
+    "cost": 15000000.0,
+    "fair_value": 20000000.0,
+    "industry": "Healthcare",
+    "level": 2,
+    "name": "Delta Notes",
+    "type": "debt"
+   },
+   {
+    "cost": 7000000.0,
+    "fair_value": 10000000.0,
+    "industry": "Energy",
+    "level": 2,
+    "name": "Epsilon Loan",
+    "type": "debt"
+   }
+  ],
+  "total_cost": 80000000.0,
+  "total_fair_value": 100000000.0
+ },
+ "statement_of_changes": {
+  "allocation_net_increase": 16500000.0,
+  "beginning_capital": 90000000.0,
+  "by_class": [
+   {
+    "allocation": 11000000.0,
+    "beginning": 60000000.0,
+    "class_id": "A",
+    "contributions": 6000000.0,
+    "distributions": -9000000.0,
+    "ending": 68000000.0
+   },
+   {
+    "allocation": 5500000.0,
+    "beginning": 30000000.0,
+    "class_id": "B",
+    "contributions": 4000000.0,
+    "distributions": -4500000.0,
+    "ending": 35000000.0
+   }
+  ],
+  "contributions": 9500000.0,
+  "distributions": -13500000.0,
+  "ending_capital": 103000000.0
+ },
+ "statement_of_operations": {
+  "expenses": {
+   "management_fee": 2000000.0,
+   "other": 500000.0,
+   "professional_fees": 1000000.0,
+   "total": 3500000.0
+  },
+  "investment_income": {
+   "dividends": 2000000.0,
+   "interest": 8000000.0,
+   "total": 10000000.0
+  },
+  "net_change_unrealized": 6000000.0,
+  "net_increase_in_partners_capital": 16500000.0,
+  "net_investment_income": 6500000.0,
+  "net_realized_gain": 4000000.0
+ },
+ "tie_out": {
+  "balance_sheet.assets.investments_at_fair_value": 100000000.0,
+  "balance_sheet.assets.total_assets": 108000000.0,
+  "balance_sheet.liabilities.total_liabilities": 5000000.0,
+  "balance_sheet.partners_capital": 103000000.0,
+  "schedule_of_investments.total_fair_value": 100000000.0,
+  "statement_of_changes.ending_capital": 103000000.0,
+  "statement_of_operations.net_increase_in_partners_capital": 16500000.0
+ }
+}

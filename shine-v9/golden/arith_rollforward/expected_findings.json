@@ -1,0 +1,9 @@
+[
+ {
+  "category": "rollforward_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "roll-forward does not close by 500k",
+  "relationship": "SOC_CLOSURE"
+ }
+]

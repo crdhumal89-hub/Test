@@ -1,0 +1,16 @@
+[
+ {
+  "category": "footing_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "leveling table does not foot; satisfied via reconciler constituent",
+  "relationship": "SOI_LEVELS_FOOT"
+ },
+ {
+  "category": "standards_gap",
+  "check_id": "ASC946_LEVEL3_ROLLFORWARD",
+  "must_catch": true,
+  "note": "reconciliation language gutted; satisfied via reconciler constituent",
+  "relationship": null
+ }
+]

@@ -1,0 +1,16 @@
+[
+ {
+  "category": "standards_gap",
+  "check_id": "IFRS13_HIERARCHY",
+  "must_catch": true,
+  "note": "IFRS 13.93 hierarchy disclosures absent",
+  "relationship": null
+ },
+ {
+  "category": "standards_gap",
+  "check_id": "IFRS13_LEVEL3_RECON",
+  "must_catch": true,
+  "note": "IFRS 13.93(e) reconciliation absent",
+  "relationship": null
+ }
+]

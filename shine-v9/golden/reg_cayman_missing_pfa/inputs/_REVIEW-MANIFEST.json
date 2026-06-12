@@ -1,0 +1,10 @@
+{
+ "draft": "Draft 1",
+ "inputs": {
+  "figures": "figures.json",
+  "metadata": "_FUND-METADATA.json",
+  "notes": "notes.json"
+ },
+ "period": "FY2025",
+ "review_id": "GLD-FUND-A-FY2025-D1"
+}
