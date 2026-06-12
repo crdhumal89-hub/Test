@@ -4,6 +4,8 @@
   "check_id": "ASC946_CONCENTRATION_5PCT",
   "must_catch": true,
   "note": "38.8 percent of capital aggregated without name-level disclosure",
-  "relationship": null
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
  }
 ]

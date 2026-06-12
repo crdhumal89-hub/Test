@@ -4,6 +4,8 @@
   "check_id": null,
   "must_catch": true,
   "note": "workbook and statement disagree by 100k",
-  "relationship": "TIE_OUT:statement_of_changes.ending_capital"
+  "recurrence": null,
+  "relationship": "TIE_OUT:statement_of_changes.ending_capital",
+  "severity": null
  }
 ]

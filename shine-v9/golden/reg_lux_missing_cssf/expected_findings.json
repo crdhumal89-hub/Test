@@ -4,6 +4,8 @@
   "check_id": "REG_LUX_CSSF",
   "must_catch": false,
   "note": "Luxembourg vehicle without CSSF supervision reference",
-  "relationship": null
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
  }
 ]

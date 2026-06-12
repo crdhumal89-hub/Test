@@ -1,0 +1,11 @@
+[
+ {
+  "category": "inter_entity_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "TC-05: feeder carries master interest 1.5M below master capital",
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
+ }
+]

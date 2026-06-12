@@ -4,6 +4,8 @@
   "check_id": null,
   "must_catch": true,
   "note": "financial highlights are a required ASC 946 statement",
-  "relationship": null
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
  }
 ]

@@ -1,0 +1,11 @@
+[
+ {
+  "category": "standards_gap",
+  "check_id": "ASC946_NAV_PE",
+  "must_catch": true,
+  "note": "TC-04: fund interests held without NAV practical expedient disclosures",
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
+ }
+]

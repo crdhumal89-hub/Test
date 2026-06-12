@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from run_review import run, load_config        # noqa: E402
+from schema.v8compat_validator import validate_v8compat  # noqa: E402
 
 GOLDEN = ROOT / "golden"
 TEXT_ARTIFACTS = ("findings.json", "coverage_manifest.json", "ledger.json",
@@ -44,6 +45,13 @@ def _matches(expected: dict, finding: dict) -> bool:
                 (unit.get("evidence") or {}).get("relationship") != expected["relationship"]:
             continue
         if expected.get("check_id") and unit.get("check_id") != expected["check_id"]:
+            continue
+        # Escalation expectations: the TOP-LEVEL finding carries recurrence
+        # and post-escalation severity (constituents are pre-collapse).
+        if expected.get("recurrence") and \
+                finding.get("prior_review_recurrence") != expected["recurrence"]:
+            continue
+        if expected.get("severity") and finding.get("severity") != expected["severity"]:
             continue
         return True
     return False
@@ -97,7 +105,7 @@ def run_harness() -> dict:
     if not fixtures:
         raise SystemExit("golden library is empty; run python3 -m harness.golden_gen first")
 
-    rows, em_dash_hits = [], []
+    rows, em_dash_hits, compat_violations = [], [], []
     determinism_ok = True
     with tempfile.TemporaryDirectory() as tmp:
         for folder in fixtures:
@@ -107,6 +115,14 @@ def run_harness() -> dict:
             expected_list = json.loads((folder / "expected_findings.json").read_text())
             rows.append(score_fixture(folder.name, result, expected_list))
             em_dash_hits.extend(f"{folder.name}/{h}" for h in scan_em_dashes(work / "_outputs"))
+            # BASE-shape contract: every compat finding validates against the
+            # vendored v8.1.1-rc schema, every run.
+            compat = json.loads((work / "_outputs" / "findings_v8compat.json").read_text())
+            for cf in compat:
+                errs = validate_v8compat(cf)
+                if errs:
+                    compat_violations.append({"fixture": folder.name,
+                                              "finding": cf.get("id"), "errors": errs})
 
         # Determinism probe: same fixture twice, byte-identical ledger.
         probe_src = fixtures[0]
@@ -140,6 +156,7 @@ def run_harness() -> dict:
         "zero_unverifiable_citations_in_output": unverified == 0,
         "deterministic_ledgers": determinism_ok,
         "no_em_dashes_in_artifacts": not em_dash_hits,
+        "v8compat_schema_valid": not compat_violations,
     }
     scorecard = {
         "scorecard_version": "9.0",
@@ -158,6 +175,7 @@ def run_harness() -> dict:
         "clean_fixture_findings": clean_fp,
         "unverified_citations_in_output": unverified,
         "em_dash_hits": em_dash_hits,
+        "v8compat_violations": compat_violations,
         "gate": gate,
         "gate_green": all(gate.values()),
         "rows": rows,

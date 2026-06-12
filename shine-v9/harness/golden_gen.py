@@ -23,9 +23,11 @@ from harness.fixture_factory import (make_clean_review, mutate,           # noqa
 GOLDEN = ROOT / "golden"
 
 
-def expected(category, *, relationship=None, check_id=None, must_catch=False, note=""):
+def expected(category, *, relationship=None, check_id=None, must_catch=False,
+             note="", recurrence=None, severity=None):
     return {"category": category, "relationship": relationship,
-            "check_id": check_id, "must_catch": must_catch, "note": note}
+            "check_id": check_id, "must_catch": must_catch, "note": note,
+            "recurrence": recurrence, "severity": severity}
 
 
 def build_fixtures() -> dict[str, tuple[dict, list[dict]]]:
@@ -215,6 +217,92 @@ def build_fixtures() -> dict[str, tuple[dict, list[dict]]]:
                  note="leveling table does not foot; satisfied via reconciler constituent"),
         expected("standards_gap", check_id="ASC946_LEVEL3_ROLLFORWARD", must_catch=True,
                  note="reconciliation language gutted; satisfied via reconciler constituent")])
+
+    # ================= BASE regression taxonomy: TC-01 through TC-08 =========
+    # The v8.1.1-rc regression-test-suite-spec names eight production cases
+    # keyed to historical reviews. These synthesize each case's FAILURE MODE
+    # against the fixture factory; the mapping to the BASE taxonomy is recorded
+    # in golden/REGRESSION-TC.md. When historical review data is available,
+    # the steward replaces the synthetic inputs and keeps the expected shapes.
+
+    # TC-01 Co-Investors-A-Draft-1.1: placeholder cluster + prior FS + grouping.
+    b = make_clean_review("ASC946")
+    b["notes"]["notes"][1]["text"] += " Carry waterfall description [TBD] pending counsel."
+    prior = copy.deepcopy(b["figures"])
+    prior["balance_sheet"]["assets"]["investments_at_fair_value"] = 55000000.0
+    b["prior_figures"] = prior
+    fixtures["tc01_coinvestors_a"] = (b, [
+        expected("placeholder_text", must_catch=True,
+                 note="TC-01: unresolved placeholder in policies note"),
+        expected("comparative_movement", must_catch=True,
+                 note="TC-01: 45M unexplained investments movement vs prior FS")])
+
+    # TC-02 ST-Fund-USD-Rev-2-to-3: workbook reconciliation + RECURRING and
+    # REGRESSED prior-review escalation.
+    b = make_clean_review("ASC946")
+    b["figures"]["tie_out"]["statement_of_changes.ending_capital"] = 102900000.0
+    b["figures"] = mutate(b["figures"], "statement_of_operations.expenses.other", 700000.0)
+    b["prior_findings"] = [
+        {"merge_key": "Tie-Out Workbook::Tie-out workbook::ending_capital::tie_out_break",
+         "state": "ACCEPTED"},
+        {"merge_key": "Statement of Operations::Expenses::Total expenses::footing_break",
+         "state": "RESOLVED"},
+    ]
+    fixtures["tc02_st_fund_rev_2_to_3"] = (b, [
+        expected("tie_out_break", relationship="TIE_OUT:statement_of_changes.ending_capital",
+                 must_catch=True, recurrence="RECURRING", severity="CRITICAL",
+                 note="TC-02: workbook mismatch flagged last review and not fixed; escalates"),
+        expected("footing_break", relationship="SOO_EXPENSES_FOOT",
+                 must_catch=True, recurrence="REGRESSED",
+                 note="TC-02: previously resolved expense footing break recurs")])
+
+    # TC-03 Master-Fund-Clean-Draft: low-density baseline; no fabrication.
+    fixtures["tc03_master_fund_clean"] = (make_clean_review("ASC946"), [])
+
+    # TC-04 FOF-First-Year: NAV practical expedient applicability.
+    b = make_clean_review("ASC946")
+    b["figures"]["schedule_of_investments"]["positions"][2] = {
+        "name": "Underlying Fund Interests", "industry": "Funds", "type": "fund",
+        "fair_value": 10000000.0, "cost": 8000000.0, "level": 3}
+    b["figures"]["schedule_of_investments"]["level_totals"] = {"1": 0.0, "2": 30000000.0, "3": 70000000.0}
+    fixtures["tc04_fof_first_year"] = (b, [
+        expected("standards_gap", check_id="ASC946_NAV_PE", must_catch=True,
+                 note="TC-04: fund interests held without NAV practical expedient disclosures")])
+
+    # TC-05 Aggregator-with-Feeders: inter-entity reconciliation break.
+    b = make_clean_review("ASC946")
+    b["metadata"]["linked_entities"] = [
+        {"code": "FEEDER-USD", "relationship": "feeder", "ownership_pct": 1.0}]
+    b["sibling_figures"] = {
+        "entity": {"fund_code": "FEEDER-USD"},
+        "balance_sheet": {"assets": {"investment_in_master": 101500000.0}}}
+    fixtures["tc05_aggregator_feeders"] = (b, [
+        expected("inter_entity_break", must_catch=True,
+                 note="TC-05: feeder carries master interest 1.5M below master capital")])
+
+    # TC-06 Liquidating-Fund: liquidation basis adoption missing.
+    b = make_clean_review("ASC946")
+    b["metadata"]["liquidating"] = True
+    fixtures["tc06_liquidating_fund"] = (b, [
+        expected("standards_gap", check_id="ASC946_LIQUIDATION_BASIS", must_catch=True,
+                 severity="CRITICAL",
+                 note="TC-06: liquidation imminent but liquidation basis not adopted or disclosed")])
+
+    # TC-07 Restatement-Year: ASC 250 transition disclosure missing.
+    b = make_clean_review("ASC946")
+    b["metadata"]["policy_change_in_period"] = True
+    fixtures["tc07_restatement_year"] = (b, [
+        expected("standards_gap", check_id="ASC946_ASC250_TRANSITION", must_catch=True,
+                 note="TC-07: policy change in period without ASC 250 transition disclosures")])
+
+    # TC-08 Cross-Border-Lux-Sarl: CSSF regulatory exposure under IFRS.
+    b = make_clean_review("IFRS")
+    b["notes"]["notes"][0]["text"] = (
+        "Golden Fund A LP (the Fund) is a Luxembourg societe a responsabilite limitee. "
+        "The Fund distributes annual audited financial statements to all investors.")
+    fixtures["tc08_lux_sarl"] = (b, [
+        expected("regulatory_gap", check_id="REG_LUX_CSSF", must_catch=True,
+                 note="TC-08: Lux SARL without CSSF supervision and RCS filing reference")])
 
     return fixtures
 

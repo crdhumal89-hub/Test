@@ -1,5 +1,63 @@
 # SHINE v9 CHANGELOG
 
+## v9.1.0 (2026-06-12) · The best-of-both-worlds release
+
+v9.0.0 proved the architecture (computation separated from judgment, verified
+citations, adversarial skeptic, reproducible ledgers). v9.1.0 makes the engine
+a drop-in citizen of the BASE (shine-agentic v8.1.1-rc) ecosystem and ships
+the deployment documentation set.
+
+### Acceptance scorecard (committed at harness/scorecard.json)
+
+| Metric | Value | Bar | Status |
+|---|---|---|---|
+| Must-catch recall | 1.0000 (31/31) | 1.00 | PASS |
+| Overall recall | 1.0000 (39/39 expected defects) | >= 0.95 | PASS |
+| Overall precision | 1.0000 (0 false positives) | >= 0.90 | PASS |
+| Clean-draft findings | 0 across 6 clean/trap fixtures | 0 | PASS |
+| Unverifiable citations in output | 0 | 0 | PASS |
+| BASE-schema validity of compat emission | 0 violations | 0 | PASS |
+| Deterministic ledgers | byte-identical | required | PASS |
+| Em dashes in generated artifacts | 0 | 0 | PASS |
+| Unit suite | 129/129 | green | PASS |
+
+Golden library: 34 fixtures, 39 expected defects, including the BASE
+regression taxonomy TC-01 through TC-08 (mapping: golden/REGRESSION-TC.md).
+Adapter measured: rule_based. Model pin recorded: claude-fable-5.
+
+### BASE ecosystem integration (best of both worlds)
+
+- Dual-shape emission: findings_v8compat.json in the exact BASE schema,
+  validated against the vendored BASE schema file in the gate; check-id
+  translation published (schema/check_id_map.json: CHECK-n / TIE-n /
+  FEEDER-n / XLSX-1).
+- BASE Stage 5f prior-review escalation: RECURRING / REGRESSED / EVERGREEN
+  matrix on merge_key, synthetic RESOLVED entries, escalation log; evergreen
+  excluded from readiness (invariant 16).
+- BASE Stage 5g voice annotation (annotation mode): hedged CERTAIN text gets
+  a polished voiceNormalized alternative; originals immutable;
+  PROBABLE/POSSIBLE hedging never stripped.
+- BASE plugin-mode IO contract: Box adapter behind an injectable MCP client
+  (search_folders_by_name / list_folder_content_by_folder_id /
+  get_file_content), loud halt without a client; audit-tree output mode
+  ({root}/_outputs/{path}/{reviewer}-{stamp}/).
+- Coverage split per invariant 17 v8.1.1: scope_coverage_pct and
+  applicability_documented_pct; readiness gate updated.
+- New checks: NAV practical expedient (ASC 820-10-50-6A), liquidation basis
+  (ASC 205-30-25-1) with a skeptic NO_DEMOTION exemption for substance
+  checks, ASC 250 transition disclosure, L4 formatting conventions.
+- run_batch.py: quarter-end multi-fund batch with per-fund verdict table and
+  machine-readable summary; one fund's failure never blocks the rest.
+- Documentation set: ARCHITECTURE.md (how it works), OPERATIONS.md (how to
+  use it), SCALING.md (how to grow it), golden/REGRESSION-TC.md.
+
+### Field note from the harness
+
+The TC-06 liquidating-fund case caught a real skeptic flaw during this
+release: the deficiency-vs-absence demotion softened a liquidation-basis
+finding because the policies note existed. Substance checks now carry a
+NO_DEMOTION exemption. The acceptance harness paid for itself before launch.
+
 ## v9.0.0 (2026-06-12)
 
 First release of the v9 engine. Four-role pipeline with computation separated

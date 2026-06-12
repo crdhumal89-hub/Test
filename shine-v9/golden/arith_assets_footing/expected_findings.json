@@ -4,6 +4,8 @@
   "check_id": null,
   "must_catch": true,
   "note": "component line misstated by 400k; asset section does not foot",
-  "relationship": "BS_ASSETS_FOOT"
+  "recurrence": null,
+  "relationship": "BS_ASSETS_FOOT",
+  "severity": null
  }
 ]

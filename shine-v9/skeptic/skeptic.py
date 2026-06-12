@@ -51,6 +51,12 @@ TRIGGER_FLAGS = {
 
 DEMOTION = {"CRITICAL": "HIGH", "HIGH": "MEDIUM", "MEDIUM": "LOW", "LOW": "LOW"}
 
+# Checks where the existence of the note does NOT mitigate the finding: the
+# deficiency is one of accounting substance, not disclosure completeness.
+# A policies note that fails to adopt the liquidation basis is not softer
+# because the note exists.
+NO_DEMOTION = {"ASC946_LIQUIDATION_BASIS"}
+
 
 def run_skeptic(findings: list[dict], ctx: dict, config: dict) -> tuple[list[dict], list[dict]]:
     """Challenge CRITICAL/HIGH judgment findings. Returns (surviving, log)."""
@@ -95,8 +101,10 @@ def run_skeptic(findings: list[dict], ctx: dict, config: dict) -> tuple[list[dic
                                   "rationale": challenged["rationale"]}
             continue
 
-        # Strategy 3: deficiency, not absence.
-        if finding.get("x_note_found") and finding["severity"] == "CRITICAL":
+        # Strategy 3: deficiency, not absence. Exempt substance checks where
+        # note presence does not soften the issue.
+        if finding.get("x_note_found") and finding["severity"] == "CRITICAL" \
+                and check_id not in NO_DEMOTION:
             new_severity = DEMOTION[finding["severity"]]
             challenged.update(outcome="demoted",
                               rationale=f"the note exists; the issue is content deficiency, not absence. Severity {finding['severity']} demoted to {new_severity}")

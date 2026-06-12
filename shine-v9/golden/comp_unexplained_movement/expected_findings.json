@@ -4,6 +4,8 @@
   "check_id": null,
   "must_catch": true,
   "note": "40M investments movement with no explaining narrative",
-  "relationship": null
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
  }
 ]

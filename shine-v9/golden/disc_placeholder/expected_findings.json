@@ -4,6 +4,8 @@
   "check_id": null,
   "must_catch": true,
   "note": "unresolved TBD marker in the policies note",
-  "relationship": null
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
  }
 ]

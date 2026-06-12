@@ -4,27 +4,35 @@
   "check_id": null,
   "must_catch": true,
   "note": "schedule total does not tie to BS investments",
-  "relationship": "SOI_TO_BS"
+  "recurrence": null,
+  "relationship": "SOI_TO_BS",
+  "severity": null
  },
  {
   "category": "footing_break",
   "check_id": null,
   "must_catch": false,
   "note": "cascade: positions no longer foot to the misstated total",
-  "relationship": "SOI_POSITIONS_FOOT_FV"
+  "recurrence": null,
+  "relationship": "SOI_POSITIONS_FOOT_FV",
+  "severity": null
  },
  {
   "category": "footing_break",
   "check_id": null,
   "must_catch": false,
   "note": "cascade: levels no longer foot to the misstated total",
-  "relationship": "SOI_LEVELS_FOOT"
+  "recurrence": null,
+  "relationship": "SOI_LEVELS_FOOT",
+  "severity": null
  },
  {
   "category": "tie_out_break",
   "check_id": null,
   "must_catch": false,
   "note": "cascade: workbook carries the correct total",
-  "relationship": "TIE_OUT:schedule_of_investments.total_fair_value"
+  "recurrence": null,
+  "relationship": "TIE_OUT:schedule_of_investments.total_fair_value",
+  "severity": null
  }
 ]

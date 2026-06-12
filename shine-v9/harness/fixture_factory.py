@@ -216,7 +216,7 @@ def write_review_folder(folder, bundle: dict) -> None:
     (inputs / "notes.json").write_text(json.dumps(bundle["notes"], sort_keys=True, indent=1), encoding="utf-8")
     (inputs / "_FUND-METADATA.json").write_text(json.dumps(bundle["metadata"], sort_keys=True, indent=1), encoding="utf-8")
     (inputs / "_REVIEW-MANIFEST.json").write_text(json.dumps(bundle["manifest"], sort_keys=True, indent=1), encoding="utf-8")
-    for optional in ("prior_figures", "sibling_figures"):
+    for optional in ("prior_figures", "sibling_figures", "prior_findings"):
         if bundle.get(optional):
             (inputs / f"{optional}.json").write_text(
                 json.dumps(bundle[optional], sort_keys=True, indent=1), encoding="utf-8")

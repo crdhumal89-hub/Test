@@ -1,0 +1,20 @@
+[
+ {
+  "category": "placeholder_text",
+  "check_id": null,
+  "must_catch": true,
+  "note": "TC-01: unresolved placeholder in policies note",
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
+ },
+ {
+  "category": "comparative_movement",
+  "check_id": null,
+  "must_catch": true,
+  "note": "TC-01: 45M unexplained investments movement vs prior FS",
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
+ }
+]

@@ -1,0 +1,11 @@
+[
+ {
+  "category": "regulatory_gap",
+  "check_id": "REG_LUX_CSSF",
+  "must_catch": true,
+  "note": "TC-08: Lux SARL without CSSF supervision and RCS filing reference",
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
+ }
+]

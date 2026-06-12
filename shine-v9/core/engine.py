@@ -14,7 +14,7 @@ from decimal import Decimal
 from core.checks import run_all, Break
 from core.numbers import D, f
 
-ENGINE_VERSION = "9.0.0"
+ENGINE_VERSION = "9.1.0"
 SCHEMA_VERSION = "9.0"
 
 RATIO_RELATIONSHIPS = {"FH_NAV_PER_UNIT", "FH_EXPENSE_RATIO", "FH_NII_RATIO"}

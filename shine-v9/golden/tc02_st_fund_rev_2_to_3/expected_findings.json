@@ -1,0 +1,20 @@
+[
+ {
+  "category": "tie_out_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "TC-02: workbook mismatch flagged last review and not fixed; escalates",
+  "recurrence": "RECURRING",
+  "relationship": "TIE_OUT:statement_of_changes.ending_capital",
+  "severity": "CRITICAL"
+ },
+ {
+  "category": "footing_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "TC-02: previously resolved expense footing break recurs",
+  "recurrence": "REGRESSED",
+  "relationship": "SOO_EXPENSES_FOOT",
+  "severity": null
+ }
+]
