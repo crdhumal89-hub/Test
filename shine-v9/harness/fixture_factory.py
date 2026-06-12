@@ -106,3 +106,116 @@ def mutate(figures: dict, path: str, value) -> dict:
         cur = cur[part]
     cur[parts[-1]] = value
     return out
+
+
+def make_metadata(framework: str = "ASC946", *, domicile: str = "Cayman Islands",
+                  jurisdictions=None, linked_entities=None) -> dict:
+    """Fund metadata in the v8-compatible shape, framework-selecting for v9."""
+    if jurisdictions is None:
+        jurisdictions = {"Cayman Islands": ["CIMA"], "Luxembourg": ["CSSF"],
+                         "Delaware": []}.get(domicile, [])
+    return {
+        "fund_code": "GLD-FUND-A",
+        "legal_name": "Golden Fund A LP",
+        "domicile": domicile,
+        "structure_type": "Closed-end credit LP",
+        "fiscal_year_end": "12-31",
+        "formed_after_2020": True,
+        "adviser_sec_registered": True,
+        "regulatory_jurisdictions": jurisdictions,
+        "presentation": {"framework": framework, "currency": "USD"},
+        "materiality": {"planning_pct_of_nav": 0.0075},
+        "linked_entities": linked_entities or [],
+    }
+
+
+def make_manifest(review_id: str = "GLD-FUND-A-FY2025-D1") -> dict:
+    return {
+        "review_id": review_id,
+        "period": "FY2025",
+        "draft": "Draft 1",
+        "inputs": {
+            "figures": "figures.json",
+            "notes": "notes.json",
+            "metadata": "_FUND-METADATA.json",
+        },
+    }
+
+
+def make_clean_notes(framework: str = "ASC946", domicile: str = "Cayman Islands") -> dict:
+    """A note set that satisfies the full disclosure inventory for the chosen
+    framework, so a clean review emits zero judgment findings."""
+    org_reg = {
+        "Cayman Islands": "The Fund is registered with the Cayman Islands Monetary Authority under the Private Funds Act (registration number 12345).",
+        "Luxembourg": "The Fund is a societe a responsabilite limitee subject to supervision by the Commission de Surveillance du Secteur Financier and files annual accounts with the RCS.",
+        "Delaware": "The Fund is a Delaware limited partnership formed under the Delaware Revised Uniform Limited Partnership Act.",
+    }[domicile]
+    hierarchy_title = {
+        "ASC946": "Fair value measurements",
+        "IFRS": "Fair value measurement",
+        "USGAAP": "Fair value measurements",
+    }[framework]
+    notes = [
+        {"id": "1", "title": "Organization",
+         "text": f"Golden Fund A LP (the Fund) is a closed-end investment vehicle. {org_reg}"},
+        {"id": "2", "title": "Significant accounting policies",
+         "text": "The financial statements are prepared on a fair value basis. "
+                 "Investments are measured at fair value with changes recognized in operations. "
+                 "The Fund qualifies as an investment entity and accounts for its investments at fair value."},
+        {"id": "3", "title": hierarchy_title,
+         "text": "The Fund categorizes fair value measurements into a three-level hierarchy: Level 1 quoted prices, "
+                 "Level 2 observable inputs, Level 3 unobservable inputs. "
+                 "The Level 3 reconciliation presents the opening balance, purchases, sales, settlements, "
+                 "transfers in and out, realized and unrealized gains and losses, and the closing balance. "
+                 "Significant unobservable inputs include market multiples and discount rates, with ranges and weighted averages disclosed."},
+        {"id": "4", "title": "Investments and concentration",
+         "text": "Alpha Holdco represents 38.8 percent of partners capital and Beta Credit represents 19.4 percent. "
+                 "Each investment exceeding 5 percent of net assets is separately identified in the schedule of investments."},
+        {"id": "5", "title": "Related party transactions",
+         "text": "The Fund pays a management fee to the Investment Manager, an affiliate of the General Partner. "
+                 "Amounts due to affiliates at period end are presented on the statement of assets and liabilities."},
+        {"id": "6", "title": "Subsequent events",
+         "text": "The Fund has evaluated subsequent events through March 15, 2026, the date the financial statements were available to be issued. No recognizable or disclosable events were identified."},
+        {"id": "7", "title": "Recently issued accounting standards",
+         "text": "The Fund adopted ASU 2022-03 effective January 1, 2024. Management has evaluated ASU 2023-09 and ASU 2024-03 and does not expect a material effect."
+                 if framework == "ASC946" else
+                 "New and amended standards effective for the period have been applied. No standard issued but not yet effective is expected to have a material effect."},
+    ]
+    if framework == "IFRS":
+        notes.append({"id": "8", "title": "Interests in other entities",
+                      "text": "The Fund meets the definition of an investment entity under IFRS 10 and measures its "
+                              "subsidiaries at fair value through profit or loss. Disclosures of interests in other "
+                              "entities required by IFRS 12 are presented herein."})
+        notes.append({"id": "9", "title": "Financial risk management",
+                      "text": "The Fund's exposure to credit risk, liquidity risk, and market risk arising from "
+                              "financial instruments, and the related sensitivity analysis, is disclosed as required by IFRS 7."})
+    return {"notes": notes}
+
+
+def make_clean_review(framework: str = "ASC946", *, domicile: str | None = None,
+                      review_id: str = "GLD-FUND-A-FY2025-D1") -> dict:
+    """Full clean review bundle: figures, notes, metadata, manifest."""
+    if domicile is None:
+        domicile = {"ASC946": "Cayman Islands", "IFRS": "Luxembourg", "USGAAP": "Delaware"}[framework]
+    return {
+        "figures": make_clean_figures(),
+        "notes": make_clean_notes(framework, domicile),
+        "metadata": make_metadata(framework, domicile=domicile),
+        "manifest": make_manifest(review_id),
+    }
+
+
+def write_review_folder(folder, bundle: dict) -> None:
+    """Materialize a review bundle as an on-disk review folder."""
+    import json
+    from pathlib import Path
+    inputs = Path(folder) / "inputs"
+    inputs.mkdir(parents=True, exist_ok=True)
+    (inputs / "figures.json").write_text(json.dumps(bundle["figures"], sort_keys=True, indent=1), encoding="utf-8")
+    (inputs / "notes.json").write_text(json.dumps(bundle["notes"], sort_keys=True, indent=1), encoding="utf-8")
+    (inputs / "_FUND-METADATA.json").write_text(json.dumps(bundle["metadata"], sort_keys=True, indent=1), encoding="utf-8")
+    (inputs / "_REVIEW-MANIFEST.json").write_text(json.dumps(bundle["manifest"], sort_keys=True, indent=1), encoding="utf-8")
+    for optional in ("prior_figures", "sibling_figures"):
+        if bundle.get(optional):
+            (inputs / f"{optional}.json").write_text(
+                json.dumps(bundle[optional], sort_keys=True, indent=1), encoding="utf-8")
