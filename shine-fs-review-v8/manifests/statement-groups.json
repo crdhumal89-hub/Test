@@ -1,0 +1,123 @@
+{
+  "$schema_version": "8.1",
+  "description": "Statement group metadata driving v7 statement-grouped dashboard rendering and PDF export. fs_page_order is the canonical sort key across groups; sortOrder is the within-group sort key on each finding.",
+  "groups": [
+    {
+      "key": "Cover",
+      "label": "Cover & Table of Contents",
+      "fs_page_order": 1,
+      "severity_badges_enabled": true,
+      "section_note": "Entity identity, period, presentation header. Qualitative mismatches are ALWAYS CRITICAL regardless of dollar impact.",
+      "typical_sections": ["Cover page", "Table of contents", "Officer certification"]
+    },
+    {
+      "key": "Statement of Assets and Liabilities",
+      "label": "Statement of Assets and Liabilities",
+      "fs_page_order": 2,
+      "severity_badges_enabled": true,
+      "section_note": "Balance-sheet equivalent for an investment company. Investments at fair value, receivables, payables, partners' capital. Tie-out to Schedule of Investments mandatory.",
+      "typical_sections": [
+        "Assets",
+        "Liabilities",
+        "Partners' capital",
+        "Per-unit / per-share data"
+      ]
+    },
+    {
+      "key": "Statement of Operations",
+      "label": "Statement of Operations",
+      "fs_page_order": 3,
+      "severity_badges_enabled": true,
+      "section_note": "Investment income, expenses, realized and unrealized gain/loss. Net change must tie to Statement of Changes.",
+      "typical_sections": [
+        "Investment income",
+        "Operating expenses",
+        "Net investment income/loss",
+        "Realized gain/loss",
+        "Change in unrealized appreciation/depreciation",
+        "Net increase/decrease in partners' capital from operations"
+      ]
+    },
+    {
+      "key": "Statement of Changes in Partners Capital",
+      "label": "Statement of Changes in Partners' Capital",
+      "fs_page_order": 4,
+      "severity_badges_enabled": true,
+      "section_note": "Roll-forward of partners' capital by class. Capital contributions, distributions, allocations, ending balance MUST tie to SOAL.",
+      "typical_sections": [
+        "Beginning balance",
+        "Contributions",
+        "Distributions",
+        "Allocation of net income/loss",
+        "Ending balance"
+      ]
+    },
+    {
+      "key": "Statement of Cash Flows",
+      "label": "Statement of Cash Flows",
+      "fs_page_order": 5,
+      "severity_badges_enabled": true,
+      "section_note": "Often elected out under ASC 946-205-45-2 when the fund meets the four scope criteria. If presented, indirect method standard; reconciliation to net increase in partners' capital required.",
+      "typical_sections": [
+        "Operating activities",
+        "Financing activities",
+        "Supplemental disclosures",
+        "Scope-election disclosure"
+      ]
+    },
+    {
+      "key": "Schedule of Investments",
+      "label": "Schedule of Investments",
+      "fs_page_order": 6,
+      "severity_badges_enabled": true,
+      "section_note": "Detail of investments at fair value with classification by industry/geography. >5% of net assets MUST be disclosed by name per ASC 946-210-50-6. Tie-out to SOAL Investments line mandatory.",
+      "typical_sections": [
+        "Investments by industry",
+        "Investments by geography",
+        "Investments by security type",
+        "Concentration disclosure"
+      ]
+    },
+    {
+      "key": "Notes to Financial Statements",
+      "label": "Notes to Financial Statements",
+      "fs_page_order": 7,
+      "severity_badges_enabled": true,
+      "section_note": "Disclosure infrastructure. Significant accounting policies, fair value hierarchy, related parties, commitments, subsequent events, recently issued ASUs.",
+      "typical_sections": [
+        "Organization",
+        "Significant accounting policies",
+        "Fair value measurements",
+        "Investments",
+        "Management fees and carried interest",
+        "Related party transactions",
+        "Commitments and contingencies",
+        "Income taxes",
+        "Financial highlights",
+        "Subsequent events",
+        "Recently issued accounting standards"
+      ]
+    },
+    {
+      "key": "Financial Highlights",
+      "label": "Financial Highlights",
+      "fs_page_order": 8,
+      "severity_badges_enabled": true,
+      "section_note": "ASC 946-205-50 ratios. IRR (when required), expense ratio, net investment income ratio. Per partner-class breakouts when capital structure differs.",
+      "typical_sections": [
+        "Per-unit data",
+        "Ratios to average partners' capital",
+        "IRR / Total Return",
+        "Reconciliation of returns"
+      ]
+    },
+    {
+      "key": "Cross-Statement",
+      "label": "Cross-Statement Findings",
+      "fs_page_order": 9,
+      "severity_badges_enabled": true,
+      "section_note": "Findings spanning multiple statements that cannot be cleanly localized (e.g., consolidation scope inconsistencies, period-end events affecting multiple primary statements). Rendered last so the controller knows to look at it after the per-statement review.",
+      "typical_sections": ["Consolidation scope", "Period-end events", "Cross-references"]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "__instructions__": "Static facts about the fund. Set ONCE per fund and update when fund facts change. The framework is mandatory: SHINE never assumes one. Delete the __ lines before saving.",
+
+  "fund_code": "YOUR-FUND-CODE",
+  "legal_name": "Your Fund Legal Name LP",
+
+  "__domicile_options__": "Cayman Islands | Luxembourg | Delaware | (your jurisdiction)",
+  "domicile": "Cayman Islands",
+  "structure_type": "Closed-end PE LP",
+
+  "__framework_options__": "ASC946 (US investment companies), IFRS (Luxembourg and most non-US), USGAAP (taxable blockers and corporate)",
+  "presentation": {"framework": "ASC946", "currency": "USD"},
+
+  "__jurisdictions_options__": "Any of CIMA (Cayman), CSSF (Luxembourg), SEC (US adviser), IRS (US tax), DE (Delaware)",
+  "regulatory_jurisdictions": ["CIMA", "SEC", "IRS"],
+
+  "fiscal_year_end": "12-31",
+  "formed_after_2020": true,
+  "adviser_sec_registered": true,
+  "liquidating": false,
+  "policy_change_in_period": false,
+
+  "materiality": {
+    "__instructions__": "Decimal fraction of NAV. 0.75 percent = 0.0075. Apollo default.",
+    "planning_pct_of_nav": 0.0075
+  },
+
+  "linked_entities": []
+}

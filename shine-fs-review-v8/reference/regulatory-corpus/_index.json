@@ -1,0 +1,65 @@
+{
+  "$schema_version": "8.1",
+  "description": "Citation key registry for L12 regulatory findings. Every key referenced by a Defense subagent finding (evidence.regulatory_citation) MUST resolve to an entry below. The orchestrator validates citation keys at Stage 5a; unresolved keys cause the finding to be rejected.",
+  "last_aggregate_attestation": "2026-05-17",
+  "max_attestation_age_days": 180,
+  "jurisdictions": {
+    "CIMA": {
+      "name": "Cayman Islands Monetary Authority",
+      "applies_to": ["Cayman Islands exempted companies", "Cayman exempted LPs", "Cayman segregated portfolio companies"],
+      "corpus_file": "CIMA.md",
+      "last_attestation": "2026-05-17",
+      "keys": [
+        {"key": "CIMA:MFA-4", "title": "Mutual Funds Act, Section 4 — Registration requirements"},
+        {"key": "CIMA:MFA-AUDIT", "title": "Mutual Funds Act — Audited FS within 6 months of FYE"},
+        {"key": "CIMA:PFA", "title": "Private Funds Act — Registration and audit obligations"},
+        {"key": "CIMA:RULE-AUDIT-2018", "title": "Rule on the calculation of asset values (2018)"},
+        {"key": "CIMA:STATEMENT-GOV-2023", "title": "Statement of Guidance — Corporate Governance for Regulated Funds"},
+        {"key": "CIMA:AML-2020", "title": "Anti-Money Laundering Regulations (2020 Revision)"}
+      ]
+    },
+    "SEC": {
+      "name": "U.S. Securities and Exchange Commission",
+      "applies_to": ["US-registered investment advisers", "Funds advised by SEC-registered advisers"],
+      "corpus_file": "SEC.md",
+      "last_attestation": "2026-05-17",
+      "keys": [
+        {"key": "SEC:RULE-206-4-2", "title": "Rule 206(4)-2 under the Investment Advisers Act — Custody Rule"},
+        {"key": "SEC:RULE-206-4-7", "title": "Rule 206(4)-7 — Compliance Programs of Investment Advisers"},
+        {"key": "SEC:RULE-206-4-8", "title": "Rule 206(4)-8 — Pooled Investment Vehicles anti-fraud"},
+        {"key": "SEC:FORM-ADV-1A", "title": "Form ADV Part 1A — adviser registration and disclosure"},
+        {"key": "SEC:FORM-ADV-2A", "title": "Form ADV Part 2A — adviser brochure"},
+        {"key": "SEC:FORM-PF", "title": "Form PF — private fund adviser reporting"},
+        {"key": "SEC:MARKETING-RULE", "title": "Rule 206(4)-1 — Marketing Rule (effective Nov 2022)"}
+      ]
+    },
+    "IRS": {
+      "name": "U.S. Internal Revenue Service",
+      "applies_to": ["US partners receiving K-1", "Funds with US-source income", "Funds with US taxable investors"],
+      "corpus_file": "IRS.md",
+      "last_attestation": "2026-05-17",
+      "keys": [
+        {"key": "IRS:PFIC", "title": "Passive Foreign Investment Company rules (IRC §1297–1298)"},
+        {"key": "IRS:CFC", "title": "Controlled Foreign Corporation rules (IRC §951–965 incl. Subpart F, GILTI)"},
+        {"key": "IRS:ECI", "title": "Effectively Connected Income (IRC §864, §1446)"},
+        {"key": "IRS:FATCA", "title": "Foreign Account Tax Compliance Act (IRC §1471–1474)"},
+        {"key": "IRS:FORM-K-1", "title": "Form 1065 Schedule K-1 / K-3 partnership reporting"},
+        {"key": "IRS:UBTI", "title": "Unrelated Business Taxable Income (IRC §511–514)"},
+        {"key": "IRS:PTP", "title": "Publicly Traded Partnership rules (IRC §7704)"}
+      ]
+    },
+    "DELAWARE": {
+      "name": "State of Delaware (DRULPA / DLLCA)",
+      "applies_to": ["Delaware limited partnerships", "Delaware LLCs", "Delaware series LLCs"],
+      "corpus_file": "DELAWARE.md",
+      "last_attestation": "2026-05-17",
+      "keys": [
+        {"key": "DE:DRULPA-17-302", "title": "DRULPA §17-302 — Limited partner voting and consent"},
+        {"key": "DE:DRULPA-17-403", "title": "DRULPA §17-403 — General partner duties"},
+        {"key": "DE:DRULPA-17-1101", "title": "DRULPA §17-1101 — Contractual nature; permitted modifications to fiduciary duties"},
+        {"key": "DE:DLLCA-18-215", "title": "DLLCA §18-215 — Series LLCs"},
+        {"key": "DE:DRULPA-17-1110", "title": "DRULPA §17-1110 — Indemnification and exculpation"}
+      ]
+    }
+  }
+}

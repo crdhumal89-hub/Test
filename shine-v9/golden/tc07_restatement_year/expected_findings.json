@@ -1,0 +1,11 @@
+[
+ {
+  "category": "standards_gap",
+  "check_id": "ASC946_ASC250_TRANSITION",
+  "must_catch": true,
+  "note": "TC-07: policy change in period without ASC 250 transition disclosures",
+  "recurrence": null,
+  "relationship": null,
+  "severity": null
+ }
+]

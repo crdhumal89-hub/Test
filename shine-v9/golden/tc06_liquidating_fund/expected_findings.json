@@ -1,0 +1,11 @@
+[
+ {
+  "category": "standards_gap",
+  "check_id": "ASC946_LIQUIDATION_BASIS",
+  "must_catch": true,
+  "note": "TC-06: liquidation imminent but liquidation basis not adopted or disclosed",
+  "recurrence": null,
+  "relationship": null,
+  "severity": "CRITICAL"
+ }
+]

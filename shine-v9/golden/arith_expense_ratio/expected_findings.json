@@ -1,0 +1,11 @@
+[
+ {
+  "category": "ratio_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "stated expense ratio off by ~87 bps",
+  "recurrence": null,
+  "relationship": "FH_EXPENSE_RATIO",
+  "severity": null
+ }
+]

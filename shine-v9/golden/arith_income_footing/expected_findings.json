@@ -1,0 +1,11 @@
+[
+ {
+  "category": "footing_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "income lines foot 300k above the stated total",
+  "recurrence": null,
+  "relationship": "SOO_INCOME_FOOT",
+  "severity": null
+ }
+]

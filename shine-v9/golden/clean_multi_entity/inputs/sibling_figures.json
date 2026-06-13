@@ -1,0 +1,10 @@
+{
+ "balance_sheet": {
+  "assets": {
+   "investment_in_master": 103000000.0
+  }
+ },
+ "entity": {
+  "fund_code": "FEEDER-A"
+ }
+}

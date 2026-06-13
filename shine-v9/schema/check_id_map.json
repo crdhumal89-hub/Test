@@ -1,0 +1,46 @@
+{
+  "comment": "Mapping between v9 deterministic-core relationship ids and the BASE (v8.1.1-rc) Mechanical check ids (CHECK-n intra-statement, TIE-n cross-statement, FEEDER-n inter-entity). Published so regression cases keyed to BASE ids translate to v9 findings and vice versa. Consumed by schema/compat.py for the evidence.check_ref stamp.",
+  "version": "9.1.0",
+  "relationship_to_base": {
+    "BS_ASSETS_FOOT": "CHECK-1",
+    "BS_LIABS_FOOT": "CHECK-2",
+    "BS_BALANCE": "CHECK-3",
+    "SOI_POSITIONS_FOOT_FV": "CHECK-7",
+    "SOI_POSITIONS_FOOT_COST": "CHECK-8",
+    "SOI_LEVELS_FOOT": "CHECK-9",
+    "SOO_INCOME_FOOT": "CHECK-12",
+    "SOO_EXPENSES_FOOT": "CHECK-13",
+    "SOO_NII": "CHECK-14",
+    "SOO_NET_INCREASE": "CHECK-15",
+    "SOC_CLOSURE": "CHECK-18",
+    "SOC_CLASS_CLOSURE": "CHECK-19",
+    "SOC_CLASS_FOOT": "CHECK-20",
+    "SCF_CLOSURE": "CHECK-23",
+    "FH_NAV_PER_UNIT": "CHECK-25",
+    "FH_EXPENSE_RATIO": "CHECK-26",
+    "FH_NII_RATIO": "CHECK-27",
+    "SOI_TO_BS": "TIE-1",
+    "SOC_TO_BS": "TIE-2",
+    "SOO_TO_SOC": "TIE-3",
+    "SOC_ALLOC_TO_SOO": "TIE-3",
+    "SCF_TO_BS": "TIE-5",
+    "TIE_OUT": "XLSX-1",
+    "INTER_ENTITY_FEEDER_TIE": "FEEDER-1"
+  },
+  "source_to_subagent": {
+    "core": "mechanical",
+    "presentation": "mechanical",
+    "disclosure": "narrative",
+    "standards": "standards",
+    "comparative": "comparative",
+    "regulatory": "defense"
+  },
+  "source_to_default_layer": {
+    "core": "L2",
+    "presentation": "L1",
+    "disclosure": "L3",
+    "standards": "L9",
+    "comparative": "L10",
+    "regulatory": "L12"
+  }
+}

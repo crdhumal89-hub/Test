@@ -1,0 +1,21 @@
+{
+ "adviser_sec_registered": true,
+ "domicile": "Cayman Islands",
+ "fiscal_year_end": "12-31",
+ "formed_after_2020": true,
+ "fund_code": "GLD-FUND-A",
+ "legal_name": "Golden Fund A LP",
+ "linked_entities": [],
+ "materiality": {
+  "planning_pct_of_nav": 0.0075
+ },
+ "policy_change_in_period": true,
+ "presentation": {
+  "currency": "USD",
+  "framework": "ASC946"
+ },
+ "regulatory_jurisdictions": [
+  "CIMA"
+ ],
+ "structure_type": "Closed-end credit LP"
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://apollo.internal/shine/finding-schema-v9.0.json",
+  "title": "SHINE Finding v9.0",
+  "description": "Schema for a single v9 finding. v9 changes from v8.1: source replaces subagent as the primary attribution (core arithmetic findings carry source=core and are CERTAIN by construction); calibrated confidence and materiality blocks are mandatory; citation_verified is mandatory for standards and regulatory findings; framework is recorded on every finding; skeptic outcomes are first-class. Enforcement lives in schema/validator.py (stdlib, no dependencies). The legacy_layer field preserves v8 L-codes for dashboard compatibility.",
+  "type": "object",
+  "required": [
+    "id", "source", "category", "severity", "confidence_label", "confidence_calibrated",
+    "statement", "section", "sort_order", "location", "message", "fix",
+    "merge_key", "framework", "materiality", "suppressed", "versions", "state"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^F-[0-9]{3,}$"},
+    "source": {"enum": ["core", "presentation", "disclosure", "standards", "comparative", "regulatory"]},
+    "legacy_layer": {"type": ["string", "null"], "description": "v8 L-code for dashboard compatibility, e.g. L2 for core tie-outs, L9 for standards."},
+    "category": {"enum": [
+      "footing_break", "balance_break", "tie_out_break", "rollforward_break", "ratio_break", "per_unit_break",
+      "presentation_gap", "template_deviation", "disclosure_gap", "placeholder_text", "ghost_text", "entity_mismatch",
+      "standards_gap", "comparative_movement", "inter_entity_break", "regulatory_gap", "formatting"
+    ]},
+    "severity": {"enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"]},
+    "confidence_label": {"enum": ["CERTAIN", "PROBABLE", "POSSIBLE"]},
+    "confidence_calibrated": {"type": "number", "minimum": 0, "maximum": 1},
+    "statement": {"type": "string", "minLength": 1},
+    "section": {"type": "string", "minLength": 1},
+    "sort_order": {"type": "integer", "minimum": 0},
+    "location": {
+      "type": "object",
+      "required": ["statement"],
+      "properties": {
+        "statement": {"type": "string"},
+        "line_id": {"type": ["string", "null"]},
+        "note_id": {"type": ["string", "null"]},
+        "path": {"type": ["string", "null"], "description": "Dotted path into figures.json when applicable."}
+      }
+    },
+    "message": {"type": "string", "minLength": 1},
+    "fix": {"type": "string", "minLength": 1},
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "relationship": {"type": ["string", "null"], "description": "Core relationship id, e.g. BS_BALANCE."},
+        "lhs": {"type": ["number", "null"]},
+        "rhs": {"type": ["number", "null"]},
+        "delta": {"type": ["number", "null"]},
+        "citation_key": {"type": ["string", "null"]},
+        "citation_verified": {"type": ["boolean", "null"]},
+        "citation_source": {"type": ["string", "null"]},
+        "quoted_text": {"type": ["string", "null"]}
+      }
+    },
+    "materiality": {
+      "type": "object",
+      "required": ["clearly_trivial"],
+      "properties": {
+        "amount": {"type": ["number", "null"]},
+        "basis": {"type": ["string", "null"]},
+        "basis_amount": {"type": ["number", "null"]},
+        "ratio": {"type": ["number", "null"]},
+        "clearly_trivial": {"type": "boolean"}
+      }
+    },
+    "suppressed": {"type": "boolean"},
+    "skeptic": {
+      "type": ["object", "null"],
+      "properties": {
+        "challenged": {"type": "boolean"},
+        "outcome": {"enum": ["upheld", "demoted", "dropped", null]},
+        "rationale": {"type": ["string", "null"]}
+      }
+    },
+    "merge_key": {"type": "string", "pattern": "^[^:]+::[^:]+::[^:]+::[^:]+$"},
+    "framework": {"enum": ["ASC946", "IFRS", "USGAAP"]},
+    "reconciler": {
+      "type": ["object", "null"],
+      "properties": {
+        "pattern": {"type": ["string", "null"]},
+        "score": {"type": ["number", "null"]},
+        "constituents": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "versions": {
+      "type": "object",
+      "required": ["engine", "schema", "adapter", "model_pin"],
+      "properties": {
+        "engine": {"type": "string"},
+        "schema": {"type": "string"},
+        "adapter": {"type": "string"},
+        "model_pin": {"type": "string"},
+        "prompt_versions": {"type": "object"},
+        "corpus_versions": {"type": "object"}
+      }
+    },
+    "state": {"enum": ["OPEN", "ACCEPTED", "RESOLVED", "DISCARDED"]},
+    "must_catch_key": {"type": ["string", "null"], "description": "Set by the harness matcher only; never emitted by the engine."}
+  },
+  "x_citation_rule": "Findings with source=standards or source=regulatory MUST carry evidence.citation_key and evidence.citation_verified=true. The validator rejects them otherwise. This is the v9 restatement of v8 invariant rule 13, with verification (not mere presence) as the bar.",
+  "x_arithmetic_rule": "Findings with source=core MUST carry confidence_label=CERTAIN and evidence.relationship plus lhs/rhs/delta. No model participates in their production."
+}

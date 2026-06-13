@@ -1,0 +1,19 @@
+{
+  "__instructions__": "Paste each note's full text body under its title. SHINE searches the text for required disclosures (Level 3 reconciliation language, related-party terms, subsequent-events date, etc.). Order does not matter. Delete the __ lines before saving.",
+  "notes": [
+    {"id": "1", "title": "Organization",
+     "text": "Paste your Organization note here, including the regulator registration sentence (Private Funds Act for Cayman, CSSF for Luxembourg)."},
+    {"id": "2", "title": "Significant accounting policies",
+     "text": "Paste your accounting policies note here, including the basis of presentation, investment measurement, income recognition."},
+    {"id": "3", "title": "Fair value measurements",
+     "text": "Paste your fair value note here, including the Level 1/2/3 hierarchy, the Level 3 reconciliation roll-forward language, and significant unobservable inputs disclosure."},
+    {"id": "4", "title": "Investments and concentration",
+     "text": "Paste your investments note here, including >5 percent name-level disclosure."},
+    {"id": "5", "title": "Related party transactions",
+     "text": "Paste your related party note here, naming the General Partner / Investment Manager and amounts."},
+    {"id": "6", "title": "Subsequent events",
+     "text": "Paste your subsequent events note here, INCLUDING the date through which events were evaluated."},
+    {"id": "7", "title": "Recently issued accounting standards",
+     "text": "Paste your recent ASUs note here."}
+  ]
+}

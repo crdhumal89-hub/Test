@@ -1,0 +1,39 @@
+{
+ "notes": [
+  {
+   "id": "1",
+   "text": "Golden Fund A LP (the Fund) is a closed-end investment vehicle. The Fund is registered with the Cayman Islands Monetary Authority under the Private Funds Act (registration number 12345). The Fund distributes annual audited financial statements to all investors.",
+   "title": "Organization"
+  },
+  {
+   "id": "2",
+   "text": "The financial statements are prepared on a fair value basis. Investments are measured at fair value with changes recognized in operations. The Fund qualifies as an investment entity and accounts for its investments at fair value. Carry waterfall description [TBD] pending counsel.",
+   "title": "Significant accounting policies"
+  },
+  {
+   "id": "3",
+   "text": "The Fund categorizes fair value measurements into a three-level hierarchy: Level 1 quoted prices, Level 2 observable inputs, Level 3 unobservable inputs. The Level 3 reconciliation presents the opening balance, purchases, sales, settlements, transfers in and out, realized and unrealized gains and losses, and the closing balance. Significant unobservable inputs include market multiples and discount rates, with ranges and weighted averages disclosed.",
+   "title": "Fair value measurements"
+  },
+  {
+   "id": "4",
+   "text": "Alpha Holdco represents 38.8 percent of partners capital and Beta Credit represents 19.4 percent. Each investment exceeding 5 percent of net assets is separately identified in the schedule of investments.",
+   "title": "Investments and concentration"
+  },
+  {
+   "id": "5",
+   "text": "The Fund pays a management fee to the Investment Manager, an affiliate of the General Partner. Amounts due to affiliates at period end are presented on the statement of assets and liabilities.",
+   "title": "Related party transactions"
+  },
+  {
+   "id": "6",
+   "text": "The Fund has evaluated subsequent events through March 15, 2026, the date the financial statements were available to be issued. No recognizable or disclosable events were identified.",
+   "title": "Subsequent events"
+  },
+  {
+   "id": "7",
+   "text": "The Fund adopted ASU 2022-03 effective January 1, 2024. Management has evaluated ASU 2023-09 and ASU 2024-03 and does not expect a material effect.",
+   "title": "Recently issued accounting standards"
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+{
+  "review_id": "YOUR-FUND-CODE-FY2025-D1",
+  "period": "FY2025",
+  "draft": "Draft 1",
+  "reviewer": "your.email@your-firm.com",
+  "inputs": {
+    "figures": "figures.json",
+    "notes": "notes.json",
+    "metadata": "_FUND-METADATA.json"
+  }
+}

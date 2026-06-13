@@ -1,0 +1,403 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>SHINE Report — AAA Coinvest Fund A LP</title><style>
+:root{--ink:#1a202c;--navy:#1a2b4a;--gold:#b8902e;--gray:#6e7480;--faint:#9a9ea6;--hair:#d6d6d0;--panel:#f7f7f4;--crit:#c0392b;--high:#c96e08;--med:#a88a00;--low:#6b7280}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#eceae4}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);font-size:13.5px;line-height:1.55}
+.page{background:#fff;width:8.5in;min-height:11in;margin:24px auto;padding:0;box-shadow:0 4px 24px rgba(0,0,0,.12);position:relative;overflow:hidden}
+.serif{font-family:Georgia,'Times New Roman',serif}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--gray)}
+.cover{padding:0 0.9in}
+.cover .bar{height:7px;background:var(--navy);margin:0 -0.9in 1.1in}
+.cover .mark{margin-top:0.3in}
+.cover h1{font-family:Georgia,serif;font-size:34px;font-weight:700;line-height:1.15;margin:30px 0 0}
+.cover .accent{width:70px;height:3px;background:var(--gold);margin:14px 0 22px}
+.cover .subtitle{font-family:Georgia,serif;font-size:18px;color:var(--navy);margin:0 0 8px}
+.cover .coverline{color:var(--gray);font-size:13px}
+.cover .pill-wrap{margin:34px 0}
+.cover .meta-block{position:absolute;bottom:1in;left:0.9in;right:0.9in;border-top:1px solid var(--hair);padding-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cover .meta-block .col .eyebrow{margin-bottom:5px}
+.cover .attrib{position:absolute;bottom:0.5in;left:0.9in;color:var(--faint);font-size:10px}
+.pill{display:inline-block;padding:6px 16px;border-radius:14px;font-weight:700;font-size:12px;letter-spacing:.5px}
+.pill.READY{background:#dcfce7;color:#166534}.pill.READY_WITH_EXCEPTIONS{background:#fef3c7;color:#92400e}.pill.NOT_READY{background:#fee2e2;color:#991b1b}
+.pill-driver{color:var(--gray);font-size:12px;margin-top:10px;max-width:80%}
+.content{padding:0.7in 0.9in 0.9in}
+.section-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:6px}
+.section-num{font-size:34px;font-weight:700;color:#e4e4de;line-height:1;font-family:Georgia,serif}
+.section-head h2{font-family:Georgia,serif;font-size:20px;color:var(--navy);margin:0}
+.section-head .rule{width:42px;height:2px;background:var(--gold);margin-top:8px}
+.narrative{font-size:14px;line-height:1.65;margin:14px 0 26px}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 26px}
+.stat{background:var(--panel);border:1px solid var(--hair);border-radius:6px;padding:14px}
+.stat .eyebrow{margin-bottom:8px}
+.stat .num{font-size:24px;font-weight:700;line-height:1}
+.stat .sub{font-size:11px;color:var(--gray);margin-top:6px}
+.chart{margin:8px 0 26px}
+.chart .eyebrow{margin-bottom:12px}
+.bar-row{display:grid;grid-template-columns:80px 1fr 32px;align-items:center;gap:10px;margin-bottom:9px}
+.bar-row .lbl{font-size:12px;color:var(--gray)}
+.bar-track{background:#ededea;border-radius:3px;height:16px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.bar-fill.crit{background:var(--crit)}.bar-fill.high{background:var(--high)}.bar-fill.med{background:var(--med)}.bar-fill.low{background:var(--low)}
+.bar-row .val{font-weight:700;font-size:13px;text-align:right}
+.dispo{display:flex;height:18px;border-radius:3px;overflow:hidden;margin-bottom:12px}
+.dispo span{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:11px;color:var(--gray)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.toc-item{display:flex;align-items:baseline;justify-content:space-between;padding:9px 0;border-bottom:1px dotted var(--hair);font-size:14px}
+.toc-item .pnum{color:var(--gray);font-size:12px}
+.report-section{margin-top:30px}
+.section-meta{font-size:12px;color:var(--gray);margin:8px 0 4px}
+.badge{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:700;margin-left:4px}
+.badge.crit{background:#fdedec;color:var(--crit)}.badge.high{background:#fef3e0;color:var(--high)}.badge.med{background:#fcf6d8;color:var(--med)}.badge.low{background:#f0f0ee;color:var(--low)}
+.section-note{font-family:Georgia,serif;font-style:italic;color:var(--gray);font-size:13px;margin:6px 0 14px}
+.finding{border-top:1px solid var(--hair);padding:16px 0 4px;page-break-inside:avoid}
+.finding-top{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.fid{font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700}
+.sev-tag{padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700}
+.sev-tag.crit{background:#fdedec;color:var(--crit)}.sev-tag.high{background:#fef3e0;color:var(--high)}.sev-tag.med{background:#fcf6d8;color:var(--med)}.sev-tag.low{background:#f0f0ee;color:var(--low)}
+.conf,.state{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px}
+.agent{margin-left:auto;font-size:10px;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.finding-loc{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px}
+.finding-body{margin:0 0 10px;font-size:13px;line-height:1.6}
+.cites{margin-bottom:10px}
+.cite{font-family:ui-monospace,Menlo,monospace;font-size:11px;background:var(--panel);border:1px solid var(--hair);padding:2px 7px;border-radius:3px;margin-right:6px}
+.evidence-block{border-left:3px solid var(--hair);padding:4px 0 4px 12px;margin:0 0 10px}
+.evid{font-style:italic;color:var(--gray);font-size:12px;margin:2px 0}.evid.mono{font-style:normal;font-family:ui-monospace,Menlo,monospace}
+.fix{background:var(--panel);border-left:3px solid var(--navy);border-radius:3px;padding:11px 14px;font-size:12.5px;line-height:1.5}
+.fix-label{display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--navy);margin-bottom:5px}
+.recon{font-size:11px;color:var(--gray);margin-top:8px}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.kv span{color:var(--gray)}
+.skip{display:flex;gap:16px;padding:7px 0;border-bottom:1px dotted var(--hair);font-size:12px}
+.skip .mono{font-family:ui-monospace,Menlo,monospace;min-width:130px;color:var(--ink)}
+.skip span:last-child{color:var(--gray)}
+.evergreen-item{border-left:3px solid var(--gold);padding:8px 0 8px 12px;margin:10px 0;font-size:12.5px}
+.muted{color:var(--faint)}.mono{font-family:ui-monospace,Menlo,monospace}
+.report-footer{border-top:1px solid var(--hair);margin-top:36px;padding-top:14px;color:var(--faint);font-size:10px;text-align:center;font-family:ui-monospace,Menlo,monospace}
+@media print{
+  body{background:#fff}
+  .page{box-shadow:none;margin:0;width:auto;min-height:auto}
+  .cover{page-break-after:always}
+  @page{size:letter;margin:0.6in 0.7in 0.8in}
+}</style></head><body>
+<div class="page cover">
+  <div class="bar"></div>
+  <div class="mark eyebrow">SHINE · Statement Health Intelligence</div>
+  <h1>AAA Coinvest Fund A LP</h1>
+  <div class="accent"></div>
+  <div class="subtitle serif">Financial Statement Review · Preparer Edition</div>
+  <div class="coverline">FY2025  ·  Draft 1.1  ·  Cayman Islands  ·  Closed-end PE LP</div>
+  <div class="pill-wrap">
+    <span class="pill NOT_READY">NOT READY</span>
+    <div class="pill-driver">4 CRITICAL unresolved · 7 HIGH unresolved</div>
+  </div>
+  <div class="meta-block">
+    <div class="col"><div class="eyebrow">Prepared by</div><div>Apollo Mumbai Controllership</div></div>
+    <div class="col"><div class="eyebrow">Report date</div><div>2026-05-17</div></div>
+    <div class="col"><div class="eyebrow">Classification</div><div>Confidential — Internal</div></div>
+  </div>
+  <div class="attrib">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1</div>
+</div>
+
+<div class="page"><div class="content">
+  <div class="section-head"><span class="section-num">01</span><div><h2>Executive Summary</h2><div class="rule"></div></div></div>
+  <p class="narrative">This report presents the SHINE review of AAA Coinvest Fund A LP for FY2025 (Draft 1.1). 14 findings were identified across 6 financial-statement areas, of which 4 are rated critical and 7 high. The most significant concentration sits in Notes to Financial Statements. Coverage of applicable ASC guidance stands at 96%, assessed against a planning materiality of $18.8M (0.75% of net assets). 1 finding recurred from the prior review and 1 regressed after a prior resolution — control points that warrant management attention. On the combined severity-and-coverage gate, the statements are assessed NOT READY for release to the fund administrator; the determining factor is 4 critical unresolved · 7 high unresolved.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="eyebrow">Total findings</div><div class="num">14</div><div class="sub">14 open · 1 accepted</div></div>
+    <div class="stat"><div class="eyebrow">Critical / High</div><div class="num">4 / 7</div><div class="sub">in this export</div></div>
+    <div class="stat"><div class="eyebrow">Coverage</div><div class="num">96%</div><div class="sub">45/47 ASC &para;</div></div>
+    <div class="stat"><div class="eyebrow">Materiality</div><div class="num">$18.8M</div><div class="sub">0.75% of NAV</div></div>
+  </div>
+  <div class="chart">
+    <div class="eyebrow">Findings by severity</div>
+    
+      <div class="bar-row"><span class="lbl">Critical</span>
+      <div class="bar-track"><div class="bar-fill crit" style="width:57.1%"></div></div>
+      <span class="val">4</span></div>
+      <div class="bar-row"><span class="lbl">High</span>
+      <div class="bar-track"><div class="bar-fill high" style="width:100.0%"></div></div>
+      <span class="val">7</span></div>
+      <div class="bar-row"><span class="lbl">Medium</span>
+      <div class="bar-track"><div class="bar-fill med" style="width:42.9%"></div></div>
+      <span class="val">3</span></div>
+      <div class="bar-row"><span class="lbl">Low</span>
+      <div class="bar-track"><div class="bar-fill low" style="width:0.0%"></div></div>
+      <span class="val">0</span></div>
+  </div>
+  <div class="chart">
+    <div class="eyebrow">Disposition of population</div>
+    <div class="dispo">
+      <span style="width:82.4%;background:#94969c"></span>
+      <span style="width:5.9%;background:#1a2b4a"></span>
+      <span style="width:5.9%;background:#166534"></span>
+      <span style="width:5.9%;background:#cecec4"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:#94969c"></i>Open 14</span>
+      <span><i style="background:#1a2b4a"></i>Accepted 1</span>
+      <span><i style="background:#166534"></i>Resolved 1</span>
+      <span><i style="background:#cecec4"></i>Discarded 1</span>
+    </div>
+  </div>
+
+  <div class="section-head" style="margin-top:30px"><span class="section-num">00</span><div><h2>Contents</h2><div class="rule"></div></div></div>
+  <div class="toc-item"><span>Executive Summary</span></div><div class="toc-item"><span>Cover</span></div><div class="toc-item"><span>Statement of Assets and Liabilities</span></div><div class="toc-item"><span>Statement of Operations</span></div><div class="toc-item"><span>Schedule of Investments</span></div><div class="toc-item"><span>Notes to Financial Statements</span></div><div class="toc-item"><span>Cross-Statement</span></div><div class="toc-item"><span>Appendix A — Coverage</span></div>
+
+  <section class="report-section">
+        <div class="section-head">
+          <span class="section-num">02</span>
+          <div><h2>Cover</h2><div class="rule"></div></div>
+        </div>
+        <div class="section-meta">1 finding <span class="badge crit">1 C</span></div>
+        <p class="section-note">Entity identity, period, presentation header. Qualitative mismatches are ALWAYS CRITICAL regardless of dollar impact.</p>
+        <article class="finding sev-crit">
+        <div class="finding-top">
+          <span class="fid">F-001</span>
+          <span class="sev-tag sev-crit">CRITICAL</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">orchestrator · L0</span>
+        </div>
+        <div class="finding-loc">Cover page  ·  p. 1  ·  Domicile statement</div>
+        <p class="finding-body">Cover page lists domicile as Delaware. Fund metadata records domicile as Cayman Islands. Qualitative materiality applies — this is CRITICAL regardless of dollar impact.</p>
+        
+        <div class="evidence-block"><div class="evid">&ldquo;AAA Coinvest Fund A LP, a Delaware limited partnership&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Confirm correct domicile with fund formation documents; correct the cover page (and any internal references) before issuance.</div>
+        
+      </article>
+      </section><section class="report-section">
+        <div class="section-head">
+          <span class="section-num">03</span>
+          <div><h2>Statement of Assets and Liabilities</h2><div class="rule"></div></div>
+        </div>
+        <div class="section-meta">1 finding <span class="badge high">1 H</span></div>
+        <p class="section-note">Balance-sheet equivalent. Tie-out to Schedule of Investments mandatory.</p>
+        <article class="finding sev-high">
+        <div class="finding-top">
+          <span class="fid">F-002</span>
+          <span class="sev-tag sev-high">HIGH</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">standards · L9</span>
+        </div>
+        <div class="finding-loc">Investments at fair value  ·  p. 3  ·  Investments at fair value</div>
+        <p class="finding-body">The Statement of Assets and Liabilities omits the parallel cost column for investments. ASC 946-210-45-1 requires both cost and fair value when the fund holds investments measured at fair value.</p>
+        <div class="cites"><span class="cite">ASC 946-210-45-1</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;Investments at fair value $ 2,184,500,000&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Add a &#039;Cost&#039; column adjacent to &#039;Fair value&#039; for investments, with the corresponding aggregate cost figure tied to the Schedule of Investments.</div>
+        
+      </article>
+      </section><section class="report-section">
+        <div class="section-head">
+          <span class="section-num">04</span>
+          <div><h2>Statement of Operations</h2><div class="rule"></div></div>
+        </div>
+        <div class="section-meta">1 finding <span class="badge high">1 H</span></div>
+        <p class="section-note">Net change must tie to Statement of Changes.</p>
+        <article class="finding sev-high">
+        <div class="finding-top">
+          <span class="fid">F-003</span>
+          <span class="sev-tag sev-high">HIGH</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">mechanical · L2</span>
+        </div>
+        <div class="finding-loc">Realized and unrealized gain/loss  ·  p. 4  ·  Net realized and unrealized gain/loss</div>
+        <p class="finding-body">Realized vs unrealized gain/loss on investments is combined into a single line ($142.3M). Bifurcation is required and available — split into Realized $61.2M and Unrealized $81.1M.</p>
+        <div class="cites"><span class="cite">ASC 946-220-45-3</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;Net realized and unrealized gain (loss) on investments $ 142,300,000&rdquo;</div><div class="evid mono">SOO!C26 = 61,200,000 ; SOO!C27 = 81,100,000 ; sum ties to SOO!C28 = 142,300,000</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Bifurcate the combined line on the face of the Statement of Operations: &#039;Net realized gain (loss) on investments&#039; and &#039;Net change in unrealized appreciation (depreciation) on investments&#039; shown separately.</div>
+        
+      </article>
+      </section><section class="report-section">
+        <div class="section-head">
+          <span class="section-num">05</span>
+          <div><h2>Schedule of Investments</h2><div class="rule"></div></div>
+        </div>
+        <div class="section-meta">2 findings <span class="badge crit">1 C</span><span class="badge high">1 H</span></div>
+        <p class="section-note">&gt;5% of net assets MUST be disclosed by name per ASC 946-210-50-6.</p>
+        <article class="finding sev-crit">
+        <div class="finding-top">
+          <span class="fid">F-011</span>
+          <span class="sev-tag sev-crit">CRITICAL</span>
+          <span class="conf">PROBABLE</span>
+          <span class="state">OPEN</span>
+          <span class="agent">mechanical · L8</span>
+        </div>
+        <div class="finding-loc">Level 3 designation  ·  p. 13  ·  Project Titan Holdings</div>
+        <p class="finding-body">Hidden workbook row at SOI!47 classifies Project Titan Holdings as Level 2. Visible row at SOI!46 (same investment) shows Level 3. The published FS shows Level 3. The hidden row may indicate either a working-paper override or an unresolved valuation question.</p>
+        
+        <div class="evidence-block"><div class="evid">&ldquo;Project Titan Holdings — Level 3 — $ 87,400,000&rdquo;</div><div class="evid mono">SOI!K46 = &#039;Level 3&#039; (visible) ; SOI!K47 = &#039;Level 2&#039; (hidden, same investment)</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Resolve the Level classification with the valuation committee. Document the rationale in the VPM file. Hide the inactive row OR delete the row to remove the contradiction signal.</div>
+        
+      </article><article class="finding sev-high">
+        <div class="finding-top">
+          <span class="fid">F-005</span>
+          <span class="sev-tag sev-high">HIGH</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">ACCEPTED</span>
+          <span class="agent">standards · L9</span>
+        </div>
+        <div class="finding-loc">Concentration  ·  p. 12  ·  Other private equity investments (aggregated)</div>
+        <p class="finding-body">The Schedule of Investments aggregates $158M (6.3% of NAV) under &#039;Other private equity investments&#039; without name-level disclosure. ASC 946-210-50-6 requires name-level disclosure of any investment &gt;5% of net assets.</p>
+        <div class="cites"><span class="cite">ASC 946-210-50-6</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;Other private equity investments $ 158,000,000&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Break out the constituent investments within the aggregated line by name; verify any single name &gt;5% of NAV is separately disclosed.</div>
+        
+      </article>
+      </section><section class="report-section">
+        <div class="section-head">
+          <span class="section-num">06</span>
+          <div><h2>Notes to Financial Statements</h2><div class="rule"></div></div>
+        </div>
+        <div class="section-meta">8 findings <span class="badge crit">2 C</span><span class="badge high">3 H</span><span class="badge med">3 M</span></div>
+        <p class="section-note">Disclosure infrastructure. Significant accounting policies through subsequent events.</p>
+        <article class="finding sev-high">
+        <div class="finding-top">
+          <span class="fid">F-013</span>
+          <span class="sev-tag sev-high">HIGH</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">narrative · L7</span>
+        </div>
+        <div class="finding-loc">Significant accounting policies  ·  Note 2  ·  p. 15</div>
+        <p class="finding-body">The Significant Accounting Policies note references &#039;the Fund&#039;s investments in AAA Coinvest Fund III portfolio companies&#039; — AAA Coinvest Fund III is a different vehicle. This appears to be carried-over language from a prior draft of a different fund&#039;s FS.</p>
+        
+        <div class="evidence-block"><div class="evid">&ldquo;Investments are recorded at fair value, including the Fund&#039;s investments in AAA Coinvest Fund III portfolio companies.&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Replace &#039;AAA Coinvest Fund III&#039; with the correct entity name (&#039;AAA Coinvest Fund A LP&#039; or &#039;the Fund&#039;). Scan the entire note set for additional cross-fund residue.</div>
+        
+      </article><article class="finding sev-crit">
+        <div class="finding-top">
+          <span class="fid">F-004</span>
+          <span class="sev-tag sev-crit">CRITICAL</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">standards · L9</span>
+        </div>
+        <div class="finding-loc">Fair value measurements  ·  Note 4(b)  ·  p. 17</div>
+        <p class="finding-body">The Level 3 reconciliation roll-forward in Note 4(b) presents opening balance, purchases, and ending balance. ASC 820-10-50-2(c) requires opening balance, purchases, sales, settlements, issuances, transfers in/out, realized gain/loss, unrealized gain/loss, and ending balance. The still-held subset of realized/unrealized per -2(d) is also absent.</p>
+        <div class="cites"><span class="cite">ASC 820-10-50-2c</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;Opening balance $ 387,000,000 / Purchases $ 25,400,000 / Ending balance $ 412,400,000&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Expand the Level 3 roll-forward to include all eight required movement columns and the still-held subset disclosure. Verify the resulting ending balance ties to the Schedule of Investments Level 3 subtotal ($412.4M).</div>
+        
+      </article><article class="finding sev-crit">
+        <div class="finding-top">
+          <span class="fid">F-004a</span>
+          <span class="sev-tag sev-crit">CRITICAL</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">mechanical · L2</span>
+        </div>
+        <div class="finding-loc">Fair value measurements  ·  Note 4(b)  ·  p. 17</div>
+        <p class="finding-body">Level 3 reconciliation ending balance ($412.4M) does not foot to the Schedule of Investments Level 3 subtotal ($408.9M); break $3.5M.</p>
+        
+        
+        <div class="fix"><span class="fix-label">Recommended fix</span>See root cause F-004 — this constituent was decoupled by the controller and now stands alone.</div>
+        
+      </article><article class="finding sev-med">
+        <div class="finding-top">
+          <span class="fid">F-006</span>
+          <span class="sev-tag sev-med">MEDIUM</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">defense · L12</span>
+        </div>
+        <div class="finding-loc">Organization  ·  Note 1  ·  p. 14</div>
+        <p class="finding-body">The Organization note does not reference Cayman Private Funds Act registration. The Fund is a Cayman exempted limited partnership formed post-2020 — PFA registration disclosure is the standard expectation.</p>
+        <div class="cites"><span class="cite">CIMA:PFA</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;AAA Coinvest Fund A LP (the &#039;Fund&#039;) is a Cayman Islands exempted limited partnership formed on [date].&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Add a sentence to the Organization note: &#039;The Fund is registered with the Cayman Islands Monetary Authority under the Private Funds Act (registration number [X]).&#039; Verify the registration number from formation documents.</div>
+        
+      </article><article class="finding sev-high">
+        <div class="finding-top">
+          <span class="fid">F-007</span>
+          <span class="sev-tag sev-high">HIGH</span>
+          <span class="conf">PROBABLE</span>
+          <span class="state">OPEN</span>
+          <span class="agent">defense · L14</span>
+        </div>
+        <div class="finding-loc">Related party transactions  ·  Note 8  ·  p. 22</div>
+        <p class="finding-body">The Related Party Transactions note discloses the General Partner and Investment Manager relationships but does not disclose the Fund&#039;s relationship to AAA Portfolio Operations LLC, which is named in the Schedule of Investments as the operating-services counterparty for two portfolio companies. The auditor will likely push back on this.</p>
+        
+        <div class="evidence-block"><div class="evid">&ldquo;The Fund has entered into a management agreement with the Investment Manager...&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Confirm whether AAA Portfolio Operations LLC is an affiliate of the GP/Manager. If yes, expand Note 8 to disclose: nature of relationship, terms of services, period amount, and balance receivable/payable at period end.</div>
+        
+      </article><article class="finding sev-high">
+        <div class="finding-top">
+          <span class="fid">F-008</span>
+          <span class="sev-tag sev-high">HIGH</span>
+          <span class="conf">PROBABLE</span>
+          <span class="state">OPEN</span>
+          <span class="agent">defense · L12</span>
+        </div>
+        <div class="finding-loc">Income taxes  ·  Note 9  ·  p. 25</div>
+        <p class="finding-body">The Income Taxes note states the Fund has no uncertain tax positions. The Schedule of Investments shows non-US corporate investments. The note does not address PFIC treatment for US investors. If any non-US corporate investment qualifies as a PFIC, the disclosure regime under IRC §1297–1298 applies.</p>
+        <div class="cites"><span class="cite">IRS:PFIC</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;The Fund has no uncertain tax positions as of the period end.&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Confirm with tax counsel which non-US corporate investments qualify as PFICs. Add disclosure covering: (a) presence of PFIC investments, (b) treatment (mark-to-market under §1296 / QEF under §1295 / default §1291), (c) whether elections have been made on investors&#039; behalf.</div>
+        
+      </article><article class="finding sev-med">
+        <div class="finding-top">
+          <span class="fid">F-009</span>
+          <span class="sev-tag sev-med">MEDIUM</span>
+          <span class="conf">PROBABLE</span>
+          <span class="state">OPEN</span>
+          <span class="agent">standards · L9</span>
+        </div>
+        <div class="finding-loc">Recently issued accounting standards  ·  Note 13  ·  p. 30</div>
+        <p class="finding-body">The &#039;Recently issued accounting standards&#039; note mentions ASU 2022-03 but does not address ASU 2023-09 (income tax disclosures, effective FY 2025+) — which may be applicable if the Fund has taxable blocker subsidiaries.</p>
+        <div class="cites"><span class="cite">ASC 105-10-65</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;The Fund adopted ASU 2022-03 (Equity Securities with Contractual Sale Restrictions) effective January 1, 2024.&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Confirm with tax team whether ASU 2023-09 applies (taxable blocker subsidiaries with rate reconciliation). If applicable, add the ASU 2023-09 effective-date and expected-effect disclosure to Note 13.</div>
+        
+      </article><article class="finding sev-med">
+        <div class="finding-top">
+          <span class="fid">F-010</span>
+          <span class="sev-tag sev-med">MEDIUM</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">narrative · L3</span>
+        </div>
+        <div class="finding-loc">Subsequent events  ·  Note 14  ·  p. 31</div>
+        <p class="finding-body">The Subsequent Events note states events were evaluated through April 15, 2026. The draft is dated May 17, 2026 — the evaluation date precedes the draft date by over a month. Either the evaluation date is stale or the draft date is pre-dated.</p>
+        <div class="cites"><span class="cite">ASC 855-10-50-4</span></div>
+        <div class="evidence-block"><div class="evid">&ldquo;The Fund has evaluated subsequent events through April 15, 2026.&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Update the subsequent-events evaluation date to the expected issuance date. Re-evaluate events occurring between the prior date and the new date.</div>
+        
+      </article>
+      </section><section class="report-section">
+        <div class="section-head">
+          <span class="section-num">07</span>
+          <div><h2>Cross-Statement</h2><div class="rule"></div></div>
+        </div>
+        <div class="section-meta">1 finding <span class="badge high">1 H</span></div>
+        <p class="section-note">Findings spanning multiple statements that cannot be cleanly localized.</p>
+        <article class="finding sev-high">
+        <div class="finding-top">
+          <span class="fid">F-012</span>
+          <span class="sev-tag sev-high">HIGH</span>
+          <span class="conf">CERTAIN</span>
+          <span class="state">OPEN</span>
+          <span class="agent">comparative · L11</span>
+        </div>
+        <div class="finding-loc">Carried interest reconciliation  ·  Carried interest accrual</div>
+        <p class="finding-body">AAA Coinvest Fund A LP records carried interest accrual of $34.2M on the Statement of Changes. The sibling AIV vehicle (AAA Coinvest Fund A AIV LP) FS records zero carried interest accrual. Per the LPA, the AIV applies a parallel waterfall — a proportional accrual is expected.</p>
+        
+        <div class="evidence-block"><div class="evid">&ldquo;Carried interest accrual $ 34,200,000&rdquo;</div><div class="evid">Prior / sibling: &ldquo;AIV FS Note 7: &#039;No carried interest has been allocated as of period end.&#039;&rdquo;</div></div>
+        <div class="fix"><span class="fix-label">Recommended fix</span>Reconcile the carried interest accrual between Fund A and Fund A AIV. Either correct one of them or document the timing/policy reason for the difference in both sets of FS.</div>
+        
+      </article>
+      </section>
+
+  <section class="report-section">
+    <div class="section-head"><span class="section-num">08</span><div><h2>Appendix A — Coverage</h2><div class="rule"></div></div></div>
+    <div style="margin-top:12px"><div class="kv"><span>Coverage completeness</span><strong>96%</strong></div><div class="kv"><span>ASC paragraphs applicable</span><strong>47</strong></div><div class="kv"><span>ASC paragraphs checked</span><strong>45</strong></div><div class="kv"><span>Layers covered</span><strong>14 of 14</strong></div><div class="kv"><span>Schema rejections</span><strong>0</strong></div><div class="kv"><span>Regulatory jurisdictions</span><strong>CIMA, SEC, IRS</strong></div></div>
+    <div class="eyebrow" style="margin:18px 0 8px">ASC paragraphs not checked (with reason)</div><div class="skip"><span class="mono">ASC 815-10-50-4D</span><span>SUBPOPULATION_ABSENT: No netting positions on BS</span></div><div class="skip"><span class="mono">ASC 205-40-50-1</span><span>NOT_APPLICABLE: Fund within investment period; no going-concern doubt conditions</span></div>
+  </section>
+
+  
+
+  <div class="report-footer">Architecture: Ashitosh Shinde · Apollo Mumbai Controllership · SHINE v8.1 · 2026-05-17</div>
+</div></div>
+</body></html>

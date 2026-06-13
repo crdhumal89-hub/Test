@@ -1,0 +1,38 @@
+[
+ {
+  "category": "balance_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "statement does not balance by 1M",
+  "recurrence": null,
+  "relationship": "BS_BALANCE",
+  "severity": null
+ },
+ {
+  "category": "tie_out_break",
+  "check_id": null,
+  "must_catch": false,
+  "note": "cascade: SOC ending no longer ties to BS capital",
+  "recurrence": null,
+  "relationship": "SOC_TO_BS",
+  "severity": null
+ },
+ {
+  "category": "tie_out_break",
+  "check_id": null,
+  "must_catch": false,
+  "note": "cascade: workbook carries the correct capital",
+  "recurrence": null,
+  "relationship": "TIE_OUT:balance_sheet.partners_capital",
+  "severity": null
+ },
+ {
+  "category": "per_unit_break",
+  "check_id": null,
+  "must_catch": false,
+  "note": "cascade: NAV per unit recomputes against misstated capital",
+  "recurrence": null,
+  "relationship": "FH_NAV_PER_UNIT",
+  "severity": null
+ }
+]

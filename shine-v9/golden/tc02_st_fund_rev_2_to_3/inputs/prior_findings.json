@@ -1,0 +1,10 @@
+[
+ {
+  "merge_key": "Tie-Out Workbook::Tie-out workbook::ending_capital::tie_out_break",
+  "state": "ACCEPTED"
+ },
+ {
+  "merge_key": "Statement of Operations::Expenses::Total expenses::footing_break",
+  "state": "RESOLVED"
+ }
+]

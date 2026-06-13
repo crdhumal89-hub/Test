@@ -1,0 +1,11 @@
+[
+ {
+  "category": "footing_break",
+  "check_id": null,
+  "must_catch": true,
+  "note": "component line misstated by 400k; asset section does not foot",
+  "recurrence": null,
+  "relationship": "BS_ASSETS_FOOT",
+  "severity": null
+ }
+]

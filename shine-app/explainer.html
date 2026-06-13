@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SHINE — How it works &amp; how to use it</title>
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a2b4a'/><text x='16' y='22' font-family='Georgia,serif' font-size='18' font-weight='700' text-anchor='middle' fill='%23b8902e'>S</text></svg>" />
+<style>
+:root{
+  --ink:#1a202c; --navy:#1a2b4a; --navy-deep:#0f1d33; --gold:#b8902e; --gold-warm:#d4a73e;
+  --gray:#6e7480; --faint:#9a9ea6; --hair:#d6d6d0; --panel:#f7f7f4; --paper:#fbfaf6;
+  --crit:#c0392b; --high:#c96e08; --med:#a88a00; --low:#6b7280;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  font-size:15.5px; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:Georgia,'Times New Roman',serif}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.eyebrow{
+  font-size:10.5px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase;
+  color:var(--gray);
+}
+a{color:var(--navy); text-decoration:none; border-bottom:1px solid var(--hair)}
+a:hover{border-bottom-color:var(--gold)}
+
+/* ============== TOP NAV ============== */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(251,250,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--hair);
+}
+.topbar-inner{
+  max-width:1180px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 32px;
+}
+.brand{display:flex; align-items:center; gap:12px}
+.brand-mark{
+  width:30px; height:30px; border-radius:5px; background:var(--navy);
+  color:var(--gold-warm); font-family:Georgia,serif; font-weight:700; font-size:18px;
+  display:grid; place-items:center;
+}
+.brand-name{font-weight:700; letter-spacing:1.6px; font-size:11.5px; color:var(--ink)}
+.brand-tag{font-size:10px; color:var(--gray)}
+.nav-links{display:flex; gap:4px}
+.nav-links a{
+  color:var(--gray); font-size:13px; font-weight:500; padding:7px 14px;
+  border-radius:4px; border:0; transition:all .12s ease;
+}
+.nav-links a:hover{color:var(--ink); background:var(--panel)}
+.nav-links a.active{color:var(--ink); background:var(--panel)}
+@media(max-width:720px){
+  .topbar-inner{padding:12px 16px}
+  .nav-links{display:none}
+}
+
+/* ============== HERO ============== */
+.hero{
+  background:linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+  border-bottom:1px solid var(--hair);
+  position:relative; overflow:hidden;
+}
+.hero::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:7px;
+  background:linear-gradient(90deg, var(--navy) 0%, var(--navy) 60%, var(--gold) 60%, var(--gold) 100%);
+}
+.hero-inner{
+  max-width:1180px; margin:0 auto;
+  padding:84px 32px 72px;
+}
+.hero .eyebrow{margin-bottom:24px}
+.hero h1{
+  font-family:Georgia,serif; font-weight:700;
+  font-size:64px; line-height:1.05; letter-spacing:-0.02em;
+  margin:0 0 16px; max-width:920px;
+}
+.hero .accent-rule{
+  width:80px; height:3px; background:var(--gold); margin:18px 0 28px;
+}
+.hero-lede{
+  font-family:Georgia,serif; font-size:22px; line-height:1.5;
+  color:var(--navy); max-width:780px; margin:0 0 32px;
+}
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:32px; padding-top:24px;
+  border-top:1px solid var(--hair); color:var(--gray); font-size:13px;
+}
+.hero-meta .col .label{font-size:10px; letter-spacing:1.4px; text-transform:uppercase; font-weight:700; color:var(--gray); margin-bottom:4px}
+.hero-meta .col .val{color:var(--ink); font-size:14px}
+@media(max-width:720px){
+  .hero-inner{padding:48px 16px 40px}
+  .hero h1{font-size:38px}
+  .hero-lede{font-size:17px}
+}
+
+/* ============== SECTIONS ============== */
+section{padding:80px 0; border-top:1px solid var(--hair)}
+section:first-of-type{border-top:0}
+.section-inner{max-width:1180px; margin:0 auto; padding:0 32px}
+.section-head{display:flex; align-items:flex-start; gap:28px; margin-bottom:36px}
+.section-num{
+  font-family:Georgia,serif; font-weight:700;
+  font-size:56px; line-height:1; color:#e4e4de;
+  flex-shrink:0;
+}
+.section-title{flex:1}
+.section-title h2{
+  font-family:Georgia,serif; font-weight:700; font-size:34px;
+  margin:0; color:var(--navy); letter-spacing:-0.01em;
+  line-height:1.15;
+}
+.section-rule{width:52px; height:2px; background:var(--gold); margin-top:14px}
+.section-sub{
+  font-family:Georgia,serif; font-style:italic; font-size:17px;
+  color:var(--gray); margin-top:10px; max-width:720px;
+}
+@media(max-width:720px){
+  section{padding:48px 0}
+  .section-inner{padding:0 16px}
+  .section-num{font-size:36px}
+  .section-title h2{font-size:24px}
+}
+
+/* ============== PROSE ============== */
+.prose{max-width:780px; font-size:16px; line-height:1.75; color:var(--ink)}
+.prose p{margin:0 0 18px}
+.prose p.lede{font-family:Georgia,serif; font-size:19px; line-height:1.6; color:var(--navy)}
+.prose strong{font-weight:600; color:var(--ink)}
+.prose .pullquote{
+  border-left:3px solid var(--gold);
+  padding:6px 0 6px 22px; margin:24px 0;
+  font-family:Georgia,serif; font-style:italic; font-size:18px;
+  color:var(--navy);
+}
+
+/* ============== STATS ============== */
+.stats{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+  margin:36px 0;
+}
+.stat{
+  background:#fff; border:1px solid var(--hair); border-radius:6px;
+  padding:22px;
+}
+.stat .lbl{font-size:10px; letter-spacing:1.6px; text-transform:uppercase; font-weight:700; color:var(--gray); margin-bottom:10px}
+.stat .num{font-size:30px; font-weight:700; line-height:1; color:var(--ink)}
+.stat .sub{font-size:11.5px; color:var(--gray); margin-top:8px}
+@media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ============== ARCH DIAGRAM ============== */
+.arch{
+  background:#fff; border:1px solid var(--hair); border-radius:8px;
+  padding:36px; margin:24px 0;
+}
+.arch-node{
+  background:#fff; border:1.5px solid var(--navy); border-radius:6px;
+  padding:14px 18px; text-align:center;
+}
+.arch-orch{
+  background:var(--navy); color:#fff; border-color:var(--navy);
+  padding:18px 24px; border-radius:6px; text-align:center;
+  margin:0 auto 28px; max-width:480px;
+}
+.arch-orch .title{font-family:Georgia,serif; font-size:18px; font-weight:700}
+.arch-orch .sub{font-size:11px; color:var(--gold-warm); letter-spacing:1.4px; text-transform:uppercase; margin-top:4px}
+.arch-phase{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px;
+}
+.arch-phase.two{grid-template-columns:repeat(2,1fr); max-width:640px; margin:0 auto}
+.arch-card{
+  background:#fff; border:1px solid var(--hair); border-radius:6px;
+  padding:18px; transition:all .15s ease; cursor:pointer;
+}
+.arch-card:hover{border-color:var(--gold); box-shadow:0 4px 14px rgba(0,0,0,.06); transform:translateY(-1px)}
+.arch-card .name{font-family:Georgia,serif; font-size:17px; font-weight:700; color:var(--navy)}
+.arch-card .layers{font-family:ui-monospace,Menlo,monospace; font-size:11px; color:var(--gold); margin-top:4px; letter-spacing:.5px}
+.arch-card .desc{font-size:12.5px; color:var(--gray); margin-top:10px; line-height:1.5}
+.arch-phase-label{
+  text-align:center; font-size:10px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--gray); font-weight:700; margin:14px 0 18px; position:relative;
+}
+.arch-phase-label::before, .arch-phase-label::after{
+  content:""; position:absolute; top:50%; width:40px; height:1px; background:var(--hair);
+}
+.arch-phase-label::before{left:calc(50% - 130px)}
+.arch-phase-label::after{right:calc(50% - 130px)}
+@media(max-width:720px){
+  .arch{padding:18px}
+  .arch-phase, .arch-phase.two{grid-template-columns:1fr}
+}
+
+/* ============== TIMELINE / FLOW ============== */
+.flow{margin:24px 0; counter-reset:flow}
+.flow-row{
+  display:grid; grid-template-columns:80px 1fr; gap:24px;
+  padding:20px 0; border-bottom:1px solid var(--hair);
+  align-items:start;
+}
+.flow-row:last-child{border-bottom:0}
+.flow-stage{
+  font-family:Georgia,serif; font-size:14px; font-weight:700;
+  color:var(--gold); padding-top:2px;
+}
+.flow-stage .num{font-size:32px; line-height:1; display:block; color:var(--navy)}
+.flow-body .name{font-family:Georgia,serif; font-size:17px; font-weight:700; color:var(--navy); margin-bottom:6px}
+.flow-body .desc{font-size:14px; color:var(--ink); line-height:1.6}
+.flow-body .desc .mono{font-size:12px; background:var(--panel); padding:1px 6px; border-radius:3px; color:var(--gray)}
+
+/* ============== STEPS (How to use) ============== */
+.steps{margin:24px 0}
+.step{
+  display:grid; grid-template-columns:60px 1fr; gap:24px;
+  background:#fff; border:1px solid var(--hair); border-radius:6px;
+  padding:22px 26px; margin-bottom:14px;
+  transition:all .15s ease;
+}
+.step:hover{border-color:var(--gold); box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.step-num{
+  font-family:Georgia,serif; font-size:34px; font-weight:700;
+  color:#e4e4de; line-height:1;
+}
+.step-body h4{
+  font-family:Georgia,serif; font-size:18px; font-weight:700;
+  color:var(--navy); margin:0 0 8px;
+}
+.step-body p{margin:0 0 8px; font-size:14.5px; line-height:1.65; color:var(--ink)}
+.step-body .hint{
+  font-size:12.5px; color:var(--gray); margin-top:10px;
+  padding-left:14px; border-left:2px solid var(--hair);
+}
+.step-body .kbd{
+  display:inline-block; padding:1px 7px; font-family:ui-monospace,Menlo,monospace;
+  font-size:11.5px; background:var(--panel); border:1px solid var(--hair);
+  border-radius:3px; color:var(--ink);
+}
+
+/* ============== CODE BLOCKS ============== */
+.code{
+  background:var(--navy-deep); color:#e8e6dc; border-radius:6px;
+  padding:18px 22px; font-family:ui-monospace,Menlo,monospace; font-size:13px;
+  line-height:1.7; overflow-x:auto; margin:14px 0;
+  white-space:pre; tab-size:2;
+}
+.code .cmt{color:#8a8c93}
+.code .key{color:var(--gold-warm)}
+
+/* ============== TABLES ============== */
+table.layers{width:100%; border-collapse:collapse; margin:18px 0; font-size:13.5px}
+table.layers th{
+  text-align:left; padding:10px 12px; border-bottom:2px solid var(--navy);
+  font-size:10px; letter-spacing:1.4px; text-transform:uppercase; color:var(--gray); font-weight:700;
+}
+table.layers td{padding:11px 12px; border-bottom:1px solid var(--hair); vertical-align:top}
+table.layers td.layer-id{font-family:ui-monospace,Menlo,monospace; color:var(--gold); font-weight:600; width:48px}
+table.layers td.layer-name{font-weight:600; color:var(--navy); width:200px}
+table.layers tr:hover{background:#fafaf6}
+
+/* ============== CALLOUT ============== */
+.callout{
+  background:var(--panel); border-left:3px solid var(--navy);
+  border-radius:0 4px 4px 0; padding:18px 22px; margin:22px 0;
+}
+.callout .lbl{font-size:10px; letter-spacing:1.4px; text-transform:uppercase; font-weight:700; color:var(--navy); margin-bottom:6px}
+.callout p{margin:0; font-size:14px; color:var(--ink)}
+
+/* ============== FOOTER ============== */
+footer{
+  background:var(--navy); color:#cfd2db;
+  padding:40px 32px; margin-top:80px;
+  font-size:12.5px;
+}
+footer .inner{max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px}
+footer .attrib{color:var(--gold-warm); font-family:Georgia,serif; font-size:13px}
+footer a{color:#cfd2db; border-bottom-color:rgba(255,255,255,.2)}
+
+/* Reveal on scroll */
+.reveal{opacity:0; transform:translateY(12px); transition:all .6s ease}
+.reveal.in{opacity:1; transform:translateY(0)}
+
+/* Print */
+@media print{
+  body{background:#fff}
+  .topbar{position:static; background:#fff}
+  section{break-inside:avoid; padding:24px 0}
+  .reveal{opacity:1; transform:none}
+  footer{background:#fff; color:var(--gray); border-top:1px solid var(--hair)}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <div class="brand-name">SHINE</div>
+        <div class="brand-tag">Statement Health Intelligence</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="#overview" class="active">Overview</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#flow">Review Flow</a>
+      <a href="#use">How to Use</a>
+      <a href="#run">Run It</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">A Briefing Document · For Operators, Auditors and Reviewers</div>
+    <h1>The fastest, most accurate way to review a fund&rsquo;s financial statements.</h1>
+    <div class="accent-rule"></div>
+    <p class="hero-lede">SHINE is an AI&ndash;assisted review platform built by Apollo Mumbai Controllership. It reads a draft FS, runs five specialist reviewers in parallel against the ASC&nbsp;946 framework, and produces a controller&ndash;ready, audit&ndash;defensible review report in minutes &mdash; with every finding cited, every disposition tracked, and every word in the controller&rsquo;s voice.</p>
+    <div class="hero-meta">
+      <div class="col"><div class="label">Architect</div><div class="val">Ashitosh Shinde</div></div>
+      <div class="col"><div class="label">Domain</div><div class="val">ASC 946 fund FS</div></div>
+      <div class="col"><div class="label">Version</div><div class="val">8.1</div></div>
+      <div class="col"><div class="label">Read time</div><div class="val">~8 minutes</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 01 · OVERVIEW ============ -->
+<section id="overview">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div class="section-title">
+        <h2>What SHINE actually is</h2>
+        <div class="section-rule"></div>
+        <p class="section-sub">A plain&ndash;language explanation, no jargon, for anyone walking into the conversation cold.</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p class="lede">Every quarter, a fund controller has to read a stack of draft financial statements &mdash; sometimes thirty of them &mdash; and decide whether each one is ready to go to the auditor. The work is detailed, repetitive, and unforgiving. One missed disclosure can land in an audit finding; one wrong number can land in a restatement.</p>
+
+      <p>SHINE is the tool the controller uses to do that work. It does <strong>not</strong> replace the controller&rsquo;s judgment. It compresses the part that doesn&rsquo;t need judgment &mdash; the meticulous read against the ASC&nbsp;946 framework, the tie&ndash;outs, the cross&ndash;references, the comparison to prior period &mdash; so the controller spends their time on the part that does.</p>
+
+      <p>The acronym stands for <strong>Statement Health Intelligence and Notation Engine</strong>. The promise sits in the three words below the logo: <em>Review &middot; Refine &middot; Ready</em>.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="lbl">Review layers</div><div class="num">14</div><div class="sub">From tie&ndash;outs to regulatory defense</div></div>
+      <div class="stat"><div class="lbl">Specialists</div><div class="num">5</div><div class="sub">Each owns a tightly&ndash;scoped slice</div></div>
+      <div class="stat"><div class="lbl">Stages</div><div class="num">9</div><div class="sub">Intake to disposition to export</div></div>
+      <div class="stat"><div class="lbl">Phase&nbsp;1 parallelism</div><div class="num">3&times;</div><div class="sub">Three reviewers in parallel</div></div>
+    </div>
+
+    <div class="callout">
+      <div class="lbl">In one sentence</div>
+      <p>SHINE turns a manual, half&ndash;day FS review into a structured 90&ndash;minute conversation where the controller dispositions findings the system has already framed, cited, and prioritized.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 · ARCHITECTURE ============ -->
+<section id="architecture">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div class="section-title">
+        <h2>How it&rsquo;s built</h2>
+        <div class="section-rule"></div>
+        <p class="section-sub">A council of five specialists, an orchestrator that coordinates them, and a curated reference library each consults.</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>SHINE is intentionally <strong>decomposed</strong>. Instead of one large reviewer trying to do everything, an <strong>orchestrator</strong> dispatches five specialist subagents in two waves. Each specialist reads a small, focused slice of the FS and returns findings in a strict schema. The orchestrator merges, deduplicates, escalates, and renders.</p>
+    </div>
+
+    <div class="arch">
+      <div class="arch-orch">
+        <div class="title">Orchestrator</div>
+        <div class="sub">Intake &middot; Dispatch &middot; Reconcile &middot; Render</div>
+      </div>
+
+      <div class="arch-phase-label">Phase 1 &middot; In parallel</div>
+      <div class="arch-phase">
+        <div class="arch-card">
+          <div class="name">Mechanical</div>
+          <div class="layers">L1 &middot; L2 &middot; L4 &middot; L8</div>
+          <div class="desc">The math. Tie&ndash;outs between statements, template &amp; policy compliance, and a forensic two&ndash;tier scan of hidden Excel rows.</div>
+        </div>
+        <div class="arch-card">
+          <div class="name">Narrative</div>
+          <div class="layers">L3 &middot; L5 &middot; L6 &middot; L7</div>
+          <div class="desc">The prose. Disclosure completeness, grammar and tense, cross&ndash;reference integrity, and detection of &ldquo;ghost&rdquo; text carried over from a prior draft.</div>
+        </div>
+        <div class="arch-card">
+          <div class="name">Standards</div>
+          <div class="layers">L9</div>
+          <div class="desc">The standard. ASC&nbsp;946, 820, 815, 825 and adjacent topics. Every L9 finding cites the exact paragraph.</div>
+        </div>
+      </div>
+
+      <div class="arch-phase-label">Phase 2 &middot; After Phase 1</div>
+      <div class="arch-phase two">
+        <div class="arch-card">
+          <div class="name">Comparative</div>
+          <div class="layers">L10 &middot; L11</div>
+          <div class="desc">Year&ndash;over&ndash;year comparison and multi&ndash;entity consistency &mdash; master&ndash;feeders, parallel funds, AIVs, blockers.</div>
+        </div>
+        <div class="arch-card">
+          <div class="name">Defense</div>
+          <div class="layers">L12 &middot; L13 &middot; L14</div>
+          <div class="desc">Regulatory compliance (CIMA, SEC, IRS, Delaware), valuation governance, and audit&ndash;defense readiness.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p class="pullquote">&ldquo;Each subagent is a specialist. The orchestrator is a coordinator. The split is what keeps quality high and context windows small.&rdquo;</p>
+      <p>This architecture matters because it&rsquo;s <strong>auditable</strong>. Every finding records which subagent produced it, which version of the prompt produced it, and which version of the reference library was consulted. A reviewer looking at a finding two quarters later can reconstruct exactly how it was generated.</p>
+    </div>
+
+    <h3 class="serif" style="font-size:22px;color:var(--navy);margin:40px 0 14px">The 14 review layers, at a glance</h3>
+    <table class="layers">
+      <thead><tr><th>Layer</th><th>Name</th><th>What it checks</th></tr></thead>
+      <tbody>
+        <tr><td class="layer-id">L1</td><td class="layer-name">Entity verification</td><td>Cover page name, domicile, period &mdash; matches fund metadata.</td></tr>
+        <tr><td class="layer-id">L2</td><td class="layer-name">Internal tie&ndash;out</td><td>Numbers foot. SOAL = SOI = SOC = SOO. To the dollar.</td></tr>
+        <tr><td class="layer-id">L3</td><td class="layer-name">Disclosure completeness</td><td>Every required note exists and says what it should.</td></tr>
+        <tr><td class="layer-id">L4</td><td class="layer-name">Template &amp; policy</td><td>Captions, ordering, valuation policy &mdash; consistent with fund VPM.</td></tr>
+        <tr><td class="layer-id">L5</td><td class="layer-name">Language &amp; grammar</td><td>Tense, agreement, defined terms, placeholder text.</td></tr>
+        <tr><td class="layer-id">L6</td><td class="layer-name">Cross&ndash;references</td><td>&ldquo;See Note&nbsp;4(b)&rdquo; actually exists and says what&rsquo;s claimed.</td></tr>
+        <tr><td class="layer-id">L7</td><td class="layer-name">Forensic ghost</td><td>Carried&ndash;over text from a different fund or prior period.</td></tr>
+        <tr><td class="layer-id">L8</td><td class="layer-name">Hidden&ndash;row XLSX</td><td>Two&ndash;tier scan of hidden workbook rows that contradict visible totals.</td></tr>
+        <tr><td class="layer-id">L9</td><td class="layer-name">ASC compliance</td><td>Every applicable paragraph either checked or skipped with a reason.</td></tr>
+        <tr><td class="layer-id">L10</td><td class="layer-name">Prior&ndash;period</td><td>Material movements year over year explained.</td></tr>
+        <tr><td class="layer-id">L11</td><td class="layer-name">Multi&ndash;entity</td><td>Master, feeder, AIV, blocker reconciliations.</td></tr>
+        <tr><td class="layer-id">L12</td><td class="layer-name">Regulatory</td><td>CIMA, SEC, IRS, Delaware &mdash; with a citation registry.</td></tr>
+        <tr><td class="layer-id">L13</td><td class="layer-name">Valuation governance</td><td>Committee, third&ndash;party valuers, sensitivity narrative.</td></tr>
+        <tr><td class="layer-id">L14</td><td class="layer-name">Audit defense</td><td>Related parties, concentrations, subsequent events &mdash; through an auditor&rsquo;s lens.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 03 · REVIEW FLOW ============ -->
+<section id="flow">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div class="section-title">
+        <h2>The nine&ndash;stage review flow</h2>
+        <div class="section-rule"></div>
+        <p class="section-sub">From the moment the controller drops a draft, to the moment a polished report leaves the building.</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-row"><div class="flow-stage"><span class="num">01</span>Intake</div><div class="flow-body"><div class="name">The controller hands SHINE the draft FS and supporting files</div><div class="desc">SHINE reads <span class="mono">_REVIEW&ndash;MANIFEST.json</span> (the per&ndash;review input list) and <span class="mono">_FUND&ndash;METADATA.json</span> (the static fund facts). Only the FS&nbsp;PDF is strictly required; everything else degrades gracefully with a controller&ndash;facing prompt.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">02</span>Identify</div><div class="flow-body"><div class="name">The cover page is verified against fund metadata</div><div class="desc">Legal name, domicile, and period are compared character&ndash;for&ndash;character. Any mismatch becomes a critical finding the controller dispositions explicitly &mdash; we don&rsquo;t silently override the cover.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">03</span>Phase&nbsp;1</div><div class="flow-body"><div class="name">Mechanical, Narrative, Standards run in parallel</div><div class="desc">Three specialists, three concurrent reviews. Each returns a strict JSON of findings plus a coverage manifest declaring what they checked and what they deliberately skipped.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">04</span>Phase&nbsp;2</div><div class="flow-body"><div class="name">Comparative and Defense run after Phase&nbsp;1 lands</div><div class="desc">They consume the Phase&nbsp;1 findings as context &mdash; if Standards flagged an ASU adoption, Comparative knows to look for the matching transition disclosure.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">05</span>Aggregate</div><div class="flow-body"><div class="name">Merge, validate, reconcile, dedupe, escalate, annotate</div><div class="desc">Schema&ndash;rejects malformed findings. Reconciles clusters via specificity&ndash;scored patterns (e.g., a Level&nbsp;3 reconciliation tie&ndash;out break plus a 50&ndash;2(f) gap collapse into one root cause). Escalates priors that recurred. Polishes language without overwriting the original.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">06</span>Coverage</div><div class="flow-body"><div class="name">Roll up the audit trail</div><div class="desc">100%&ndash;applicable coverage: every ASC paragraph in scope is either checked or skipped with a reason code. The controller can prove to Deloitte that nothing was silently dropped.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">07</span>Render</div><div class="flow-body"><div class="name">The dashboard appears</div><div class="desc">Statement&ndash;grouped findings, structured CFO summary, readiness banner, degradation chips. The controller&rsquo;s primary interface.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">08</span>Disposition</div><div class="flow-body"><div class="name">The controller decides</div><div class="desc">Accept &middot; Resolve &middot; Discard &middot; Reopen &middot; Mark evergreen &middot; Edit. Every action pushes to the undo stack; every state change is persisted.</div></div></div>
+      <div class="flow-row"><div class="flow-stage"><span class="num">09</span>Export</div><div class="flow-body"><div class="name">A premium report leaves the building</div><div class="desc">Two modes: <strong>Preparer Edition</strong> for the fund administrator (open + accepted findings, simplified) and <strong>Audit File</strong> for Deloitte (accepted + resolved, full provenance chain, evergreen appendix). Both go through a preview&ndash;before&ndash;send modal.</div></div></div>
+    </div>
+
+    <div class="callout">
+      <div class="lbl">The trust layer</div>
+      <p>Three things make the output defensible. <strong>Citation discipline:</strong> every standards finding cites the ASC paragraph, every regulatory finding cites the corpus key. <strong>Version stamps:</strong> every finding records the subagent, prompt and reference versions it came from. <strong>Three&ndash;field provenance:</strong> the original subagent text is immutable; polished and controller&ndash;edited versions live alongside it &mdash; reviewers see the chain.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 · HOW TO USE ============ -->
+<section id="use">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div class="section-title">
+        <h2>How to use it &mdash; step by step</h2>
+        <div class="section-rule"></div>
+        <p class="section-sub">From opening the app to handing off the audit file. Eight steps; no prior knowledge required.</p>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Open the app</h4>
+          <p>Double&ndash;click <span class="kbd">index.html</span> in the <span class="kbd">shine&ndash;app/</span> folder. Any modern browser will render it. You&rsquo;ll land on the <strong>Reviews</strong> screen showing three sample reviews.</p>
+          <p class="hint">No install, no login. Everything runs in your browser &mdash; nothing leaves your machine.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Pick the demo review</h4>
+          <p>Click the card titled <strong>AAA Coinvest Fund A LP</strong>. It&rsquo;s the fully&ndash;populated example with 16 realistic findings spanning every severity, every state, recurring and evergreen markers, and a reconciler cluster.</p>
+          <p class="hint">The other two cards are list&ndash;view placeholders so you can see what a multi&ndash;fund queue feels like.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Read the dashboard, top to bottom</h4>
+          <p>The <strong>banner</strong> tells you the readiness verdict in one word. The <strong>CFO summary</strong> below it gives five loaded lines you can paste into a committee deck. The <strong>chips</strong> surface what degraded &mdash; recurring findings, evergreen acceptances, stale references.</p>
+          <p class="hint">If the banner says <em>Not Ready</em>, scroll down: every critical and high finding has to be either dispositioned or evergreened before it turns green.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Disposition findings</h4>
+          <p>Each finding card has four actions. <strong>Accept</strong> means &ldquo;I agree, but the preparer hasn&rsquo;t fixed it yet&rdquo;. <strong>Resolve</strong> means &ldquo;fixed in the next draft, audit&ndash;clean&rdquo;. <strong>Discard</strong> means &ldquo;false positive, doesn&rsquo;t apply&rdquo;. <strong>Open</strong> reveals the full drawer with evidence, citations and inline edit.</p>
+          <p class="hint">Cross 20% discard rate and SHINE will ask you to attest each one &mdash; a built&ndash;in surveillance check the audit firm will look at.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Use the drawer for depth</h4>
+          <p>Click any finding to open the right&ndash;side drawer. You&rsquo;ll see the original subagent text, the optional polished version, evidence excerpts, the cited ASC paragraph or regulatory key, reconciler constituents (if any), and a textarea where you can rewrite the language in your own voice.</p>
+          <p class="hint">The original is never overwritten. Your edit lives alongside it with an &ldquo;edited&rdquo; badge.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>Mark recurring findings as evergreen</h4>
+          <p>If a low or medium finding keeps coming back review after review &mdash; and you and the auditor have agreed it&rsquo;s acceptable documented practice &mdash; click <strong>Mark evergreen</strong>, give it a one&ndash;line reason, and it stops escalating in future periods.</p>
+          <p class="hint">Evergreen findings still appear in the audit file export &mdash; with their justification &mdash; but they don&rsquo;t block the readiness gate.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <h4>Export the report</h4>
+          <p>Click <strong>Preparer PDF</strong> or <strong>Audit file PDF</strong> in the dashboard toolbar. A preview modal opens with a McKinsey&ndash;style report &mdash; cover, executive summary with charts, table of contents, numbered sections, appendices. Click <strong>Download PDF</strong> to save it; click <strong>Download HTML</strong> for an editable version.</p>
+          <p class="hint">Preparer mode excludes resolved and evergreen findings &mdash; what the administrator needs to act on. Audit mode includes everything with the full provenance chain.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-body">
+          <h4>Bring your own review</h4>
+          <p>When you&rsquo;re ready to use this on real work, click the <strong>import</strong> icon (top right) and load a <span class="kbd">findings.json</span> produced by the SHINE skill running in Claude Code. The dashboard handles your real data the same way it handles the demo.</p>
+          <p class="hint">The schema is documented at <span class="mono">shine&ndash;fs&ndash;review&ndash;v8/manifests/finding&ndash;schema.json</span>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="lbl">Power user shortcuts</div>
+      <p><span class="kbd">Ctrl+K</span> opens the command palette &middot; <span class="kbd">?</span> shows all keyboard shortcuts &middot; <span class="kbd">A</span> accepts the focused finding &middot; <span class="kbd">J</span>/<span class="kbd">K</span> move between findings &middot; <span class="kbd">/</span> focuses search &middot; <span class="kbd">Ctrl+Z</span> undoes (up to 20 steps).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · RUN IT ============ -->
+<section id="run">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div class="section-title">
+        <h2>How to run it on your machine</h2>
+        <div class="section-rule"></div>
+        <p class="section-sub">Two paths. <strong>Path&nbsp;A</strong> &mdash; the dashboard alone, for exploring and sharing. <strong>Path&nbsp;B</strong> &mdash; the full SHINE skill running in Claude Code, for reviewing a real fund draft.</p>
+      </div>
+    </div>
+
+    <h3 class="serif" style="font-size:24px;color:var(--navy);margin:30px 0 6px">Path A &mdash; just the dashboard</h3>
+    <p style="color:var(--gray);font-style:italic;margin:0 0 18px">For demos, training, and sharing with people who don&rsquo;t have Claude Code installed.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">A1</div>
+        <div class="step-body">
+          <h4>Get the files</h4>
+          <p>Clone the repo, or download the <span class="kbd">shine-app/</span> folder from the branch.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">A2</div>
+        <div class="step-body">
+          <h4>Open <span class="kbd">index.html</span></h4>
+          <p>Double&ndash;click it. Any modern browser will render the full app. No server, no install, no login.</p>
+          <p class="hint">If your browser blocks double&ndash;click of HTML files, open a terminal in <span class="kbd">shine-app/</span> and run <span class="kbd">npm start</span> &mdash; it serves at <span class="kbd">http://localhost:3000</span>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">A3</div>
+        <div class="step-body">
+          <h4>Click any demo review</h4>
+          <p>Three sample reviews are baked in so you can explore every screen without any data of your own. Start with <strong>AAA Coinvest Fund A LP</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="serif" style="font-size:24px;color:var(--navy);margin:48px 0 6px">Path B &mdash; the full skill in Claude Code</h3>
+    <p style="color:var(--gray);font-style:italic;margin:0 0 18px">For reviewing a real fund draft. The skill reads the FS, runs the five specialists, and emits findings you load in the dashboard.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">B1</div>
+        <div class="step-body">
+          <h4>Install Claude Code</h4>
+          <p>Download it from <strong>claude.ai/code</strong>. Available as a desktop app for Mac and Windows, a VS Code extension, and a CLI (<span class="kbd">npm install -g @anthropic-ai/claude-code</span>). Sign in with your Anthropic account.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B2</div>
+        <div class="step-body">
+          <h4>Drop the SHINE skill into your skills folder</h4>
+          <p>Copy the <span class="kbd">shine-fs-review-v8/</span> folder from this repo into your Claude Code skills directory. On macOS / Linux that&rsquo;s <span class="kbd">~/.claude/skills/</span>; on Windows it&rsquo;s <span class="kbd">%USERPROFILE%\.claude\skills\</span>. Rename the folder to <span class="kbd">shine-fs-review</span> so Claude finds it.</p>
+          <p class="hint">After copying, restart Claude Code so it picks up the new skill. You can verify by typing <span class="kbd">/skills</span> &mdash; <em>shine-fs-review</em> should appear in the list.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B3</div>
+        <div class="step-body">
+          <h4>Set up the fund (one&ndash;time, per fund)</h4>
+          <p>Create a folder for the fund and drop in a <span class="kbd">_FUND-METADATA.json</span> file with the static fund facts &mdash; legal name, domicile, structure type, fiscal year, jurisdictions, materiality benchmarks. Templates are in <span class="kbd">shine-fs-review-v8/inputs/</span>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B4</div>
+        <div class="step-body">
+          <h4>Prepare the review (per draft)</h4>
+          <p>Inside the fund folder, create a draft subfolder (e.g., <span class="kbd">2025-FY/Draft-1.1/</span>). Drop the draft FS PDF, workbook, prior FS, and any supporting documents into <span class="kbd">inputs/</span>. Add a <span class="kbd">_REVIEW-MANIFEST.json</span> listing the paths &mdash; this is the authoritative input list.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B5</div>
+        <div class="step-body">
+          <h4>Run the skill</h4>
+          <p>Open Claude Code, point it at the draft folder, and just say what you want done in plain language: <em>&ldquo;SHINE this draft&rdquo;</em>, or <em>&ldquo;Review AAA Coinvest Fund A for FY2025&rdquo;</em>. Claude recognises the trigger, loads the SHINE orchestrator, and runs all five subagents.</p>
+          <p class="hint">If a soft&ndash;required input is missing, Claude will ask: <em>&ldquo;Run anyway? Yes / Get the file first&rdquo;</em>. You stay in control of when to start.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B6</div>
+        <div class="step-body">
+          <h4>Open the dashboard</h4>
+          <p>When the skill finishes, it writes an <span class="kbd">outputs/</span> folder inside the draft folder. The dashboard opens itself &mdash; just open <span class="kbd">outputs/dashboard.html</span> in your browser and the review is loaded, ready to disposition. <strong>No import step.</strong></p>
+          <p class="hint">If you only have the JSON, drop the <span class="kbd">findings.json</span> file anywhere on the open dashboard &mdash; it auto&ndash;loads. Or pass <span class="kbd">?data=findings.json</span> as a URL parameter.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="lbl">How loading a real review actually works</div>
+      <p>The dashboard supports <strong>three intuitive ways</strong> to ingest a real review &mdash; pick whichever fits the situation. <strong>(1) Bundled</strong>: the skill writes a self&ndash;contained <span class="mono">dashboard.html</span> with the data embedded; just open it. <strong>(2) Drag&ndash;and&ndash;drop</strong>: drop any <span class="mono">findings.json</span> file anywhere on the open dashboard &mdash; the whole window highlights as a drop zone, and the review loads. <strong>(3) URL</strong>: append <span class="mono">?data=path/to/findings.json</span> to the dashboard URL. The Reviews home screen also has a visible &ldquo;Open a SHINE review&rdquo; affordance with a file&ndash;picker as a fourth option.</p>
+    </div>
+
+    <div class="callout">
+      <div class="lbl">Architecture, restated</div>
+      <p>The <strong>skill</strong> at <span class="mono">shine-fs-review-v8/</span> is the brain &mdash; it reads, reasons, and emits findings. The <strong>app</strong> at <span class="mono">shine-app/</span> is the workspace &mdash; the controller&rsquo;s interface for dispositioning, editing, and exporting. They share one contract: the <span class="mono">findings.json</span> schema. The skill writes it; the dashboard reads it. That&rsquo;s the whole interface.</p>
+    </div>
+
+    <h3 class="serif" style="font-size:22px;color:var(--navy);margin:40px 0 14px">Which path do you need?</h3>
+    <div class="prose">
+      <p><strong>Demoing to colleagues or auditors.</strong> Path&nbsp;A. Share the <span class="mono">shine-app/</span> folder; they double&ndash;click <span class="mono">index.html</span>. No install, no Claude Code, no JSON. The three demo reviews walk through every feature.</p>
+      <p><strong>Reviewing a real fund.</strong> Path&nbsp;B to produce the findings, then Path&nbsp;A&rsquo;s dashboard to disposition them. The hand&ndash;off between the two is seamless &mdash; the skill emits a bundled <span class="mono">dashboard.html</span> you open directly, no manual import.</p>
+      <p><strong>Sending the audit file to Deloitte.</strong> Inside the dashboard, click <strong>Audit file PDF</strong>. Review the preview, click <strong>Download PDF</strong>. That single file is the deliverable &mdash; cover, executive summary with charts, numbered findings sections, evidence, citations, evergreen appendix, signed by the architecture attribution on every page.</p>
+    </div>
+
+    <div class="callout">
+      <div class="lbl">Two minutes to first value</div>
+      <p>Path&nbsp;A takes under a minute. The demo review will show every screen, every feature, every interaction. Path&nbsp;B takes about ten minutes the first time (Claude Code install, copy the skill folder) and seconds after that &mdash; from <em>&ldquo;SHINE this draft&rdquo;</em> to the rendered dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="inner">
+    <div>
+      <div style="font-family:Georgia,serif; font-size:15px; color:#fff; margin-bottom:4px">SHINE &middot; Statement Health Intelligence</div>
+      <div style="color:#9aa3b3">Architect: Ashitosh Shinde &middot; Apollo Mumbai Controllership &middot; v8.1</div>
+    </div>
+    <div class="attrib">Review. Refine. Ready.</div>
+  </div>
+</footer>
+
+<script>
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('section');
+const links = document.querySelectorAll('.nav-links a');
+const onScroll = () => {
+  let active = '';
+  const y = window.scrollY + 100;
+  sections.forEach(s => { if (s.offsetTop <= y) active = s.id; });
+  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// Reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.section-head, .arch, .stats, .flow, .steps, .callout, .code, table.layers').forEach(el => {
+  el.classList.add('reveal');
+  io.observe(el);
+});
+</script>
+</body>
+</html>
