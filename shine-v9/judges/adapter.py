@@ -90,18 +90,24 @@ class ClaudeAdapter(ModelAdapter):
 
     def __init__(self, model_pin: str, client: ModelClient | None = None):
         self.model_pin = model_pin
-        self.client = client
         if client is None and not os.environ.get("ANTHROPIC_API_KEY"):
             raise AdapterNotConfigured(
                 "adapter=claude requires either an injected ModelClient (or a "
-                "replay cassette in config) or ANTHROPIC_API_KEY for a live "
-                "client. The engine does not silently fall back to rule_based.")
+                "replay cassette in config) or ANTHROPIC_API_KEY for the live "
+                "Anthropic client. The engine does not silently fall back to "
+                "rule_based.")
         if client is None:
-            raise AdapterNotConfigured(
-                "ANTHROPIC_API_KEY is set but no live ModelClient is wired into "
-                "this build. Implement a client whose complete(prompt) calls the "
-                "pinned model and inject it (see SCALING.md section 5), or run "
-                "with a replay cassette.")
+            # Try the live Anthropic client. We import here so the SDK is a
+            # soft dependency: rule_based and replay paths never touch it.
+            try:
+                from judges.anthropic_client import AnthropicLiveClient
+                client = AnthropicLiveClient(model_pin)
+            except ImportError as e:
+                raise AdapterNotConfigured(
+                    f"adapter=claude with ANTHROPIC_API_KEY set requires the "
+                    f"anthropic Python package. Install with `pip install "
+                    f"anthropic` or run with a replay cassette. ({e})") from e
+        self.client = client
 
     def run_reviewer(self, reviewer_name: str, rule_callable, context: dict):
         # 1. The deterministic floor always runs.

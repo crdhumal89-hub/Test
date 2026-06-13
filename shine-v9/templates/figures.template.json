@@ -1,0 +1,84 @@
+{
+  "__instructions__": "Replace every value below with your fund's real number. Delete the lines starting with __ before saving. Keep the structure exactly; SHINE reads field names. Currency is the entity currency, units are absolute dollars (or your currency), no thousands.",
+
+  "entity": {
+    "fund_code": "YOUR-FUND-CODE",
+    "legal_name": "Your Fund Legal Name LP",
+    "period": "FY2025",
+    "period_end": "2025-12-31",
+    "currency": "USD",
+    "units_outstanding": 1000000
+  },
+
+  "balance_sheet": {
+    "__instructions__": "Asset and liability line names are arbitrary. SHINE foots whatever you list against the stated total.",
+    "assets": {
+      "investments_at_fair_value": 0.0,
+      "cash": 0.0,
+      "receivables": 0.0,
+      "other_assets": 0.0,
+      "total_assets": 0.0
+    },
+    "liabilities": {
+      "payables": 0.0,
+      "due_to_affiliates": 0.0,
+      "other_liabilities": 0.0,
+      "total_liabilities": 0.0
+    },
+    "partners_capital": 0.0
+  },
+
+  "schedule_of_investments": {
+    "__instructions__": "One entry per investment. Levels are 1, 2 or 3. Type one of: equity, debt, derivative, fund (= NAV practical expedient).",
+    "positions": [
+      {"name": "First Investment Holdco", "industry": "Industrials", "type": "equity",
+       "fair_value": 0.0, "cost": 0.0, "level": 3}
+    ],
+    "total_fair_value": 0.0,
+    "total_cost": 0.0,
+    "level_totals": {"1": 0.0, "2": 0.0, "3": 0.0}
+  },
+
+  "statement_of_operations": {
+    "investment_income": {"interest": 0.0, "dividends": 0.0, "total": 0.0},
+    "expenses": {"management_fee": 0.0, "professional_fees": 0.0, "other": 0.0, "total": 0.0},
+    "net_investment_income": 0.0,
+    "net_realized_gain": 0.0,
+    "net_change_unrealized": 0.0,
+    "net_increase_in_partners_capital": 0.0
+  },
+
+  "statement_of_changes": {
+    "beginning_capital": 0.0,
+    "contributions": 0.0,
+    "distributions": 0.0,
+    "allocation_net_increase": 0.0,
+    "ending_capital": 0.0,
+    "__by_class_instructions__": "Optional. Add a class entry per partner class with the same shape as the parent fields plus class_id.",
+    "by_class": []
+  },
+
+  "cash_flows": {
+    "__instructions__": "Set present=false to elect out (ASC 946 only). When false the engine records the election as an out-of-scope skip.",
+    "present": true,
+    "beginning_cash": 0.0,
+    "net_change_in_cash": 0.0,
+    "ending_cash": 0.0
+  },
+
+  "financial_highlights": {
+    "__instructions__": "Ratios are decimal fractions, not percentages: 3.63 percent = 0.0363.",
+    "nav_per_unit": 0.0,
+    "average_capital": 0.0,
+    "expense_ratio": 0.0,
+    "nii_ratio": 0.0
+  },
+
+  "tie_out": {
+    "__instructions__": "Optional. Paste figures from your tie-out workbook here so SHINE can cross-check the statements against the workbook. Each key is a dotted path into this file. Mismatches surface as tie-out breaks.",
+    "balance_sheet.assets.total_assets": 0.0,
+    "balance_sheet.partners_capital": 0.0,
+    "schedule_of_investments.total_fair_value": 0.0,
+    "statement_of_changes.ending_capital": 0.0
+  }
+}

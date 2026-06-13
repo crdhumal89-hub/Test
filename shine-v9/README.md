@@ -8,16 +8,19 @@ taxonomy, its IO contract, its regression taxonomy).
 
 Review. Refine. Ready.
 
-## The three documents
+## Start here
 
-| Document | Question it answers |
+| Reader | Read this first |
 |---|---|
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | How does it work, and what guarantees does it make? |
-| [`OPERATIONS.md`](OPERATIONS.md) | How do I use it, day to day? |
-| [`SCALING.md`](SCALING.md) | How do I grow it: funds, frameworks, checks, the model adapter, the team? |
+| **Never run a Python script** | [`QUICKSTART.md`](QUICKSTART.md) — your first review in under 30 minutes, with the Claude-chat trick for converting your PDF into SHINE inputs |
+| Engineer | [`ARCHITECTURE.md`](ARCHITECTURE.md) — how it works, what guarantees it makes |
+| Day-to-day operator | [`OPERATIONS.md`](OPERATIONS.md) — install, run, read, disposition, export |
+| Team lead growing the system | [`SCALING.md`](SCALING.md) — more funds, frameworks, checks, the model adapter, governance |
 
 Plus: `RUNBOOK.md` (one screen), `CHANGELOG.md` (scorecard history),
-`golden/REGRESSION-TC.md` (BASE TC-01..08 mapping).
+`golden/REGRESSION-TC.md` (BASE TC-01..08 mapping),
+`templates/` (fill-in-the-blanks JSON inputs +
+`claude-chat-prompt.md` for PDF -> JSON conversion via claude.ai).
 
 ## The four-role pipeline
 
