@@ -190,12 +190,34 @@ def run(review_folder: str | Path, config: dict | None = None) -> dict:
     t = time.monotonic()
     surviving, skeptic_log = run_skeptic(valid, ctx, config)
     timings["skeptic"] = time.monotonic() - t
+    # Strip skeptic-only scaffolding now that the adversarial pass is done, so
+    # it can never leak into findings.json (audit B-A).
+    for f in surviving:
+        f.pop("x_note_found", None)
 
-    reconciled, reconciler_log = run_reconciler(surviving, framework)
-    reconciled, escalation_log = apply_escalation(reconciled, review.prior_findings, framework)
+    # Escalation runs on the full population BEFORE reconciliation so that a
+    # finding which is about to be collapsed into a root cause still gets its
+    # prior-review recurrence matched on its own merge_key (audit B-C / 2-3).
+    # The reconciler then propagates the strongest constituent recurrence to
+    # the root. Synthetic RESOLVED entries are informational and never enter
+    # reconciliation.
+    escalated, escalation_log = apply_escalation(surviving, review.prior_findings, framework)
+    synthetic = [f for f in escalated if f.get("synthetic_resolved")]
+    real = [f for f in escalated if not f.get("synthetic_resolved")]
+    reconciled, reconciler_log = run_reconciler(real, framework)
+    reconciled = reconciled + synthetic
     reconciled, polish_count = annotate(reconciled)
     reconciled, suppressed_count = apply_suppression(reconciled, config)
     findings = _sort_and_number(reconciled, framework)
+
+    # Final schema pass: nothing the editor produced (reconciler roots,
+    # synthetic entries, escalation mutations, voice annotation) may ship
+    # invalid. Any failure is a code bug; route it to the rejected log so
+    # findings.json stays schema-clean and the bug is visible (audit B-4).
+    findings, post_rejected = validate_all(findings)
+    for r in post_rejected:
+        r["reasons"] = ["post_processing: " + reason for reason in r["reasons"]]
+    rejected.extend(post_rejected)
 
     # Coverage roll-up under the BASE invariant-17 split:
     #   scope_coverage_pct          how much of the in-scope work actually ran
@@ -272,8 +294,22 @@ def main(argv: list[str]) -> int:
         return 2
     config = None
     if "--config" in argv:
-        config = load_config(argv[argv.index("--config") + 1])
-    result = run(argv[1], config)
+        idx = argv.index("--config")
+        if idx + 1 >= len(argv):
+            print("error: --config requires a path argument", file=sys.stderr)
+            return 2
+        try:
+            config = load_config(argv[idx + 1])
+        except (OSError, ValueError) as e:
+            print(f"error: could not load config: {e}", file=sys.stderr)
+            return 2
+    try:
+        result = run(argv[1], config)
+    except Exception as e:
+        # Clean error surface: a controller sees a one-line reason, not a
+        # Python traceback (audit 2-3 / 2-6).
+        print(f"error: {type(e).__name__}: {e}", file=sys.stderr)
+        return 2
     v = result["verdict"]
     print(f"SHINE v9 run {result['ledger']['run_id']}: {len(result['findings'])} findings, "
           f"{v['state']} ({v['driver']})")

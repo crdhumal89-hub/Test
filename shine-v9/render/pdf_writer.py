@@ -12,7 +12,28 @@ LINE_H = 13
 MAX_CHARS = 96
 
 
+# Transliterate the common non-latin-1 characters that appear in finding text
+# and corpus snippets to ASCII equivalents, so PDF content is never silently
+# replaced with "?" (audit 2-2). Anything still outside latin-1 after this map
+# falls back to the encoder's replace, but the map covers the real cases:
+# curly quotes, dashes, ellipsis, non-breaking space, bullet.
+_LATIN1_MAP = {
+    "‘": "'", "’": "'", "‚": "'", "‛": "'",
+    "“": '"', "”": '"', "„": '"', "‟": '"',
+    "–": "-", "—": ":", "―": ":", "−": "-",
+    "…": "...", "•": "-", " ": " ", " ": " ",
+    "·": "·",  # middle dot is in latin-1; keep it
+    "﻿": "",
+}
+_LATIN1_TABLE = str.maketrans(_LATIN1_MAP)
+
+
+def latinize(text: str) -> str:
+    return text.translate(_LATIN1_TABLE)
+
+
 def _esc(text: str) -> str:
+    text = latinize(text)
     return text.replace("\\", r"\\").replace("(", r"\(").replace(")", r"\)")
 
 

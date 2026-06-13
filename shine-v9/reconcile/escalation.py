@@ -92,7 +92,12 @@ def apply_escalation(findings: list[dict], prior_findings: list[dict] | None,
         if prior_state == "DISCARDED":
             continue
         synthetic.append({
-            "id": "F-000", "source": "comparative", "legacy_layer": "L10",
+            # A synthetic RESOLVED entry is a comparative observation ("this
+            # prior finding cleared"), so source stays comparative (a valid v9
+            # enum even when the prior was in BASE shape), but the layer is
+            # preserved from the prior finding for audit-trail fidelity (B-B).
+            "id": "F-000", "source": "comparative",
+            "legacy_layer": p.get("legacy_layer") or p.get("layer") or "L10",
             "category": "comparative_movement", "severity": "LOW",
             "confidence_label": "CERTAIN", "confidence_calibrated": 0.99,
             "statement": p.get("statement") or notes_stmt,

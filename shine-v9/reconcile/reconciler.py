@@ -11,6 +11,18 @@ from __future__ import annotations
 SEVERITY_WEIGHT = {"CRITICAL": 4, "HIGH": 3, "MEDIUM": 2, "LOW": 1}
 SEVERITY_ORDER = ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
 
+# Control-signal strength: a readiness-affecting recurrence dominates an
+# evergreen one, so a cluster is only evergreen when every constituent is.
+_RECURRENCE_RANK = {"REGRESSED": 3, "RECURRING": 2, "NEW": 1, "EVERGREEN_ACCEPTED": 0, None: 1}
+
+
+def _strongest_recurrence(findings: list[dict]) -> str:
+    labels = [f.get("prior_review_recurrence") for f in findings]
+    if labels and all(l == "EVERGREEN_ACCEPTED" for l in labels):
+        return "EVERGREEN_ACCEPTED"
+    non_evergreen = [l for l in labels if l != "EVERGREEN_ACCEPTED"] or ["NEW"]
+    return max(non_evergreen, key=lambda l: _RECURRENCE_RANK.get(l, 1))
+
 
 def _match_level3_cluster(findings):
     core_levels = [f for f in findings
@@ -93,6 +105,11 @@ def run_reconciler(findings: list[dict], framework) -> tuple[list[dict], list[di
                            key=lambda s: SEVERITY_ORDER.index(s))
         base = max(usable, key=lambda f: SEVERITY_ORDER.index(f["severity"]))
         root = dict(base)
+        # Propagate the strongest constituent recurrence to the root so a
+        # clustered finding that recurred is still flagged for the controller
+        # (audit B-C / 2-3). A root is evergreen only if every constituent is.
+        recurrence = _strongest_recurrence(usable)
+        controller_escalation = any(f.get("controller_escalation") for f in usable)
         root.update({
             "category": pattern["root_category"],
             "severity": top_severity,
@@ -100,9 +117,12 @@ def run_reconciler(findings: list[dict], framework) -> tuple[list[dict], list[di
             "message": pattern["root_message"],
             "fix": pattern["root_fix"],
             "merge_key": f"{base['statement']}::{pattern['root_section']}::root::{pattern['root_category']}",
+            "prior_review_recurrence": recurrence,
             "reconciler": {"pattern": pattern["name"], "score": score,
                            "constituents": [dict(f) for f in usable]},
         })
+        if controller_escalation:
+            root["controller_escalation"] = True
         roots.append(root)
         log.append({"pattern": pattern["name"], "outcome": "collapsed",
                     "score": score, "constituent_count": len(usable),

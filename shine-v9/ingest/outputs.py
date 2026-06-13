@@ -27,6 +27,11 @@ def outputs_dir(review_folder: str | Path, config: dict | None = None,
     if mode == "audit_tree":
         if not reviewer or not stamp:
             raise ValueError("audit_tree output mode requires reviewer and stamp")
+        # reviewer/stamp become a path component; reject separators and
+        # traversal so a stray config value cannot escape the tree (audit 2-7).
+        for label, value in (("reviewer", reviewer), ("stamp", stamp)):
+            if "/" in value or "\\" in value or ".." in value:
+                raise ValueError(f"{label} must be a safe path component, got: {value!r}")
         out = folder.parent / "_outputs" / folder.name / f"{reviewer}-{stamp}"
     else:
         out = folder / "_outputs"

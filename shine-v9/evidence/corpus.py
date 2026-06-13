@@ -14,9 +14,10 @@ import json
 import re
 from pathlib import Path
 
-# Bold ASC entry: **946-205-45-1** or **820-10-50-2(c)** optionally prefixed ASC.
-# Subtopic segment is 2 or 3 digits (820-10 vs 946-205).
-_ASC_BOLD = re.compile(r"\*\*(?:ASC\s+)?(\d{3}-\d{2,3}-\d{2}-\d+[A-Za-z]?(?:\([a-z]\))?)\*\*")
+# Bold ASC entry: **946-205-45-1** or **820-10-50-2(c)** or **820-10-50-2(bbb)**,
+# optionally prefixed ASC. Subtopic is 2 or 3 digits (820-10 vs 946-205); the
+# parenthetical suffix may be multi-letter, e.g. (bbb) (audit 2-9 / 1-5).
+_ASC_BOLD = re.compile(r"\*\*(?:ASC\s+)?(\d{3}-\d{2,3}-\d{2}-\d+[A-Za-z]?(?:\([a-z]+\))?)\*\*")
 # Bold IFRS/IAS entry: **IFRS 13.93(e)** or **IAS 1.10**
 _IFRS_BOLD = re.compile(r"\*\*((?:IFRS|IAS)\s+\d+(?:\.\d+)*(?:\([a-z]\))?)\*\*")
 # Regulatory heading: ## CIMA:PFA or ## CSSF:SUPERVISION or ## LUX:RCS-FILING

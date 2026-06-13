@@ -115,4 +115,10 @@ def checklist_walk(items: list[dict], notes: dict, framework, versions: dict,
             # existed (deficiency) or was absent entirely.
             findings[-1]["check_id"] = it["check_id"]
             findings[-1]["x_note_found"] = note is not None
+            # Re-key the merge_key on the unique check id. Two checklist
+            # findings in the same statement/section/category with no line or
+            # note id would otherwise collide on a "...::note::..." key and let
+            # escalation match the wrong prior finding (audit 1-D).
+            findings[-1]["merge_key"] = \
+                f"{findings[-1]['statement']}::{it['section']}::{it['check_id']}::{findings[-1]['category']}"
     return findings, {"checked": checked, "skipped": skipped}
