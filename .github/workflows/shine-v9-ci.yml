@@ -1,0 +1,56 @@
+name: SHINE v9 CI
+
+# The test that does not run on every change does not exist. This gate runs the
+# full unit suite, regenerates the golden library, and requires the acceptance
+# gate (both the rule_based scorecard and the claude code-path floor
+# certification) to be GREEN before merge.
+
+on:
+  push:
+    paths:
+      - "shine-v9/**"
+      - ".github/workflows/shine-v9-ci.yml"
+  pull_request:
+    paths:
+      - "shine-v9/**"
+      - ".github/workflows/shine-v9-ci.yml"
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: shine-v9
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node (dashboard syntax check)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Unit and integration suite
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Regenerate golden library
+        run: python3 -m harness.golden_gen
+
+      - name: Acceptance harness (rule_based)
+        run: python3 -m harness.runner
+
+      - name: Claude code-path certification (replay floor)
+        run: python3 -m harness.runner --adapter claude
+
+      - name: Upload scorecard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shine-v9-scorecard
+          path: |
+            shine-v9/harness/scorecard.json
+            shine-v9/harness/scorecard.md

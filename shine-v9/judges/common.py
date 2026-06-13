@@ -5,6 +5,13 @@ import re
 
 PROMPT_VERSION = "rb-9.0.0"
 
+# v9 source -> legacy v8 layer code. Shared by the reviewers, the model
+# adapter's parser, and the BASE compat projection (single source of truth).
+SOURCE_TO_LAYER = {
+    "core": "L2", "presentation": "L1", "disclosure": "L3",
+    "standards": "L9", "comparative": "L10", "regulatory": "L12",
+}
+
 # Calibrated confidence by epistemic class of the check, not by vibes:
 # structural facts read directly from figures are near-certain; absence of a
 # text pattern in notes is probable (synonym phrasing is the skeptic's job).

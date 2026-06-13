@@ -66,29 +66,44 @@ grounded it.
 
 ## 5. Integrating the production model (the claude adapter)
 
-The single most important scaling step, and the one with a hard gate:
+The model path is **built and tested**; the only thing a live run adds is a
+real network call. `ClaudeAdapter` (judges/adapter.py) already runs the
+deterministic floor, builds the reviewer prompt, parses the model's JSON
+response into v9 findings, dedups against the floor, and returns floor plus
+additions. The entire code path is exercised offline by `ReplayClient` (a
+recorded-cassette ModelClient) so CI certifies it without credentials.
 
-1. Implement `ClaudeAdapter.run_reviewer` (judges/adapter.py): send the
-   reviewer's checklist, figures summary, and notes to the pinned model;
-   parse findings into the v9 schema. The integration point is deliberately
-   one method.
+To go live:
+
+1. Implement a `ModelClient` whose `complete(prompt) -> str` calls the pinned
+   model via the Anthropic SDK, and inject it:
+   `ClaudeAdapter(model_pin, client=YourLiveClient())`. That one method is the
+   only network touchpoint; everything around it is done.
 2. Keep MODEL_PIN pinned and recorded; any pin change is a version event in
    the ledger.
-3. The hybrid pattern that preserves v9's guarantees: rule_based findings
-   remain the floor (they are deterministic and measured); the model adapter
-   may ADD findings, which still pass citation verification, schema
-   validation, and the skeptic. A model finding that cites unverifiable
-   authority is rejected before anyone sees it: the architecture already
-   contains the model's principal failure mode.
-4. **Re-run the acceptance harness with adapter=claude before trusting any
-   model-augmented run.** The scorecard records the adapter; a claude-adapter
-   scorecard that has not been committed does not exist. Expect to add traps
-   to the golden library for model-specific failure modes (verbosity,
-   hedging, citation invention) and to tune until the gate is green again.
-5. Reproducibility under a model: temperature 0 and pinned versions get close
-   but not byte-identical; the ledger's results digest will tell you exactly
-   when outputs drift run-to-run. Treat digest-instability as a release
-   blocker for unsupervised use.
+3. The hybrid guarantee, already enforced in code: the floor findings are
+   deterministic and measured; the model may only ADD, never remove or weaken.
+   Model additions are deduped against the floor on the
+   (statement, section, category) slot, then face citation verification,
+   schema validation, and the skeptic. A model finding citing unverifiable
+   authority is rejected before anyone sees it (proven by
+   `tests/test_model_adapter.py`): the architecture already contains the
+   model's principal failure mode.
+4. **Re-certify before trusting a model-augmented run.** Two gates:
+   - `python3 -m harness.runner --adapter claude` runs the golden library on
+     the claude code path with an empty cassette (model adds nothing): the
+     floor, and thus the whole gate, must stay GREEN. CI runs this every
+     change.
+   - A live-response certification: record real model responses into a
+     cassette, run the harness against them, and commit that scorecard. A
+     claude-adapter live scorecard that has not been committed does not exist.
+     Expect to add golden traps for model-specific failure modes (verbosity,
+     hedging, citation invention) and tune until green.
+5. Reproducibility under a live model: temperature 0 and pinned versions get
+   close but not byte-identical; the ledger's results digest tells you exactly
+   when outputs drift run-to-run. Treat digest instability as a release
+   blocker for unsupervised use. The ReplayClient path stays fully
+   deterministic and is what CI depends on.
 
 ## 6. Scaling the golden library (the learning loop)
 

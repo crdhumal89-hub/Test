@@ -57,9 +57,23 @@ as a tie-out break, not a silent wrong number.
 
 ## 3. Run a review
 
+Pre-flight first (optional but recommended): validate the inputs without
+running the engine, so input errors surface at your desk, not mid-run.
+
+```
+python3 -m harness.preflight <path>/Draft-1.1
+```
+
+It prints WARN lines (degraded scope: a missing prior FS, a dangling tie-out
+path) and ERROR lines (no figures, an unresolvable framework). Exit 0 means
+ready to run. Then:
+
 ```
 python3 run_review.py <path>/Draft-1.1
 ```
+
+On a malformed input the run prints one clean error line and exits non-zero;
+it never dumps a Python traceback.
 
 Console output:
 

@@ -65,9 +65,13 @@ taxonomy TC-01..TC-08 is synthesized in the golden library.
 
 ```
 cd shine-v9
-python3 -m unittest discover -s tests -v     # full suite
-python3 run_review.py golden/<folder>        # single review
+./run-ci.sh                                  # the full gate (suite + harness + claude floor cert)
+python3 -m unittest discover -s tests -v     # unit + integration suite (155 tests)
+python3 -m harness.preflight golden/<folder> # validate inputs without running
+python3 run_review.py golden/<folder>        # single review -> _outputs/
+python3 run_batch.py <root>                  # quarter-end multi-fund batch
 python3 -m harness.runner                    # acceptance harness + scorecard
+python3 -m harness.runner --adapter claude   # claude code-path floor certification
 ```
 
 See `RUNBOOK.md` for the operator path and `CHANGELOG.md` for the scorecard history.

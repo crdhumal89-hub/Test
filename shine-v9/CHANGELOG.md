@@ -1,5 +1,60 @@
 # SHINE v9 CHANGELOG
 
+## v9.1.1 (2026-06-13) · Audited and shipped
+
+Pre-delivery expert audit (two independent fresh-eyes reviewers plus probes),
+the model path completed and made testable offline, and the operational
+tooling for a quarter-end launch.
+
+### Acceptance scorecard (committed at harness/scorecard.json)
+
+| Metric | Value | Bar | Status |
+|---|---|---|---|
+| Must-catch recall | 1.0000 (31/31) | 1.00 | PASS |
+| Overall recall | 1.0000 (39/39) | >= 0.95 | PASS |
+| Overall precision | 1.0000 (0 FP) | >= 0.90 | PASS |
+| Clean-draft findings | 0 | 0 | PASS |
+| Unverifiable citations in output | 0 | 0 | PASS |
+| BASE-schema validity | 0 violations | 0 | PASS |
+| Deterministic ledgers | byte-identical | required | PASS |
+| Em dashes in artifacts | 0 | 0 | PASS |
+| Unit + integration suite | 155/155 | green | PASS |
+| Claude code-path floor certification | GATE GREEN | green | PASS |
+
+### Audit fixes (9 real bugs; one flagged-Critical was a false positive)
+
+A `pages_id` "Critical" was disproven by a 3-page build probe (the prediction
+is correct). The nine real bugs, each with a regression test in
+`tests/test_audit_fixes.py`: PDF non-latin-1 mangling (added `latinize`);
+CLI raw tracebacks (clean stderr + exit codes; `--config` bounds); findings
+never re-validated after the editor (final validation pass; invalids routed
+to rejected); escalation reordered before reconciliation so clustered
+constituents keep recurrence and the root propagates the strongest; citation
+regex now indexes multi-letter paren suffixes; `x_note_found` scaffolding
+stripped; synthetic-resolved preserves the prior layer; checklist merge_keys
+re-keyed on check_id to prevent collision; audit_tree path-traversal guard.
+
+### Model path completed (P0)
+
+`ClaudeAdapter` now runs the deterministic floor, builds the reviewer prompt,
+parses model JSON into v9 findings, dedups against the floor by
+(statement, section, category), and returns floor plus additions. The model
+only ADDS; additions still face citation verification, schema validation, and
+the skeptic. `ReplayClient` runs the whole path offline from a recorded
+cassette, so CI certifies it with no network. `tests/test_model_adapter.py`
+proves a valid model finding reaches output, a fabricated-citation model
+finding is rejected, and an echo of a floor finding is deduped out. The only
+remaining step for live use is a `ModelClient.complete` that calls the pinned
+model (SCALING.md section 5).
+
+### Operational tooling (P2)
+
+- `python3 -m harness.preflight <folder>`: validate inputs without running.
+- `run-ci.sh` and `.github/workflows/shine-v9-ci.yml`: the full gate on every
+  change, scorecard uploaded as an artifact.
+- `python3 -m harness.runner --adapter claude`: floor certification of the
+  claude code path; the canonical scorecard stays rule_based.
+
 ## v9.1.0 (2026-06-12) · The best-of-both-worlds release
 
 v9.0.0 proved the architecture (computation separated from judgment, verified
