@@ -262,7 +262,8 @@ with tab4:
     digest_date = latest_run_date(conn)
     st.caption(
         "Delivery requires SMTP_HOST (or Windows Outlook). With neither configured "
-        "the digest is queued but cannot be delivered — check the Audit Log."
+        "the digest is queued but cannot be delivered. The queue event is recorded in "
+        "the Audit Log; delivery success/failure is written to the application log."
     )
     if st.button(f"Send Test Digest to {controller_email or '(no controller email set)'}",
                  disabled=not controller_email):
