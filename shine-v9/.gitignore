@@ -1,0 +1,13 @@
+# Python bytecode and caches — never tracked.
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# Per-review outputs are generated, not source.
+**/_outputs/
+_outputs_batch_summary.json
+
+# Local learning-loop feedback accumulates at runtime.
+config/feedback.json
