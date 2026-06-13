@@ -35,8 +35,10 @@ if uploaded is None:
     # Import history
     st.markdown("---")
     st.subheader("Import History")
+    # commit_positions logs the run_date in audit_log.entity_id (there is no
+    # run_date column on audit_log).
     df_hist = pd.read_sql(
-        """SELECT run_date, detail, timestamp
+        """SELECT entity_id AS run_date, detail, timestamp
            FROM audit_log WHERE action = 'IMPORT_POSITIONS'
            ORDER BY timestamp DESC LIMIT 20""",
         conn

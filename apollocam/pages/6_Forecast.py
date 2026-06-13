@@ -52,28 +52,39 @@ with st.expander("Upload JPM Call/Distro file"):
 
             if st.button("Import Pipeline Events"):
                 inserted = 0
+                skipped = 0
                 for _, row in df_raw.iterrows():
                     fund_code = str(row[fund_col]).strip().upper() if fund_col else ""
-                    evt_date  = str(row[date_col])[:10] if date_col else ""
+                    # Normalise any date format (Excel serial, "6/2/2026", ISO) to YYYY-MM-DD
+                    # so it matches the forecast's day-by-day ISO walk exactly.
+                    evt_dt = pd.to_datetime(row[date_col], errors="coerce") if date_col else pd.NaT
+                    evt_date = evt_dt.strftime("%Y-%m-%d") if pd.notna(evt_dt) else ""
                     call_amt  = float(row[call_col]) if call_col and pd.notna(row[call_col]) else 0.0
                     dist_amt  = float(row[distro_col]) if distro_col and pd.notna(row[distro_col]) else 0.0
                     ccy       = str(row[ccy_col]).strip().upper() if ccy_col else "USD"
 
                     if not fund_code or not evt_date:
+                        skipped += 1
                         continue
 
+                    # event_id is content-derived so re-importing replaces rather than
+                    # duplicates, yet distinct same-day events (e.g. two distros) keep
+                    # separate ids instead of collapsing into one.
+                    event_id = f"{fund_code}-{evt_date}-{ccy}-C{call_amt:.2f}-D{dist_amt:.2f}"
                     conn.execute(
                         """INSERT OR REPLACE INTO pipeline_events
                            (event_id, deal_name, ccy, call_amount, distro_amount, event_date, fund_code, source_file)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-                        (f"{fund_code}-{evt_date}-{call_amt:.0f}", fund_code,
-                         ccy, call_amt, dist_amt, evt_date, fund_code, pipe_file.name)
+                        (event_id, fund_code, ccy, call_amt, dist_amt, evt_date, fund_code, pipe_file.name)
                     )
                     inserted += 1
                 conn.commit()
                 log_audit(conn, "PIPELINE_IMPORT", "pipeline_events", run_date,
-                          f"File: {pipe_file.name} | Rows: {inserted}")
-                st.success(f"Imported {inserted} pipeline events.")
+                          f"File: {pipe_file.name} | Rows: {inserted} | Skipped: {skipped}")
+                msg = f"Imported {inserted} pipeline events."
+                if skipped:
+                    msg += f" Skipped {skipped} row(s) with missing fund code or unparseable date."
+                st.success(msg)
                 st.rerun()
         except Exception as e:
             st.error(f"Failed to parse pipeline file: {e}")
@@ -118,7 +129,7 @@ if not df_forecast.empty:
 
     styled = (
         df_summary.style
-        .applymap(_style_status_col, subset=["Today Status", "14-Day Status"])
+        .map(_style_status_col, subset=["Today Status", "14-Day Status"])
         .format({"Today": "${:,.0f}", "14-Day Projected": "${:,.0f}"})
     )
     st.dataframe(styled, use_container_width=True, hide_index=True)

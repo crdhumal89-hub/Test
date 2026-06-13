@@ -5,7 +5,7 @@ Statuses: PROPOSED → APPROVED → LOADER_GENERATED → SUBMITTED → CONFIRMED
 
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ui.styles import inject_styles, page_header
 from core.engine import latest_run_date
@@ -125,7 +125,7 @@ with st.form("wire_status_update"):
     submitted = st.form_submit_button("Update Status", type="primary")
 
 if submitted:
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     conn.execute(
         """UPDATE wire_status
            SET status=?, confirmation_ref=?, notes=?, updated_at=?,

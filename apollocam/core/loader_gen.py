@@ -91,11 +91,15 @@ def generate_ivp_loader(conn: sqlite3.Connection, run_date: str) -> tuple[io.Byt
     buf = _df_to_xlsx(df_out, sheet_name="IVP_Wire_Loader", run_date=run_date)
     file_hash = _sha256(buf)
 
-    # Update wire_status first, then audit — so audit reflects committed state
+    # Update wire_status first, then audit — so audit reflects committed state.
+    # Only advance forward from PROPOSED/APPROVED — never drag a wire that has
+    # already reached SUBMITTED/CONFIRMED back to LOADER_GENERATED on a re-run.
     for _, row in df_proposals.iterrows():
         conn.execute(
-            "UPDATE wire_status SET status='LOADER_GENERATED', updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') "
-            "WHERE proposal_id = ?", (int(row["id"]),)
+            "UPDATE wire_status SET status='LOADER_GENERATED', "
+            "updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') "
+            "WHERE proposal_id = ? AND status IN ('PROPOSED','APPROVED')",
+            (int(row["id"]),)
         )
     conn.commit()
     log_audit(conn, "LOADER_GENERATE", "ivp", batch_id,
@@ -199,13 +203,18 @@ def generate_spot_fx_loader(conn: sqlite3.Connection, run_date: str) -> tuple[io
     """
     One row per approved FX proposal, matching LOADERS Spot FX section.
     """
+    # Use correlated subqueries (not a JOIN) so duplicate (fund, currency)
+    # threshold rows can never fan a single FX proposal into multiple loader rows.
     df_proposals = pd.read_sql(
         """SELECT p.id, p.batch_id, p.from_fund, p.sell_ccy, p.sell_amount,
                   p.buy_ccy, p.buy_amount, p.fx_rate, p.value_date, p.priority,
-                  ft.fx_counterparty, ft.settlement_acct
+                  (SELECT ft.fx_counterparty FROM fx_thresholds ft
+                     WHERE ft.fund_code = p.from_fund AND ft.currency = p.sell_ccy
+                     LIMIT 1) AS fx_counterparty,
+                  (SELECT ft.settlement_acct FROM fx_thresholds ft
+                     WHERE ft.fund_code = p.from_fund AND ft.currency = p.sell_ccy
+                     LIMIT 1) AS settlement_acct
            FROM proposals p
-           LEFT JOIN fx_thresholds ft
-               ON ft.fund_code = p.from_fund AND ft.currency = p.sell_ccy
            WHERE p.run_date = ? AND p.proposal_type = 'FX' AND p.action = 'APPROVE'
            ORDER BY p.priority""",
         conn, params=[run_date]
@@ -268,6 +277,9 @@ def _df_to_xlsx(df: pd.DataFrame, sheet_name: str, run_date: str) -> io.BytesIO:
         cell.alignment = hdr_align
         cell.border = border
 
+    # Column indices (1-based) whose header contains "Amount" — formatted as currency
+    amount_cols = {idx for idx, name in enumerate(df.columns, start=1) if "Amount" in str(name)}
+
     # Data rows — alternating fill
     for i, row_data in enumerate(dataframe_to_rows(df, index=False, header=False), start=2):
         ws.append(row_data)
@@ -277,7 +289,7 @@ def _df_to_xlsx(df: pd.DataFrame, sheet_name: str, run_date: str) -> io.BytesIO:
             cell.fill = row_fill
             cell.border = border
             cell.alignment = Alignment(vertical="center")
-            if isinstance(cell.value, float) and "Amount" in (cell.column_letter or ""):
+            if cell.column in amount_cols and isinstance(cell.value, (int, float)):
                 cell.number_format = '#,##0.00'
 
     # Auto-width columns

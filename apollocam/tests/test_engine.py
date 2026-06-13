@@ -24,11 +24,14 @@ import pandas as pd
 from core.database import init_db, get_connection, log_audit
 from core.engine import (
     compute_status, compute_functional_usd, build_fund_view,
-    propose_wires, save_proposals, build_14day_forecast,
+    propose_wires, propose_fx_conversions, save_proposals, build_14day_forecast,
     status_summary, _workday, _load_holidays,
     RED, AMBER, GREEN, BLUE
 )
-from core.loader_gen import generate_trade_loader, generate_ivp_loader
+from core.loader_gen import (
+    generate_trade_loader, generate_ivp_loader, generate_spot_fx_loader
+)
+from core.importer import parse_position_file
 
 
 @pytest.fixture
@@ -464,3 +467,124 @@ class TestTradeLoader:
             "Trade_Date", "Settle_Date", "Fund_Code", "Dr_Cr", "Amount", "CCY",
             "Account", "GL_Account", "Counterparty", "Reference", "Cost_Centre", "Narrative"
         ]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Regression tests for the expert-audit fixes
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestComputeStatusNaN:
+    def test_nan_cash_is_red_not_blue(self):
+        """A NaN balance must fail safe to RED, never fall through to BLUE."""
+        assert compute_status(float("nan"), 100_000, 300_000) == RED
+
+
+class TestProposalRerunNoDuplicate:
+    def test_rerun_after_approval_does_not_duplicate(self, conn):
+        """Regenerating proposals after approvals must not leave duplicate wires.
+        The page clears ALL proposals for the run_date (not just PENDING) first."""
+        df = build_fund_view(conn, "2026-06-01")
+        wires = propose_wires(df)
+        save_proposals(conn, wires, "2026-06-01", "B1")
+        conn.execute("UPDATE proposals SET action='APPROVE' WHERE run_date='2026-06-01'")
+        conn.commit()
+        first_count = conn.execute(
+            "SELECT COUNT(*) FROM proposals WHERE run_date='2026-06-01'"
+        ).fetchone()[0]
+
+        # Replicate the fixed page logic: delete ALL wire_status + proposals first.
+        conn.execute(
+            "DELETE FROM wire_status WHERE proposal_id IN "
+            "(SELECT id FROM proposals WHERE run_date='2026-06-01')"
+        )
+        conn.execute("DELETE FROM proposals WHERE run_date='2026-06-01'")
+        conn.commit()
+        save_proposals(conn, propose_wires(df), "2026-06-01", "B2")
+
+        second_count = conn.execute(
+            "SELECT COUNT(*) FROM proposals WHERE run_date='2026-06-01'"
+        ).fetchone()[0]
+        assert second_count == first_count, "re-run must not duplicate proposals"
+
+        # No fund pair should appear more than once.
+        dupes = conn.execute(
+            """SELECT from_fund, to_fund, COUNT(*) c FROM proposals
+               WHERE run_date='2026-06-01' AND proposal_type='WIRE'
+               GROUP BY from_fund, to_fund HAVING c > 1"""
+        ).fetchall()
+        assert not dupes, f"duplicate wire pairs found: {[tuple(d) for d in dupes]}"
+
+
+class TestFXThresholdDedup:
+    def test_duplicate_threshold_proposed_once(self, conn):
+        """Two identical (fund, currency) threshold rows must not sell the balance twice."""
+        # MACS-Z holds EUR 340,000; seed already has one EUR threshold (min 100k).
+        # Insert a duplicate EUR threshold for the same fund.
+        conn.execute(
+            """INSERT INTO fx_thresholds(fund_code, currency, min_hold_local, auto_propose,
+               fx_counterparty, settlement_acct)
+               VALUES ('AAA-MACS-Z', 'EUR', 100000, 1, 'JP MORGAN FX', 'DUP-001')"""
+        )
+        conn.commit()
+        df = build_fund_view(conn, "2026-06-01")
+        fx = propose_fx_conversions(conn, df, "2026-06-01")
+        macs_eur = [p for p in fx if p["from_fund"] == "AAA-MACS-Z" and p["sell_ccy"] == "EUR"]
+        assert len(macs_eur) == 1, "duplicate threshold must yield exactly one FX proposal"
+
+    def test_spot_loader_no_fanout_on_duplicate_threshold(self, conn):
+        """The Spot FX loader must emit one row per proposal even with dup thresholds."""
+        conn.execute(
+            """INSERT INTO fx_thresholds(fund_code, currency, min_hold_local, auto_propose,
+               fx_counterparty, settlement_acct)
+               VALUES ('AAA-MACS-Z', 'EUR', 100000, 1, 'JP MORGAN FX', 'DUP-002')"""
+        )
+        conn.commit()
+        df = build_fund_view(conn, "2026-06-01")
+        save_proposals(conn, propose_fx_conversions(conn, df, "2026-06-01"), "2026-06-01", "B1")
+        conn.execute("UPDATE proposals SET action='APPROVE' WHERE proposal_type='FX'")
+        conn.commit()
+
+        buf, n_rows, _ = generate_spot_fx_loader(conn, "2026-06-01")
+        approved_fx = conn.execute(
+            "SELECT COUNT(*) FROM proposals WHERE proposal_type='FX' AND action='APPROVE'"
+        ).fetchone()[0]
+        assert n_rows == approved_fx, "loader rows must equal approved FX proposals (no fan-out)"
+
+
+class TestIVPStatusNoRegress:
+    def test_loader_regen_does_not_regress_confirmed_wire(self, conn):
+        """Re-generating the IVP loader must not drag a SUBMITTED/CONFIRMED wire
+        back to LOADER_GENERATED."""
+        df = build_fund_view(conn, "2026-06-01")
+        save_proposals(conn, propose_wires(df), "2026-06-01", "B1")
+        conn.execute("UPDATE proposals SET action='APPROVE' WHERE proposal_type='WIRE'")
+        conn.commit()
+
+        generate_ivp_loader(conn, "2026-06-01")  # sets wire_status → LOADER_GENERATED
+        # Advance one wire all the way to CONFIRMED.
+        pid = conn.execute(
+            "SELECT id FROM proposals WHERE proposal_type='WIRE' ORDER BY priority LIMIT 1"
+        ).fetchone()[0]
+        conn.execute("UPDATE wire_status SET status='CONFIRMED' WHERE proposal_id=?", (pid,))
+        conn.commit()
+
+        generate_ivp_loader(conn, "2026-06-01")  # regenerate
+        status = conn.execute(
+            "SELECT status FROM wire_status WHERE proposal_id=?", (pid,)
+        ).fetchone()[0]
+        assert status == "CONFIRMED", "confirmed wire must not be reset by loader regen"
+
+
+class TestImporterBadDates:
+    def test_unparseable_dates_are_dropped(self):
+        """Rows with an unparseable report_date must be excluded, not committed
+        under another fund's date."""
+        csv = io.BytesIO(
+            b"Fund_Code,CCY,Cash_Balance_Local,Report_Date\n"
+            b"AAA-AGG,USD,1000000,2026-06-01\n"
+            b"AAA-DL-Y,USD,2000000,not-a-date\n"
+        )
+        df, warnings = parse_position_file(csv, filename="test.csv")
+        assert len(df) == 1, "row with bad date must be dropped"
+        assert df.iloc[0]["fund_code"] == "AAA-AGG"
+        assert any("report_date" in w for w in warnings)

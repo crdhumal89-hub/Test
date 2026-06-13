@@ -3,13 +3,40 @@ Settings — Fund master CRUD, FX rates, thresholds, email config.
 All changes require admin password confirmation and are audit-logged.
 """
 
+import os
 import streamlit as st
 import pandas as pd
-from datetime import date
+from datetime import date, timedelta
+
+try:
+    from dotenv import load_dotenv
+except ImportError:  # python-dotenv is optional — fall back to real env vars only
+    def load_dotenv(*_a, **_k):
+        return False
 
 from ui.styles import inject_styles, page_header
 from core.database import log_audit
-from core.engine import _get_setting
+from core.engine import _get_setting, latest_run_date
+
+
+def _num(value, fallback=0.0):
+    """Coerce a possibly-blank/NaN editor cell to float; fall back if invalid.
+    Prevents a cleared NOT NULL numeric cell from aborting the save."""
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return fallback
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return fallback
+
+
+def _txt(value, fallback=None):
+    """Coerce a possibly-NaN editor cell to a clean string or `fallback`.
+    pandas Series.get returns NaN (not the default) for present-but-NaN cells."""
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return fallback
+    s = str(value).strip()
+    return s if s else fallback
 
 inject_styles()
 page_header("Settings", "Fund master, thresholds, FX rates, email configuration")
@@ -22,7 +49,10 @@ if conn is None:
 # ─────────────────────────────────────────────────────────────────────────────
 # Admin authentication gate
 # ─────────────────────────────────────────────────────────────────────────────
-ADMIN_PWD = _get_setting(conn, "ADMIN_PASSWORD", "UNCONFIGURED")
+# Env var (.env) overrides the DB setting, matching .env.example's documented
+# contract and keeping the password out of the database when set.
+load_dotenv()
+ADMIN_PWD = os.getenv("ADMIN_PASSWORD") or _get_setting(conn, "ADMIN_PASSWORD", "UNCONFIGURED")
 
 if "settings_unlocked" not in st.session_state:
     st.session_state["settings_unlocked"] = False
@@ -73,21 +103,25 @@ with tab1:
     )
 
     if st.button("Save Fund Master", type="primary"):
-        for _, row in edited.iterrows():
-            old_row = df_funds[df_funds["fund_code"] == row["fund_code"]].iloc[0]
-            conn.execute(
-                """UPDATE funds SET fund_name=?, entity_type=?, ccy=?,
-                   cash_floor=?, cash_ceiling=?, routing_source=?, fund_contact=?,
-                   ssi_account=?, ssi_bank=?, ssi_bic=?, ssi_entity=?,
-                   active=?, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')
-                   WHERE fund_code=?""",
-                (row["fund_name"], row["entity_type"], row["ccy"],
-                 row["cash_floor"], row["cash_ceiling"], row.get("routing_source"),
-                 row.get("fund_contact"), row.get("ssi_account"), row.get("ssi_bank"),
-                 row.get("ssi_bic"), row.get("ssi_entity"), int(row["active"]),
-                 row["fund_code"])
-            )
-        conn.commit()
+        # Atomic: if any row fails validation the whole save rolls back rather
+        # than leaving the master half-updated.
+        with conn:
+            for _, row in edited.iterrows():
+                old_row = df_funds[df_funds["fund_code"] == row["fund_code"]].iloc[0]
+                conn.execute(
+                    """UPDATE funds SET fund_name=?, entity_type=?, ccy=?,
+                       cash_floor=?, cash_ceiling=?, routing_source=?, fund_contact=?,
+                       ssi_account=?, ssi_bank=?, ssi_bic=?, ssi_entity=?,
+                       active=?, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')
+                       WHERE fund_code=?""",
+                    (_txt(row["fund_name"], old_row["fund_name"]), _txt(row["entity_type"]),
+                     _txt(row["ccy"], "USD"),
+                     _num(row["cash_floor"]), _num(row["cash_ceiling"]),
+                     _txt(row.get("routing_source")), _txt(row.get("fund_contact")),
+                     _txt(row.get("ssi_account")), _txt(row.get("ssi_bank")),
+                     _txt(row.get("ssi_bic")), _txt(row.get("ssi_entity")),
+                     int(bool(row["active"])), row["fund_code"])
+                )
         log_audit(conn, "FUND_MASTER_SAVED", "funds", "all", "Fund master updated via Settings UI")
         st.toast("Fund master saved", icon="✅")
         st.rerun()
@@ -106,8 +140,8 @@ with tab2:
     )
 
     stale_days = int(_get_setting(conn, "FX_STALE_DAYS", "1"))
-    today_str = str(date.today())
-    stale = df_fx[df_fx["rate_date"] < today_str]
+    cutoff_str = str(date.today() - timedelta(days=stale_days))
+    stale = df_fx[df_fx["rate_date"] < cutoff_str]
     if not stale.empty:
         st.warning(f"Stale FX rates detected (older than {stale_days} day(s)): "
                    + ", ".join(stale["base"].tolist()))
@@ -121,13 +155,17 @@ with tab2:
     )
 
     if st.button("Save FX Rates", type="primary"):
-        for _, row in edited_fx.iterrows():
-            conn.execute(
-                """INSERT OR REPLACE INTO fx_rates(base, quote, rate, rate_date)
-                   VALUES (?, ?, ?, ?)""",
-                (row["base"], row["quote"], row["rate"], row["rate_date"])
-            )
-        conn.commit()
+        with conn:
+            for _, row in edited_fx.iterrows():
+                base = _txt(row["base"])
+                rate_date = _txt(row["rate_date"])
+                if not base or not rate_date:
+                    continue  # skip incomplete rows rather than violating NOT NULL
+                conn.execute(
+                    """INSERT OR REPLACE INTO fx_rates(base, quote, rate, rate_date)
+                       VALUES (?, ?, ?, ?)""",
+                    (base.upper(), _txt(row["quote"], "USD"), _num(row["rate"], 1.0), rate_date)
+                )
         log_audit(conn, "FX_RATES_SAVED", "fx_rates", "all",
                   f"FX rates updated: {len(edited_fx)} rows")
         st.toast("FX rates saved", icon="✅")
@@ -150,18 +188,30 @@ with tab3:
     )
 
     if st.button("Save FX Thresholds", type="primary"):
-        conn.execute("DELETE FROM fx_thresholds")
-        for _, row in edited_thresh.iterrows():
-            conn.execute(
-                """INSERT INTO fx_thresholds
-                   (fund_code, currency, min_hold_local, auto_propose, fx_counterparty, settlement_acct)
-                   VALUES (?,?,?,?,?,?)""",
-                (row["fund_code"], row["currency"], row["min_hold_local"],
-                 int(row["auto_propose"]), row.get("fx_counterparty"), row.get("settlement_acct"))
-            )
-        conn.commit()
+        # Drop duplicate (fund, currency) rules so the same balance is never
+        # proposed for sale twice. Atomic so the DELETE can't wipe the table if
+        # a later INSERT fails.
+        seen = set()
+        written = 0
+        with conn:
+            conn.execute("DELETE FROM fx_thresholds")
+            for _, row in edited_thresh.iterrows():
+                fund = _txt(row["fund_code"])
+                ccy = _txt(row["currency"])
+                if not fund or not ccy or (fund, ccy.upper()) in seen:
+                    continue
+                seen.add((fund, ccy.upper()))
+                conn.execute(
+                    """INSERT INTO fx_thresholds
+                       (fund_code, currency, min_hold_local, auto_propose, fx_counterparty, settlement_acct)
+                       VALUES (?,?,?,?,?,?)""",
+                    (fund, ccy.upper(), _num(row["min_hold_local"]),
+                     int(bool(row["auto_propose"])), _txt(row.get("fx_counterparty")),
+                     _txt(row.get("settlement_acct")))
+                )
+                written += 1
         log_audit(conn, "FX_THRESHOLDS_SAVED", "fx_thresholds", "all",
-                  f"FX thresholds updated: {len(edited_thresh)} rows")
+                  f"FX thresholds updated: {written} rows")
         st.toast("FX thresholds saved", icon="✅")
         st.rerun()
 
@@ -194,23 +244,41 @@ with tab4:
         save_settings = st.form_submit_button("Save Settings", type="primary")
 
     if save_settings:
-        for key, val in updated.items():
-            conn.execute(
-                """UPDATE app_settings SET value=?, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')
-                   WHERE key=?""",
-                (val, key)
-            )
-        conn.commit()
+        with conn:
+            for key, val in updated.items():
+                conn.execute(
+                    """UPDATE app_settings SET value=?, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')
+                       WHERE key=?""",
+                    (val, key)
+                )
         log_audit(conn, "GLOBAL_SETTINGS_SAVED", "app_settings", "all",
                   f"Updated {len(updated)} settings")
         st.toast("Settings saved", icon="✅")
         st.rerun()
 
-    # Send test digest
+    # Send test digest — explicit, deliberate user action.
     st.markdown("---")
     controller_email = _get_setting(conn, "CONTROLLER_EMAIL", "")
-    if st.button(f"Send Test Digest to {controller_email}"):
-        st.info("SMTP email integration: configure SMTP_HOST in settings above to enable.")
+    digest_date = latest_run_date(conn)
+    st.caption(
+        "Delivery requires SMTP_HOST (or Windows Outlook). With neither configured "
+        "the digest is queued but cannot be delivered — check the Audit Log."
+    )
+    if st.button(f"Send Test Digest to {controller_email or '(no controller email set)'}",
+                 disabled=not controller_email):
+        if not digest_date:
+            st.warning("Load positions first — there is nothing to summarise yet.")
+        else:
+            from core.email_notify import enqueue_email, _build_digest_html
+            html = _build_digest_html(conn, digest_date)
+            enqueue_email(
+                "digest_test", [controller_email],
+                f"ApolloCAM Test Digest — {digest_date}", html,
+                conn=conn, business_date=digest_date, sent_by="settings_test",
+            )
+            log_audit(conn, "DIGEST_TEST_QUEUED", "app_settings", controller_email,
+                      f"Test digest queued for {digest_date}")
+            st.success(f"Test digest queued to {controller_email}.")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Tab 5: Holiday Calendar
@@ -230,14 +298,15 @@ with tab5:
     )
 
     if st.button("Save Holidays", type="primary"):
-        conn.execute("DELETE FROM holidays")
-        for _, row in edited_hols.iterrows():
-            if row["holiday_date"]:
-                conn.execute(
-                    "INSERT OR REPLACE INTO holidays VALUES (?, ?)",
-                    (str(row["holiday_date"]), row.get("description", ""))
-                )
-        conn.commit()
+        with conn:
+            conn.execute("DELETE FROM holidays")
+            for _, row in edited_hols.iterrows():
+                hol = _txt(row["holiday_date"])
+                if hol:
+                    conn.execute(
+                        "INSERT OR REPLACE INTO holidays VALUES (?, ?)",
+                        (hol[:10], _txt(row.get("description"), ""))
+                    )
         log_audit(conn, "HOLIDAYS_SAVED", "holidays", "all",
                   f"Updated {len(edited_hols)} holidays")
         st.toast("Holidays saved", icon="✅")

@@ -122,11 +122,14 @@ def parse_position_file(
         warnings.append(f"{bad_balance} rows had unparseable balance values and were excluded.")
         df = df[df["cash_balance_local"].notna()]
 
-    # Parse report_date
+    # Parse report_date. Drop unparseable rows — otherwise NaT becomes a NaN on
+    # strftime and the row is silently committed under another fund's run_date
+    # (the first valid date found), corrupting that day's positions.
     df["report_date"] = pd.to_datetime(df["report_date"], errors="coerce")
     bad_date = df["report_date"].isna().sum()
     if bad_date > 0:
-        warnings.append(f"{bad_date} rows had unparseable report_date values.")
+        warnings.append(f"{bad_date} rows had unparseable report_date values and were excluded.")
+        df = df[df["report_date"].notna()]
 
     # Fill optional columns
     if "account_name" not in df.columns:

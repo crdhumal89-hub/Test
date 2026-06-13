@@ -88,7 +88,7 @@ else:
             return "background-color: #FEF3C7; color: #92400E"
         return ""
 
-    styled = df.style.applymap(_highlight_action, subset=["action"])
+    styled = df.style.map(_highlight_action, subset=["action"])
     st.dataframe(styled, use_container_width=True, hide_index=True)
 
     # Export

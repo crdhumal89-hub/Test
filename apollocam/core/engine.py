@@ -34,6 +34,10 @@ def compute_status(cash: float, floor: float, ceiling: float,
                IF(cash<=ceiling,"GREEN","BLUE")))
     Matches Excel evaluation order exactly.
     """
+    # Fail safe: an unknown (NaN) balance must surface as RED, never silently
+    # fall through to BLUE. All comparisons below are False for NaN.
+    if pd.isna(cash):
+        return RED
     if cash < floor:
         return RED
     if cash < floor * amber_buffer:
@@ -210,6 +214,9 @@ def propose_fx_conversions(conn: sqlite3.Connection,
     df_thresh = pd.read_sql(
         "SELECT * FROM fx_thresholds WHERE auto_propose = 1", conn
     )
+    # Guard against duplicate (fund, currency) threshold rows selling the same
+    # balance twice — keep one rule per fund+currency.
+    df_thresh = df_thresh.drop_duplicates(subset=["fund_code", "currency"], keep="first")
     df_positions = pd.read_sql(
         "SELECT fund_code, ccy, local_balance FROM positions WHERE run_date = ?",
         conn, params=[run_date]
@@ -375,6 +382,8 @@ def _load_holidays(conn: sqlite3.Connection) -> set[date]:
 
 def _workday(start: date, lag: int, holidays: set[date]) -> date:
     """Advance `start` by `lag` business days, skipping weekends and holidays."""
+    if lag <= 0:  # T+0 value date, or guard against a misconfigured negative lag
+        return start
     current = start
     steps = 0
     while steps < lag:

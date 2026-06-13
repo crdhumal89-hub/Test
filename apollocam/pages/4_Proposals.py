@@ -5,7 +5,7 @@ Approval decisions are written to the database immediately (not held in session)
 
 import streamlit as st
 import pandas as pd
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 from ui.styles import inject_styles, page_header, status_badge
 from core.engine import (
@@ -40,17 +40,20 @@ existing_proposals = pd.read_sql(
 col_run, col_info = st.columns([2, 5])
 with col_run:
     if st.button("Run Proposals", type="primary",
-                 help="Generate wire + FX proposals from current positions"):
-        # Clear existing PENDING proposals for this date.
-        # Must delete wire_status rows first (FK: wire_status.proposal_id → proposals.id).
+                 help="Regenerate wire + FX proposals from current positions. "
+                      "Clears any prior decisions for this run date."):
+        # Clear ALL proposals for this run_date before regenerating — not just
+        # PENDING. Deleting only PENDING leaves already-APPROVED rows in place
+        # while a fresh duplicate is re-inserted, which can wire the same amount
+        # twice. Must delete wire_status first (FK: wire_status.proposal_id).
         conn.execute(
             """DELETE FROM wire_status WHERE proposal_id IN (
-                 SELECT id FROM proposals WHERE run_date = ? AND action = 'PENDING'
+                 SELECT id FROM proposals WHERE run_date = ?
                )""",
             (run_date,)
         )
         conn.execute(
-            "DELETE FROM proposals WHERE run_date = ? AND action = 'PENDING'", (run_date,)
+            "DELETE FROM proposals WHERE run_date = ?", (run_date,)
         )
         conn.commit()
 
@@ -103,7 +106,7 @@ if pending_wire_ids:
         placeholders = ",".join("?" * len(pending_wire_ids))
         conn.execute(
             f"UPDATE proposals SET action='APPROVE', approved_at=? WHERE id IN ({placeholders})",
-            [datetime.utcnow().isoformat()] + pending_wire_ids
+            [datetime.now(timezone.utc).isoformat()] + pending_wire_ids
         )
         conn.commit()
         log_audit(conn, "WIRE_APPROVE_ALL", "proposals", run_date,
@@ -165,7 +168,7 @@ if not wire_df.empty:
                 if choice != current_action:
                     conn.execute(
                         "UPDATE proposals SET action=?, approved_at=? WHERE id=?",
-                        (choice, datetime.utcnow().isoformat() if choice == "APPROVE" else None, pid)
+                        (choice, datetime.now(timezone.utc).isoformat() if choice == "APPROVE" else None, pid)
                     )
                     conn.commit()
                     log_audit(conn, f"WIRE_{choice}", "proposals", str(pid),
@@ -186,8 +189,10 @@ if not fx_df.empty:
         fund_code    = prop["from_fund"]
         sell_ccy     = prop["sell_ccy"]
         sell_amount  = prop["sell_amount"]
-        buy_amount   = prop["buy_amount"] or 0
-        fx_rate      = prop["fx_rate"] or 0
+        # `NaN or 0` keeps NaN (NaN is truthy) and would render as "nan" —
+        # coerce missing numerics explicitly.
+        buy_amount   = 0 if pd.isna(prop["buy_amount"]) else prop["buy_amount"]
+        fx_rate      = 0 if pd.isna(prop["fx_rate"]) else prop["fx_rate"]
         value_date   = prop["value_date"] or ""
         current_action = prop["action"]
 
@@ -213,7 +218,7 @@ if not fx_df.empty:
                 if choice != current_action:
                     conn.execute(
                         "UPDATE proposals SET action=?, approved_at=? WHERE id=?",
-                        (choice, datetime.utcnow().isoformat() if choice == "APPROVE" else None, pid)
+                        (choice, datetime.now(timezone.utc).isoformat() if choice == "APPROVE" else None, pid)
                     )
                     conn.commit()
                     log_audit(conn, f"FX_{choice}", "proposals", str(pid),
