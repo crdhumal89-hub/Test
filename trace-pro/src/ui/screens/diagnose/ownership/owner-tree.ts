@@ -1,5 +1,6 @@
 /**
- * The upward ownership tree, and the proportional ribbon that indexes it.
+ * The upward ownership tree, the header identifying the position it is rooted on, and the
+ * proportional ribbon that indexes it.
  *
  * The tree reads in the opposite direction to the Reconciliation hierarchy: the searched position
  * is the root, and every twisty opens the holders ABOVE the row, one level per click, until an
@@ -12,7 +13,14 @@
 import { TRUNCATE } from '../../../../domain/exceptions.js';
 import { formatCount, formatPercent } from '../../../../domain/money.js';
 import type { OwnershipGraph, OwnershipRow } from '../../../../domain/ownership.js';
-import { displayName, immediateHolders, isSubtotal, totalQuantity, vpmSymbol } from '../../../../domain/ownership.js';
+import {
+  displayName,
+  immediateHolders,
+  isSecurity,
+  isSubtotal,
+  totalQuantity,
+  vpmSymbol,
+} from '../../../../domain/ownership.js';
 import { el, replace, activate } from '../../../primitives/dom.js';
 import { parity } from '../../../parity.js';
 
@@ -30,6 +38,45 @@ const OWNERSHIP_RIBBON_COLORS = [
   '#8aa0c0',
   '#7fc8bf',
 ];
+
+/**
+ * Who this lens is currently answering about: kind, VPM symbol, name and code, units outstanding,
+ * and the reminder that everything below is a share of that whole.
+ */
+export function renderOwnershipIdentity(
+  host: HTMLElement,
+  graph: OwnershipGraph,
+  code: string,
+  total: number
+): void {
+  const security = isSecurity(graph, code);
+  replace(
+    host,
+    el('span', {
+      class: `tag ${security ? 'tag-leaf' : 'tag-vehicle'}`,
+      ...parity(`ownership.${code}.kind`),
+      text: security ? 'SECURITY' : 'SPV / FUND',
+    }),
+    el('span', { class: 'own-symbol', ...parity(`ownership.${code}.symbol`), text: vpmSymbol(graph, code) }),
+    el('span', {
+      class: 'own-name',
+      ...parity(`ownership.${code}.name_and_code`),
+      text: `${displayName(graph, code)} · code ${code}`,
+    }),
+    el('span', {
+      class: 'own-qty',
+      ...parity(`ownership.${code}.total_qty`),
+      title: 'Units outstanding (firm-wide) — the denominator of every Immediate % below.',
+      text: `Total qty: ${formatCount(total)}`,
+    }),
+    el('span', {
+      class: 'own-pie',
+      ...parity(`ownership.${code}.pie`),
+      title: 'The whole entity. Every share below is a share of this.',
+      text: '100%',
+    })
+  );
+}
 
 export interface OwnershipTreeCallbacks {
   /** A twisty was operated: open or close that branch. */

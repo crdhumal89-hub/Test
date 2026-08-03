@@ -21,8 +21,7 @@ const WATERFALL_LABEL = {
 export function renderWaterfall(
   host: HTMLElement,
   repricing: RepricingFixture,
-  view: PricingView,
-  asof: string
+  view: PricingView
 ): void {
   const w = buildWaterfall(repricing, view);
   const after = view === 'after';
@@ -39,7 +38,7 @@ export function renderWaterfall(
     el('div', {
       class: 'wf-basis',
       ...parity(key('start_basis')),
-      text: after ? 'every component at its repriced price' : 'underlyings at current marks',
+      text: after ? 'every component at its repriced price' : 'look-through of underlyings · current marks',
     }),
   ]);
 
@@ -100,7 +99,7 @@ export function renderWaterfall(
     el('div', {
       class: 'wf-basis',
       ...parity(key('nav_basis')),
-      text: `sum of top-level feeder NAVs · as of ${asof}`,
+      text: 'sum of top-level feeder NAVs · NAV report',
     }),
   ]);
 
@@ -122,6 +121,9 @@ function renderTie(w: ReturnType<typeof buildWaterfall>, view: PricingView): HTM
     })
   );
 
+  // A whitespace text node between the pill and the detail: without it the two adjacent inline
+  // elements concatenate into "...centPricing difference" when read as text.
+  statement.append(document.createTextNode(' '));
   // Spelled out, because a controller checking arithmetic should not have to take it on trust.
   const detail = el('span', { class: 'wf-tie-detail' });
   detail.append(

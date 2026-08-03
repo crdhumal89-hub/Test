@@ -9,11 +9,115 @@
 import { TRUNCATE } from '../../../../domain/exceptions.js';
 import { formatCount, formatPercent } from '../../../../domain/money.js';
 import type { OwnershipGraph } from '../../../../domain/ownership.js';
-import { displayName, effectiveOwners } from '../../../../domain/ownership.js';
+import {
+  displayName,
+  effectiveOwners,
+  immediateHolders,
+  totalQuantity,
+} from '../../../../domain/ownership.js';
 import { el, replace, emptyState } from '../../../primitives/dom.js';
 import { parity } from '../../../parity.js';
 
 export type OwnershipShares = Map<string, Map<string, number>>;
+
+/** The two sentences defining the two percentage columns. True of any data. */
+const OWNERSHIP_COLUMN_DEFINITIONS =
+  'Immediate % = holder qty ÷ total qty of the entity in the row below. ' +
+  'Cumulative % chains up the path (shown when you click a row).';
+
+/** Does ownership close for the position on screen? Measured, never assumed. */
+export interface OwnershipIntegrity {
+  sumImmediate: number;
+  sumUltimate: number;
+  closesImmediate: boolean;
+  closesUltimate: boolean;
+  immediateCount: number;
+  ultimateCount: number;
+  top5: number;
+}
+
+export function ownershipIntegrityOf(
+  graph: OwnershipGraph,
+  shares: OwnershipShares,
+  code: string
+): OwnershipIntegrity {
+  const total = totalQuantity(graph, code) || 1;
+  const owners = immediateHolders(graph, code)
+    .slice()
+    .sort((a, b) => b[1] - a[1]);
+  const ultimate = effectiveOwners(graph, shares, code);
+  const sumImmediate = owners.reduce((sum, [, units]) => sum + units, 0) / total;
+  const sumUltimate = [...ultimate.values()].reduce((sum, w) => sum + w, 0);
+  return {
+    sumImmediate,
+    sumUltimate,
+    closesImmediate: Math.abs(sumImmediate - 1) <= 1e-3,
+    closesUltimate: Math.abs(sumUltimate - 1) <= 1e-3,
+    immediateCount: owners.length,
+    ultimateCount: ultimate.size,
+    top5: owners.slice(0, 5).reduce((sum, [, units]) => sum + units, 0) / total,
+  };
+}
+
+/**
+ * The two integrity checks and the counts hint. The original printed both checks as unconditional
+ * ticks; here a position that does not close says so, and says what that means.
+ */
+export function renderOwnershipChecks(
+  host: HTMLElement,
+  code: string,
+  integrity: OwnershipIntegrity
+): void {
+  replace(
+    host,
+    el('span', {
+      class: `chip chip-${integrity.closesImmediate ? 'ok' : 'bad'}`,
+      ...parity(`ownership.${code}.immediate_check`),
+      text: integrity.closesImmediate
+        ? '✓ Owners reconcile to 100%'
+        : `⚠ Owners sum to ${formatPercent(integrity.sumImmediate)}`,
+    }),
+    el('span', {
+      class: `chip chip-${integrity.closesUltimate ? 'ok' : 'bad'}`,
+      ...parity(`ownership.${code}.ultimate_check`),
+      text: integrity.closesUltimate
+        ? '✓ Ultimate owners = 100%'
+        : `⚠ Ultimate owners sum to ${formatPercent(integrity.sumUltimate)}`,
+    }),
+    el('span', {
+      class: 'own-hint',
+      ...parity(`ownership.${code}.counts_hint`),
+      text: `${integrity.immediateCount} immediate owners · ${integrity.ultimateCount} ultimate parents · top 5 = ${formatPercent(integrity.top5)}`,
+    })
+  );
+  if (integrity.closesImmediate && integrity.closesUltimate) return;
+  host.append(
+    el('div', { class: 'callout callout-bad' }, [
+      el('div', { class: 'callout-title', text: 'Ownership does not close for this position' }),
+      el('p', {
+        text:
+          (integrity.closesImmediate
+            ? ''
+            : `Its immediate holders hold ${formatPercent(integrity.sumImmediate)} of its units outstanding. `) +
+          (integrity.closesUltimate
+            ? ''
+            : `Its ultimate owners account for ${formatPercent(integrity.sumUltimate)}. `) +
+          'Above 100% means units are recorded twice, usually through a circular mapping; below 100% means part of the ownership is not in the mapped universe. ' +
+          'Treat every share on this lens as indicative until the mapping is corrected — the Data quality lens lists the offending rows.',
+      }),
+    ])
+  );
+}
+
+/**
+ * The column definitions plus a statement about the fixed-point solve that is conditional on this
+ * position actually closing, rather than the original's blanket assurance that it always does.
+ */
+export function ownershipFootnoteText(integrity: OwnershipIntegrity): string {
+  return integrity.closesUltimate
+    ? `${OWNERSHIP_COLUMN_DEFINITIONS} Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve and sum to 100%.`
+    : `${OWNERSHIP_COLUMN_DEFINITIONS} Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve, but for this position they sum to ${formatPercent(integrity.sumUltimate)}, not 100% — see the correction below.`;
+}
 
 export interface OwnershipConservation {
   /** Held entities whose ultimate owners were measurable. */

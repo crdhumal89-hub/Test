@@ -1,0 +1,194 @@
+{
+ "$comment": [
+  "Frozen once written. Declares, per key, the exact string the rebuilt app must render where the rename table changes vocabulary. The gate additionally asserts every numeric token survives unchanged.",
+  "Scope: exactly the 37 keys of tests/baseline.json whose baseline text carries a term retired by docs/redesign-spec.md 3.1, outside glossary.*. scripts/classify-keys.mjs derives that set from the baseline and fails if this file does not match it key-for-key.",
+  "The other 983 baseline keys stay STRICT: byte-identical to tests/baseline.json. A relabel that is not declared here is a gate FAILURE, never a pass.",
+  "glossary.* is excluded by design: 12 glossary keys still mention the retired terms, because the glossary is where a controller looks up what the old label meant. Those keys keep the original wording and stay strict.",
+  "expected was derived by applying \"vocabulary\" to the baseline string and then reading the result. Where the mechanical substitution read badly — a term used as a noun mid-sentence, a subtitle that restated the old label, an arithmetic clause — the entry carries a hand-written sentence and a \"note\" saying why. That is why this map is per key and not a find-and-replace.",
+  "In running prose the declared terms appear in sentence case (e.g. \"look-through value\"); as a label or column head they appear as declared.",
+  "DIGIT GUARD: for every entry, numericTokens(expected) must deep-equal numericTokens(baseline), where numericTokens(s) = every match of the numeric-token regex in scripts/lib/parity.mjs, commas stripped, in order. Words may change; digits may not. Two figures rendered adjacent with no separator therefore read as one token and must stay adjacent (see pricing.detail.*.price_equations).",
+  "Neither parity-map.json nor tests/baseline.json is edited by this mechanism."
+ ],
+ "vocabulary": {
+  "Derived MV": "Look-through value",
+  "Revised MV": "Repriced value",
+  "Repriced MV": "Look-through value at repriced marks",
+  "Δ Pricing": "Pricing difference",
+  "Δ Non-position": "Non-position difference",
+  "Publish px": "Price to publish",
+  "Current px": "Current mark",
+  "Applied px": "Repriced mark",
+  "Revised px": "Repriced unit price",
+  "Repricing P&L": "Repricing gain or loss",
+  "Immediate %": "Direct share",
+  "Applied %": "Effective share",
+  "apex": "Top-level feeder",
+  "terminal": "Lowest level",
+  "in tol": "Within tolerance",
+  "no NAV": "No NAV reported",
+  "mv100": "Value of the whole entity"
+ },
+ "keys": {
+  "chrome.pricing_view_note": {
+   "baseline": "Before pricingCurrent as-booked reality — positions at their current marks (Derived MV) and reported NAV, with today's pricing gaps & breaks still shown.Δ Pricing $385,897 · NAV $2,062,198,836",
+   "expected": "Before pricingCurrent as-booked reality — positions at their current marks (look-through value) and reported NAV, with today's pricing gaps & breaks still shown.Pricing difference $385,897 · NAV $2,062,198,836",
+   "note": "Running prose, so the declared term appears in sentence case inside the parenthetical."
+  },
+  "ownership.APPOURI.footnote": {
+   "baseline": "Immediate % = holder qty ÷ total qty of the entity in the row below. Cumulative % chains up the path (shown when you click a row). Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve and sum to 100%.",
+   "expected": "Direct share = holder qty ÷ total qty of the entity in the row below. Cumulative % chains up the path (shown when you click a row). Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve and sum to 100%.",
+   "note": "The footnote is the definition of the column, so the new column name opens the sentence. \"Cumulative %\" is outside this rename map and is left as it reads today."
+  },
+  "ownership.column_headers": {
+   "baseline": "Owner (expand ▸ upward)VPM symbolSPV fund codeQty heldImmediate %share of row below% of APPOUR1-SPVcumulative · effective",
+   "expected": "Owner (expand ▸ upward)VPM symbolSPV fund codeQty heldDirect shareof the level below% of APPOUR1-SPVcumulative · effective",
+   "note": "Hand-written: the old subtitle \"share of row below\" restates the old label. Under \"Direct share\" it becomes \"of the level below\" (spec 3.1), so the header reads as one phrase instead of stuttering."
+  },
+  "pricing.banner.narrative": {
+   "baseline": "Bottom-up repricing Reprice the deepest funds first — a terminal fund's revised price = NAV ÷ units; a holder's revised MV = Σ held-qty × child revised price + its direct securities, propagated to the product. That lifts Derived $2,060,224,441 to Revised $2,060,610,338 (repricing P&L $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding P&L.",
+   "expected": "Bottom-up repricing Reprice the deepest funds first — a lowest-level fund's repriced unit price = NAV ÷ units; a holder's repriced value = Σ held-qty × child repriced price + its direct securities, propagated to the product. That lifts the look-through value $2,060,224,441 to the repriced value $2,060,610,338 (repricing gain or loss $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding gain or loss.",
+   "note": "Hand-written. A blind substitution produced \"a Lowest level fund's revised price\" and left bare \"Derived\"/\"Revised\" as if they were nouns. All five figures and their order are unchanged."
+  },
+  "pricing.bridge.driver_caption": {
+   "baseline": "Per-driver gap = apex NAV − its derived look-through MV — the bars sum to the headline gap (bar scaled to the largest leg; red = NAV above derived / scenario b, green = below / scenario a) — click to inspect",
+   "expected": "Per-driver gap = top-level feeder NAV − its look-through value — the bars sum to the headline gap (bar scaled to the largest leg; red = NAV above look-through / scenario b, green = below / scenario a) — click to inspect",
+   "note": "Hand-written. \"scenario a / scenario b\" stay: pricing.bridge.driver.*.scenario are STRICT keys that still render \"a\" and \"b\", so the caption must keep explaining them. Carries no numeric token."
+  },
+  "pricing.bridge.product_nav_basis": {
+   "baseline": "Σ apex-fund ENDING_NAV — the product's own NAV, not Σ all 26 funds ($7,407,316,163)",
+   "expected": "Σ top-level feeder ENDING_NAV — the product's own NAV, not Σ all 26 funds ($7,407,316,163)"
+  },
+  "pricing.detail.SPORTHFC.level_pnl_block": {
+   "baseline": "Derived MV · current marks$122,705,103 Revised MV · NAV-repriced$122,977,266 Level P&L$272,162 · 22.6 bps Direct securities (not repriced)$454,674",
+   "expected": "Look-through value · current marks$122,705,103 Repriced value · bottom-up from NAV$122,977,266 Level gain or loss$272,162 · 22.6 bps Direct securities (not repriced)$454,674",
+   "note": "Subtitle \"NAV-repriced\" becomes \"bottom-up from NAV\" — with the label now \"Repriced value\" the old subtitle just repeated it. \"Level P&L\" follows Repricing P&L into plain words."
+  },
+  "pricing.detail.SPORTHFC.price_equations": {
+   "baseline": "Publish · NAV ÷ units$120,620,995 ÷ 117,634,3871.025389 Revised (bottom-up)Revised MV ÷ units1.045419 Current (position marks)Derived MV ÷ units1.043106",
+   "expected": "Price to publish · NAV ÷ units$120,620,995 ÷ 117,634,3871.025389 Repriced unit price (bottom-up)Repriced value ÷ units1.045419 Current mark (position marks)Look-through value ÷ units1.043106",
+   "note": "The units figure and the resulting price render as adjacent blocks with no separator, so the baseline reads them as ONE token (1176343871.025389). The replacement keeps them adjacent; inserting a space here would trip the digit guard."
+  },
+  "pricing.detail.SPORTHLD.level_pnl_block": {
+   "baseline": "Derived MV · current marks$1,768,255,188 Revised MV · NAV-repriced$1,768,591,226 Level P&L$336,038 · 1.9 bps Direct securities (not repriced)$70,748,593",
+   "expected": "Look-through value · current marks$1,768,255,188 Repriced value · bottom-up from NAV$1,768,591,226 Level gain or loss$336,038 · 1.9 bps Direct securities (not repriced)$70,748,593"
+  },
+  "pricing.detail.SPORTHLD.price_equations": {
+   "baseline": "Publish · NAV ÷ units$1,795,754,765 ÷ 1,752,553,7401.024650 Revised (bottom-up)Revised MV ÷ units1.009151 Current (position marks)Derived MV ÷ units1.008959",
+   "expected": "Price to publish · NAV ÷ units$1,795,754,765 ÷ 1,752,553,7401.024650 Repriced unit price (bottom-up)Repriced value ÷ units1.009151 Current mark (position marks)Look-through value ÷ units1.008959",
+   "note": "Same adjacency contract as the SPORTHFC block: \"1,752,553,7401.024650\" is one baseline token."
+  },
+  "pricing.fund.APAV.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.APCAXXII.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.APRAIL2.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.ASCHON.role": {
+   "baseline": "apex",
+   "expected": "Top-level feeder"
+  },
+  "pricing.fund.CRIMH.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.DEUCE.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.DUNK.role": {
+   "baseline": "apex",
+   "expected": "Top-level feeder"
+  },
+  "pricing.fund.SPORTB.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.SPORTC.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.SPORTEUR.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.fund.SPORTHLD.role": {
+   "baseline": "apex",
+   "expected": "Top-level feeder"
+  },
+  "pricing.fund.SPORTOP.role": {
+   "baseline": "terminal",
+   "expected": "Lowest level"
+  },
+  "pricing.score.nav_detail": {
+   "baseline": "Σ apex ENDING_NAV · 8 flagged",
+   "expected": "Σ top-level feeder ENDING_NAV · 8 flagged"
+  },
+  "pricing.table.column_headers": {
+   "baseline": "FundSymbolPublish pxCurrent pxRevised pxDerived MVRevised MVRepricing P&Lbps",
+   "expected": "FundSymbolPrice to publishCurrent markRepriced unit priceLook-through valueRepriced valueRepricing gain or lossbps"
+  },
+  "pricing.walk.total.label": {
+   "baseline": "PRODUCT · SPORT (Σ apex)",
+   "expected": "PRODUCT · SPORT (Σ top-level feeders)",
+   "note": "Plural, because the row sums every top-level feeder."
+  },
+  "reconciliation.after.pricing_view_note": {
+   "baseline": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its revised price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Δ Pricing $0 · NAV $2,062,198,836",
+   "expected": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836"
+  },
+  "reconciliation.after.start_label": {
+   "baseline": "Repriced MV",
+   "expected": "Look-through value at repriced marks"
+  },
+  "reconciliation.after.tie_statement": {
+   "baseline": "✓ ties to the cent Δ Pricing $0 + Δ Non-position $1,588,498 = $1,588,498 = NAV − Repriced $1,588,498",
+   "expected": "✓ ties to the cent Pricing difference $0 + Non-position difference $1,588,498 = $1,588,498 = NAV − repriced value $1,588,498",
+   "note": "Hand-written: the trailing \"NAV − Repriced\" is an arithmetic clause, not a column head, so it reads as \"NAV − repriced value\". All four figures unchanged."
+  },
+  "reconciliation.detail.SPORTHFC.figures": {
+   "baseline": "NAV$120,620,995Derived MV · current marks$122,705,103Revised MV · NAV-repriced$122,977,266Δ Pricing (Revised−Derived)$272,162 · 22.6 bpsΔ Non-position (NAV−Revised)($2,356,271) · -195.3 bps",
+   "expected": "NAV$120,620,995Look-through value · current marks$122,705,103Repriced value · bottom-up from NAV$122,977,266Pricing difference (repriced − look-through)$272,162 · 22.6 bpsNon-position difference (NAV − repriced)($2,356,271) · -195.3 bps",
+   "note": "The parenthetical formulas are spelled out in the new vocabulary and spaced around the minus sign; the signed bps figures keep their exact form."
+  },
+  "reconciliation.tie.statement": {
+   "baseline": "✓ ties to the cent Δ Pricing $385,897 + Δ Non-position $1,588,498 = $1,974,394 = NAV − Derived $1,974,394",
+   "expected": "✓ ties to the cent Pricing difference $385,897 + Non-position difference $1,588,498 = $1,974,394 = NAV − look-through value $1,974,394"
+  },
+  "reconciliation.tree.column_headers": {
+   "baseline": "Hierarchy — fund ▸ SPV ▸ securityVPM symbol NAVDerived MVcurrent marks Revised MVNAV-repriced Δ PricingRevised−Derived Δ Non-positionNAV−Revised",
+   "expected": "Hierarchy — fund ▸ SPV ▸ securityVPM symbol NAVLook-through valuecurrent marks Repriced valuebottom-up from NAV Pricing differencerepriced − look-through Non-position differenceNAV − repriced",
+   "note": "Each header is label + subtitle; the subtitles are the formulas, restated in the new vocabulary."
+  },
+  "reconciliation.waterfall.delta_nonposition_label": {
+   "baseline": "Δ Non-position",
+   "expected": "Non-position difference"
+  },
+  "reconciliation.waterfall.delta_pricing_label": {
+   "baseline": "Δ Pricing",
+   "expected": "Pricing difference"
+  },
+  "reconciliation.waterfall.nav_basis": {
+   "baseline": "Σ apex ENDING_NAV · NAV report",
+   "expected": "Σ top-level feeder ENDING_NAV · NAV report"
+  },
+  "reconciliation.waterfall.start_label": {
+   "baseline": "Derived MV",
+   "expected": "Look-through value"
+  },
+  "simulator.reprice.ledger": {
+   "baseline": "Derived look-through · before$2,060,224,441.40 ↓ bottom-up reprice + Repricing P&L$385,896.89 = Revised look-through$2,060,610,338.29 + Non-position (cash / fees)$1,588,497.57 = Product NAV$2,062,198,835.86 Whole-book reprice · deepest level first → product. Pricing gap reconciled (Δ pricing $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86.",
+   "expected": "Look-through value · before$2,060,224,441.40 ↓ bottom-up reprice + Repricing gain or loss$385,896.89 = Repriced value$2,060,610,338.29 + Non-position (cash / fees)$1,588,497.57 = Product NAV$2,062,198,835.86 Whole-book reprice · lowest level first → product. Pricing gap reconciled (pricing difference $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86.",
+   "note": "Hand-written. Eight figures including the compact \"$1.59m\" and the repeated product NAV, all in the original order."
+  },
+  "simulator.reprice.run_numbers": {
+   "baseline": "Revised look-through$2.06bnRepricing P&L+$385,896.89✓ reconciled · no pricing break",
+   "expected": "Repriced value$2.06bnRepricing gain or loss+$385,896.89✓ reconciled · no pricing break"
+  }
+ }
+}

@@ -167,7 +167,7 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
   }
 
   function renderAll(): void {
-    renderWaterfall(qs('#reconciliation-waterfall', host), store.repricing, store.state.view, store.state.asof);
+    renderWaterfall(qs('#reconciliation-waterfall', host), store.repricing, store.state.view);
     renderExceptions();
     renderTree(
       qs('#reconciliation-tree', host),
