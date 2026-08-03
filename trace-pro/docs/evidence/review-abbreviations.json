@@ -1,0 +1,331 @@
+{
+ "reconciliation": [
+  {
+   "token": "NAV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 16,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "NAV pricing and look-through",
+    "Does this product’s NAV agree with the value of what it holds, and where is the difference?",
+    "Apollo Sports Capital · Look-through value $2,060,224,441 → Repriced value $2,060,610,338 → NAV $2,062,198,836 · 26 funds",
+    "bottom-up NAV repricing",
+    "NAV-repriced bottom-up"
+   ]
+  },
+  {
+   "token": "SPV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 9,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "Dangling SPV",
+    "Hierarchy — fund ▸ SPV ▸ security",
+    "ASCHON-SPV",
+    "SPV",
+    "ASCON-SPV"
+   ]
+  },
+  {
+   "token": "VPM",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "VPM symbol"
+   ]
+  },
+  {
+   "token": "bps",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 12,
+   "expandedOnScreen": true,
+   "firstContexts": [
+    "+1.9 bps",
+    "+7.7 bps",
+    "+1.9 bps",
+    "+7.7 bps",
+    "+1.9 bps"
+   ]
+  },
+  {
+   "token": "own",
+   "mode": "whole-word, case-insensitive",
+   "occurrences": 1,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "(what changes when each fund is repriced from its own NAV, deepest first) ="
+   ]
+  }
+ ],
+ "pricing": [
+  {
+   "token": "NAV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 12,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "NAV pricing and look-through",
+    "NAV-repriced bottom-up",
+    "= NAV · USD",
+    "NAV ÷ units",
+    "NAV $2,062,198,836"
+   ]
+  },
+  {
+   "token": "SPV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 25,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "SPORTHLD - SPV",
+    "SPORT - SPV",
+    "ASCHLD-SPV",
+    "SPORTA-SPV",
+    "DEUCE - SPV"
+   ]
+  },
+  {
+   "token": "DC",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 3,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "AP Sports Intermediate Holdings Velocity (DC), L.P.",
+    "AP Deuce Intermediate Holdings I (DC), L.P.",
+    "AP Sports Debt Holdings II (DC), L.P."
+   ]
+  },
+  {
+   "token": "Δ",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "Δ"
+   ]
+  },
+  {
+   "token": "bps",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 10,
+   "expandedOnScreen": true,
+   "firstContexts": [
+    "bottom-up repricing gain or loss · +1.9 bps",
+    "cash/fees/receivables · +7.7 bps",
+    "+10 bps gap",
+    "+153 bps",
+    "-958 bps"
+   ]
+  },
+  {
+   "token": "own",
+   "mode": "whole-word, case-insensitive",
+   "occurrences": 5,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "sum of top-level feeder NAVs — the product's own NAV,",
+    "is its own NAV divided by its units outstanding; its",
+    "is those same underlyings valued from their own NAVs, deepest level first. The difference between the last two is the",
+    "(basis points) is that difference divided by the fund’s own NAV, times 10,000 — so 50 bps is half a percent.",
+    "Money in USD, unit prices at 6 decimal places, bps = the fund's repricing gain or loss ÷ its own NAV × 10,000. 26 of 26 funds shown, as of 2026-06-30."
+   ]
+  },
+  {
+   "token": "qty",
+   "mode": "whole-word, case-insensitive",
+   "occurrences": 1,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "; a holder's repriced value = Σ held-qty × child repriced price + its direct securities, propagated to the product. That lifts"
+   ]
+  }
+ ],
+ "diagnose-structure": [
+  {
+   "token": "NAV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 4,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "NAV pricing and look-through",
+    "— the NAV stamped on the fund entity. Every other screen shows",
+    "$2,062,198,835.86 (Σ top-level feeder NAV)",
+    ". They differ by $2,785.79, which is the whole NAV of the DUNK feeder. This is a basis difference, not a break."
+   ]
+  },
+  {
+   "token": "SPV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 2,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "SPV / holding",
+    "DUNK — AP Dunk SPV, LLC"
+   ]
+  },
+  {
+   "token": "DC",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 4,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "DEUCE1DC — AP Deuce Intermediate Holdings I (DC), L.P.",
+    "APIVDC — AP Sports Intermediate Holdings Velocity (DC), L.P.",
+    "DEUCE1DC — AP Deuce Intermediate Holdings I (DC), L.P.",
+    "SPORT2DC — AP Sports Debt Holdings II (DC), L.P."
+   ]
+  }
+ ],
+ "diagnose-ownership": [
+  {
+   "token": "NAV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "NAV pricing and look-through"
+   ]
+  },
+  {
+   "token": "SPV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 11,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "SPV / FUND",
+    "APPOUR1-SPV",
+    "SPV fund code",
+    "% of APPOUR1-SPV",
+    "AAACSZ - SPV SMA"
+   ]
+  },
+  {
+   "token": "VPM",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "VPM symbol"
+   ]
+  },
+  {
+   "token": "qty",
+   "mode": "whole-word, case-insensitive",
+   "occurrences": 4,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "Total qty: 1,330,020,204",
+    "Qty held",
+    "qty ÷ total = direct share",
+    "Direct share = holder qty ÷ total qty of the entity in the row below. Cumulative % chains up the path (shown when you click a row). Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve and sum to 100%."
+   ]
+  }
+ ],
+ "diagnose-data-quality": [
+  {
+   "token": "NAV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "NAV pricing and look-through"
+   ]
+  },
+  {
+   "token": "SPV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "Missing / dangling SPV code"
+   ]
+  },
+  {
+   "token": "VPM",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "Unmapped identifiers (missing VPM symbol / name)"
+   ]
+  },
+  {
+   "token": "own",
+   "mode": "whole-word, case-insensitive",
+   "occurrences": 1,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "Self-mapping (fund holds its own code)"
+   ]
+  }
+ ],
+ "diagnose-simulator": [
+  {
+   "token": "MV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 1,
+   "expandedOnScreen": true,
+   "firstContexts": [
+    "MV / Qty / NAV"
+   ]
+  },
+  {
+   "token": "NAV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 19,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "NAV pricing and look-through",
+    "If this fund’s value or units move, what happens to product NAV, and through which holders?",
+    "Product NAV",
+    "MV / Qty / NAV",
+    ", 6 levels deep. Concentration by feeder NAV: SPORTHLD 87.08%, ASCHON 12.92%, DUNK 0.00%."
+   ]
+  },
+  {
+   "token": "SPV",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 3,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "AP Dunk SPV, LLC",
+    "AP Dunk SPV, LLC",
+    "DUNK — AP Dunk SPV, LLC"
+   ]
+  },
+  {
+   "token": "DC",
+   "mode": "whole-word, case-sensitive",
+   "occurrences": 3,
+   "expandedOnScreen": false,
+   "firstContexts": [
+    "DEUCE1DC — AP Deuce Intermediate Holdings I (DC), L.P.",
+    "APIVDC — AP Sports Intermediate Holdings Velocity (DC), L.P.",
+    "SPORT2DC — AP Sports Debt Holdings II (DC), L.P."
+   ]
+  },
+  {
+   "token": "px",
+   "mode": "whole-word, case-insensitive",
+   "occurrences": 40,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "px 1.122812",
+    "px 1.008959",
+    "px 1.124532",
+    "px 1.004788",
+    "px 1.011649"
+   ]
+  },
+  {
+   "token": "qty",
+   "mode": "whole-word, case-insensitive",
+   "occurrences": 1,
+   "expandedOnScreen": null,
+   "firstContexts": [
+    "MV / Qty / NAV"
+   ]
+  }
+ ]
+}

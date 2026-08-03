@@ -1,0 +1,220 @@
+{
+ "recon-before": {
+  "screen": {
+   "prefix": "reconciliation.waterfall.",
+   "start": "$2,060,224,441",
+   "nav": "$2,062,198,836",
+   "dPricing": "$385,897",
+   "dNonPos": "$1,588,498",
+   "revised": "$2,060,610,338",
+   "allKeys": [
+    "reconciliation.status_line",
+    "reconciliation.waterfall.start_label",
+    "reconciliation.waterfall.derived_mv",
+    "reconciliation.waterfall.derived_basis",
+    "reconciliation.waterfall.delta_pricing_label",
+    "reconciliation.waterfall.delta_pricing_usd",
+    "reconciliation.waterfall.delta_pricing_bps",
+    "reconciliation.waterfall.revised_mv",
+    "reconciliation.waterfall.revised_basis",
+    "reconciliation.waterfall.delta_nonposition_label",
+    "reconciliation.waterfall.delta_nonposition_usd",
+    "reconciliation.waterfall.delta_nonposition_bps",
+    "reconciliation.waterfall.nav",
+    "reconciliation.waterfall.nav_basis",
+    "reconciliation.tie.statement",
+    "reconciliation.tie.status",
+    "reconciliation.exception.Missing_NAV",
+    "reconciliation.exception.Missing_NAV.count",
+    "reconciliation.exception.Dangling_SPV",
+    "reconciliation.exception.Dangling_SPV.count",
+    "reconciliation.exception.Material_non-position_gap",
+    "reconciliation.exception.Material_non-position_gap.count",
+    "reconciliation.tree.column_headers",
+    "reconciliation.apex.ASCHON",
+    "reconciliation.apex.ASCHON.kind",
+    "reconciliation.apex.ASCHON.symbol",
+    "reconciliation.apex.ASCHON.nav",
+    "reconciliation.apex.ASCHON.derived_mv",
+    "reconciliation.apex.ASCHON.revised_mv",
+    "reconciliation.apex.ASCHON.delta_pricing",
+    "reconciliation.apex.ASCHON.delta_nonposition",
+    "reconciliation.apex.DUNK",
+    "reconciliation.apex.DUNK.kind",
+    "reconciliation.apex.DUNK.symbol",
+    "reconciliation.apex.DUNK.nav",
+    "reconciliation.apex.DUNK.derived_mv",
+    "reconciliation.apex.DUNK.revised_mv",
+    "reconciliation.apex.DUNK.delta_pricing",
+    "reconciliation.apex.DUNK.delta_nonposition",
+    "reconciliation.apex.SPORTHLD"
+   ]
+  },
+  "csv": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/recon-before-TRACE-Pro_lookthrough_Apollo_Sports_Capital_2026-06-30.csv",
+  "xlsx": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/lt-before-TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx"
+ },
+ "pricing-before": {
+  "screen": {
+   "nav": "$2,062,198,836",
+   "derived": "$2,060,224,441",
+   "dPricing": "$385,897",
+   "rows": [
+    [
+     "Apollo Sports Capital Holdings (Overseas), L.P.SPORTHLDTop-level feeder",
+     "SPORTHLD - SPV",
+     "1.024650",
+     "1.008959",
+     "1.009151",
+     "$1,768,255,188",
+     "$1,768,591,226",
+     "$336,038",
+     "2"
+    ],
+    [
+     "Apollo Sports Capital (Overseas), L.P.SPORT",
+     "SPORT - SPV",
+     "0.997778",
+     "1.004788",
+     "1.004987",
+     "$1,697,506,595",
+     "$1,697,842,633",
+     "$336,038",
+     "2"
+    ],
+    [
+     "ASC Holdings, SCSpASCHLUSD",
+     "ASCHLD-SPV",
+     "0.993783",
+     "0.994584",
+     "0.994584",
+     "$644,268,070",
+     "$644,268,070",
+     "$0",
+     "0"
+    ],
+    [
+     "AP Sports Aggregator A, L.P.SPORTA",
+     "SPORTA-SPV",
+     "1.009603",
+     "1.011649",
+     "1.011702",
+     "$338,775,700",
+     "$338,793,375",
+     "$17,674",
+     "1"
+    ]
+   ]
+  },
+  "csv": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/px-before-TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv",
+  "xlsx": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/pxx-before-TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx"
+ },
+ "recon-after": {
+  "screen": {
+   "prefix": "reconciliation.after.",
+   "start": null,
+   "nav": "$2,062,198,836",
+   "dPricing": "$0",
+   "dNonPos": "$1,588,498",
+   "revised": "$2,060,610,338",
+   "allKeys": [
+    "reconciliation.after.pricing_view_note",
+    "reconciliation.status_line",
+    "reconciliation.after.start_label",
+    "reconciliation.after.repriced_mv",
+    "reconciliation.after.delta_pricing_usd",
+    "reconciliation.after.delta_pricing_note",
+    "reconciliation.after.revised_mv",
+    "reconciliation.after.delta_nonposition_usd",
+    "reconciliation.after.nav",
+    "reconciliation.after.tie_statement",
+    "reconciliation.exception.Missing_NAV",
+    "reconciliation.exception.Missing_NAV.count",
+    "reconciliation.exception.Dangling_SPV",
+    "reconciliation.exception.Dangling_SPV.count",
+    "reconciliation.exception.Non-position_residual_non-trade_",
+    "reconciliation.exception.Non-position_residual_non-trade_.count",
+    "reconciliation.tree.column_headers",
+    "reconciliation.apex.ASCHON",
+    "reconciliation.apex.ASCHON.kind",
+    "reconciliation.apex.ASCHON.symbol",
+    "reconciliation.apex.ASCHON.nav",
+    "reconciliation.apex.ASCHON.derived_mv",
+    "reconciliation.apex.ASCHON.revised_mv",
+    "reconciliation.apex.ASCHON.delta_pricing",
+    "reconciliation.apex.ASCHON.delta_nonposition",
+    "reconciliation.apex.DUNK",
+    "reconciliation.apex.DUNK.kind",
+    "reconciliation.apex.DUNK.symbol",
+    "reconciliation.apex.DUNK.nav",
+    "reconciliation.apex.DUNK.derived_mv",
+    "reconciliation.apex.DUNK.revised_mv",
+    "reconciliation.apex.DUNK.delta_pricing",
+    "reconciliation.apex.DUNK.delta_nonposition",
+    "reconciliation.apex.SPORTHLD",
+    "reconciliation.apex.SPORTHLD.kind",
+    "reconciliation.apex.SPORTHLD.symbol",
+    "reconciliation.apex.SPORTHLD.nav",
+    "reconciliation.apex.SPORTHLD.derived_mv",
+    "reconciliation.apex.SPORTHLD.revised_mv",
+    "reconciliation.apex.SPORTHLD.delta_pricing"
+   ]
+  },
+  "csv": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/recon-after-TRACE-Pro_lookthrough_Apollo_Sports_Capital_2026-06-30.csv",
+  "xlsx": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/lt-after-TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx"
+ },
+ "pricing-after": {
+  "screen": {
+   "nav": "$2,062,198,836",
+   "derived": "$2,060,610,338",
+   "dPricing": "$0",
+   "rows": [
+    [
+     "Apollo Sports Capital Holdings (Overseas), L.P.SPORTHLDTop-level feeder",
+     "SPORTHLD - SPV",
+     "1.024650",
+     "1.009151",
+     "1.009151",
+     "$1,768,591,226",
+     "$1,768,591,226",
+     "$0",
+     "0"
+    ],
+    [
+     "Apollo Sports Capital (Overseas), L.P.SPORT",
+     "SPORT - SPV",
+     "0.997778",
+     "1.004987",
+     "1.004987",
+     "$1,697,842,633",
+     "$1,697,842,633",
+     "$0",
+     "0"
+    ],
+    [
+     "ASC Holdings, SCSpASCHLUSD",
+     "ASCHLD-SPV",
+     "0.993783",
+     "0.994584",
+     "0.994584",
+     "$644,268,070",
+     "$644,268,070",
+     "$0",
+     "0"
+    ],
+    [
+     "AP Sports Aggregator A, L.P.SPORTA",
+     "SPORTA-SPV",
+     "1.009603",
+     "1.011702",
+     "1.011702",
+     "$338,793,375",
+     "$338,793,375",
+     "$0",
+     "0"
+    ]
+   ]
+  },
+  "csv": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/px-after-TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv",
+  "xlsx": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/exports/pxx-after-TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx"
+ }
+}

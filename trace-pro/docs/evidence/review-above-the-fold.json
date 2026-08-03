@@ -1,0 +1,720 @@
+{
+ "reconciliation": {
+  "scroll": {
+   "docHeight": 1177,
+   "innerHeight": 1000
+  },
+  "rows": [
+   {
+    "name": "tie verdict",
+    "sel": "#reconciliation-waterfall .wf-tie-pill",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 404,
+      "bottom": 430,
+      "h": 26
+     }
+    ],
+    "allAbove": true,
+    "text": "✓ ties to the cent"
+   },
+   {
+    "name": "waterfall steps",
+    "sel": "#reconciliation-waterfall .wf-step",
+    "exists": true,
+    "count": 3,
+    "boxes": [
+     {
+      "top": 276,
+      "bottom": 377,
+      "h": 100
+     },
+     {
+      "top": 276,
+      "bottom": 377,
+      "h": 100
+     },
+     {
+      "top": 276,
+      "bottom": 377,
+      "h": 100
+     }
+    ],
+    "allAbove": true,
+    "text": "Look-through value$2,060,224,441look-through of underlyings "
+   },
+   {
+    "name": "NAV",
+    "sel": "[data-parity=\"reconciliation.waterfall.nav\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 300,
+      "bottom": 329,
+      "h": 29
+     }
+    ],
+    "allAbove": true,
+    "text": "$2,062,198,836"
+   },
+   {
+    "name": "NAV basis",
+    "sel": "[data-parity=\"reconciliation.waterfall.nav\"] ~ .wf-basis, #reconciliation-waterfall .wf-basis",
+    "exists": true,
+    "count": 3,
+    "boxes": [
+     {
+      "top": 333,
+      "bottom": 350,
+      "h": 17
+     },
+     {
+      "top": 333,
+      "bottom": 350,
+      "h": 17
+     },
+     {
+      "top": 333,
+      "bottom": 350,
+      "h": 17
+     }
+    ],
+    "allAbove": true,
+    "text": "look-through of underlyings · current marks"
+   },
+   {
+    "name": "delta pricing usd",
+    "sel": "[data-parity=\"reconciliation.waterfall.delta_pricing_usd\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 318,
+      "bottom": 337,
+      "h": 19
+     }
+    ],
+    "allAbove": true,
+    "text": "$385,897"
+   },
+   {
+    "name": "delta pricing bps",
+    "sel": "[data-parity=\"reconciliation.waterfall.delta_pricing_bps\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 337,
+      "bottom": 353,
+      "h": 17
+     }
+    ],
+    "allAbove": true,
+    "text": "+1.9 bps"
+   },
+   {
+    "name": "delta nonposition usd",
+    "sel": "[data-parity=\"reconciliation.waterfall.delta_nonposition_usd\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 318,
+      "bottom": 337,
+      "h": 19
+     }
+    ],
+    "allAbove": true,
+    "text": "$1,588,498"
+   },
+   {
+    "name": "delta nonposition bps",
+    "sel": "[data-parity=\"reconciliation.waterfall.delta_nonposition_bps\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 337,
+      "bottom": 353,
+      "h": 17
+     }
+    ],
+    "allAbove": true,
+    "text": "+7.7 bps"
+   },
+   {
+    "name": "exception chips",
+    "sel": "#reconciliation-exceptions .chip",
+    "exists": true,
+    "count": 3,
+    "boxes": [
+     {
+      "top": 459,
+      "bottom": 491,
+      "h": 32
+     },
+     {
+      "top": 459,
+      "bottom": 491,
+      "h": 32
+     },
+     {
+      "top": 459,
+      "bottom": 491,
+      "h": 32
+     }
+    ],
+    "allAbove": true,
+    "text": "5Missing NAV"
+   },
+   {
+    "name": "question",
+    "sel": "#reconciliation-question",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 182,
+      "bottom": 205,
+      "h": 23
+     }
+    ],
+    "allAbove": true,
+    "text": "Does this product’s NAV agree with the value of what it hold"
+   }
+  ]
+ },
+ "pricing": {
+  "scroll": {
+   "docHeight": 1563,
+   "innerHeight": 1000
+  },
+  "rows": [
+   {
+    "name": "question",
+    "sel": "#pricing-question",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 182,
+      "bottom": 205,
+      "h": 23
+     }
+    ],
+    "allAbove": true,
+    "text": "What unit price do I publish for each fund today, and what d"
+   },
+   {
+    "name": "delta pricing usd",
+    "sel": "[data-parity=\"pricing.score.delta_pricing_usd\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 305,
+      "bottom": 330,
+      "h": 25
+     }
+    ],
+    "allAbove": true,
+    "text": "$385,897"
+   },
+   {
+    "name": "delta pricing detail",
+    "sel": "[data-parity=\"pricing.score.delta_pricing_detail\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 334,
+      "bottom": 350,
+      "h": 17
+     }
+    ],
+    "allAbove": true,
+    "text": "bottom-up repricing gain or loss · +1.9 bps"
+   },
+   {
+    "name": "NAV",
+    "sel": "[data-parity=\"pricing.score.nav\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 305,
+      "bottom": 330,
+      "h": 25
+     }
+    ],
+    "allAbove": true,
+    "text": "$2,062,198,836"
+   },
+   {
+    "name": "flagged count",
+    "sel": "[data-parity=\"pricing.score.nav_detail\"]",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 334,
+      "bottom": 350,
+      "h": 17
+     }
+    ],
+    "allAbove": true,
+    "text": "sum of top-level feeder NAVs · 8 flagged"
+   },
+   {
+    "name": "publish px rows 1-5",
+    "sel": "#pricing-price-table tbody tr",
+    "exists": true,
+    "count": 26,
+    "boxes": [
+     {
+      "top": 887,
+      "bottom": 921,
+      "h": 34
+     },
+     {
+      "top": 921,
+      "bottom": 955,
+      "h": 34
+     },
+     {
+      "top": 955,
+      "bottom": 989,
+      "h": 34
+     },
+     {
+      "top": 989,
+      "bottom": 1023,
+      "h": 34
+     },
+     {
+      "top": 1023,
+      "bottom": 1057,
+      "h": 34
+     }
+    ],
+    "allAbove": false,
+    "text": "Apollo Sports Capital Holdings (Overseas), L.P.SPORTHLDTop-l"
+   },
+   {
+    "name": "publish px cell",
+    "sel": "[data-parity^=\"pricing.fund.\"][data-parity$=\".publish_px\"]",
+    "exists": true,
+    "count": 26,
+    "boxes": [
+     {
+      "top": 887,
+      "bottom": 921,
+      "h": 34
+     },
+     {
+      "top": 921,
+      "bottom": 955,
+      "h": 34
+     },
+     {
+      "top": 955,
+      "bottom": 989,
+      "h": 34
+     },
+     {
+      "top": 989,
+      "bottom": 1023,
+      "h": 34
+     },
+     {
+      "top": 1023,
+      "bottom": 1057,
+      "h": 34
+     }
+    ],
+    "allAbove": false,
+    "text": "1.024650"
+   },
+   {
+    "name": "view note",
+    "sel": "#view-note",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 126,
+      "bottom": 164,
+      "h": 38
+     }
+    ],
+    "allAbove": true,
+    "text": "Before pricingCurrent as-booked reality — positions at their"
+   }
+  ]
+ },
+ "diagnose-structure": {
+  "scroll": {
+   "docHeight": 1418,
+   "innerHeight": 1000
+  },
+  "rows": [
+   {
+    "name": "question",
+    "sel": "#structure-question",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 340,
+      "bottom": 363,
+      "h": 23
+     }
+    ],
+    "allAbove": true,
+    "text": "How is this product wired — who owns whom, and where is conc"
+   },
+   {
+    "name": "stage svg",
+    "sel": "#structure-stage svg",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 557,
+      "bottom": 1195,
+      "h": 638
+     }
+    ],
+    "allAbove": false,
+    "text": "Apollo Sports Capital — Apollo Sports CapitalApollo Sports C"
+   },
+   {
+    "name": "caption",
+    "sel": "#structure-caption",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 450,
+      "bottom": 544,
+      "h": 94
+     }
+    ],
+    "allAbove": true,
+    "text": "Text alternative for the graph: 46 entities joined by 45 own"
+   },
+   {
+    "name": "controls",
+    "sel": "#structure-controls",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 377,
+      "bottom": 438,
+      "h": 61
+     }
+    ],
+    "allAbove": true,
+    "text": "VerticalHorizontalRadialDynamicShow %◎ FitReset⤢ Full screen"
+   },
+   {
+    "name": "diagnose subject",
+    "sel": "#diagnose-subject",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 223,
+      "bottom": 284,
+      "h": 61
+     }
+    ],
+    "allAbove": true,
+    "text": "Entity under examinationSelected once — all four lenses belo"
+   },
+   {
+    "name": "entity combobox",
+    "sel": "#diagnose-entity",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 236,
+      "bottom": 271,
+      "h": 35
+     }
+    ],
+    "allAbove": true,
+    "text": ""
+   },
+   {
+    "name": "lens tabs",
+    "sel": "#lens-tabs [role=\"tab\"]",
+    "exists": true,
+    "count": 4,
+    "boxes": [
+     {
+      "top": 296,
+      "bottom": 329,
+      "h": 33
+     },
+     {
+      "top": 296,
+      "bottom": 329,
+      "h": 33
+     },
+     {
+      "top": 296,
+      "bottom": 329,
+      "h": 33
+     },
+     {
+      "top": 296,
+      "bottom": 329,
+      "h": 33
+     }
+    ],
+    "allAbove": true,
+    "text": "Structure"
+   }
+  ]
+ },
+ "diagnose-ownership": {
+  "scroll": {
+   "docHeight": 1718,
+   "innerHeight": 1000
+  },
+  "rows": [
+   {
+    "name": "identity",
+    "sel": "#ownership-identity",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 424,
+      "bottom": 445,
+      "h": 21
+     }
+    ],
+    "allAbove": true,
+    "text": "SPV / FUNDAPPOUR1-SPVAP Pour Holdings, L.P. · code APPOURITo"
+   },
+   {
+    "name": "checks",
+    "sel": "#ownership-checks",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 445,
+      "bottom": 475,
+      "h": 30
+     }
+    ],
+    "allAbove": true,
+    "text": "✓ Owners reconcile to 100%✓ Ultimate owners = 100%39 immedia"
+   },
+   {
+    "name": "ribbon",
+    "sel": "#ownership-ribbon",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 445,
+      "bottom": 445,
+      "h": 0
+     }
+    ],
+    "allAbove": false,
+    "text": ""
+   },
+   {
+    "name": "status",
+    "sel": "#ownership-status",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 386,
+      "bottom": 404,
+      "h": 18
+     }
+    ],
+    "allAbove": true,
+    "text": "2,500 positions searchable · the selection is shared with ev"
+   },
+   {
+    "name": "owner rows 1-5",
+    "sel": "#ownership-tree tbody tr",
+    "exists": true,
+    "count": 40,
+    "boxes": [
+     {
+      "top": 528,
+      "bottom": 562,
+      "h": 34
+     },
+     {
+      "top": 562,
+      "bottom": 596,
+      "h": 34
+     },
+     {
+      "top": 596,
+      "bottom": 630,
+      "h": 34
+     },
+     {
+      "top": 630,
+      "bottom": 663,
+      "h": 34
+     },
+     {
+      "top": 663,
+      "bottom": 697,
+      "h": 34
+     }
+    ],
+    "allAbove": true,
+    "text": "Ult. ownerApollo Credit Strategies Master Fund Ltd.CSTRCSTRC"
+   }
+  ]
+ },
+ "diagnose-data-quality": {
+  "scroll": {
+   "docHeight": 1000,
+   "innerHeight": 1000
+  },
+  "rows": [
+   {
+    "name": "question",
+    "sel": "#data-quality-question",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 340,
+      "bottom": 363,
+      "h": 23
+     }
+    ],
+    "allAbove": true,
+    "text": "What is wrong with the source data before I trust any figure"
+   },
+   {
+    "name": "kpi",
+    "sel": "#data-quality-kpi",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 424,
+      "bottom": 613,
+      "h": 189
+     }
+    ],
+    "allAbove": true,
+    "text": "High severity31Medium52Low22Total issues105All fund entities"
+   },
+   {
+    "name": "scope",
+    "sel": "#data-quality-scope",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 377,
+      "bottom": 412,
+      "h": 35
+     }
+    ],
+    "allAbove": true,
+    "text": ""
+   },
+   {
+    "name": "buckets",
+    "sel": "#data-quality-buckets",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 630,
+      "bottom": 818,
+      "h": 188
+     }
+    ],
+    "allAbove": true,
+    "text": "Self-mapping (fund holds its own code)43 · Medium▸A fund is "
+   }
+  ]
+ },
+ "diagnose-simulator": {
+  "scroll": {
+   "docHeight": 3234,
+   "innerHeight": 1000
+  },
+  "rows": [
+   {
+    "name": "baseline",
+    "sel": "#simulator-baseline",
+    "exists": false
+   },
+   {
+    "name": "subject",
+    "sel": "#simulator-subject",
+    "exists": false
+   },
+   {
+    "name": "shock inputs",
+    "sel": "#simulator-shock",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 1333,
+      "bottom": 1389,
+      "h": 56
+     }
+    ],
+    "allAbove": false,
+    "text": "Shock panelPick any fund in the graph — or from the entity l"
+   },
+   {
+    "name": "stage",
+    "sel": "#simulator-stage",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 695,
+      "bottom": 1315,
+      "h": 620
+     }
+    ],
+    "allAbove": false,
+    "text": "SPORT::PRODUCTApollo Sports Capital$2.06bnSPORT::PRODUCT — A"
+   },
+   {
+    "name": "runline (what the test asserts)",
+    "sel": "#simulator-runline",
+    "exists": true,
+    "count": 1,
+    "boxes": [
+     {
+      "top": 596,
+      "bottom": 614,
+      "h": 18
+     }
+    ],
+    "allAbove": true,
+    "text": "Whole-book reprice · not started. Reprice everything (bottom"
+   }
+  ]
+ }
+}
