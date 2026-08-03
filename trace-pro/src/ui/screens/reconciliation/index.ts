@@ -9,6 +9,8 @@ import { allNodeIds, defaultExpansion, expansionRevealing } from '../../../domai
 import type { Store } from '../../../state/store.js';
 import { el, replace, qs, activate, emptyState } from '../../primitives/dom.js';
 import { parity } from '../../parity.js';
+import { exportLookthroughCsv } from '../../../export/csv.js';
+import { exportReconciliationWorkbook } from '../../../export/excel.js';
 import { renderWaterfall, reconciliationStatusLine } from './waterfall.js';
 import { renderTree } from './tree.js';
 import { renderNodeDetail } from './detail.js';
@@ -50,10 +52,36 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
     collapse.addEventListener('click', () =>
       store.set({ expandedNodes: defaultExpansion(store.core.lookthrough.nodes) })
     );
+    const csv = el('button', { type: 'button', class: 'btn', id: 'export-csv', text: 'Export CSV' });
+    csv.addEventListener('click', () =>
+      exportLookthroughCsv(store.core.lookthrough.nodes, store.repricing, store.state.asof)
+    );
+    const excel = el('button', {
+      type: 'button',
+      class: 'btn',
+      id: 'download-excel',
+      text: 'Download Excel',
+    });
+    excel.addEventListener('click', () => {
+      // A failed library load must surface, not vanish: the original alerted and gave up.
+      void exportReconciliationWorkbook(store.repricing, store.state.view, store.state.asof).catch(
+        (error: unknown) => {
+          qs('#reconciliation-tools', host).append(
+            el('span', {
+              class: 'export-error',
+              role: 'alert',
+              text: `Excel export failed: ${error instanceof Error ? error.message : String(error)}`,
+            })
+          );
+        }
+      );
+    });
     replace(
       tools,
       expandAll,
       collapse,
+      csv,
+      excel,
       el('span', {
         class: 'status-line',
         id: 'reconciliation-status',

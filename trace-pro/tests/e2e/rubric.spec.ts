@@ -95,10 +95,10 @@ test('R5 — the primary answer is above the fold on load, with no click', async
   const primary: Record<string, string> = {
     reconciliation: '[data-parity="reconciliation.waterfall.nav"]',
     pricing: '[data-parity="pricing.score.nav"]',
-    'diagnose-structure': '.graph-stage, .graph-caption',
-    'diagnose-ownership': '.integrity',
-    'diagnose-data-quality': '.kpi-row',
-    'diagnose-simulator': '.graph-stage, .score-strip',
+    'diagnose-structure': '#structure-stage',
+    'diagnose-ownership': '#ownership-checks',
+    'diagnose-data-quality': '#data-quality-kpi',
+    'diagnose-simulator': '#simulator-stage',
   };
   const report: Record<string, boolean> = {};
   for (const route of ROUTES) {

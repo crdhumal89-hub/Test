@@ -13,6 +13,14 @@ Two rules, both mechanical:
 2. **One precision per quantity class,** applied everywhere, defined once in
    `src/domain/money.ts`.
 
+Where the vocabulary changes, `docs/rename-map.json` is the machine-checked declaration — a frozen
+per-key statement of the exact string the rebuild must render, guarded by an assertion that every
+numeric token in the string survives unchanged ("words may change; digits may not"). It covers the
+38 baseline keys whose text carries a retired term; the other 982 stay byte-identical to
+`tests/baseline.json`. This file is the human-readable half of the same contract: what each label
+means, and what precision it is rendered at. Where the two could ever disagree, the rename map wins,
+because the gate reads it.
+
 The two pricing views are the app's two bases, named in words in the masthead
 (`src/ui/chrome/shell.ts`): **Current marks** (the original's "Before Pricing") and **Repriced**
 (the original's "After Pricing").
@@ -82,37 +90,39 @@ non-position gap** (**Non-position residual (non-trade)** under Repriced), **Mat
 
 ## 3. Label → quantity: Pricing
 
-The approved vocabulary for the price table and the repricing walk (`docs/redesign-spec.md` §3.1).
-The Pricing screen is not built yet (`docs/ledger.md`, Done item 3), so this table is the contract
-it must be built against, not a description of rendered markup. The original's label is kept in the
-first column because that is what `tests/baseline.json` holds.
+The vocabulary is `docs/rename-map.json` → `vocabulary`, which is the frozen form of
+`docs/redesign-spec.md` §3.1; the retired label is kept in the first column because that is what
+`tests/baseline.json` holds. Terms marked *(spec only)* are renames the spec sets out that the frozen
+map does not cover, because no baseline key carries them.
 
-| Original label (Current marks → Repriced) | Label to render | Quantity |
+| Retired label (Current marks → Repriced) | Label to render | Quantity |
 |---|---|---|
-| Publish px | Price to publish (NAV ÷ units) | `publishPrice` |
+| Publish px | Price to publish | `publishPrice` |
 | Current px → **Applied px** | Current mark → **Repriced mark** | `currentPrice` → `revisedPrice` |
 | Revised px | Repriced unit price | `revisedPrice` |
 | Derived MV → **Repriced MV** | Look-through value → Look-through value at repriced marks | `derived` (`ltv` → `rev`) |
 | Revised MV | Repriced value | `revised` |
-| Repricing P&L → **P&L (reconciled)** | Repricing P&L (reconciled to $0 under Repriced) | `levelPnL` |
+| Repricing P&L → **P&L (reconciled)** | Repricing gain or loss (reconciled to $0 under Repriced) | `levelPnL` |
 | bps | bps — defined inline on first use per screen | `bps` |
-| Level | Level (1 = deepest priced from NAV ÷ units) | tree depth |
-| Global Qty | Units outstanding (firm-wide) | `globalUnits` |
+| Level *(spec only)* | Level (1 = lowest, priced from NAV ÷ units) | tree depth |
+| Global Qty *(spec only)* | Units outstanding (firm-wide) | `globalUnits` |
 | NAV | NAV | `nav` |
-| Price before / Price after | Current mark / Repriced mark | `currentPrice` / `revisedPrice` |
-| Value before / Value after | Look-through value / Repriced value | `derived` / `revised` |
-| Δ Price | Change in unit price | `revisedPrice − currentPrice` |
-| Δ Value (P&L) | Repricing P&L | `levelPnL` |
-| Δ bps | Repricing P&L in bps | `bps` |
-| apex / terminal chips | Top-level feeder / Lowest level (prices from NAV ÷ units) | role, not a figure |
-| scen a / scen b | NAV below look-through / NAV above look-through | bridge leg sign |
-| Immediate % | Direct share (of the level below) | `directShare` |
-| Applied % | Effective share (of the product) | `effectiveShare` |
-| Cumulative % | Effective share (of the searched position) | `cumulativeShare` |
-| mv100 / Value of 100% | Value of the whole entity (100%) | `wholeEntityValue` |
-| Carried MV | Book value of the stake (as booked) | `bookValue` |
-| Position MV | Position value (attributed to product) | `positionValue` |
-| Variance | Look-through minus as-booked | `derived − positionValue` |
+| Price before / Price after *(spec only)* | Current mark / Repriced mark | `currentPrice` / `revisedPrice` |
+| Value before / Value after *(spec only)* | Look-through value / Repriced value | `derived` / `revised` |
+| Δ Price *(spec only)* | Change in unit price | `revisedPrice − currentPrice` |
+| Δ Value (P&L) *(spec only)* | Repricing gain or loss | `levelPnL` |
+| Δ bps *(spec only)* | Repricing gain or loss in bps | `bps` |
+| apex / terminal chips | Top-level feeder / Lowest level | role, not a figure |
+| scen a / scen b *(spec only)* | NAV below look-through / NAV above look-through | bridge leg sign |
+| Immediate % | Direct share *(subtitle: "of the level below")* | `directShare` |
+| Applied % | Effective share *(subtitle: "of the product")* | `effectiveShare` |
+| Cumulative % | Effective share of the searched position | `cumulativeShare` |
+| mv100 / Value of 100% | Value of the whole entity | `wholeEntityValue` |
+| Carried MV *(spec only)* | Book value of the stake (as booked) | `bookValue` |
+| Position MV *(spec only)* | Position value (attributed to product) | `positionValue` |
+| Variance *(spec only)* | Look-through minus as-booked | `derived − positionValue` |
+| in tol | Within tolerance | verdict, not a figure |
+| no NAV / `nonav` | No NAV reported | verdict, not a figure |
 
 ## 4. The two collisions the original had
 

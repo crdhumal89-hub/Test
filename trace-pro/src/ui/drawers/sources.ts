@@ -49,8 +49,8 @@ const SOURCES_SLOTS: readonly SourcesSlot[] = [
   },
 ];
 
-/** Where each figure the app renders actually comes from. `feeders` is the live top-level list. */
-function sourcesFigureRows(feeders: string): readonly SourcesFigureRow[] {
+/** Figures that arrive already computed in one of the two reports. */
+function sourcesReportedFigures(feeders: string): SourcesFigureRow[] {
   return [
     {
       figure: 'Net asset value (NAV), per fund',
@@ -82,6 +82,12 @@ function sourcesFigureRows(feeders: string): readonly SourcesFigureRow[] {
       field: 'MV USD',
       note: 'What the position is carried at before any repricing.',
     },
+  ];
+}
+
+/** Figures TRACE-Pro works out itself from the two reports. */
+function sourcesDerivedFigures(): SourcesFigureRow[] {
+  return [
     {
       figure: 'Look-through value at current marks',
       report: 'Derived in TRACE-Pro',
@@ -94,6 +100,12 @@ function sourcesFigureRows(feeders: string): readonly SourcesFigureRow[] {
       field: 'NAV Report + Position Report',
       note: 'Deepest funds price at NAV ÷ units, then every holder is revalued from its children.',
     },
+  ];
+}
+
+/** The upstream systems and references the two reports themselves depend on. */
+function sourcesSystemFigures(): SourcesFigureRow[] {
+  return [
     {
       figure: 'Symbols and quantities',
       report: 'VPM accounting system',
@@ -109,22 +121,27 @@ function sourcesFigureRows(feeders: string): readonly SourcesFigureRow[] {
   ];
 }
 
+/** Where each figure the app renders actually comes from. `feeders` is the live top-level list. */
+function sourcesFigureRows(feeders: string): SourcesFigureRow[] {
+  return [...sourcesReportedFigures(feeders), ...sourcesDerivedFigures(), ...sourcesSystemFigures()];
+}
+
 function sourcesRow(cells: readonly string[]): HTMLElement {
   return el(
     'tr',
     {},
-    cells.map((text, index) => el('td', { class: index === 1 ? '' : 'l', text }))
+    cells.map((text) => el('td', { class: 'l', text }))
   );
 }
 
 function sourcesTable(headers: readonly string[], rows: readonly (readonly string[])[]): HTMLElement {
-  const table = el('table', { class: 'mini' });
+  const table = el('table', { class: 'mini sources-table' });
   table.append(
     el('thead', {}, [
       el(
         'tr',
         {},
-        headers.map((text, index) => el('th', { class: index === 1 ? '' : 'l', scope: 'col', text }))
+        headers.map((text) => el('th', { class: 'l', scope: 'col', text }))
       ),
     ])
   );
@@ -136,29 +153,38 @@ function sourcesBlock(title: string, ...children: (Node | string | null)[]): HTM
   return el('div', { class: 'section' }, [el('h3', { text: title }), ...children]);
 }
 
-/** The two upload affordances: visible, focusable, explained, and honestly inert. */
-function sourcesSlotList(status: HTMLElement, noteId: string): HTMLElement {
-  const list = el('div', { class: 'sources-slots' });
+/**
+ * The two upload slots: named, described, and visibly not the drop target.
+ *
+ * They are plain description, not fake controls. A button carrying `aria-disabled` would be
+ * announced as unavailable while still firing its handler, and a `<input type="file">` that
+ * silently did nothing would be worse than no slot at all. The one real control here is the link
+ * to where uploading does work, so the panel is never a dead end (rubric R4).
+ */
+function sourcesSlotList(noteId: string): HTMLElement {
+  const list = el('div', { class: 'sources-slots', role: 'list', 'aria-describedby': noteId });
   for (const slot of SOURCES_SLOTS) {
-    const button = el('button', {
-      type: 'button',
-      class: 'btn sources-slot',
-      'data-slot': slot.key,
-      'aria-disabled': 'true',
-      'aria-describedby': noteId,
-    });
-    button.append(
-      el('span', { class: 'sources-slot-title', text: `${slot.title} ${slot.format}` }),
-      el('span', { class: 'sources-slot-purpose', text: slot.purpose })
+    list.append(
+      el('div', { class: 'sources-slot', 'data-slot': slot.key, role: 'listitem' }, [
+        el('span', { class: 'sources-slot-title', text: `${slot.title} ${slot.format}` }),
+        el('span', { class: 'sources-slot-purpose', text: slot.purpose }),
+        el('span', { class: 'sources-slot-state', text: 'Accepted on the Reconciliation screen' }),
+      ])
     );
-    button.addEventListener('click', () => {
-      status.textContent =
-        `The ${slot.title} slot is not wired here. Upload it on the Reconciliation screen, ` +
-        'where the recomputed reconciliation is shown as it changes.';
-    });
-    list.append(button);
   }
   return list;
+}
+
+/** The one real control in the upload block: the route to where a file can actually be dropped. */
+function sourcesUploadLink(store: Store): HTMLElement {
+  const link = el('a', {
+    class: 'btn sources-upload-link',
+    id: 'sources-upload-link',
+    href: '#/reconciliation',
+    text: 'Open the Reconciliation screen to upload',
+  });
+  link.addEventListener('click', () => store.set({ drawer: null }));
+  return link;
 }
 
 /** Mount the drawer into `host` (the shell's `#drawer-host`). */
@@ -216,8 +242,8 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
       sourcesBlock(
         'Which report each figure comes from',
         sourcesTable(
-          ['Figure', 'As of', 'Field in the file', 'How it arrives'],
-          sourcesFigureRows(repricing.apex.join(', ')).map((r) => [r.figure, asof, `${r.report} — ${r.field}`, r.note])
+          ['Figure', 'Source report', 'Field in the file', 'How it arrives'],
+          sourcesFigureRows(repricing.apex.join(', ')).map((r) => [r.figure, r.report, r.field, r.note])
         )
       ),
       sourcesBlock(
@@ -230,7 +256,8 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
             'is wired on the Reconciliation screen — upload there and the reconciliation, the tree and ' +
             'every price update in place, in front of you.',
         }),
-        sourcesSlotList(status, 'sources-upload-note'),
+        sourcesSlotList('sources-upload-note'),
+        sourcesUploadLink(store),
         status
       ),
       sourcesBlock(
@@ -247,33 +274,33 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
           [
             [
               'lookthrough.json',
-              asof,
+              'EMB',
               `${formatCount(lookthrough.nodes.length)} look-through tree nodes, product headline`,
               'Reconciliation, Structure',
             ],
             [
               'repricing.json',
-              asof,
+              'REVBASE',
               `${formatCount(repricing.funds.length)} funds, ${formatCount(repricing.apex.length)} top-level feeders, ${formatCount(repricing.breaks.length)} data breaks`,
-              'Reconciliation, Pricing — the authoritative reconciliation',
+              'Reconciliation and Pricing — the authoritative reconciliation',
             ],
             [
               'simulator.json',
-              asof,
+              'SIM',
               `${formatCount(Object.keys(simulator.funds).length)} funds, ${formatCount(simulator.edges.length)} ownership edges`,
               'Simulator lens',
             ],
             [
               'universe.json',
-              asof,
+              'UNI',
               universe
                 ? `${formatCount(universe.edges.length)} ownership edges, ${formatCount(universe.entities.length)} entities firm-wide`
-                : 'firm-wide ownership graph — 472 KiB, fetched on first use',
+                : 'firm-wide ownership graph, 472 KiB — fetched on first use, not yet loaded',
               'Ownership and Data quality lenses',
             ],
             [
               'legacy-pricing.json',
-              asof,
+              'PRICING',
               'legacy reconciliation model — supplies the flag thresholds and the derived-value map only',
               'Pricing thresholds',
             ],
@@ -285,7 +312,7 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
         el('p', {
           class: 'note',
           text:
-            `Two product NAVs exist in the source files and differ by $2,785.79: Σ of the top-level ` +
+            'Two product NAVs exist in the source files and differ by $2,785.79: Σ of the top-level ' +
             'feeders’ ENDING_NAV, which the reconciliation uses, and the single fund-entity NAV stamp, ' +
             'which is the same figure less the DUNK feeder. Both are preserved and both are labelled ' +
             'by basis wherever they appear, rather than one being silently corrected.',

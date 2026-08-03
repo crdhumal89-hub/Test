@@ -214,3 +214,26 @@ export function structureRenderLegend(): HTMLElement {
   );
   return legend;
 }
+
+/**
+ * Roving tabindex over the graph's node set: the graph is reachable and traversable without a
+ * mouse, which the original's `div` click targets were not. Lives with the controls because it is
+ * an input concern, and the graph module imports it as a type-free function.
+ */
+export function structureRoveNodes(event: KeyboardEvent, all: Element[], activate: () => void): void {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    activate();
+    return;
+  }
+  const forward = event.key === 'ArrowRight' || event.key === 'ArrowDown';
+  const back = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
+  if (!forward && !back) return;
+  event.preventDefault();
+  const here = all.indexOf(event.currentTarget as Element);
+  const next = all[(here + (forward ? 1 : -1) + all.length) % all.length];
+  if (!(next instanceof SVGElement)) return;
+  all.forEach((n) => n.setAttribute('tabindex', '-1'));
+  next.setAttribute('tabindex', '0');
+  next.focus();
+}

@@ -1,23 +1,23 @@
 /**
  * Structure lens — the d3 ownership tree, plus the narrow d3 surface both graph lenses share.
  *
- * Ported from `renderStructure` / `strData` / `strMakePills` / `styleFocus` (original lines
- * 1230-1300). Nothing about a rendered figure changes: 46 node circles, 45 link paths, 45
- * ownership pills, ownership % at 2dp, node area proportional to look-through value.
+ * Ported from `renderStructure` / `strMakePills` / `styleFocus` (original 1230-1300). No rendered
+ * figure changes: 46 node circles, 45 link paths, 45 ownership pills at 2dp, node area ∝ the
+ * look-through value, so the pricing view cannot move the picture.
  *
- * WHY THE d3 TYPES LIVE HERE. `@types/d3` is not installed and eslint bans `any` in src/, so the
- * slice of d3 the two lenses actually touch is typed by hand, once, in this file and imported by
- * the Simulator scene. It is deliberately narrow: if a call is not typed here, it is not used.
- *
- * WHY d3 IS LOADED BY A SCRIPT TAG. `vendor/d3.min.js` is the vendored 7.8.5 UMD bundle, copied
- * into `dist/vendor/` by vite.config.ts. Resolving it against `document.baseURI` makes one
- * same-origin request in dev and in the built app, so the app runs offline and no CDN is involved.
+ * `@types/d3` is not installed and eslint bans `any`, so the slice of d3 these lenses touch is
+ * typed by hand, once, here, and imported by the Simulator scene: a call not typed here is a call
+ * we do not make. `vendor/d3.min.js` is the vendored 7.8.5 UMD bundle that vite.config.ts copies
+ * into `dist/vendor/`; resolving it against `document.baseURI` makes one same-origin request in dev
+ * and in the built app, so the app runs offline and no CDN is ever involved.
  */
-import type { LookthroughNode } from '../../../../domain/types.js';
+
+import { structureRoveNodes } from './controls.js';
+import { structureEdgePath, structureLayoutNodes, type StructureEdgeMode } from './layout.js';
 
 /* ------------------------------------------------------------------ the d3 surface, typed */
 
-export type StructureAttrValue = string | number | boolean | null | undefined;
+type StructureAttr = string | number | boolean | null | undefined;
 
 /** A d3 selection, narrowed to the calls these two lenses make. */
 export interface StructureSelection<Datum> {
@@ -26,7 +26,7 @@ export interface StructureSelection<Datum> {
   data<Next>(values: Next[], key?: (d: Next) => string): StructureSelection<Next>;
   join(tag: string): StructureSelection<Datum>;
   append(tag: string): StructureSelection<Datum>;
-  attr(name: string, value: StructureAttrValue | ((d: Datum, i: number) => StructureAttrValue)): StructureSelection<Datum>;
+  attr(name: string, v: StructureAttr | ((d: Datum, i: number) => StructureAttr)): StructureSelection<Datum>;
   style(name: string, value: string | null | ((d: Datum) => string | null)): StructureSelection<Datum>;
   classed(name: string, value: boolean | ((d: Datum) => boolean)): StructureSelection<Datum>;
   text(value: string | ((d: Datum) => string)): StructureSelection<Datum>;
@@ -68,53 +68,42 @@ export interface StructureZoomTransform {
   translate(x: number, y: number): StructureZoomTransform;
   scale(k: number): StructureZoomTransform;
 }
-
 export interface StructureZoom {
   scaleExtent(extent: [number, number]): StructureZoom;
   on(type: string, handler: ((event: { transform: StructureZoomTransform; sourceEvent?: Event }) => void) | null): StructureZoom;
   transform: unknown;
   scaleBy: unknown;
 }
-
 export interface StructureDragBehaviour {
-  on(type: string, handler: (this: Element, event: { x: number; y: number; active?: number }, d: never) => void): StructureDragBehaviour;
+  on(type: string, handler: (this: Element, event: { x: number; y: number }, d: never) => void): StructureDragBehaviour;
 }
-
 export interface StructureLayout<Datum> {
   (root: StructureHierarchyNode<Datum>): void;
   size(size: [number, number]): StructureLayout<Datum>;
   separation(fn: (a: StructureHierarchyNode<Datum>, b: StructureHierarchyNode<Datum>) => number): StructureLayout<Datum>;
 }
-
 export interface StructureStratify<Datum> {
   (values: Datum[]): StructureHierarchyNode<Datum>;
   id(accessor: (d: Datum) => string | number | null): StructureStratify<Datum>;
   parentId(accessor: (d: Datum) => string | number | null): StructureStratify<Datum>;
 }
-
 export interface StructureScale {
   (value: number): number;
   domain(domain: [number, number]): StructureScale;
   range(range: [number, number]): StructureScale;
 }
-
 export interface StructureLinkShape {
   (link: { source: { x: number; y: number }; target: { x: number; y: number } }): string | null;
   x(accessor: (p: { x: number; y: number }) => number): StructureLinkShape;
   y(accessor: (p: { x: number; y: number }) => number): StructureLinkShape;
 }
-
 export interface StructureForce {
-  (): void;
   force(name: string, force: unknown): StructureForce;
-  on(type: string, handler: () => void): StructureForce;
   stop(): StructureForce;
   tick(count?: number): StructureForce;
-  alphaTarget(value: number): StructureForce;
-  restart(): StructureForce;
 }
 
-/** Only the members used below. Every other d3 export stays out of the type system on purpose. */
+/** Only the members used by the two lenses. Every other d3 export stays out of the types on purpose. */
 export interface StructureD3 {
   select<Datum>(node: Element): StructureSelection<Datum>;
   stratify<Datum>(): StructureStratify<Datum>;
@@ -127,11 +116,9 @@ export interface StructureD3 {
   max<Datum>(values: Datum[], accessor: (d: Datum) => number): number | undefined;
   easeCubicInOut: unknown;
   forceSimulation<Datum>(nodes: Datum[]): StructureForce;
-  forceLink(links: unknown[]): { distance(d: number): unknown; strength(s: number): unknown };
   forceManyBody(): { strength(s: number): unknown };
   forceX(x: number): { strength(s: number): unknown };
   forceY<Datum>(y: (d: Datum) => number): { strength(s: number): unknown };
-  forceCollide(): { radius(fn: (d: never) => number): unknown };
 }
 
 let structureD3Pending: Promise<StructureD3> | null = null;
@@ -172,7 +159,7 @@ export function structureReducedMotion(): boolean {
 
 export type StructureLayoutName = 'vertical' | 'horizontal' | 'radial' | 'dynamic';
 
-/** One graph node. `value` drives node area; it is the look-through value, so pricing view cannot move it. */
+/** One graph node. `value` drives node area and is the look-through value at current marks. */
 export interface StructureDatum {
   id: number;
   pid: number | null;
@@ -185,6 +172,8 @@ export interface StructureDatum {
 
 export interface StructureGraphSettings {
   layout: StructureLayoutName;
+  /** The shared Diagnose selection. Ringed, never used to fade the rest of the graph. */
+  selected: string | null;
   spacing: number;
   linkLength: number;
   curvature: number;
@@ -202,53 +191,12 @@ export interface StructureGraphResult {
 const STRUCTURE_FILL: Record<string, string> = { leaf: '#6E2932', vehicle: '#1F4A4F' };
 const STRUCTURE_LABEL_MIN = [999, 17, 9, 0];
 
-/** Was `strData`. Leaves are securities, not entities, so the graph is the 46 entity nodes. */
-export function structureGraphData(nodes: readonly LookthroughNode[]): StructureDatum[] {
-  const entities = nodes.filter((n) => n.kind !== 'leaf');
-  const present = new Set(entities.map((n) => n.id));
-  return entities.map((n) => {
-    const trail = n.path.split('/').filter(Boolean);
-    const raw = trail.length > 1 ? Number(trail[trail.length - 2]) : null;
-    return {
-      id: n.id,
-      pid: raw != null && present.has(raw) ? raw : null,
-      code: n.code,
-      name: n.name,
-      kind: n.kind,
-      value: Math.abs(n.derived) || 1,
-      ownpct: n.ownpct,
-    };
-  });
-}
-
 /** Was `strPctText`. Identical to the Simulator's per-edge %, so the two lenses tie. */
 export function structurePercentText(v: number): string {
   return (v * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
 }
 
-function structureCurve(
-  s: { x: number; y: number },
-  t: { x: number; y: number },
-  mode: 'v' | 'h' | 's',
-  curvature: number
-): string {
-  if (curvature <= 0.02) return `M${s.x},${s.y}L${t.x},${t.y}`;
-  const b = 0.15 + curvature * 0.75;
-  if (mode === 'v') {
-    const my = (s.y + t.y) / 2;
-    return `M${s.x},${s.y}C${s.x},${s.y + (my - s.y) * b} ${t.x},${t.y - (t.y - my) * b} ${t.x},${t.y}`;
-  }
-  if (mode === 'h') {
-    const mx = (s.x + t.x) / 2;
-    return `M${s.x},${s.y}C${s.x + (mx - s.x) * b},${s.y} ${t.x - (t.x - mx) * b},${t.y} ${t.x},${t.y}`;
-  }
-  return `M${s.x},${s.y}Q${(s.x + t.x) / 2},${(s.y + t.y) / 2} ${t.x},${t.y}`;
-}
-
-/**
- * Render the tree. Default layout is `vertical`; `dynamic` is the original's force layout and is
- * reachable only by explicit choice, because a tick-driven layout is not snapshot-stable.
- */
+/** Render the tree into `svgNode`. Returns the counts the caption states and a re-fit handle. */
 export function structureRenderGraph(
   d3: StructureD3,
   svgNode: SVGSVGElement,
@@ -258,9 +206,8 @@ export function structureRenderGraph(
 ): StructureGraphResult {
   const svg = d3.select<StructureDatum>(svgNode);
   svg.selectAll('*').remove();
-  const box = svgNode.parentElement;
-  const width = Math.max(600, box?.clientWidth ?? 0);
-  const height = Math.max(400, box?.clientHeight ?? 0);
+  const width = Math.max(600, svgNode.parentElement?.clientWidth ?? 0);
+  const height = Math.max(400, svgNode.parentElement?.clientHeight ?? 0);
   svg.attr('viewBox', `0 0 ${width} ${height}`);
 
   const rootG = svg.append('g');
@@ -283,57 +230,12 @@ export function structureRenderGraph(
     return { nodeCount: 0, edgeCount: 0, fit: () => undefined };
   }
 
-  const largest = d3.max(data, (d) => d.value) ?? 1;
-  const radiusOf = d3.scaleSqrt().domain([0, largest]).range([5, 26]);
+  const radiusOf = d3.scaleSqrt().domain([0, d3.max(data, (d) => d.value) ?? 1]).range([5, 26]);
   const labelFloor = STRUCTURE_LABEL_MIN[settings.labelDensity] ?? 0;
-  const labelled = (d: StructureHierarchyNode<StructureDatum>): boolean =>
-    d.data.kind === 'product' || d.data.kind === 'apex' || radiusOf(d.data.value) >= labelFloor;
-
-  const reduced = structureReducedMotion();
-  let apply: () => void = () => undefined;
-  const frame = (points: [number, number][]): void => {
-    const xs = points.map((p) => p[0]);
-    const ys = points.map((p) => p[1]);
-    const bw = Math.max(1, Math.max(...xs) - Math.min(...xs));
-    const bh = Math.max(1, Math.max(...ys) - Math.min(...ys));
-    const k = Math.min(width / (bw + 90), height / (bh + 90), 2.4);
-    const tx = (width - (Math.max(...xs) + Math.min(...xs)) * k) / 2;
-    const ty = (height - (Math.max(...ys) + Math.min(...ys)) * k) / 2;
-    apply = () => {
-      const target = d3.zoomIdentity.translate(tx, ty).scale(k);
-      if (reduced) svg.call(zoom.transform, target);
-      else svg.transition().duration(420).call(zoom.transform, target);
-    };
-    apply();
-  };
-
-  let mode: 'v' | 'h' | 's' = 'v';
-  if (settings.layout === 'dynamic') {
-    structureDynamicLayout(d3, root, width, height, settings);
-  } else if (settings.layout === 'radial') {
-    const radius = (Math.min(width, height) / 2 - 70) * settings.linkLength;
-    d3.tree<StructureDatum>()
-      .size([2 * Math.PI, radius])
-      .separation((a, b) => ((a.parent === b.parent ? 1 : 1.7) / Math.max(1, a.depth)) * settings.spacing)(root);
-    root.each((d) => {
-      const angle = d.x - Math.PI / 2;
-      d.cx = width / 2 + Math.cos(angle) * d.y;
-      d.cy = height / 2 + Math.sin(angle) * d.y;
-    });
-    mode = 's';
-  } else {
-    const vertical = settings.layout === 'vertical';
-    d3.tree<StructureDatum>()
-      .size(vertical ? [width - 80, (height - 90) * settings.linkLength] : [height - 80, (width - 160) * settings.linkLength])
-      .separation((a, b) => (a.parent === b.parent ? 1 : 1.35) * settings.spacing)(root);
-    root.each((d) => {
-      d.cx = vertical ? d.x + 40 : d.y + 90;
-      d.cy = vertical ? d.y + 45 : d.x + 40;
-    });
-    mode = vertical ? 'v' : 'h';
-  }
-
+  const mode: StructureEdgeMode = structureLayoutNodes(d3, root, width, height, settings);
   const links = root.links();
+  const descendants = root.descendants();
+
   const linkSel = rootG
     .append('g')
     .selectAll<(typeof links)[number]>('path')
@@ -343,11 +245,9 @@ export function structureRenderGraph(
     .attr('data-parity', 'structure.graph.edge_count')
     .attr('fill', 'none')
     .attr('stroke', '#8E6724')
-    .attr('stroke-opacity', 0.45)
     .attr('stroke-width', 1.2)
-    .attr('d', (l) => structureCurve({ x: l.source.cx, y: l.source.cy }, { x: l.target.cx, y: l.target.cy }, mode, settings.curvature));
+    .attr('d', (l) => structureEdgePath({ x: l.source.cx, y: l.source.cy }, { x: l.target.cx, y: l.target.cy }, mode, settings.curvature));
 
-  const descendants = root.descendants();
   const nodeSel = rootG
     .append('g')
     .selectAll<StructureHierarchyNode<StructureDatum>>('g')
@@ -357,7 +257,7 @@ export function structureRenderGraph(
     .attr('data-code', (d) => d.data.code)
     .attr('role', 'button')
     .attr('tabindex', (_d, i) => (i === 0 ? 0 : -1))
-    .attr('aria-label', (d) => `${d.data.code} — ${d.data.name}, ${structurePercentText(d.data.ownpct)} of its parent`)
+    .attr('aria-label', (d) => `${d.data.code} — ${d.data.name}, ${structurePercentText(d.data.ownpct)} of its holder`)
     .attr('transform', (d) => `translate(${d.cx},${d.cy})`);
 
   nodeSel
@@ -365,8 +265,8 @@ export function structureRenderGraph(
     .attr('class', 'ncirc')
     .attr('data-parity', 'structure.graph.node_count')
     .attr('r', (d) => radiusOf(d.data.value))
-    .attr('stroke', '#F6F2E8')
-    .attr('stroke-width', 2.5)
+    .attr('stroke', (d) => (d.data.code === settings.selected ? '#D4A04A' : '#F6F2E8'))
+    .attr('stroke-width', (d) => (d.data.code === settings.selected ? 4 : 2.5))
     .attr('fill', (d) => STRUCTURE_FILL[d.data.kind] ?? '#0A1226')
     .append('title')
     .text((d) => `${d.data.code} — ${d.data.name}`);
@@ -380,11 +280,11 @@ export function structureRenderGraph(
     .attr('font-size', 10)
     .attr('font-weight', 600)
     .attr('fill', '#1A1F2E')
-    .attr('display', (d) => (labelled(d) ? null : 'none'))
+    .attr('display', (d) => (d.data.kind === 'product' || d.data.kind === 'apex' || d.data.code === settings.selected || radiusOf(d.data.value) >= labelFloor ? null : 'none'))
     .text((d) => d.data.code);
 
   nodeSel.on('click', (_event, d) => onSelect(d.data.code));
-  nodeSel.on('keydown', (event, d) => structureRove(event as KeyboardEvent, nodeSel.nodes(), () => onSelect(d.data.code)));
+  nodeSel.on('keydown', (event, d) => structureRoveNodes(event as KeyboardEvent, nodeSel.nodes(), () => onSelect(d.data.code)));
 
   const pills = rootG
     .append('g')
@@ -402,15 +302,7 @@ export function structureRenderGraph(
     const label = structurePercentText(l.target.data.ownpct);
     const w = Math.round(label.length * 6.1 + 12);
     const g = d3.select<unknown>(this);
-    g.append('rect')
-      .attr('x', -w / 2)
-      .attr('y', -8)
-      .attr('width', w)
-      .attr('height', 16)
-      .attr('rx', 8)
-      .attr('fill', '#0b1f3a')
-      .attr('stroke', '#c9a24a')
-      .attr('stroke-width', 1);
+    g.append('rect').attr('x', -w / 2).attr('y', -8).attr('width', w).attr('height', 16).attr('rx', 8).attr('fill', '#0b1f3a').attr('stroke', '#c9a24a');
     g.append('text')
       .attr('text-anchor', 'middle')
       .attr('dy', '0.34em')
@@ -423,76 +315,17 @@ export function structureRenderGraph(
   });
 
   const focus = settings.focus.trim().toUpperCase();
-  if (focus) {
-    const hit = (d: StructureHierarchyNode<StructureDatum>): boolean =>
-      `${d.data.code}${d.data.name}`.toUpperCase().includes(focus);
-    nodeSel.attr('opacity', (d) => (hit(d) ? 1 : 0.12));
-    linkSel.attr('opacity', 0.08);
-  } else {
-    nodeSel.attr('opacity', 1);
-    linkSel.attr('opacity', 0.5);
-  }
+  const hit = (d: StructureHierarchyNode<StructureDatum>): boolean => `${d.data.code}${d.data.name}`.toUpperCase().includes(focus);
+  nodeSel.attr('opacity', (d) => (focus ? (hit(d) ? 1 : 0.12) : 1));
+  linkSel.attr('stroke-opacity', focus ? 0.08 : 0.45);
 
-  frame(descendants.map((d) => [d.cx, d.cy] as [number, number]));
-  return { nodeCount: descendants.length, edgeCount: links.length, fit: () => apply() };
-}
-
-/** Roving tabindex over the node set: the graph is reachable and traversable without a mouse. */
-function structureRove(event: KeyboardEvent, all: Element[], activate: () => void): void {
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault();
-    activate();
-    return;
-  }
-  const step = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0;
-  if (!step) return;
-  event.preventDefault();
-  const here = all.indexOf(event.currentTarget as Element);
-  const next = all[(here + step + all.length) % all.length];
-  if (!(next instanceof SVGElement)) return;
-  all.forEach((n) => n.setAttribute('tabindex', '-1'));
-  next.setAttribute('tabindex', '0');
-  next.focus();
-}
-
-/**
- * The original's "Dynamic" layout. `d3.forceSimulation` lives here and ONLY here: it is never the
- * default, and under reduced motion it is ticked a fixed number of times and stopped, so even this
- * path settles to a single DOM state rather than animating.
- */
-function structureDynamicLayout(
-  d3: StructureD3,
-  root: StructureHierarchyNode<StructureDatum>,
-  width: number,
-  height: number,
-  settings: StructureGraphSettings
-): void {
-  const nodes = root.descendants();
-  const deepest = Math.max(1, ...nodes.map((n) => n.depth));
-  const rowHeight = ((height - 100) / (deepest + 1)) * settings.linkLength;
-  const byDepth = new Map<number, StructureHierarchyNode<StructureDatum>[]>();
-  for (const n of nodes) {
-    const row = byDepth.get(n.depth) ?? [];
-    row.push(n);
-    byDepth.set(n.depth, row);
-  }
-  for (const row of byDepth.values()) {
-    row.forEach((n, i) => {
-      n.cx = (width * (i + 1)) / (row.length + 1);
-      n.cy = 50 + n.depth * rowHeight;
-      n.x = n.cx;
-      n.y = n.cy;
-    });
-  }
-  const sim = d3
-    .forceSimulation(nodes)
-    .force('charge', d3.forceManyBody().strength(-190 * settings.spacing))
-    .force('x', d3.forceX(width / 2).strength(0.035))
-    .force('y', d3.forceY<StructureHierarchyNode<StructureDatum>>((n) => 50 + n.depth * rowHeight).strength(0.9));
-  sim.stop();
-  sim.tick(120);
-  for (const n of nodes) {
-    n.cx = n.x;
-    n.cy = n.y;
-  }
+  const xs = descendants.map((d) => d.cx);
+  const ys = descendants.map((d) => d.cy);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  const k = Math.min(width / (Math.max(1, x1 - x0) + 90), height / (Math.max(1, y1 - y0) + 90), 2.4);
+  const target = d3.zoomIdentity.translate((width - (x1 + x0) * k) / 2, (height - (y1 + y0) * k) / 2).scale(k);
+  const fit = (): void =>
+    structureReducedMotion() ? void svg.call(zoom.transform, target) : void svg.transition().duration(420).call(zoom.transform, target);
+  fit();
+  return { nodeCount: descendants.length, edgeCount: links.length, fit };
 }

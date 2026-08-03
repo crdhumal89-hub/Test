@@ -2,10 +2,19 @@
  * TRACE-Pro parity harness.
  *
  *   node scripts/snapshot.mjs --target reference/TRACE-Pro-original.html [--out FILE]
- *   node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json
+ *   node scripts/snapshot.mjs --target reference/TRACE-Pro-original.html --diff tests/baseline.json
+ *   node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json --expect-renamed
+ *   node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json --only reconciliation.
  *
  * Loads a target, visits all 7 screens, runs the documented default interactions, and writes
  * every key in parity-map.json with its rendered string.
+ *
+ * The gate is in two parts (see scripts/lib/parity.mjs). Most keys must be byte-identical to
+ * tests/baseline.json. The keys the rename table touches must instead render the string DECLARED
+ * for them in docs/rename-map.json, and every numeric token in that string must match the
+ * baseline's, in order — words may change, digits may not. `--expect-renamed` says which
+ * vocabulary this run asserts; it defaults to the ORIGINAL's, so the original still passes, and
+ * omitting it on the rebuilt app fails rather than skips.
  *
  * Determinism contract (see docs/redesign-spec.md 5.4): fixed 1600x1000 viewport, en-US locale,
  * UTC timezone, reduced motion, a FRESH browser context per scene so sessionStorage
@@ -20,6 +29,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serve } from './lib/server.mjs';
 import { launch, newPage, settle } from './lib/browser.mjs';
+import { extractEntry } from './lib/extract.mjs';
+import { applyStep, selectScreen, selectView } from './lib/steps.mjs';
+import { BANNER, computeDiffs, loadRenameMap, printParityReport, validateRenameMap } from './lib/parity.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -30,13 +42,42 @@ function arg(name, dflt = null) {
 
 const targetArg = arg('target');
 if (!targetArg) {
-  console.error('usage: node scripts/snapshot.mjs --target <file|dir> [--diff baseline.json] [--out file]');
+  console.error(
+    'usage: node scripts/snapshot.mjs --target <file|dir> [--diff baseline.json] [--out file]\n' +
+      '                                [--expect-renamed] [--only <key-prefix>]\n\n' +
+      '  --expect-renamed  assert the REBUILT vocabulary: the declared-label keys of\n' +
+      '                    docs/rename-map.json must render their declared string. Off by default,\n' +
+      '                    so the original passes, because for the original the labels ARE the\n' +
+      '                    baseline. Dropping the flag does not disable the check — it inverts it.\n' +
+      '  --only <prefix>   extract and diff only keys under <prefix>. For iteration only; the run\n' +
+      '                    is stamped NOT VALID FOR CERTIFICATION.'
+  );
   process.exit(3);
 }
 const diffPath = arg('diff');
 const outPath = arg('out');
+const only = arg('only');
+const expectRenamed = process.argv.includes('--expect-renamed');
 
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'parity-map.json'), 'utf8'));
+
+/**
+ * Entries that can emit a key under `prefix`. Prunes scenes so an iteration run is fast; the diff
+ * is filtered independently, so pruning can only ever remove work, never change a verdict.
+ */
+function entriesUnder(entries, prefix) {
+  if (!prefix) return entries;
+  const out = [];
+  for (const e of entries) {
+    if (e.type === 'single' || e.type === 'count') {
+      const keys = Object.fromEntries(Object.entries(e.keys).filter(([k]) => k.startsWith(prefix)));
+      if (Object.keys(keys).length) out.push({ ...e, keys });
+    } else if (e.keyPrefix && (e.keyPrefix.startsWith(prefix) || prefix.startsWith(e.keyPrefix))) {
+      out.push(e);
+    }
+  }
+  return out;
+}
 
 /* ------------------------------------------------------------------ target resolution */
 const absTarget = path.resolve(ROOT, targetArg);
@@ -48,184 +89,6 @@ const isDir = fs.statSync(absTarget).isDirectory();
 const serveRoot = isDir ? absTarget : path.dirname(absTarget);
 const entryPath = isDir ? '/index.html' : '/' + path.basename(absTarget);
 
-/* ------------------------------------------------------------------ in-page extraction */
-/** Runs in the browser. Returns { [key]: string } for one entry of the map. */
-function extractEntry(entry) {
-  const norm = (s) => (s == null ? null : String(s).replace(/\s+/g, ' ').trim());
-  const textOf = (el, opts = {}) => {
-    if (!el) return null;
-    if (opts.exclude) {
-      const c = el.cloneNode(true);
-      c.querySelectorAll(opts.exclude).forEach((n) => n.remove());
-      return norm(c.textContent);
-    }
-    return norm(el.textContent);
-  };
-  const parseNum = (s) => {
-    if (s == null) return null;
-    const t = String(s).replace(/[\s,$%]/g, '').replace(/bps/gi, '');
-    const neg = /^\(.*\)$/.test(t) || /^-/.test(t);
-    const d = t.replace(/[()\-+]/g, '');
-    if (d === '' || !/^[0-9.]+$/.test(d)) return null;
-    const v = parseFloat(d);
-    return isNaN(v) ? null : neg ? -v : v;
-  };
-  const out = {};
-
-  if (entry.type === 'single') {
-    for (const [key, spec] of Object.entries(entry.keys)) {
-      const el = document.querySelector(spec.selector);
-      out[key] = textOf(el, spec);
-    }
-    return out;
-  }
-
-  if (entry.type === 'count') {
-    for (const [key, spec] of Object.entries(entry.keys)) {
-      out[key] = String(document.querySelectorAll(spec.selector).length);
-    }
-    return out;
-  }
-
-  if (entry.type === 'rows' || entry.type === 'list') {
-    const rowSel = entry.rowSelector || entry.selector;
-    let rows = Array.from(document.querySelectorAll(rowSel));
-    if (entry.where) {
-      rows = rows.filter((r) => {
-        const w = r.querySelector(entry.where.selector);
-        return textOf(w) === entry.where.equals;
-      });
-    }
-    const ids = new Set();
-    for (const r of rows) {
-      let id = null;
-      if (entry.idFrom.attr) id = r.getAttribute(entry.idFrom.attr);
-      else if (entry.idFrom.selector) id = textOf(r.querySelector(entry.idFrom.selector));
-      else if (entry.idFrom.text) id = textOf(r);
-      if (id && entry.idFrom.strip) id = norm(String(id).replace(new RegExp(entry.idFrom.strip), ''));
-      if (!id) continue;
-      id = String(id).replace(/[^A-Za-z0-9_.>-]+/g, '_');
-      if (ids.has(id)) continue; // first occurrence wins; duplicates are reported as row_count drift
-      ids.add(id);
-      for (const [suffix, spec] of Object.entries(entry.cells || {})) {
-        const cs = typeof spec === 'string' ? { selector: spec } : spec;
-        const cell = cs.selector === '.' ? r : r.querySelector(cs.selector);
-        out[`${entry.keyPrefix}.${id}.${suffix}`] = textOf(cell, cs);
-      }
-      if (!entry.cells) out[`${entry.keyPrefix}.${id}`] = textOf(r);
-    }
-    out[`${entry.keyPrefix}.__row_count`] = String(ids.size);
-    return out;
-  }
-
-  if (entry.type === 'digest') {
-    const rows = Array.from(document.querySelectorAll(entry.rowSelector));
-    out[`${entry.keyPrefix}.row_count`] = String(rows.length);
-    for (const [name, colIdx] of Object.entries(entry.columns)) {
-      let sum = 0;
-      let n = 0;
-      let min = null;
-      let max = null;
-      for (const r of rows) {
-        const cell = r.querySelector(`td:nth-child(${colIdx})`);
-        const v = parseNum(textOf(cell));
-        if (v == null) continue;
-        n++;
-        sum += v;
-        min = min == null ? v : Math.min(min, v);
-        max = max == null ? v : Math.max(max, v);
-      }
-      const fx = (x) => (x == null ? null : x.toFixed(2));
-      out[`${entry.keyPrefix}.${name}.count`] = String(n);
-      out[`${entry.keyPrefix}.${name}.sum`] = fx(sum);
-      out[`${entry.keyPrefix}.${name}.min`] = fx(min);
-      out[`${entry.keyPrefix}.${name}.max`] = fx(max);
-    }
-    return out;
-  }
-
-  throw new Error('unknown entry type: ' + entry.type);
-}
-
-/* ------------------------------------------------------------------ documented interactions */
-async function applyStep(page, step) {
-  const [verb, ...rest] = step.split(':');
-  const param = rest.join(':');
-  switch (verb) {
-    case 'expandAll':
-      await page.click('#expand');
-      break;
-    case 'ltRow': {
-      const ok = await page.evaluate((code) => {
-        const rows = Array.from(document.querySelectorAll('#tree tbody tr.rowv'));
-        const row = rows.find((r) => {
-          const c = r.querySelector('.codetag');
-          return c && c.textContent.trim() === code;
-        });
-        if (!row) return false;
-        row.click();
-        return true;
-      }, param);
-      if (!ok) throw new Error(`step ltRow:${param} — no tree row with that code`);
-      break;
-    }
-    case 'rfxRow': {
-      const sel = `#rectable tbody tr[data-c="${param}"]`;
-      if (!(await page.$(sel))) throw new Error(`step rfxRow:${param} — no such row`);
-      await page.click(sel);
-      break;
-    }
-    case 'rfxView':
-      await page.click(`#rfxsub button[data-v="${param}"]`);
-      break;
-    case 'stageFullscreen':
-      await page.click(param === 'sim' ? '#simfull' : '#strfull');
-      break;
-    case 'simFullReprice':
-      await page.click('#simreprice');
-      await page.waitForFunction(
-        () => {
-          const l = document.getElementById('simrunlab');
-          return !!l && /complete/i.test(l.textContent || '');
-        },
-        undefined,
-        { timeout: 120000 }
-      );
-      break;
-    case 'ownRow': {
-      const n = parseInt(param, 10);
-      const rows = await page.$$('#revtree tbody tr.rowv');
-      if (!rows[n - 1]) throw new Error(`step ownRow:${param} — fewer than ${n} rows`);
-      await rows[n - 1].click();
-      break;
-    }
-    case 'ownSearch':
-      await pickFromCombo(page, '#objinput', '#objlist', param);
-      break;
-    case 'issScope':
-      await pickFromCombo(page, '#issinput', '#isslist', param);
-      break;
-    case 'glsSearch':
-      await page.fill('#glssearch', param);
-      await page.dispatchEvent('#glssearch', 'input');
-      break;
-    case 'glsChip':
-      await page.click(`.glschip[data-group="${param}"]`);
-      break;
-    default:
-      throw new Error('unknown step: ' + step);
-  }
-  await settle(page);
-}
-
-/** Type into one of the app's comboboxes and click the first matching option. */
-async function pickFromCombo(page, inputSel, listSel, query) {
-  await page.click(inputSel);
-  await page.fill(inputSel, query);
-  await page.dispatchEvent(inputSel, 'input');
-  await page.waitForSelector(`${listSel} li[data-i]`, { timeout: 10000 });
-  await page.click(`${listSel} li[data-i]`);
-}
 
 /* ------------------------------------------------------------------ scenes */
 /** A scene is one (screen, view, steps) triple; entries sharing a scene are extracted together. */
@@ -238,7 +101,7 @@ async function run() {
   const browser = await launch();
 
   const scenes = new Map();
-  for (const e of MAP.entries) {
+  for (const e of entriesUnder(MAP.entries, only)) {
     const k = sceneKeyOf(e);
     if (!scenes.has(k)) scenes.set(k, []);
     scenes.get(k).push(e);
@@ -256,14 +119,8 @@ async function run() {
       await page.goto(srv.origin + entryPath, { waitUntil: 'load' });
       await settle(page);
 
-      if (view === 'after') {
-        await page.click('#pricetog button[data-pm="after"]');
-        await settle(page);
-      }
-      if (screen !== 'any') {
-        await page.click(`.tab[data-tab="${screen}"]`);
-        await settle(page);
-      }
+      await selectView(page, view);
+      await selectScreen(page, screen);
       for (const s of steps) await applyStep(page, s);
 
       for (const e of entries) {
@@ -303,6 +160,7 @@ async function run() {
   const offline = problems.filter((p) => p.type === 'offline-violation');
   const sceneErrors = problems.filter((p) => p.type === 'scene-error');
 
+  if (only) console.log(BANNER);
   console.log(`target        : ${targetArg}`);
   console.log(`scenes        : ${sceneLog.length}`);
   console.log(`keys resolved : ${snapshot.keyCount - unresolved.length} / ${snapshot.keyCount}`);
@@ -346,29 +204,35 @@ async function run() {
   if (diffPath) {
     const base = JSON.parse(fs.readFileSync(path.resolve(ROOT, diffPath), 'utf8'));
     const bv = base.values || base;
-    const allKeys = [...new Set([...Object.keys(bv), ...Object.keys(snapshot.values)])].sort();
-    const diffs = [];
-    for (const k of allKeys) {
-      const a = bv[k];
-      const b = snapshot.values[k];
-      if (a === undefined) diffs.push({ key: k, kind: 'ADDED', baseline: null, current: b });
-      else if (b === undefined) diffs.push({ key: k, kind: 'MISSING', baseline: a, current: null });
-      else if (a !== b) diffs.push({ key: k, kind: 'CHANGED', baseline: a, current: b });
-    }
-    console.log(`\n=== PARITY vs ${diffPath} ===`);
-    console.log(`baseline keys : ${Object.keys(bv).length}`);
-    console.log(`current keys  : ${Object.keys(snapshot.values).length}`);
-    console.log(`value diffs   : ${diffs.length}`);
-    if (diffs.length) {
-      console.log('\n--- DIFFS ---');
-      for (const d of diffs.slice(0, 200)) {
-        console.log(`  [${d.kind}] ${d.key}\n      baseline: ${JSON.stringify(d.baseline)}\n      current : ${JSON.stringify(d.current)}`);
-      }
-      if (diffs.length > 200) console.log(`  … +${diffs.length - 200} more`);
+    const renameMap = loadRenameMap(ROOT);
+
+    // The frozen map is re-validated against the frozen baseline on every run, so an edit to the
+    // map cannot quietly redefine what a figure is: a declaration whose digits do not match the
+    // baseline's fails here, before any value is compared.
+    const mapProblems = validateRenameMap(renameMap, bv);
+    if (mapProblems.length) {
+      console.log('\n--- docs/rename-map.json IS INVALID (gate cannot run) ---');
+      mapProblems.forEach((p) => console.log('  ' + p));
       exit = 2;
-    } else {
-      console.log('  ZERO value diffs.');
     }
+
+    const result = computeDiffs({
+      baseline: bv,
+      current: snapshot.values,
+      renameMap,
+      expectRenamed,
+      only,
+    });
+    const passed = printParityReport({
+      diffPath,
+      result,
+      baselineKeys: Object.keys(bv).length,
+      currentKeys: Object.keys(snapshot.values).length,
+      only,
+      expectRenamed,
+      hasMap: !!renameMap,
+    });
+    if (!passed) exit = 2;
   }
 
   console.log(`\nRESULT: ${exit === 0 ? 'PASS' : 'FAIL'} (exit ${exit})`);

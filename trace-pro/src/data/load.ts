@@ -15,6 +15,8 @@ export interface Manifest {
     name: string;
     code: string;
     asOfDates: string[];
+    /** The position the Ownership lens opens on. */
+    defaultPosition?: string;
     files: Record<string, string>;
   }[];
 }
@@ -60,7 +62,7 @@ export async function loadManifest(): Promise<Manifest> {
 export function resolveSelection(
   manifest: Manifest,
   search: string
-): { product: string; asof: string; name: string; code: string } {
+): { product: string; asof: string; name: string; code: string; defaultPosition: string | null } {
   const params = new URLSearchParams(search);
   const wantProduct = params.get('product') ?? manifest.default.product;
   const entry =
@@ -69,7 +71,13 @@ export function resolveSelection(
   if (!entry) throw new FixtureError('The data manifest lists no products.', `${DATA_ROOT}/manifest.json`);
   const wantAsof = params.get('asof') ?? manifest.default.asof;
   const asof = entry.asOfDates.includes(wantAsof) ? wantAsof : (entry.asOfDates[0] ?? manifest.default.asof);
-  return { product: entry.slug, asof, name: entry.name, code: entry.code };
+  return {
+    product: entry.slug,
+    asof,
+    name: entry.name,
+    code: entry.code,
+    defaultPosition: entry.defaultPosition ?? null,
+  };
 }
 
 function dirFor(product: string, asof: string): string {

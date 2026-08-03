@@ -7,20 +7,13 @@
  * searches for the same code. Here the entity is selected once, at the top, and the four lenses are
  * views of it. Switching lens never clears the selection — that invariant is what rubric R16 checks.
  */
-import type { Store, LensId } from '../../../state/store.js';
+import type { Store } from '../../../state/store.js';
 import { LENSES } from '../../chrome/shell.js';
 import { el, replace, qs, activate } from '../../primitives/dom.js';
 import { createCombobox, type ComboOption } from '../../primitives/combobox.js';
 
 export const DIAGNOSE_QUESTION =
   'Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?';
-
-const LENS_QUESTION: Record<LensId, string> = {
-  structure: 'How is this product wired — who owns whom, and where is concentration?',
-  ownership: 'Who ultimately owns this position, and in what proportion?',
-  'data-quality': 'What is wrong with the source data before I trust any figure above?',
-  simulator: 'If this fund’s value or units move, what happens to product NAV, and through which holders?',
-};
 
 /** A lens is mounted lazily and told to tear down when the user leaves it. */
 export type LensMount = (host: HTMLElement, store: Store) => (() => void) | void;
@@ -38,7 +31,8 @@ export function mountDiagnose(host: HTMLElement, store: Store, lenses: DiagnoseL
     el('p', { class: 'screen-question', id: 'diagnose-question', text: DIAGNOSE_QUESTION }),
     el('div', { class: 'diagnose-subject', id: 'diagnose-subject' }),
     el('div', { class: 'lens-tabs', id: 'lens-tabs', role: 'tablist', 'aria-label': 'Diagnostic lenses' }),
-    el('p', { class: 'lens-question', id: 'lens-question' }),
+    // No question line here: each lens renders its own as the first text in its content region,
+    // which is where R1 requires it. Two copies of the same sentence is worse than one.
     el('div', { class: 'lens-body', id: 'lens-body', role: 'tabpanel' })
   );
 
@@ -135,7 +129,6 @@ export function mountDiagnose(host: HTMLElement, store: Store, lenses: DiagnoseL
     unmountLens = null;
     const body = qs('#lens-body', host);
     const lens = store.state.lens;
-    qs('#lens-question', host).textContent = LENS_QUESTION[lens];
     body.setAttribute('aria-label', LENSES.find((l) => l.id === lens)?.label ?? lens);
     replace(body);
     const teardown = lenses[lens](body, store);

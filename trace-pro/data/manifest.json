@@ -12,6 +12,7 @@
    "asOfDates": [
     "2026-06-30"
    ],
+   "defaultPosition": "APPOURI",
    "files": {
     "EMB": "lookthrough.json",
     "UNI": "universe.json",

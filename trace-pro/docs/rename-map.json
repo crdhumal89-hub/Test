@@ -1,8 +1,9 @@
 {
  "$comment": [
   "Frozen once written. Declares, per key, the exact string the rebuilt app must render where the rename table changes vocabulary. The gate additionally asserts every numeric token survives unchanged.",
-  "Scope: exactly the 37 keys of tests/baseline.json whose baseline text carries a term retired by docs/redesign-spec.md 3.1, outside glossary.*. scripts/classify-keys.mjs derives that set from the baseline and fails if this file does not match it key-for-key.",
-  "The other 983 baseline keys stay STRICT: byte-identical to tests/baseline.json. A relabel that is not declared here is a gate FAILURE, never a pass.",
+  "Scope: exactly the 38 keys of tests/baseline.json whose baseline text carries a term retired by docs/redesign-spec.md 3.1, outside glossary.*. scripts/classify-keys.mjs derives that set from the baseline and fails if this file does not match it key-for-key.",
+  "The set was 37 until reconciliation.status_line was found rendering the retired terms as the bare words \"Derived\" and \"Revised\", with no \"MV\" suffix. The scan now includes those bare terms. Matching is plain substring, not word-boundary anchored, because the harness reads textContent and adjacent labels concatenate with no separator — see the comment in scripts/classify-keys.mjs.",
+  "The other 982 baseline keys stay STRICT: byte-identical to tests/baseline.json. A relabel that is not declared here is a gate FAILURE, never a pass.",
   "glossary.* is excluded by design: 12 glossary keys still mention the retired terms, because the glossary is where a controller looks up what the old label meant. Those keys keep the original wording and stay strict.",
   "expected was derived by applying \"vocabulary\" to the baseline string and then reading the result. Where the mechanical substitution read badly — a term used as a noun mid-sentence, a subtitle that restated the old label, an arithmetic clause — the entry carries a hand-written sentence and a \"note\" saying why. That is why this map is per key and not a find-and-replace.",
   "In running prose the declared terms appear in sentence case (e.g. \"look-through value\"); as a label or column head they appear as declared.",
@@ -56,7 +57,8 @@
   },
   "pricing.bridge.product_nav_basis": {
    "baseline": "Σ apex-fund ENDING_NAV — the product's own NAV, not Σ all 26 funds ($7,407,316,163)",
-   "expected": "Σ top-level feeder ENDING_NAV — the product's own NAV, not Σ all 26 funds ($7,407,316,163)"
+   "expected": "sum of top-level feeder NAVs — the product's own NAV, not the sum of all 26 funds ($7,407,316,163)",
+   "note": "Hand-written. \"Σ apex-fund ENDING_NAV\" is two pieces of jargon and an internal field name; the rebuilt app states the basis in words. Same wording as reconciliation.waterfall.nav_basis."
   },
   "pricing.detail.SPORTHFC.level_pnl_block": {
    "baseline": "Derived MV · current marks$122,705,103 Revised MV · NAV-repriced$122,977,266 Level P&L$272,162 · 22.6 bps Direct securities (not repriced)$454,674",
@@ -127,7 +129,8 @@
   },
   "pricing.score.nav_detail": {
    "baseline": "Σ apex ENDING_NAV · 8 flagged",
-   "expected": "Σ top-level feeder ENDING_NAV · 8 flagged"
+   "expected": "sum of top-level feeder NAVs · 8 flagged",
+   "note": "Same basis phrase as the reconciliation waterfall, so one basis reads the same everywhere. The \"8 flagged\" count is untouched."
   },
   "pricing.table.column_headers": {
    "baseline": "FundSymbolPublish pxCurrent pxRevised pxDerived MVRevised MVRepricing P&Lbps",
@@ -135,8 +138,8 @@
   },
   "pricing.walk.total.label": {
    "baseline": "PRODUCT · SPORT (Σ apex)",
-   "expected": "PRODUCT · SPORT (Σ top-level feeders)",
-   "note": "Plural, because the row sums every top-level feeder."
+   "expected": "PRODUCT · SPORT (sum of top-level feeders)",
+   "note": "Plural and spelled out, because the row sums every top-level feeder."
   },
   "reconciliation.after.pricing_view_note": {
    "baseline": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its revised price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Δ Pricing $0 · NAV $2,062,198,836",
@@ -155,6 +158,11 @@
    "baseline": "NAV$120,620,995Derived MV · current marks$122,705,103Revised MV · NAV-repriced$122,977,266Δ Pricing (Revised−Derived)$272,162 · 22.6 bpsΔ Non-position (NAV−Revised)($2,356,271) · -195.3 bps",
    "expected": "NAV$120,620,995Look-through value · current marks$122,705,103Repriced value · bottom-up from NAV$122,977,266Pricing difference (repriced − look-through)$272,162 · 22.6 bpsNon-position difference (NAV − repriced)($2,356,271) · -195.3 bps",
    "note": "The parenthetical formulas are spelled out in the new vocabulary and spaced around the minus sign; the signed bps figures keep their exact form."
+  },
+  "reconciliation.status_line": {
+   "baseline": "Apollo Sports Capital · Derived $2,060,224,441 → Revised $2,060,610,338 → NAV $2,062,198,836 · 26 funds",
+   "expected": "Apollo Sports Capital · Look-through value $2,060,224,441 → Repriced value $2,060,610,338 → NAV $2,062,198,836 · 26 funds",
+   "note": "Caught only after the term list was widened to bare \"Derived\" / \"Revised\": this line renders them without the \"MV\" suffix, so a scan for \"Derived MV\" / \"Revised MV\" alone missed a real label key. Four figures, unchanged and in order."
   },
   "reconciliation.tie.statement": {
    "baseline": "✓ ties to the cent Δ Pricing $385,897 + Δ Non-position $1,588,498 = $1,974,394 = NAV − Derived $1,974,394",
@@ -175,7 +183,8 @@
   },
   "reconciliation.waterfall.nav_basis": {
    "baseline": "Σ apex ENDING_NAV · NAV report",
-   "expected": "Σ top-level feeder ENDING_NAV · NAV report"
+   "expected": "sum of top-level feeder NAVs · NAV report",
+   "note": "As built. Note what is NOT here: an as-of date. Appending \"as of 2026-06-30\" reads well and injects three numeric tokens into a string that has none, which the digit guard rejects."
   },
   "reconciliation.waterfall.start_label": {
    "baseline": "Derived MV",

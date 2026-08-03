@@ -19,12 +19,12 @@ import { el, replace, qs, errorState } from '../../../primitives/dom.js';
 import { parity } from '../../../parity.js';
 import {
   structureEnsureD3,
-  structureGraphData,
   structureRenderGraph,
   type StructureD3,
   type StructureDatum,
   type StructureGraphResult,
 } from './graph.js';
+import type { LookthroughNode } from '../../../../domain/types.js';
 import { structureDefaultSettings, structureRenderControls, structureRenderLegend, type StructureControlsHandle } from './controls.js';
 
 export const STRUCTURE_QUESTION =
@@ -36,6 +36,28 @@ const STRUCTURE_STAGE_FULL =
   'position:fixed;inset:0;width:100vw;height:100vh;z-index:9000;background:#F6F2E8;border:none;border-radius:0;overflow:hidden';
 const STRUCTURE_READOUT_STYLE =
   'position:absolute;top:12px;left:14px;z-index:64;max-width:280px;padding:7px 12px;border-radius:10px;background:rgba(255,255,255,.9);border:1px solid rgba(26,31,46,.14);font-size:11.5px;line-height:1.35;font-weight:700;color:#22314c;pointer-events:none';
+
+/**
+ * Was `strData`. Leaves are securities rather than entities, so the graph is the 46 entity nodes
+ * and the 45 ownership links between them; the parent comes from the node's materialised path.
+ */
+export function structureGraphData(nodes: readonly LookthroughNode[]): StructureDatum[] {
+  const entities = nodes.filter((n) => n.kind !== 'leaf');
+  const present = new Set(entities.map((n) => n.id));
+  return entities.map((n) => {
+    const trail = n.path.split('/').filter(Boolean);
+    const raw = trail.length > 1 ? Number(trail[trail.length - 2]) : null;
+    return {
+      id: n.id,
+      pid: raw != null && present.has(raw) ? raw : null,
+      code: n.code,
+      name: n.name,
+      kind: n.kind,
+      value: Math.abs(n.derived) || 1,
+      ownpct: n.ownpct,
+    };
+  });
+}
 
 /** Where the product's look-through value is concentrated. Pure, so the caption cannot drift. */
 export interface StructureConcentration {

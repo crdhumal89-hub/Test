@@ -38,10 +38,10 @@ function pricingBridgeCaption(after: boolean): HTMLElement {
     return caption;
   }
   caption.append(
-    'Per-driver gap = apex NAV − its derived look-through MV — the bars sum to the headline gap' +
-      ' (bar scaled to the largest leg; ',
+    'Per-driver gap = top-level feeder NAV − its look-through value — the bars sum to the headline' +
+      ' gap (bar scaled to the largest leg; ',
     el('b', { class: 'neg', text: 'red' }),
-    ' = NAV above derived / scenario b, ',
+    ' = NAV above look-through / scenario b, ',
     el('b', { class: 'pos', text: 'green' }),
     ' = below / scenario a) — click to inspect'
   );
@@ -69,9 +69,9 @@ export function renderPricingBridge(
       text: formatUsd(bridge.productNav),
     }),
     el('div', { class: 'bridge-end-basis', ...parity('pricing.bridge.product_nav_basis') }, [
-      "Σ apex-fund ENDING_NAV — the product's own NAV, ",
+      "sum of top-level feeder NAVs — the product's own NAV, ",
       el('b', { text: 'not' }),
-      ` Σ all ${bridge.fundCount} funds (${formatUsd(bridge.sumAllFundNav)})`,
+      ` the sum of all ${bridge.fundCount} funds (${formatUsd(bridge.sumAllFundNav)})`,
     ]),
   ]);
 

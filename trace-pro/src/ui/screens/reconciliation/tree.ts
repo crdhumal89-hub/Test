@@ -49,7 +49,15 @@ export function renderTree(
         'sub' in c && c.sub
           ? el('span', {
               class: 'th-sub',
-              text: c.key === 'pricing' && after ? 'reconciled' : c.sub,
+              // Two columns change meaning with the basis, so their sub-labels must move with it.
+              // The look-through column carries liveValueOf, which IS the repriced quantity under
+              // the repriced basis — labelling it "current marks" there would be false.
+              text:
+                c.key === 'pricing' && after
+                  ? 'reconciled'
+                  : c.key === 'derived' && after
+                    ? 'at repriced marks'
+                    : c.sub,
             })
           : null,
       ])

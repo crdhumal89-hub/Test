@@ -103,6 +103,10 @@ const manifest = {
       name: blobs.EMB.product,
       code: blobs.REVBASE.productCode,
       asOfDates: [asof],
+      // The position the Ownership lens opens on. The original hard-coded
+      // renderBreakout('APPOURI') at line 2498; it belongs to the firm-wide universe rather than
+      // this product's look-through tree, so it cannot be derived and must be declared.
+      defaultPosition: 'APPOURI',
       files: FILES,
     },
   ],

@@ -108,10 +108,12 @@ function ownershipHeaderRow(rootSymbol: string): HTMLElement {
     { label: 'SPV fund code', align: 'l', title: 'The SPV fund code that maps the holding.' },
     { label: 'Qty held', align: 'r', title: 'Units of the row below that this holder holds.' },
     {
-      label: 'Immediate %',
-      sub: 'share of row below',
+      // Renamed per docs/redesign-spec.md §3.1 and declared in docs/rename-map.json: the old
+      // subtitle "share of row below" only restated the old label "Immediate %".
+      label: 'Direct share',
+      sub: 'of the level below',
       align: 'r',
-      title: 'Direct share (of the level below) — holder qty ÷ units outstanding of the row below.',
+      title: 'Direct share, was "Immediate %" — holder qty ÷ units outstanding of the row below.',
     },
     {
       label: `% of ${rootSymbol}`,

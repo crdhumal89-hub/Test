@@ -20,7 +20,8 @@ import {
 } from '../../../../domain/ownership.js';
 import type { UniverseFixture } from '../../../../domain/types.js';
 import type { Store } from '../../../../state/store.js';
-import { activate, el, emptyState, errorState, loadingState, qs, replace } from '../../../primitives/dom.js';
+import { createCombobox, type ComboOption } from '../../../primitives/combobox.js';
+import { el, emptyState, errorState, loadingState, qs, replace } from '../../../primitives/dom.js';
 import { parity } from '../../../parity.js';
 import { renderOwnershipIdentity, renderOwnershipRibbon, renderOwnershipTree } from './owner-tree.js';
 import { renderOwnershipDerivation, renderOwnershipDerivationPrompt } from './derivation.js';
@@ -45,21 +46,17 @@ export interface OwnershipUniverseLoader {
 /** How many search results a keystroke may put on screen. */
 const OWNERSHIP_SEARCH_LIMIT = 40;
 
-interface OwnershipSearchItem {
-  code: string;
-  label: string;
-  sub: string;
-  kind: string;
-  hay: string;
-}
-
-function ownershipSearchIndex(universe: UniverseFixture): OwnershipSearchItem[] {
+/**
+ * Every position the firm-wide universe knows: SPVs, funds and — once a position report has been
+ * uploaded — securities. Searched by code, VPM symbol or name.
+ */
+function ownershipSearchIndex(universe: UniverseFixture): ComboOption[] {
   return (universe.search ?? []).map((x) => ({
-    code: x.c,
+    key: x.c,
     label: x.s || x.c,
-    sub: x.n,
+    detail: x.n,
     kind: x.inv ? 'SPV' : 'FUND',
-    hay: `${x.c} ${x.s} ${x.n}`.toLowerCase(),
+    haystack: `${x.c} ${x.s} ${x.n}`.toLowerCase(),
   }));
 }
 
@@ -71,10 +68,9 @@ export function mountOwnershipLens(
   let disposed = false;
   let graph: OwnershipGraph | null = null;
   let shares: OwnershipShares | null = null;
-  let index: OwnershipSearchItem[] = [];
+  let index: ComboOption[] = [];
   let rows: readonly OwnershipRow[] = [];
   let selectedRowId: string | null = null;
-  let query = '';
 
   const question = (): HTMLElement =>
     el('p', { class: 'screen-question', id: 'ownership-question', text: OWNERSHIP_QUESTION });
@@ -146,114 +142,29 @@ export function mountOwnershipLens(
     renderSearch();
   }
 
-  /** Rendered once, so a keystroke never costs the caret. */
+  /**
+   * The position picker, built once so a keystroke never costs the caret. It is the same combobox
+   * primitive the Diagnose subject bar and the Pricing filter use — the original had three
+   * hand-rolled copies with three different keyboard behaviours.
+   */
   function renderSearch(): void {
-    const input = el('input', {
-      type: 'search',
-      id: 'ownership-search',
-      class: 'own-search-input',
-      role: 'combobox',
-      autocomplete: 'off',
-      'aria-autocomplete': 'list',
-      'aria-controls': 'ownership-search-list',
-      'aria-expanded': 'false',
-      placeholder: 'VPM symbol, fund name or code',
-    });
-    const list = el('ul', {
-      class: 'own-search-list',
-      id: 'ownership-search-list',
-      role: 'listbox',
-      'aria-label': 'Matching positions',
-      hidden: 'hidden',
-    });
-    const note = el('div', { id: 'ownership-search-note' });
-
-    const close = (): void => {
-      list.hidden = true;
-      input.setAttribute('aria-expanded', 'false');
-      replace(list);
-      replace(note);
-    };
-    const clear = (): void => {
-      query = '';
-      input.value = '';
-      close();
-      input.focus();
-    };
-
-    const results = (): void => {
-      const needle = query.trim().toLowerCase();
-      if (!needle) {
-        close();
-        return;
-      }
-      const hits = index.filter((item) => item.hay.includes(needle)).slice(0, OWNERSHIP_SEARCH_LIMIT);
-      if (!hits.length) {
-        close();
-        replace(
-          note,
-          emptyState(`No position matches “${query.trim()}”.`, { label: 'Clear the search', onAct: clear })
-        );
-        return;
-      }
-      replace(note);
-      replace(list);
-      list.hidden = false;
-      input.setAttribute('aria-expanded', 'true');
-      for (const item of hits) {
-        const option = el('li', { class: 'own-search-option', role: 'option', 'data-code': item.code }, [
-          el('span', { class: 'own-search-label mono', text: item.label }),
-          el('span', { class: 'own-search-sub', text: item.sub }),
-          el('span', { class: 'tag tag-vehicle', text: item.kind }),
-        ]);
-        activate(
-          option,
-          () => {
-            query = '';
-            input.value = '';
-            close();
-            select(item.code);
-          },
-          { label: `${item.label} — ${item.sub}` }
-        );
-        list.append(option);
-      }
-    };
-
-    input.addEventListener('input', () => {
-      query = input.value;
-      results();
-    });
-    input.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowDown' && !list.hidden) {
-        event.preventDefault();
-        list.querySelector<HTMLElement>('.own-search-option')?.focus();
-      } else if (event.key === 'Escape') {
-        close();
-      }
-    });
-    list.addEventListener('keydown', (event) => {
-      if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.key)) return;
-      event.preventDefault();
-      if (event.key === 'Escape') {
-        close();
-        input.focus();
-        return;
-      }
-      const options = [...list.querySelectorAll<HTMLElement>('.own-search-option')];
-      const next = options.indexOf(document.activeElement as HTMLElement) + (event.key === 'ArrowDown' ? 1 : -1);
-      if (next < 0) input.focus();
-      else options[Math.min(next, options.length - 1)]?.focus();
-    });
-
     replace(
       qs('#ownership-tools', host),
-      el('div', { class: 'own-search' }, [
-        el('label', { class: 'own-search-legend', for: 'ownership-search', text: 'Find a position' }),
-        input,
-        list,
-        note,
-      ]),
+      el('label', {
+        class: 'own-search-legend',
+        for: 'ownership-search',
+        text: 'Find a position',
+      }),
+      createCombobox({
+        id: 'ownership-search',
+        placeholder: 'VPM symbol, fund name or code',
+        ariaLabel: 'Find a position and trace who owns it',
+        options: () => index,
+        onPick: (option) => select(option.key),
+        emptyMessage:
+          'No position in the firm-wide universe matches that. Clear the box to see everything, or search the SPV fund code instead.',
+        maxResults: OWNERSHIP_SEARCH_LIMIT,
+      }),
       el('span', {
         class: 'status-line',
         id: 'ownership-status',

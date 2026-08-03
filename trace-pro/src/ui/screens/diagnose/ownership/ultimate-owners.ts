@@ -20,9 +20,12 @@ import { parity } from '../../../parity.js';
 
 export type OwnershipShares = Map<string, Map<string, number>>;
 
-/** The two sentences defining the two percentage columns. True of any data. */
+/**
+ * The two sentences defining the two percentage columns, true of any data. The opening term is the
+ * renamed column head, exactly as declared for `ownership.APPOURI.footnote` in docs/rename-map.json.
+ */
 const OWNERSHIP_COLUMN_DEFINITIONS =
-  'Immediate % = holder qty ÷ total qty of the entity in the row below. ' +
+  'Direct share = holder qty ÷ total qty of the entity in the row below. ' +
   'Cumulative % chains up the path (shown when you click a row).';
 
 /** Does ownership close for the position on screen? Measured, never assumed. */

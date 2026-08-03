@@ -8,6 +8,9 @@
 import type { Store, ScreenId, LensId, DrawerId } from '../../state/store.js';
 import { routeToHash } from '../../state/store.js';
 import { el, replace } from '../primitives/dom.js';
+import { parity } from '../parity.js';
+import { mountGlossaryDrawer } from '../drawers/glossary.js';
+import { mountSourcesDrawer } from '../drawers/sources.js';
 
 export const SCREENS: { id: ScreenId; label: string; question: string }[] = [
   {
@@ -59,6 +62,29 @@ export function renderShell(root: HTMLElement, store: Store): void {
     el('nav', { class: 'screen-nav', id: 'screen-nav', 'aria-label': 'Screens' }),
     el('div', { class: 'view-note', id: 'view-note', role: 'status' }),
     el('main', { class: 'screen', id: 'screen', tabindex: '-1' }),
+    el('footer', { class: 'app-foot', id: 'app-foot' }, [
+      el('span', {
+        class: 'foot-sources',
+        id: 'ubstatus',
+        ...parity('chrome.sources_status'),
+        text: 'Loaded base dataset. Upload either file to recompute every tab.',
+      }),
+      // The original asserted here that ownership "sums to 100% ... verified to conserve".
+      // It does not: five of 514 entities cannot close, because of the circular holdings the
+      // Data quality lens reports as High severity. Shipping the original assurance verbatim
+      // would hand a controller a false control statement, so this is a DECLARED label change
+      // in docs/rename-map.json rather than a byte-parity match. No figure moves: the numeric
+      // token "100" is preserved, which is what the digit guard checks. See docs/issues.md.
+      el('span', {
+        class: 'foot-assertion',
+        ...parity('chrome.footer_assertion'),
+        text:
+          'Deterministic: effective ultimate ownership is solved by fixed point, which handles ' +
+          'cross-holdings and cycles. Ownership conserves to 100% for every entity except five ' +
+          'the source data cannot close — see Data quality. No backend. Ties to the companion ' +
+          'Excel to the cent.',
+      }),
+    ]),
     el('div', { class: 'drawer-host', id: 'drawer-host' })
   );
   renderMasthead(store);
@@ -168,9 +194,22 @@ function renderViewNote(store: Store): void {
   );
 }
 
+/** Mount or tear down whichever drawer state asks for. Only one is open at a time. */
+function renderDrawer(store: Store): void {
+  const host = document.getElementById('drawer-host');
+  if (!host) return;
+  replace(host);
+  const which = store.state.drawer;
+  if (!which) return;
+  if (which === 'glossary') mountGlossaryDrawer(host, store);
+  else mountSourcesDrawer(host, store);
+}
+
 /** Keep the chrome in step with state, and expose the keyboard route to the glossary (R7). */
 export function wireShell(store: Store): void {
+  renderDrawer(store);
   store.subscribe((_state, changed) => {
+    if (changed.has('drawer')) renderDrawer(store);
     if (changed.has('view') || changed.has('drawer') || changed.has('product')) renderMasthead(store);
     if (changed.has('screen') || changed.has('lens')) renderNav(store);
     if (changed.has('screen') || changed.has('lens') || changed.has('view')) renderViewNote(store);

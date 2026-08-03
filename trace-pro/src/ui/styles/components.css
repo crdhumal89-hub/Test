@@ -274,3 +274,13 @@
   font: 700 9.5px/1 var(--sans); letter-spacing: .09em; text-transform: uppercase;
   color: var(--teal-ink); margin-bottom: 4px;
 }
+
+/* ------------------------------------------------------------------ app footer */
+
+.app-foot {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 14px 22px 22px; border-top: 1px solid var(--line);
+  font-size: 11px; color: var(--muted); background: var(--paper);
+}
+.foot-sources { font-weight: 600; color: var(--navy); }
+.export-error { color: var(--bad); font-size: 11.5px; font-weight: 600; }

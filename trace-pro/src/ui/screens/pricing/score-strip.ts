@@ -83,7 +83,7 @@ export function renderPricingScore(
       PRICING_SCORE_LABEL.nav,
       formatUsd(repricing.N),
       'pricing.score.nav',
-      `Σ apex ENDING_NAV · ${flagged} flagged`,
+      `sum of top-level feeder NAVs · ${flagged} flagged`,
       'pricing.score.nav_detail'
     )
   );
@@ -108,14 +108,14 @@ export function renderPricingNarrative(host: HTMLElement, repricing: RepricingFi
   const big = pricingLargestTier(repricing);
   const nodes: (Node | string)[] = [
     el('span', { class: 'narrative-tag', text: 'Bottom-up repricing' }),
-    " Reprice the deepest funds first — a terminal fund's revised price = ",
+    " Reprice the deepest funds first — a lowest-level fund's repriced unit price = ",
     el('b', { text: 'NAV ÷ units' }),
-    "; a holder's revised MV = Σ held-qty × child revised price + its direct securities," +
+    "; a holder's repriced value = Σ held-qty × child repriced price + its direct securities," +
       ' propagated to the product. That lifts ',
-    el('b', { text: `Derived ${formatUsd(repricing.D)}` }),
+    el('b', { text: `the look-through value ${formatUsd(repricing.D)}` }),
     ' to ',
-    el('b', { text: `Revised ${formatUsd(repricing.R)}` }),
-    ' (repricing P&L ',
+    el('b', { text: `the repriced value ${formatUsd(repricing.R)}` }),
+    ' (repricing gain or loss ',
     el('b', { text: formatUsdParens(repricing.dPricing) }),
     '), then non-position items bridge to ',
     el('b', { text: `NAV ${formatUsd(repricing.N)}` }),
@@ -126,7 +126,7 @@ export function renderPricingNarrative(host: HTMLElement, repricing: RepricingFi
       ' Largest repricing tier: ',
       el('b', { text: big.code }),
       ` (${formatUsdParens(big.pnlLevel)} across its ${big.holdings.length} holdings).` +
-        ' Click any fund for its per-holding P&L.'
+        ' Click any fund for its per-holding gain or loss.'
     );
   }
   replace(host, ...nodes);

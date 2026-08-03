@@ -145,14 +145,13 @@ function glossaryExampleFund(repricing: RepricingFixture): RepricingFund | null 
   );
 }
 
-const EM = '—';
-
 export function glossaryFacts(
   repricing: RepricingFixture,
   legacyPricing?: LegacyPricingFixture | null
 ): GlossaryFacts {
   const ex = glossaryExampleFund(repricing);
-  const sym = ex?.sym ?? ex?.code ?? EM;
+  // No fund at all is a fixture failure, not a rendering one; the drawer reports it as such.
+  const sym = ex?.sym ?? ex?.code ?? 'unknown';
   const name = ex?.name ?? '';
   const nav = ex?.nav ?? null;
   const pnl = ex?.pnlLevel ?? 0;

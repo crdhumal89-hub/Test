@@ -1,12 +1,24 @@
 /**
- * Boot: read the requested product and as-of from the URL, load fixtures, build state, mount the
- * shell, then the requested screen. Nothing renders a figure before its data is in hand, so the
- * loading and error states are real rather than decorative (rubric R4).
+ * Boot and route.
+ *
+ * Reads the requested product and as-of from the URL, loads the four core fixtures, builds state,
+ * mounts the shell, then mounts whichever screen the hash asks for. The 472 KiB firm-wide universe
+ * is NOT loaded here — only two Diagnose lenses need it, and they fetch it on first use with a real
+ * loading state (rubric R4).
+ *
+ * Nothing renders a figure before its data is in hand, so the loading and error states are load
+ * bearing rather than decorative.
  */
 import { loadManifest, loadCore, resolveSelection, createUniverseLoader, FixtureError } from './data/load.js';
-import { createStore, readRoute, type LensId } from './state/store.js';
+import { createStore, readRoute, routeToHash, type LensId, type ScreenId, type Store } from './state/store.js';
 import { renderShell, wireShell } from './ui/chrome/shell.js';
 import { mountReconciliation } from './ui/screens/reconciliation/index.js';
+import { mountPricing } from './ui/screens/pricing/index.js';
+import { mountDiagnose } from './ui/screens/diagnose/index.js';
+import { mountStructureLens } from './ui/screens/diagnose/structure/index.js';
+import { mountOwnershipLens } from './ui/screens/diagnose/ownership/index.js';
+import { mountDataQualityLens } from './ui/screens/diagnose/data-quality/index.js';
+import { mountSimulatorLens } from './ui/screens/diagnose/simulator/index.js';
 import { el, replace, errorState } from './ui/primitives/dom.js';
 
 const rootMaybe = document.getElementById('app');
@@ -24,15 +36,26 @@ async function boot(): Promise<void> {
     productName: selection.name,
     productCode: selection.code,
     asof: selection.asof,
-    // A fixture field, not the hard-coded literal the original shipped.
-    defaultPosition: core.lookthrough.nodes.find((n) => n.kind === 'vehicle')?.code ?? null!,
+    // Declared in data/manifest.json. It cannot be derived from the look-through tree, because the
+    // position the Ownership lens opens on lives in the firm-wide universe and is not in the tree.
+    defaultPosition: selection.defaultPosition,
   });
 
-  const universe = createUniverseLoader(selection.product, selection.asof);
-  void universe;
+  // The two lenses that need the 472 KiB universe share one loader, so whichever opens first pays
+  // and the other is instant. Resolving also caches it on the store, which is what lets the Diagnose
+  // entity search widen from this product's own funds to the whole firm.
+  const loader = createUniverseLoader(selection.product, selection.asof);
+  const universe = {
+    peek: () => store.universe ?? loader.peek(),
+    get: async () => {
+      const fixture = await loader.get();
+      store.universe = fixture;
+      return fixture;
+    },
+  };
 
   const route = readRoute(location.hash);
-  store.set({ screen: route.screen, ...(route.lens ? { lens: route.lens as LensId } : {}) });
+  store.set({ screen: route.screen, ...(route.lens ? { lens: route.lens } : {}) });
 
   renderShell(root, store);
   wireShell(store);
@@ -41,15 +64,48 @@ async function boot(): Promise<void> {
   if (!screenHost) throw new Error('missing #screen');
 
   let unmount: (() => void) | null = null;
-  function mountCurrent(): void {
-    unmount?.();
-    unmount = mountReconciliation(screenHost!, store);
-  }
-  mountCurrent();
 
+  function mountScreen(screen: ScreenId): void {
+    unmount?.();
+    unmount = null;
+    const host = screenHost as HTMLElement;
+    if (screen === 'reconciliation') {
+      unmount = mountReconciliation(host, store) ?? null;
+    } else if (screen === 'pricing') {
+      unmount = mountPricing(host, store) ?? null;
+    } else {
+      unmount =
+        mountDiagnose(host, store, {
+          structure: (h: HTMLElement, s: Store) => mountStructureLens(h, s),
+          ownership: (h: HTMLElement, s: Store) => mountOwnershipLens(h, s, universe),
+          'data-quality': (h: HTMLElement, s: Store) => mountDataQualityLens(h, s, universe),
+          simulator: (h: HTMLElement, s: Store) => mountSimulatorLens(h, s),
+        }) ?? null;
+    }
+    document.getElementById('screen')?.focus({ preventScroll: true });
+  }
+
+  mountScreen(store.state.screen);
+
+  let currentScreen: ScreenId = store.state.screen;
   window.addEventListener('hashchange', () => {
     const next = readRoute(location.hash);
     store.set({ screen: next.screen, ...(next.lens ? { lens: next.lens as LensId } : {}) });
+    if (next.screen !== currentScreen) {
+      currentScreen = next.screen;
+      mountScreen(next.screen);
+    }
+  });
+
+  // Keep the URL in step when a screen is changed through the nav rather than the address bar.
+  store.subscribe((state, changed) => {
+    if (!changed.has('screen')) return;
+    if (state.screen !== currentScreen) {
+      currentScreen = state.screen;
+      mountScreen(state.screen);
+    }
+    const want = routeToHash(state.screen, state.lens);
+    if (location.hash !== want) location.hash = want;
   });
 }
 
@@ -67,6 +123,6 @@ boot().catch((error: unknown) => {
       ),
     ])
   );
-  // Surfaced in the UI above; also recorded so the headless suite sees a real failure, not silence.
+  // Surfaced in the UI above, and re-thrown so the headless suite sees a real failure, not silence.
   throw error;
 });

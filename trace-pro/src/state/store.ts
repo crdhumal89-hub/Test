@@ -68,8 +68,12 @@ export interface StoreInit {
   productName: string;
   productCode: string;
   asof: string;
-  /** The position the Ownership lens opens on. A fixture field, not a hard-coded literal. */
-  defaultPosition: string;
+  /**
+   * The position the Ownership lens opens on. Declared in data/manifest.json, because it belongs
+   * to the firm-wide universe rather than to this product's look-through tree. Null when a product
+   * declares none, in which case the lens opens on an empty state rather than a wrong entity.
+   */
+  defaultPosition: string | null;
 }
 
 export function createStore(init: StoreInit): Store {

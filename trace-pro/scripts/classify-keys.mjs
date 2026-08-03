@@ -62,10 +62,25 @@ function classify(value) {
  * The terms docs/redesign-spec.md 3.1 retires. Case-sensitive on purpose: "Applied" catches the
  * "Applied px" / "Applied %" column labels, and lower-case prose such as "applied" in a glossary
  * sentence is not a label.
+ *
+ * Bare "Derived" and "Revised" are in the list because reconciliation.status_line renders
+ * "· Derived $2,060,224,441 → Revised $2,060,610,338 →" with no "MV" suffix, so scanning only for
+ * "Derived MV" / "Revised MV" missed a real label key.
+ *
+ * MATCHING IS PLAIN SUBSTRING, NOT \b-ANCHORED, and that is load-bearing. The harness reads
+ * textContent, so adjacent elements concatenate with no separator: the header row renders as
+ * "…SymbolPublish pxCurrent px…" and the tree header as "…Δ PricingRevised−Derived…". A \b before
+ * "Publish px" or after "Δ Pricing" fails against that glue. Measured: \b-anchoring silently
+ * drops ownership.column_headers and pricing.table.column_headers — two genuine label keys —
+ * which would leave them STRICT and force the rebuild to keep "Publish px" and "Immediate %".
+ * A false positive here is cheap (one extra declared entry, still digit-guarded); a false
+ * negative is a gate that demands the original's cryptic vocabulary.
  */
 const RENAMED_TERMS = [
   'Derived MV',
   'Revised MV',
+  'Derived',
+  'Revised',
   'Publish px',
   'Current px',
   'Revised px',
@@ -141,6 +156,41 @@ mustDeclare.forEach(([key, value, hits], i) => {
 
 console.log('\n--- glossary.* keys that mention a retired term (intentionally NOT renamed) ---');
 glossaryHits.forEach(([key, , hits]) => console.log(`  ${key}  [${hits.join(', ')}]`));
+
+/* ------------------------------------------------------------------ digit guard, both directions
+ * The guard compares the token SEQUENCE, so it has to fail on digits ADDED just as loudly as on
+ * digits removed, changed or reordered. Case 2 is a real incident from the rebuild: the NAV basis
+ * line was rewritten as "sum of top-level feeder NAVs · as of 2026-06-30", which is a legitimate
+ * plain-language relabel that quietly injected three numbers into a string that had none.
+ */
+const GUARD_CASES = [
+  ['words change, digits intact → PASS', 'Δ Pricing $385,897', 'Pricing difference $385,897', true],
+  [
+    'digits ADDED (real incident: an as-of date appended) → FAIL',
+    'Σ apex ENDING_NAV · NAV report',
+    'sum of top-level feeder NAVs · as of 2026-06-30',
+    false,
+  ],
+  ['digits REMOVED → FAIL', 'Level P&L$272,162 · 22.6 bps', 'Level gain or loss$272,162', false],
+  ['a digit CHANGED → FAIL', 'NAV $2,062,198,836', 'NAV $2,062,198,835', false],
+  ['tokens REORDERED → FAIL', '$385,897 + $1,588,498', '$1,588,498 + $385,897', false],
+  [
+    'two figures un-glued by a space → FAIL (one token becomes two)',
+    '÷ 117,634,3871.025389',
+    '÷ 117,634,387 1.025389',
+    false,
+  ],
+  ['thousands separators dropped → PASS (formatting only; the strict/declared string compare still catches it)', '$1,588,498', '$1588498', true],
+  ['sign flipped → FAIL', '-195.3 bps', '195.3 bps', false],
+];
+console.log('\n=== DIGIT GUARD SELF-CHECK (numericTokens sequence, both directions) ===');
+for (const [label, a, b, shouldPass] of GUARD_CASES) {
+  const got = numericTokens(a).join(' ') === numericTokens(b).join(' ');
+  const ok = got === shouldPass;
+  if (!ok) failures.push(`digit guard case "${label}" behaved backwards`);
+  console.log(`  ${ok ? 'ok  ' : 'FAIL'} ${label}`);
+  if (!ok) console.log(`       [${numericTokens(a).join(' ')}] vs [${numericTokens(b).join(' ')}]`);
+}
 
 /* ------------------------------------------------------------------ rename-map self-check */
 console.log('\n=== docs/rename-map.json SELF-CHECK ===');

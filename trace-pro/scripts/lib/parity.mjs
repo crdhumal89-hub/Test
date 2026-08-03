@@ -94,8 +94,9 @@ const MESSAGE = {
   [KIND.missing]: 'baseline key did not resolve in the target',
   [KIND.changed]: 'strict key: the rendered string must be byte-identical to the baseline',
   [KIND.undeclared]:
-    'the words changed but this key is NOT declared in docs/rename-map.json. Every relabel must ' +
-    'be declared. Add it to the map (and only if the rename table sanctions it) or revert the label.',
+    'the string changed but every digit survived — an undeclared relabel or a reformat. This key ' +
+    'is NOT declared in docs/rename-map.json, so it is strict: revert the wording (and the number ' +
+    'formatting), or, only if the rename table sanctions it, declare it in the map.',
   [KIND.wrongDeclared]:
     'declared-label key: the app renders neither the baseline string nor the string declared in ' +
     'docs/rename-map.json. Fix the app, or the declaration — not the digits.',
@@ -124,6 +125,52 @@ export function explain(kind) {
  * @param {boolean}  o.expectRenamed  true when the target is the REBUILT app
  * @param {string?}  o.only           key-prefix filter (iteration only, never certification)
  */
+/**
+ * Prints the parity verdict. Returns true when the gate passed.
+ *
+ * `only` is echoed loudly on every filtered run: a filtered run proves something about one prefix
+ * and nothing about the other 1,000 keys, so it must never be mistaken for a certification.
+ */
+export function printParityReport({ diffPath, result, baselineKeys, currentKeys, only, expectRenamed, hasMap }) {
+  const { diffs, strictCount, declaredCount, digitViolations } = result;
+  console.log(`\n=== PARITY vs ${diffPath} ===`);
+  if (only) console.log(BANNER);
+  console.log(`baseline keys : ${baselineKeys}`);
+  console.log(`current keys  : ${currentKeys}`);
+  if (only) console.log(`--only        : ${only} (${result.comparedKeys} keys compared)`);
+  console.log(
+    `label basis   : ${
+      expectRenamed
+        ? 'REBUILT APP — the 37+ declared keys must render docs/rename-map.json'
+        : 'ORIGINAL VOCABULARY — declared keys must still render the baseline string'
+    }${hasMap ? '' : ' (no docs/rename-map.json found — every key is strict)'}`
+  );
+
+  if (diffs.length) {
+    console.log('\n--- DIFFS ---');
+    for (const d of diffs.slice(0, 200)) {
+      console.log(`  [${d.kind}] ${d.key}`);
+      console.log(`      baseline: ${JSON.stringify(d.baseline)}`);
+      console.log(`      current : ${JSON.stringify(d.current)}`);
+      if (d.expected !== undefined) console.log(`      declared: ${JSON.stringify(d.expected)}`);
+      const why = explain(d.kind);
+      if (why) console.log(`      why     : ${why}`);
+    }
+    if (diffs.length > 200) console.log(`  … +${diffs.length - 200} more`);
+  }
+
+  console.log('\n=== GATE SUMMARY ===');
+  console.log(`  ${strictCount} strict keys`);
+  console.log(`  ${declaredCount} declared-label keys`);
+  console.log(`  ${digitViolations} digit violations`);
+  console.log(`  ${diffs.length} diffs`);
+  if (!diffs.length) console.log('\n  ZERO value diffs.');
+  if (only) console.log('\n' + BANNER);
+  return diffs.length === 0;
+}
+
+export const BANNER = '*** FILTERED RUN — NOT VALID FOR CERTIFICATION ***';
+
 export function computeDiffs({ baseline, current, renameMap, expectRenamed, only }) {
   const declared = renameMap ? renameMap.keys : {};
   const inScope = (k) => !only || k === only || k.startsWith(only);
