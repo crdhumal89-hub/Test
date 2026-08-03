@@ -149,8 +149,10 @@ export function renderNodeDetail(
       el('thead', {}, [
         el('tr', {}, [
           el('th', { class: 'l', scope: 'col', text: 'Holder' }),
-          el('th', { scope: 'col', text: 'Direct share' }),
-          el('th', { scope: 'col', text: 'Units held' }),
+          // Kept verbatim: this is a strict parity key, and "Own %" is not an abbreviation the
+          // rubric asks us to expand. Changing less is the discipline here.
+          el('th', { scope: 'col', text: 'Own %' }),
+          el('th', { scope: 'col', text: 'Units' }),
         ]),
       ])
     );

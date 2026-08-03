@@ -16,7 +16,7 @@ export const TREE_COLUMNS = [
   { key: 'symbol', label: 'VPM symbol', align: 'l' },
   { key: 'nav', label: 'NAV', sub: 'reported', align: 'r' },
   { key: 'derived', label: 'Look-through value', sub: 'current marks', align: 'r' },
-  { key: 'revised', label: 'Repriced value', sub: 'NAV-repriced', align: 'r' },
+  { key: 'revised', label: 'Repriced value', sub: 'bottom-up from NAV', align: 'r' },
   { key: 'pricing', label: 'Pricing difference', sub: 'repriced − look-through', align: 'r' },
   { key: 'nonPosition', label: 'Non-position difference', sub: 'NAV − repriced', align: 'r' },
 ] as const;

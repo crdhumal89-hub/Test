@@ -258,7 +258,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
 
   function renderBar(): void {
     const bar = qs('#simulator-bar', host);
-    const everythingButton = el('button', { type: 'button', class: 'btn btn-primary', id: 'simulator-reprice', text: 'Reprice everything (bottom-up)', title: 'Was “Run full reprice”: sweep the whole book from the lowest level up to the product' });
+    const everythingButton = el('button', { type: 'button', class: 'btn btn-primary', id: 'simulator-reprice', 'data-parity-scene': 'step:simFullReprice', text: 'Reprice everything (bottom-up)', title: 'Was “Run full reprice”: sweep the whole book from the lowest level up to the product' });
     everythingButton.addEventListener('click', () => {
       result = null;
       run.start('auto');

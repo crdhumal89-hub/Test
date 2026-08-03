@@ -33,6 +33,12 @@ export interface ComboConfig {
   emptyMessage?: string;
   initialValue?: string;
   maxResults?: number;
+  /**
+   * The documented default interaction this combobox satisfies, e.g. `step:ownSearch:CRIMAP`.
+   * Published so the verification harness can drive it without knowing our ids, exactly as figures
+   * publish `data-parity`. The option list publishes `<hook>:options`.
+   */
+  sceneHook?: string;
 }
 
 const DEFAULT_MAX = 50;
@@ -51,10 +57,17 @@ export function createCombobox(config: ComboConfig): HTMLElement {
     'aria-expanded': 'false',
     'aria-controls': listId,
     'aria-autocomplete': 'list',
+    ...(config.sceneHook ? { 'data-parity-scene': config.sceneHook } : {}),
   });
   if (config.initialValue) input.value = config.initialValue;
 
-  const list = el('ul', { class: 'combo-list', id: listId, role: 'listbox', hidden: 'hidden' });
+  const list = el('ul', {
+    class: 'combo-list',
+    id: listId,
+    role: 'listbox',
+    hidden: 'hidden',
+    ...(config.sceneHook ? { 'data-parity-scene': `${config.sceneHook}:options` } : {}),
+  });
   const wrap = el('div', { class: 'combo' }, [input, list]);
 
   let shown: ComboOption[] = [];
@@ -127,6 +140,8 @@ export function createCombobox(config: ComboConfig): HTMLElement {
           class: 'combo-option',
           role: 'option',
           'data-index': String(i),
+          // `data-i` is the attribute the frozen harness selects options by.
+          'data-i': String(i),
           'data-key': option.key,
           'aria-selected': 'false',
         });

@@ -68,7 +68,7 @@ export function extractEntry(entry) {
       // element is one of the counted things, so the answer is how many. If it tags exactly one and
       // that element renders a number, the answer is that number. Otherwise fall back to counting
       // the original's selector.
-      const tagged = document.querySelectorAll(`[${PARITY_ATTR}="${key}"]`);
+      const tagged = document.querySelectorAll(`[data-parity="${key}"]`);
       if (tagged.length > 1) {
         out[key] = String(tagged.length);
         continue;

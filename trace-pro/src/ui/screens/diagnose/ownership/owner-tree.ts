@@ -172,7 +172,7 @@ function ownershipOwnerRow(
   const keyed = row.depth === 0 ? `ownership.${root}.owner.${row.holder}` : null;
 
   const tr = el('tr', {
-    class: ['own-row', row.id === selectedRowId ? 'selected' : '', row.cyclic ? 'own-cyclic' : '']
+    class: ['own-row', 'rowv', row.id === selectedRowId ? 'selected' : '', row.cyclic ? 'own-cyclic' : '']
       .filter(Boolean)
       .join(' '),
     'data-own-row': row.id,
@@ -269,7 +269,10 @@ export function renderOwnershipTree(
         : ownershipOwnerRow(options, row, callbacks)
     );
   }
+  // `id="revtree"` and the `rowv` row class are harness anchors, matching the frozen map's
+  // ownRow step and its column selectors. Not user-visible.
   const table = el('table', {
+    id: 'revtree',
     class: 'tbl own-tree',
     'aria-label': `Owners of ${vpmSymbol(options.graph, options.root)}, upward`,
   });

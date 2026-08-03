@@ -170,8 +170,8 @@
   },
   "reconciliation.tree.column_headers": {
    "baseline": "Hierarchy — fund ▸ SPV ▸ securityVPM symbol NAVDerived MVcurrent marks Revised MVNAV-repriced Δ PricingRevised−Derived Δ Non-positionNAV−Revised",
-   "expected": "Hierarchy — fund ▸ SPV ▸ securityVPM symbol NAVLook-through valuecurrent marks Repriced valuebottom-up from NAV Pricing differencerepriced − look-through Non-position differenceNAV − repriced",
-   "note": "Each header is label + subtitle; the subtitles are the formulas, restated in the new vocabulary."
+   "expected": "Hierarchy — fund ▸ SPV ▸ securityVPM symbolNAVreportedLook-through valuecurrent marksRepriced valuebottom-up from NAVPricing differencerepriced − look-throughNon-position differenceNAV − repriced",
+   "note": "Derived MV -> Look-through value, Revised MV -> Repriced value, Δ Pricing -> Pricing difference, Δ Non-position -> Non-position difference. Two further deliberate differences from the baseline string, both non-figure: the baseline's stray spaces between some column texts were whitespace artefacts of the original's markup, not intentional content, and the NAV column gains an explicit 'reported' basis sub-label so no column is presented without its basis (rubric R11). No digits in this string."
   },
   "reconciliation.waterfall.delta_nonposition_label": {
    "baseline": "Δ Non-position",

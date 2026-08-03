@@ -159,6 +159,8 @@ export function mountOwnershipLens(
         id: 'ownership-search',
         placeholder: 'VPM symbol, fund name or code',
         ariaLabel: 'Find a position and trace who owns it',
+        // The documented default interaction for this control, per parity-map.json.
+        sceneHook: 'step:ownSearch:CRIMAP',
         options: () => index,
         onPick: (option) => select(option.key),
         emptyMessage:
