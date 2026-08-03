@@ -8,6 +8,7 @@ import { groupExceptions, EXCEPTION_TIPS } from '../../../domain/exceptions.js';
 import { allNodeIds, defaultExpansion, expansionRevealing } from '../../../domain/lookthrough.js';
 import type { Store } from '../../../state/store.js';
 import { el, replace, qs, activate, emptyState } from '../../primitives/dom.js';
+import { parity } from '../../parity.js';
 import { renderWaterfall, reconciliationStatusLine } from './waterfall.js';
 import { renderTree } from './tree.js';
 import { renderNodeDetail } from './detail.js';
@@ -53,7 +54,12 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
       tools,
       expandAll,
       collapse,
-      el('span', { class: 'status-line', id: 'reconciliation-status', text: reconciliationStatusLine(store.repricing) })
+      el('span', {
+        class: 'status-line',
+        id: 'reconciliation-status',
+        ...parity('reconciliation.status_line'),
+        text: reconciliationStatusLine(store.repricing),
+      })
     );
   }
 
@@ -97,10 +103,17 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
       const chip = el('span', {
         class: `chip chip-${category.severity}`,
         'data-exception': category.title,
+        ...parity(`reconciliation.exception.${category.title.replace(/[^A-Za-z0-9_.>-]+/g, '_')}`),
         title: EXCEPTION_TIPS[category.title] ?? category.title,
       });
       chip.append(
-        el('span', { class: 'chip-count', text: String(category.codes.length) }),
+        el('span', {
+          class: 'chip-count',
+          ...parity(
+            `reconciliation.exception.${category.title.replace(/[^A-Za-z0-9_.>-]+/g, '_')}.count`
+          ),
+          text: String(category.codes.length),
+        }),
         el('span', { class: 'chip-label', text: category.title })
       );
       const first = category.codes[0];

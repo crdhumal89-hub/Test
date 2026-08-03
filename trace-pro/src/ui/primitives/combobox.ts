@@ -1,0 +1,172 @@
+/**
+ * A searchable single-select. The original had three hand-rolled copies of this, each with its own
+ * keyboard quirks; this is the one implementation all of them become.
+ *
+ * Keyboard: type to filter, ArrowUp/ArrowDown to move, Enter to pick, Escape to dismiss. Follows
+ * the combobox pattern (`role="combobox"` + `aria-expanded` + `aria-activedescendant`) so a
+ * keyboard user gets the same affordance as a mouse user (rubric R6).
+ *
+ * Empty results are never a dead end: the empty message names a recovery action (R18).
+ */
+import { el, replace } from './dom.js';
+
+export interface ComboOption {
+  key: string;
+  /** What appears in the input once picked. */
+  label: string;
+  /** Secondary line under the label. */
+  detail?: string;
+  /** Small type tag on the left. */
+  kind?: string;
+  /** Lower-cased haystack this option is matched against. */
+  haystack: string;
+}
+
+export interface ComboConfig {
+  id: string;
+  placeholder: string;
+  ariaLabel: string;
+  /** Recomputed on every keystroke, so a lazily loaded source can grow underneath it. */
+  options: () => ComboOption[];
+  onPick: (option: ComboOption) => void;
+  /** Shown when nothing matches. Should name what to do next. */
+  emptyMessage?: string;
+  initialValue?: string;
+  maxResults?: number;
+}
+
+const DEFAULT_MAX = 50;
+
+export function createCombobox(config: ComboConfig): HTMLElement {
+  const listId = `${config.id}-list`;
+  const input = el('input', {
+    type: 'search',
+    id: config.id,
+    class: 'combo-input',
+    role: 'combobox',
+    autocomplete: 'off',
+    spellcheck: 'false',
+    placeholder: config.placeholder,
+    'aria-label': config.ariaLabel,
+    'aria-expanded': 'false',
+    'aria-controls': listId,
+    'aria-autocomplete': 'list',
+  });
+  if (config.initialValue) input.value = config.initialValue;
+
+  const list = el('ul', { class: 'combo-list', id: listId, role: 'listbox', hidden: 'hidden' });
+  const wrap = el('div', { class: 'combo' }, [input, list]);
+
+  let shown: ComboOption[] = [];
+  let active = -1;
+
+  const close = (): void => {
+    list.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+    input.removeAttribute('aria-activedescendant');
+    active = -1;
+  };
+
+  const highlight = (index: number): void => {
+    active = index;
+    const items = Array.from(list.querySelectorAll<HTMLElement>('li[data-index]'));
+    items.forEach((item, i) => {
+      const on = i === index;
+      item.classList.toggle('on', on);
+      item.setAttribute('aria-selected', on ? 'true' : 'false');
+      if (on) {
+        input.setAttribute('aria-activedescendant', item.id);
+        item.scrollIntoView({ block: 'nearest' });
+      }
+    });
+  };
+
+  const pick = (option: ComboOption | undefined): void => {
+    if (!option) return;
+    input.value = option.label;
+    close();
+    config.onPick(option);
+  };
+
+  const open = (): void => {
+    const query = input.value.trim().toLowerCase();
+    const all = config.options();
+    // Prefix matches first — a controller typing a fund code wants that code at the top.
+    let results: ComboOption[];
+    if (query) {
+      const prefix: ComboOption[] = [];
+      const substring: ComboOption[] = [];
+      for (const option of all) {
+        const at = option.haystack.indexOf(query);
+        if (at === 0) prefix.push(option);
+        else if (at > 0) substring.push(option);
+        if (prefix.length >= 60) break;
+      }
+      results = prefix.concat(substring).slice(0, config.maxResults ?? DEFAULT_MAX);
+    } else {
+      results = all.slice(0, config.maxResults ?? DEFAULT_MAX);
+    }
+    shown = results;
+
+    if (!results.length) {
+      replace(
+        list,
+        el('li', { class: 'combo-empty', role: 'option', 'aria-disabled': 'true' }, [
+          el('span', {
+            text:
+              config.emptyMessage ??
+              `Nothing matches “${input.value.trim()}”. Clear the box to see everything.`,
+          }),
+        ])
+      );
+    } else {
+      replace(list);
+      results.forEach((option, i) => {
+        const item = el('li', {
+          id: `${listId}-${i}`,
+          class: 'combo-option',
+          role: 'option',
+          'data-index': String(i),
+          'data-key': option.key,
+          'aria-selected': 'false',
+        });
+        if (option.kind) item.append(el('span', { class: 'combo-kind', text: option.kind }));
+        item.append(el('span', { class: 'combo-label', text: option.label }));
+        if (option.detail) item.append(el('span', { class: 'combo-detail', text: option.detail }));
+        item.addEventListener('mousedown', (event) => {
+          event.preventDefault();
+          pick(option);
+        });
+        list.append(item);
+      });
+    }
+    list.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+    active = -1;
+  };
+
+  input.addEventListener('input', open);
+  input.addEventListener('focus', open);
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown') {
+      if (list.hidden) open();
+      highlight(Math.min(active + 1, shown.length - 1));
+    } else if (event.key === 'ArrowUp') {
+      highlight(Math.max(active - 1, 0));
+    } else if (event.key === 'Enter') {
+      pick(active >= 0 ? shown[active] : shown[0]);
+    } else if (event.key === 'Escape') {
+      close();
+      return;
+    } else {
+      return;
+    }
+    event.preventDefault();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!wrap.contains(event.target as Node)) close();
+  });
+
+  return wrap;
+}

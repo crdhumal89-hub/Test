@@ -7,6 +7,7 @@ import { evaluateEntity } from '../../../domain/exceptions.js';
 import { formatUsd, formatUsdParens, formatPercent } from '../../../domain/money.js';
 import type { LookthroughNode, PricingView, RepricingFixture } from '../../../domain/types.js';
 import { el, replace, activate } from '../../primitives/dom.js';
+import { parity } from '../../parity.js';
 
 const EM_DASH = '—';
 
@@ -41,7 +42,7 @@ export function renderTree(
   const { nodes, repricing, view, expanded, selectedId, symbolOf, asof } = options;
   const after = view === 'after';
 
-  const head = el('tr', {}, [
+  const head = el('tr', { ...parity('reconciliation.tree.column_headers') }, [
     ...TREE_COLUMNS.map((c) =>
       el('th', { class: c.align === 'l' ? 'l' : 'r', scope: 'col' }, [
         el('span', { class: 'th-label', text: c.label }),
@@ -61,7 +62,11 @@ export function renderTree(
   }
   body.append(renderTotals(repricing, after));
 
+  // `id="tree"` and the `rowv` row class below are parity anchors: the frozen parity map's
+  // whole-table digest entries select `#tree tbody tr.rowv`. They are not user-visible, so keeping
+  // them lets the digests keep working without amending a frozen artifact.
   const table = el('table', {
+    id: 'tree',
     class: 'tbl tree',
     'aria-label': `Look-through hierarchy for ${repricing.product}, as of ${asof}`,
   });
@@ -102,6 +107,7 @@ function renderRow(
   const row = el('tr', {
     class: [
       'row',
+      'rowv',
       node.kind === 'vehicle' ? 'vehicle' : '',
       node.id === selectedId ? 'selected' : '',
       flag ? `flagged ${flag}` : '',
@@ -111,7 +117,11 @@ function renderRow(
     'data-code': node.code,
     'data-node-id': String(node.id),
     'data-kind': node.kind,
+    ...(node.kind === 'apex' ? parity(`reconciliation.apex.${node.code}`) : {}),
   });
+  // A top-level feeder is unique by code, so its cells answer to per-code semantic keys.
+  const apexKey = (suffix: string): Record<string, string> =>
+    node.kind === 'apex' ? parity(`reconciliation.apex.${node.code}.${suffix}`) : {};
 
   const name = el('td', { class: 'l', style: `padding-left:${8 + 12 * node.level}px` });
   if (kids) {
@@ -130,7 +140,7 @@ function renderRow(
   } else {
     name.append(el('span', { class: 'twist twist-empty', 'aria-hidden': 'true' }));
   }
-  name.append(el('span', { class: `tag tag-${node.kind}`, text: KIND_LABEL[node.kind] }));
+  name.append(el('span', { class: `tag tag-${node.kind}`, ...apexKey('kind'), text: KIND_LABEL[node.kind] }));
   name.append(el('span', { class: 'row-name', text: node.name }));
   if (node.kind === 'apex' || node.kind === 'vehicle') {
     name.append(el('span', { class: 'code', text: node.code }));
@@ -140,20 +150,29 @@ function renderRow(
   }
   row.append(name);
 
-  row.append(el('td', { class: 'l mono', text: node.kind === 'product' ? '' : symbolOf(node.code) }));
+  row.append(
+    el('td', {
+      class: 'l mono',
+      ...apexKey('symbol'),
+      text: node.kind === 'product' ? '' : symbolOf(node.code),
+    })
+  );
   row.append(
     r.nav == null
-      ? el('td', { class: 'r muted', text: EM_DASH })
-      : el('td', { class: 'r', text: formatUsd(r.nav) })
+      ? el('td', { class: 'r muted', ...apexKey('nav'), text: EM_DASH })
+      : el('td', { class: 'r', ...apexKey('nav'), text: formatUsd(r.nav) })
   );
-  row.append(el('td', { class: 'r', text: formatUsd(r.derived) }));
-  row.append(el('td', { class: 'r strong', text: formatUsd(r.revised) }));
-  row.append(
+  row.append(el('td', { class: 'r', ...apexKey('derived_mv'), text: formatUsd(r.derived) }));
+  row.append(el('td', { class: 'r strong', ...apexKey('revised_mv'), text: formatUsd(r.revised) }));
+  const pricingCell =
     view === 'after'
       ? el('td', { class: 'r reconciled', text: '✓ reconciled' })
-      : differenceCell(r.deltaPricing, r.pricingBps)
-  );
-  row.append(differenceCell(r.deltaNonPosition, r.nonPositionBps));
+      : differenceCell(r.deltaPricing, r.pricingBps);
+  for (const [k, v] of Object.entries(apexKey('delta_pricing'))) pricingCell.setAttribute(k, v);
+  row.append(pricingCell);
+  const nonPositionCell = differenceCell(r.deltaNonPosition, r.nonPositionBps);
+  for (const [k, v] of Object.entries(apexKey('delta_nonposition'))) nonPositionCell.setAttribute(k, v);
+  row.append(nonPositionCell);
 
   activate(row, () => callbacks.onSelect(node.id), {
     role: 'button',
@@ -184,15 +203,25 @@ function flagOf(node: LookthroughNode, repricing: RepricingFixture, view: Pricin
 
 function renderTotals(repricing: RepricingFixture, after: boolean): HTMLElement {
   const row = el('tr', { class: 'row totals' });
-  row.append(el('td', { class: 'l', text: `TOTALS · ${repricing.product}` }));
+  row.append(
+    el('td', { class: 'l', ...parity('reconciliation.totals.label'), text: `TOTALS · ${repricing.product}` })
+  );
   row.append(el('td', {}));
-  row.append(el('td', { class: 'r', text: formatUsd(repricing.N) }));
-  row.append(el('td', { class: 'r', text: formatUsd(after ? repricing.R : repricing.D) }));
-  row.append(el('td', { class: 'r strong', text: formatUsd(repricing.R) }));
+  row.append(el('td', { class: 'r', ...parity('reconciliation.totals.nav'), text: formatUsd(repricing.N) }));
+  row.append(
+    el('td', {
+      class: 'r',
+      ...parity('reconciliation.totals.derived_mv'),
+      text: formatUsd(after ? repricing.R : repricing.D),
+    })
+  );
+  row.append(
+    el('td', { class: 'r strong', ...parity('reconciliation.totals.revised_mv'), text: formatUsd(repricing.R) })
+  );
   row.append(
     after
-      ? el('td', { class: 'r reconciled', text: '✓ reconciled' })
-      : el('td', { class: 'r' }, [
+      ? el('td', { class: 'r reconciled', ...parity('reconciliation.totals.delta_pricing'), text: '✓ reconciled' })
+      : el('td', { class: 'r', ...parity('reconciliation.totals.delta_pricing') }, [
           el('span', {
             class: repricing.dPricing < 0 ? 'neg' : 'pos',
             text: formatUsdParens(repricing.dPricing),
@@ -200,7 +229,7 @@ function renderTotals(repricing: RepricingFixture, after: boolean): HTMLElement 
         ])
   );
   row.append(
-    el('td', { class: 'r' }, [
+    el('td', { class: 'r', ...parity('reconciliation.totals.delta_nonposition') }, [
       el('span', {
         class: repricing.dNonPos < 0 ? 'neg' : 'pos',
         text: formatUsdParens(repricing.dNonPos),
