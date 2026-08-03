@@ -97,7 +97,10 @@ export async function settle(page, { quietMs = 300, timeoutMs = 20000 } = {}) {
         });
         const started = Date.now();
         const tick = () => {
-          if (Date.now() - last >= quietMs || Date.now() - started >= timeoutMs) {
+          // An in-flight fetch mutates nothing, so DOM quiet alone would let a scene proceed while
+          // a fixture was still downloading. The app flags outstanding fetches on <html>.
+          const fetching = document.documentElement.hasAttribute('data-fetching');
+          if ((!fetching && Date.now() - last >= quietMs) || Date.now() - started >= timeoutMs) {
             obs.disconnect();
             resolve();
           } else {

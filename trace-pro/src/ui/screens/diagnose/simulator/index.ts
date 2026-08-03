@@ -120,7 +120,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
     ]),
     el('div', { id: 'simulator-stage', style: SIMULATOR_STAGE_STYLE }),
     el('div', { class: 'toolbar', id: 'simulator-runline' }, [
-      el('span', { class: 'status-line', id: 'simulator-run-label', ...parity('simulator.reprice.run_label'), role: 'status', 'aria-live': 'polite' }),
+      el('span', { class: 'status-line', id: 'simulator-run-label', 'data-parity-scene': 'state:repriceStatus', ...parity('simulator.reprice.run_label'), role: 'status', 'aria-live': 'polite' }),
       el('span', { class: 'status-line', id: 'simulator-run-numbers', ...parity('simulator.reprice.run_numbers') }),
     ]),
     el('p', { class: 'screen-help', id: 'simulator-caption' }),

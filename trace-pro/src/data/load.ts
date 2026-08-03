@@ -37,7 +37,32 @@ export class FixtureError extends Error {
 /** Where the app looks for data. Relative so the build works from any subdirectory. */
 const DATA_ROOT = 'data';
 
+/**
+ * Outstanding fixture fetches, surfaced on the document element as `data-fetching`.
+ *
+ * It is a real loading signal the UI can key off, and it is what makes the verification harness
+ * deterministic: DOM-quiet polling alone cannot tell "finished rendering" from "waiting on a
+ * response", because an in-flight fetch mutates nothing.
+ */
+let outstanding = 0;
+
+function markFetching(delta: number): void {
+  outstanding = Math.max(0, outstanding + delta);
+  const root = document.documentElement;
+  if (outstanding > 0) root.dataset.fetching = String(outstanding);
+  else delete root.dataset.fetching;
+}
+
 async function getJson<T>(url: string): Promise<T> {
+  markFetching(1);
+  try {
+    return await fetchJson<T>(url);
+  } finally {
+    markFetching(-1);
+  }
+}
+
+async function fetchJson<T>(url: string): Promise<T> {
   let response: Response;
   try {
     response = await fetch(url, { cache: 'no-store' });
