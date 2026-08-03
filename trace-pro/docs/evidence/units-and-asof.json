@@ -1,0 +1,32 @@
+[
+ {
+  "route": "reconciliation",
+  "asofVisible": true,
+  "figureCount": 58
+ },
+ {
+  "route": "pricing",
+  "asofVisible": true,
+  "figureCount": 560
+ },
+ {
+  "route": "diagnose-structure",
+  "asofVisible": true,
+  "figureCount": 146
+ },
+ {
+  "route": "diagnose-ownership",
+  "asofVisible": true,
+  "figureCount": 144
+ },
+ {
+  "route": "diagnose-data-quality",
+  "asofVisible": true,
+  "figureCount": 21
+ },
+ {
+  "route": "diagnose-simulator",
+  "asofVisible": true,
+  "figureCount": 81
+ }
+]

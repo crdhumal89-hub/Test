@@ -1,0 +1,38 @@
+{
+ "denylist": [
+  "rfx",
+  "gls",
+  "iss",
+  "mv100",
+  "dcN",
+  "ltv",
+  "gq",
+  "nonav",
+  "in tol",
+  "scen a",
+  "scen b",
+  "Derived MV",
+  "Revised MV",
+  "Publish px",
+  "Current px",
+  "Revised px",
+  "Applied px",
+  "Δ Pricing",
+  "Δ Non-position",
+  "Repricing P&L",
+  "Immediate %",
+  "Applied %"
+ ],
+ "findings": [
+  {
+   "route": "reconciliation",
+   "token": "iss",
+   "context": "Missing NAV"
+  },
+  {
+   "route": "diagnose-data-quality",
+   "token": "iss",
+   "context": "⬇ Download all issues (CSV)"
+  }
+ ]
+}
