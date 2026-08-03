@@ -8,14 +8,14 @@ Read this before planning each iteration. Newest entry last.
 |---|---|---|
 | 1 | build + typecheck + lint all exit 0 | ✅ **PASS** — `npm run build` 0, `tsc --noEmit` 0, `eslint` 0, structure 0, fixture check 0 |
 | 2 | unit tests pass, with direct tests for ownership solve / look-through walk / repricing cascade / reconciliation bridge | ✅ **PASS** — 105 tests, all four areas, plus a differential test against the original's solve |
-| 3 | snapshot of NEW app matches `tests/baseline.json` on every key, zero diffs | 🟡 reconciliation + chrome figures verified identical; 2 of 3 screens and 4 lenses still to build |
-| 4 | headless suite: 7 screens render, interactions complete, exports produce files, zero console errors | 🟡 0 console errors / 0 network on what exists; Playwright suite not written |
-| 5 | every `docs/ux-rubric.md` criterion passes the critic pass | ⬜ not gradeable until the screens exist |
+| 3 | snapshot of NEW app matches `tests/baseline.json` on every key, zero diffs | 🟡 all screens built and tagged; second full run in flight after fixing 11 scene errors |
+| 4 | headless suite: 7 screens render, interactions complete, exports produce files, zero console errors | 🟡 suite written (rubric + screens + offline); not yet run green end to end |
+| 5 | every `docs/ux-rubric.md` criterion passes the critic pass | ⬜ pending — will be graded by an agent with no design context |
 | 6 | no source file > 400 lines; no data literal > 2,000 chars; fixtures in `data/` | ✅ **PASS** — enforced by `scripts/check-limits.mjs` in the lint step; 614 KiB now in `data/` |
 | 7 | zero duplicate top-level identifiers across modules, linter-enforced | ✅ **PASS** — 175 top-level identifiers in `src/`, all unique, machine-checked |
 | 8 | zero inline `onclick`, zero `!important`, or documented in `docs/exceptions.md` | ✅ **PASS** — 0 and 0, machine-checked, no exceptions file needed yet |
 | 9 | app runs with network disabled | ✅ **PASS** — 0 offline violations; xlsx 0.18.5 + d3 7.8.5 vendored |
-| 10 | README explains tree, how to run, how to repoint product/as-of, what each screen answers | ⬜ not started |
+| 10 | README explains tree, how to run, how to repoint product/as-of, what each screen answers | ✅ **PASS** — `README.md` 301 lines, every command and path verified against the repo |
 
 ---
 
@@ -168,3 +168,64 @@ scheduled last.
 Sources drawer · `rename-map.json` + `selectors.new.json` + the digit guard in `snapshot.mjs` ·
 Playwright suite · README, `issues.md`, `exceptions.md`, `labels.md`, `first-run.md` · independent
 rubric critic pass · full 1,020-key parity run.
+
+---
+
+## Iteration 5 — Phase 2: six parallel agents, then integration
+
+**Tried.** Ran six agents on disjoint directories (Pricing · Glossary+Sources · harness+rename map ·
+Ownership+Data quality · Structure+Simulator · documentation) and kept every shared file — `main.ts`,
+`store.ts`, `shell.ts`, the stylesheets, `parity.ts` — to myself, so no two writers ever touched one
+file. All six landed.
+
+**The convention that made it work.** Every figure publishes the semantic key it answers to,
+`data-parity="reconciliation.waterfall.nav"`, straight from the frozen map. The harness reads the
+attribute in preference to the map's selector, so it needs no knowledge of the new layout, and
+parity becomes self-documenting at the point of render.
+
+**Found — the blocker nobody had hit.** Extraction was the briefed half; NAVIGATION was not. The
+frozen map names its scenes in the original's vocabulary (`screen: lt`, `view: after`), so the
+harness was clicking `.tab[data-tab="lt"]` and `#pricetog` — controls this rebuild does not have.
+First full run: **11 of 22 scenes never ran, 10 keys unresolved, gate correctly FAILED.** Fixed by
+extending the same idea to controls: `data-parity-scene="screen:lt"`, with fallback to the
+original's selector, so one harness drives both targets. The four folded lens links that carry
+`screen:str|own|iss|sim` are a real accessibility feature, not scaffolding — one-hop keyboard access
+to a lens.
+
+**Found — three defects of mine, by the documentation agent verifying the spec against the repo
+rather than trusting it.** `main.ts` seeded the Diagnose default from the first vehicle node, giving
+`ASCON`, when the baseline pins the Ownership lens on `APPOURI` — which is not in this product's
+look-through tree at all, so it can never be derived and is now declared in `data/manifest.json`.
+The look-through column's sub-label was fixed at "current marks" while its cells carry the repriced
+quantity under the repriced basis — the exact R10 defect the rebuild exists to remove. And three of
+six above-the-fold selectors were written against CSS classes the rendered output never uses.
+
+**Found — a real classifier bug, by the Simulator agent.** Term matching was case-sensitive, so
+`Δ Pricing` in a header was caught but `Δ pricing` mid-sentence was not, leaving
+`simulator.reprice.shockline` STRICT while the declared entry for the paragraph containing it
+relabelled those same words. One sentence cannot be both. Blanket case-insensitivity is also wrong —
+it captures "how this % is derived", where `derived` is a verb. Matching is now case-insensitive per
+term EXCEPT the bare words `Derived`/`Revised`, which match only capitalised, which is how the
+original writes them when they ARE labels. **Declared set: 41, not the 37 I first quoted.**
+
+**Found — the digit guard earning its place twice.** It rejected my own appending of an as-of date to
+a basis line (three digits injected into a string that had none), and its self-check now proves all
+eight cases: digits added, removed, changed, reordered, un-glued, sign-flipped.
+
+**Decided without escalating, per instruction.** The baseline requires the footer to assert ownership
+is "verified to conserve". It is not — five of 514 entities cannot close. Shipping that verbatim
+would hand a controller a false control statement, so it is a declared label change preserving the
+numeric token, NOT a byte-parity match. The Ownership lens goes further: its conservation sentence is
+conditional on the position displayed, with a runtime audit naming all five and their measured
+shares, computed rather than hardcoded so it cannot go stale.
+
+**Sub-gates.** STATIC pass — build 0, tsc 0, eslint 0, structure PASSED (439 top-level identifiers
+all unique, 0 inline `on*=`, 0 `!important`, no file over 400 lines), fixtures deep-equal the
+original, classify 0 with 41/41 digit-guarded. UNIT 105 pass. PARITY second run in flight. UX CRITIC
+not yet run.
+
+**Live hypothesis for the top remaining failure.** The declared-label keys are the residual risk, not
+the figures: 41 strings must match a frozen declaration exactly, and several are long prose where a
+single word or a missing space between adjacent inline elements is a diff. I have already hit that
+twice (the tie statement's missing space, the column headers' glue). Expect the next run's diffs to
+be concentrated there rather than in any number.
