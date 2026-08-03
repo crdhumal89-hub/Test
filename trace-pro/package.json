@@ -15,7 +15,10 @@
     "snapshot:original": "node scripts/snapshot.mjs --target reference/TRACE-Pro-original.html",
     "gate:parity": "node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json",
     "gate:static": "npm run build && npm run typecheck && npm run lint",
-    "gate": "npm run gate:static && npm run test && npm run gate:parity"
+    "gate": "npm run gate:static && npm run test && npm run test:e2e && npm run gate:parity",
+    "test:e2e": "playwright test",
+    "test:e2e:app": "playwright test --project=app",
+    "test:e2e:offline": "playwright test --project=offline"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
