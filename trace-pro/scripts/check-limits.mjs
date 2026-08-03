@@ -104,10 +104,16 @@ const SHIPPED = files.filter(
 );
 const inlineHandlers = [];
 const importants = [];
+/** Strip /* *\/ and // comments, so prose ABOUT these patterns is not mistaken for them. */
+function stripComments(src) {
+  return src
+    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
+    .replace(/(^|[^:])\/\/[^\n]*/g, (m, p1) => p1 + ' '.repeat(Math.max(0, m.length - p1.length)));
+}
 for (const f of SHIPPED) {
   if (!fs.existsSync(f)) continue;
   const rel = path.relative(ROOT, f);
-  const src = fs.readFileSync(f, 'utf8');
+  const src = stripComments(fs.readFileSync(f, 'utf8'));
   src.split('\n').forEach((line, i) => {
     // An inline handler ATTRIBUTE, e.g. onclick="..." in markup. Property assignment in TS
     // (el.onclick = fn) is a different thing and is caught by review, not here.
