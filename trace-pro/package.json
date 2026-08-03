@@ -1,0 +1,15 @@
+{
+  "name": "trace-pro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "snapshot:original": "node scripts/snapshot.mjs --target reference/TRACE-Pro-original.html",
+    "gate:parity": "node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "d3": "^7.8.5",
+    "xlsx": "^0.18.5"
+  }
+}

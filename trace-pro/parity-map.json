@@ -1,0 +1,408 @@
+{
+  "$schema": "./docs/parity-map.schema.md",
+  "$comment": [
+    "Authored in Phase 1 against reference/TRACE-Pro-original.html while it is intact, and FROZEN.",
+    "Every key is SEMANTIC: it names the business figure, never its DOM position. Row collections are",
+    "keyed by the entity's own fund code, so the rebuild may reorder, relabel, resort, re-nest and",
+    "re-home any of this and parity still checks. Selectors describe where the figure lives in the",
+    "ORIGINAL; the rebuild supplies its own selectors in selectors.new.json without touching a key.",
+    "Entry types: 'single' (one figure), 'rows' (one entry per row, keyed by idFrom), 'list'.",
+    "'steps' are documented default interactions, defined in scripts/snapshot.mjs."
+  ],
+  "viewport": { "width": 1600, "height": 1000 },
+  "locale": "en-US",
+  "timezone": "UTC",
+  "screens": {
+    "lt": "reconciliation",
+    "rfx": "pricing",
+    "str": "structure",
+    "sim": "simulator",
+    "own": "ownership",
+    "iss": "data_quality",
+    "gls": "glossary"
+  },
+  "entries": [
+    {
+      "type": "single", "group": "chrome", "screen": "any",
+      "keys": {
+        "chrome.active_product": { "selector": "#mastprodv" },
+        "chrome.asof": { "selector": "#asofb" },
+        "chrome.pricing_view_note": { "selector": "#pmnote" },
+        "chrome.sources_status": { "selector": "#ubstatus" },
+        "chrome.footer_assertion": { "selector": ".wrap > p.foot" }
+      }
+    },
+    {
+      "type": "single", "group": "reconciliation.waterfall", "screen": "lt", "view": "before",
+      "keys": {
+        "reconciliation.waterfall.start_label": { "selector": "#ltwf .wfstep:nth-child(1) .wl" },
+        "reconciliation.waterfall.derived_mv": { "selector": "#ltwf .wfstep:nth-child(1) .wv" },
+        "reconciliation.waterfall.derived_basis": { "selector": "#ltwf .wfstep:nth-child(1) .ws" },
+        "reconciliation.waterfall.delta_pricing_label": { "selector": "#ltwf .wfop:nth-child(2) .opl" },
+        "reconciliation.waterfall.delta_pricing_usd": { "selector": "#ltwf .wfop:nth-child(2) .opv" },
+        "reconciliation.waterfall.delta_pricing_bps": { "selector": "#ltwf .wfop:nth-child(2) .opb" },
+        "reconciliation.waterfall.revised_mv": { "selector": "#ltwf .wfstep:nth-child(3) .wv" },
+        "reconciliation.waterfall.revised_basis": { "selector": "#ltwf .wfstep:nth-child(3) .ws" },
+        "reconciliation.waterfall.delta_nonposition_label": { "selector": "#ltwf .wfop:nth-child(4) .opl" },
+        "reconciliation.waterfall.delta_nonposition_usd": { "selector": "#ltwf .wfop:nth-child(4) .opv" },
+        "reconciliation.waterfall.delta_nonposition_bps": { "selector": "#ltwf .wfop:nth-child(4) .opb" },
+        "reconciliation.waterfall.nav": { "selector": "#ltwf .wfstep:nth-child(5) .wv" },
+        "reconciliation.waterfall.nav_basis": { "selector": "#ltwf .wfstep:nth-child(5) .ws" },
+        "reconciliation.tie.statement": { "selector": "#ltwf .wftie" },
+        "reconciliation.tie.status": { "selector": "#ltwf .wftie .okpill" },
+        "reconciliation.status_line": { "selector": "#status" }
+      }
+    },
+    {
+      "type": "single", "group": "reconciliation.waterfall.after", "screen": "lt", "view": "after",
+      "keys": {
+        "reconciliation.after.start_label": { "selector": "#ltwf .wfstep:nth-child(1) .wl" },
+        "reconciliation.after.repriced_mv": { "selector": "#ltwf .wfstep:nth-child(1) .wv" },
+        "reconciliation.after.delta_pricing_usd": { "selector": "#ltwf .wfop:nth-child(2) .opv" },
+        "reconciliation.after.delta_pricing_note": { "selector": "#ltwf .wfop:nth-child(2) .opb:last-child" },
+        "reconciliation.after.revised_mv": { "selector": "#ltwf .wfstep:nth-child(3) .wv" },
+        "reconciliation.after.delta_nonposition_usd": { "selector": "#ltwf .wfop:nth-child(4) .opv" },
+        "reconciliation.after.nav": { "selector": "#ltwf .wfstep:nth-child(5) .wv" },
+        "reconciliation.after.tie_statement": { "selector": "#ltwf .wftie" },
+        "reconciliation.after.pricing_view_note": { "selector": "#pmnote" }
+      }
+    },
+    {
+      "type": "list", "group": "reconciliation.exceptions", "screen": "lt", "view": "before",
+      "keyPrefix": "reconciliation.exception", "selector": "#ltflags .flagchip",
+      "idFrom": { "text": true, "strip": "^\\d+\\s+" }, "cells": { "count": ".fx" }
+    },
+    {
+      "type": "single", "group": "reconciliation.totals", "screen": "lt", "view": "before",
+      "keys": {
+        "reconciliation.totals.label": { "selector": "#tree tbody tr.grand td:nth-child(1)" },
+        "reconciliation.totals.nav": { "selector": "#tree tbody tr.grand td:nth-child(3)" },
+        "reconciliation.totals.derived_mv": { "selector": "#tree tbody tr.grand td:nth-child(4)" },
+        "reconciliation.totals.revised_mv": { "selector": "#tree tbody tr.grand td:nth-child(5)" },
+        "reconciliation.totals.delta_pricing": { "selector": "#tree tbody tr.grand td:nth-child(6)" },
+        "reconciliation.totals.delta_nonposition": { "selector": "#tree tbody tr.grand td:nth-child(7)" },
+        "reconciliation.tree.column_headers": { "selector": "#tree thead tr", "join": true }
+      }
+    },
+    {
+      "type": "digest", "group": "reconciliation.tree", "screen": "lt", "view": "before",
+      "keyPrefix": "reconciliation.tree",
+      "rowSelector": "#tree tbody tr.rowv",
+      "note": "Whole-table digest: no row can change without a diff, without keying on DOM order.",
+      "columns": {
+        "nav": 3, "derived_mv": 4, "revised_mv": 5, "delta_pricing": 6, "delta_nonposition": 7
+      }
+    },
+    {
+      "type": "digest", "group": "reconciliation.tree.expanded", "screen": "lt", "view": "before",
+      "steps": ["expandAll"], "keyPrefix": "reconciliation.tree_expanded",
+      "rowSelector": "#tree tbody tr.rowv",
+      "columns": {
+        "nav": 3, "derived_mv": 4, "revised_mv": 5, "delta_pricing": 6, "delta_nonposition": 7
+      }
+    },
+    {
+      "type": "rows", "group": "reconciliation.tree.apex", "screen": "lt", "view": "before",
+      "keyPrefix": "reconciliation.apex", "rowSelector": "#tree tbody tr.rowv",
+      "idFrom": { "selector": ".codetag" }, "where": { "selector": ".tag", "equals": "FEEDER" },
+      "cells": {
+        "kind": ".tag", "symbol": "td:nth-child(2)", "nav": "td:nth-child(3)",
+        "derived_mv": "td:nth-child(4)", "revised_mv": "td:nth-child(5)",
+        "delta_pricing": "td:nth-child(6)", "delta_nonposition": "td:nth-child(7)"
+      }
+    },
+    {
+      "type": "single", "group": "reconciliation.detail", "screen": "lt", "view": "before",
+      "steps": ["expandAll", "ltRow:SPORTHFC"],
+      "keys": {
+        "reconciliation.detail.SPORTHFC.symbol": { "selector": "#ltdetail .dsym" },
+        "reconciliation.detail.SPORTHFC.subtitle": { "selector": "#ltdetail .dsub" },
+        "reconciliation.detail.SPORTHFC.status_badge": { "selector": "#ltdetail .rag" },
+        "reconciliation.detail.SPORTHFC.figures": { "selector": "#ltdetail .kv", "join": true },
+        "reconciliation.detail.SPORTHFC.publish_price": { "selector": "#ltdetail .kv .v.mono" },
+        "reconciliation.detail.SPORTHFC.held_by": { "selector": "#ltdetail .htab", "join": true }
+      }
+    },
+    {
+      "type": "single", "group": "pricing.score", "screen": "rfx", "view": "before",
+      "keys": {
+        "pricing.score.derived_mv": { "selector": "#recscore .ss:nth-child(1) .sv" },
+        "pricing.score.derived_basis": { "selector": "#recscore .ss:nth-child(1) .sd" },
+        "pricing.score.delta_pricing_usd": { "selector": "#recscore .ss:nth-child(2) .sv" },
+        "pricing.score.delta_pricing_detail": { "selector": "#recscore .ss:nth-child(2) .sd" },
+        "pricing.score.revised_mv": { "selector": "#recscore .ss:nth-child(3) .sv" },
+        "pricing.score.delta_nonposition_usd": { "selector": "#recscore .ss:nth-child(4) .sv" },
+        "pricing.score.delta_nonposition_detail": { "selector": "#recscore .ss:nth-child(4) .sd" },
+        "pricing.score.nav": { "selector": "#recscore .ss:nth-child(5) .sv" },
+        "pricing.score.nav_detail": { "selector": "#recscore .ss:nth-child(5) .sd" },
+        "pricing.banner.narrative": { "selector": "#recban" },
+        "pricing.active_product_code": { "selector": "#recprod" }
+      }
+    },
+    {
+      "type": "single", "group": "pricing.bridge", "screen": "rfx", "view": "before",
+      "keys": {
+        "pricing.bridge.product_nav": { "selector": "#recbridge .brgend:not(.der) .v" },
+        "pricing.bridge.product_nav_basis": { "selector": "#recbridge .brgend:not(.der) .s" },
+        "pricing.bridge.derived_mv": { "selector": "#recbridge .brgend.der .v" },
+        "pricing.bridge.derived_mv_basis": { "selector": "#recbridge .brgend.der .s" },
+        "pricing.bridge.gap_usd": { "selector": "#recbridge .brgar .g" },
+        "pricing.bridge.gap_bps": { "selector": "#recbridge .brgar .gb" },
+        "pricing.bridge.driver_caption": { "selector": "#recbridge .brglbl" }
+      }
+    },
+    {
+      "type": "rows", "group": "pricing.bridge.drivers", "screen": "rfx", "view": "before",
+      "keyPrefix": "pricing.bridge.driver", "rowSelector": "#recbridge .brow2",
+      "idFrom": { "attr": "data-c" },
+      "cells": { "scenario": ".sx", "gap_usd": ".bamt", "gap_bps": ".bamt .bp" }
+    },
+    {
+      "type": "single", "group": "pricing.table.headers", "screen": "rfx", "view": "before",
+      "keys": { "pricing.table.column_headers": { "selector": "#rectable thead tr", "join": true } }
+    },
+    {
+      "type": "rows", "group": "pricing.table", "screen": "rfx", "view": "before",
+      "keyPrefix": "pricing.fund", "rowSelector": "#rectable tbody tr",
+      "idFrom": { "attr": "data-c" },
+      "note": "All 26 funds. Keyed by fund code, so sorting and filtering cannot move a key.",
+      "cells": {
+        "name": "td:nth-child(1) .fn",
+        "role": { "selector": "td:nth-child(1)", "exclude": ".fn, .codetag" },
+        "symbol": "td:nth-child(2)",
+        "publish_px": "td:nth-child(3)",
+        "current_px": "td:nth-child(4)",
+        "revised_px": "td:nth-child(5)",
+        "derived_mv": "td:nth-child(6)",
+        "revised_mv": "td:nth-child(7)",
+        "repricing_pnl": "td:nth-child(8)",
+        "pnl_bps": "td:nth-child(9)"
+      }
+    },
+    {
+      "type": "rows", "group": "pricing.table.after", "screen": "rfx", "view": "after",
+      "keyPrefix": "pricing.after.fund", "rowSelector": "#rectable tbody tr",
+      "idFrom": { "attr": "data-c" },
+      "cells": {
+        "applied_px": "td:nth-child(4)",
+        "repriced_mv": "td:nth-child(6)",
+        "revised_mv": "td:nth-child(7)",
+        "pnl": "td:nth-child(8)"
+      }
+    },
+    {
+      "type": "single", "group": "pricing.walk.headers", "screen": "rfx", "view": "before",
+      "steps": ["rfxView:walk"],
+      "keys": {
+        "pricing.walk.column_headers": { "selector": "#walkwrap thead tr", "join": true },
+        "pricing.walk.total.label": { "selector": "#walkwrap tbody tr.tot td:nth-child(1)" },
+        "pricing.walk.total.nav": { "selector": "#walkwrap tbody tr.tot td:nth-child(3)" },
+        "pricing.walk.total.value_before": { "selector": "#walkwrap tbody tr.tot td:nth-child(5)" },
+        "pricing.walk.total.value_after": { "selector": "#walkwrap tbody tr.tot td:nth-child(7)" },
+        "pricing.walk.total.delta_value": { "selector": "#walkwrap tbody tr.tot td:nth-child(9)" },
+        "pricing.walk.total.delta_bps": { "selector": "#walkwrap tbody tr.tot td:nth-child(10)" }
+      }
+    },
+    {
+      "type": "rows", "group": "pricing.walk", "screen": "rfx", "view": "before",
+      "steps": ["rfxView:walk"],
+      "keyPrefix": "pricing.walk.fund", "rowSelector": "#walkwrap tbody tr:not(.tot)",
+      "idFrom": { "selector": "td:nth-child(2) .codetag" },
+      "cells": {
+        "level": "td:nth-child(1)",
+        "global_qty": "td:nth-child(4)",
+        "nav": "td:nth-child(5)",
+        "price_before": "td:nth-child(6)",
+        "value_before": "td:nth-child(7)",
+        "price_after": "td:nth-child(8)",
+        "value_after": "td:nth-child(9)",
+        "delta_price": "td:nth-child(10)",
+        "delta_value": "td:nth-child(11)",
+        "delta_bps": "td:nth-child(12)"
+      }
+    },
+    {
+      "type": "single", "group": "pricing.detail", "screen": "rfx", "view": "before",
+      "steps": ["rfxRow:SPORTHFC"],
+      "keys": {
+        "pricing.detail.SPORTHFC.symbol": { "selector": "#recdetail .dsym" },
+        "pricing.detail.SPORTHFC.subtitle": { "selector": "#recdetail .dsub" },
+        "pricing.detail.SPORTHFC.price_equations": { "selector": "#recdetail .eqn", "join": true },
+        "pricing.detail.SPORTHFC.publish_px_copy": { "selector": "#recdetail .cpx" },
+        "pricing.detail.SPORTHFC.level_pnl_block": { "selector": "#recdetail .kv", "join": true },
+        "pricing.detail.SPORTHFC.per_holding": { "selector": "#recdetail .htab", "join": true },
+        "pricing.detail.SPORTHFC.sum_assertion": { "selector": "#recdetail .hn" },
+        "pricing.detail.SPORTHFC.nonposition_note": { "selector": "#recdetail .dnote" }
+      }
+    },
+    {
+      "type": "single", "group": "pricing.detail.apex", "screen": "rfx", "view": "before",
+      "steps": ["rfxRow:SPORTHLD"],
+      "keys": {
+        "pricing.detail.SPORTHLD.symbol": { "selector": "#recdetail .dsym" },
+        "pricing.detail.SPORTHLD.price_equations": { "selector": "#recdetail .eqn", "join": true },
+        "pricing.detail.SPORTHLD.level_pnl_block": { "selector": "#recdetail .kv", "join": true }
+      }
+    },
+    {
+      "type": "single", "group": "structure", "screen": "str",
+      "keys": {
+        "structure.legend": { "selector": ".leg", "join": true },
+        "structure.layout_options": { "selector": "#strlayout", "join": true },
+        "structure.slider_labels": { "selector": ".stradj", "join": true }
+      }
+    },
+    {
+      "type": "count", "group": "structure.graph", "screen": "str",
+      "keys": {
+        "structure.graph.node_count": { "selector": "#strsvg circle.ncirc" },
+        "structure.graph.edge_count": { "selector": "#strsvg path.lnk" },
+        "structure.graph.ownership_pill_count": { "selector": "#strsvg g.strpcts > g" }
+      }
+    },
+    {
+      "type": "single", "group": "structure.fullscreen", "screen": "str",
+      "steps": ["stageFullscreen:str"],
+      "note": "Pins the $2,785.79 dual-product-NAV discrepancy of spec 1.8.1 as a FACT. This figure is EMB.prodNAV (fund-entity basis) and must not silently become the Sigma-apex NAV.",
+      "keys": {
+        "structure.fullscreen.product_nav": { "selector": "#gmaxread .r2" },
+        "structure.fullscreen.title": { "selector": "#gmaxread .r1" }
+      }
+    },
+    {
+      "type": "single", "group": "simulator", "screen": "sim",
+      "keys": {
+        "simulator.product_code": { "selector": "#simprod" },
+        "simulator.product_nav": { "selector": "#simnavval" },
+        "simulator.ledger_product": { "selector": "#simledgerprod" },
+        "simulator.help_text": { "selector": "#simsub" }
+      }
+    },
+    {
+      "type": "count", "group": "simulator.graph", "screen": "sim",
+      "keys": {
+        "simulator.graph.node_count": { "selector": "#simsvg rect.body" },
+        "simulator.graph.edge_count": { "selector": "#simsvg g.edgepcts > g" }
+      }
+    },
+    {
+      "type": "single", "group": "simulator.reprice", "screen": "sim",
+      "steps": ["simFullReprice"],
+      "note": "The completed bottom-up reprice must land on exactly the same figures as the Reconciliation waterfall.",
+      "keys": {
+        "simulator.reprice.run_label": { "selector": "#simrunlab" },
+        "simulator.reprice.run_numbers": { "selector": "#simrunnums", "join": true },
+        "simulator.reprice.ledger": { "selector": "#simscore", "join": true },
+        "simulator.reprice.derived_before": { "selector": "#simscore .prow:nth-child(1) .num" },
+        "simulator.reprice.pnl": { "selector": "#simscore .prow:nth-child(3) .num" },
+        "simulator.reprice.revised": { "selector": "#simscore .prow.big .num" },
+        "simulator.reprice.nonposition": { "selector": "#simscore .prow:nth-child(5) .num" },
+        "simulator.reprice.product_nav": { "selector": "#simscore .prow:nth-child(6) .num" },
+        "simulator.reprice.shockline": { "selector": "#simscore .shockline" }
+      }
+    },
+    {
+      "type": "single", "group": "ownership.default", "screen": "own",
+      "note": "Default position is the hard-coded literal renderBreakout('APPOURI') at original line 2498.",
+      "keys": {
+        "ownership.APPOURI.kind": { "selector": "#objhead .tag" },
+        "ownership.APPOURI.symbol": { "selector": "#objhead .sym" },
+        "ownership.APPOURI.name_and_code": { "selector": "#objhead .iss" },
+        "ownership.APPOURI.total_qty": { "selector": "#objhead .qty" },
+        "ownership.APPOURI.pie": { "selector": "#objhead .pie" },
+        "ownership.APPOURI.immediate_check": { "selector": "#objchecks .chk:nth-child(1)" },
+        "ownership.APPOURI.ultimate_check": { "selector": "#objchecks .chk:nth-child(2)" },
+        "ownership.APPOURI.counts_hint": { "selector": "#objchecks .hint" },
+        "ownership.column_headers": { "selector": "#revtree thead tr", "join": true },
+        "ownership.APPOURI.footnote": { "selector": "#objfoot" }
+      }
+    },
+    {
+      "type": "rows", "group": "ownership.immediate", "screen": "own",
+      "keyPrefix": "ownership.APPOURI.owner", "rowSelector": "#revtree tbody tr.rowv",
+      "idFrom": { "selector": "td:nth-child(3)" },
+      "cells": {
+        "qty_held": "td:nth-child(4)",
+        "immediate_pct": "td:nth-child(5)",
+        "cumulative_pct": "td:nth-child(6)"
+      }
+    },
+    {
+      "type": "rows", "group": "ownership.ultimate", "screen": "own",
+      "keyPrefix": "ownership.APPOURI.ultimate", "rowSelector": "#rollup .drv",
+      "idFrom": { "attr": "data-code" }, "cells": { "share": ".v" }
+    },
+    {
+      "type": "single", "group": "ownership.derivation", "screen": "own",
+      "steps": ["ownRow:1"],
+      "keys": {
+        "ownership.derivation.title": { "selector": "#inspector .derv .t" },
+        "ownership.derivation.headline": { "selector": "#inspector .big2" },
+        "ownership.derivation.equation": { "selector": "#inspector .eq" },
+        "ownership.derivation.ladder": { "selector": "#inspector .ladder", "join": true }
+      }
+    },
+    {
+      "type": "single", "group": "ownership.second_position", "screen": "own",
+      "steps": ["ownSearch:CRIMAP"],
+      "note": "Proves the search path recomputes, not just the hard-coded default.",
+      "keys": {
+        "ownership.CRIMAP.symbol": { "selector": "#objhead .sym" },
+        "ownership.CRIMAP.total_qty": { "selector": "#objhead .qty" },
+        "ownership.CRIMAP.immediate_check": { "selector": "#objchecks .chk:nth-child(1)" },
+        "ownership.CRIMAP.ultimate_check": { "selector": "#objchecks .chk:nth-child(2)" },
+        "ownership.CRIMAP.counts_hint": { "selector": "#objchecks .hint" }
+      }
+    },
+    {
+      "type": "single", "group": "data_quality", "screen": "iss",
+      "keys": {
+        "data_quality.high_count": { "selector": "#isskpi .card:nth-child(1) .val" },
+        "data_quality.medium_count": { "selector": "#isskpi .card:nth-child(2) .val" },
+        "data_quality.low_count": { "selector": "#isskpi .card:nth-child(3) .val" },
+        "data_quality.total_count": { "selector": "#isskpi .card.hl .val" },
+        "data_quality.scope_label": { "selector": "#isskpi .card.hl .sub" },
+        "data_quality.tab_badge": { "selector": "#issbdg" }
+      }
+    },
+    {
+      "type": "rows", "group": "data_quality.buckets", "screen": "iss",
+      "keyPrefix": "data_quality.bucket", "rowSelector": "#issbuckets .acc",
+      "idFrom": { "selector": ".nm2" },
+      "cells": { "count_and_severity": ".ct", "explanation": ".expl" }
+    },
+    {
+      "type": "single", "group": "data_quality.scoped", "screen": "iss",
+      "steps": ["issScope:Apollo Sports Capital"],
+      "keys": {
+        "data_quality.scoped.total": { "selector": "#isskpi .card.hl .val" },
+        "data_quality.scoped.label": { "selector": "#isskpi .card.hl .sub" },
+        "data_quality.scoped.high": { "selector": "#isskpi .card:nth-child(1) .val" }
+      }
+    },
+    {
+      "type": "single", "group": "glossary", "screen": "gls",
+      "keys": {
+        "glossary.term_count": { "selector": "#glscount" },
+        "glossary.intro": { "selector": ".glsintro .glssub" },
+        "glossary.category_chips": { "selector": "#glschips", "join": true },
+        "glossary.section_headers": { "selector": "#glsbody .glssectt", "join": true }
+      }
+    },
+    {
+      "type": "list", "group": "glossary.terms", "screen": "gls",
+      "keyPrefix": "glossary.term", "selector": "#glsbody .glscard",
+      "idFrom": { "attr": "data-term" }, "cells": { "definition": ".glsplain" }
+    },
+    {
+      "type": "single", "group": "glossary.search", "screen": "gls",
+      "steps": ["glsSearch:publish"],
+      "keys": { "glossary.search.publish_count": { "selector": "#glscount" } }
+    },
+    {
+      "type": "single", "group": "glossary.filter", "screen": "gls",
+      "steps": ["glsChip:pricing"],
+      "keys": { "glossary.filter.pricing_count": { "selector": "#glscount" } }
+    }
+  ]
+}
