@@ -32,7 +32,7 @@ function arg(name, dflt = null) {
  * future edit to the baseline (or to this classifier) cannot silently move the boundary between
  * "a figure the rebuild must reproduce to the byte" and "a label the rebuild may rename".
  */
-const EXPECT = { figure: 728, empty: 14, text: 278, renamed: 49, glossary: 12, declared: 37 };
+const EXPECT = { figure: 728, empty: 14, text: 278, renamed: 50, glossary: 12, declared: 38 };
 
 /* ------------------------------------------------------------------ classification
  * A `figure` is a string that carries a number and nothing else: no prose, no vocabulary, so no
