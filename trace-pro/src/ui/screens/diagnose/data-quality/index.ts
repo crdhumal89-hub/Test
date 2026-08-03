@@ -139,6 +139,8 @@ export function mountDataQualityLens(
       el('label', { class: 'dq-scope-legend', for: 'data-quality-scope', text: 'Scope' }),
       createCombobox({
         id: 'data-quality-scope',
+        // The documented default interaction for this control, per parity-map.json.
+        sceneHook: 'step:issScope:Apollo Sports Capital',
         placeholder: 'All fund entities, or one entity\u2019s reachable world',
         ariaLabel: 'Scope the issue log to one fund entity\u2019s reachable world',
         options: () => scopes,
