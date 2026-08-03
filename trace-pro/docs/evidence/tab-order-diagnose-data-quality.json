@@ -1,0 +1,14 @@
+[
+ "input[combobox] \"Choose the entity to examine across all four lenses\"",
+ "button[tab] \"Structure\"",
+ "button[tab] \"Ownership\"",
+ "button[tab] \"Data quality\"",
+ "button[tab] \"Simulator\"",
+ "input[combobox] \"Scope the issue log to one fund entity’s reachable world\"",
+ "button \"⬇ Download all issues (CSV)\"",
+ "button \"Self-mapping (fund holds its own code)43\"",
+ "button \"Circular mapping (mutual / looping owner\"",
+ "button \"Missing / dangling SPV code29 · High▸\"",
+ "button \"Incomplete look-through (double-count fl\"",
+ "button \"Unmapped identifiers (missing VPM symbol\""
+]

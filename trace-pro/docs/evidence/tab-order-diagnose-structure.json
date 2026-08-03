@@ -1,0 +1,21 @@
+[
+ "input[combobox] \"Choose the entity to examine across all four lenses\"",
+ "button[tab] \"Structure\"",
+ "button[tab] \"Ownership\"",
+ "button[tab] \"Data quality\"",
+ "button[tab] \"Simulator\"",
+ "button \"Vertical\"",
+ "button \"Horizontal\"",
+ "button \"Radial\"",
+ "button \"Dynamic\"",
+ "input \"Focus an entity code or name; other entities fade back\"",
+ "button \"Show %\"",
+ "button \"◎ Fit\"",
+ "button \"Reset\"",
+ "button \"⤢ Full screen\"",
+ "input \"Node spacing\"",
+ "input \"Link length\"",
+ "input \"Curvature\"",
+ "input \"Label density\"",
+ "g[button] \"Apollo Sports Capital — Apollo Sports Capital, 100.00% of its holder\""
+]

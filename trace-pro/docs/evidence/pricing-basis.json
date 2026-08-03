@@ -1,0 +1,32 @@
+[
+ {
+  "route": "reconciliation",
+  "noteVisible": true,
+  "toggleVisible": true
+ },
+ {
+  "route": "pricing",
+  "noteVisible": true,
+  "toggleVisible": true
+ },
+ {
+  "route": "diagnose-structure",
+  "noteVisible": true,
+  "toggleVisible": true
+ },
+ {
+  "route": "diagnose-ownership",
+  "noteVisible": true,
+  "toggleVisible": true
+ },
+ {
+  "route": "diagnose-data-quality",
+  "noteVisible": true,
+  "toggleVisible": true
+ },
+ {
+  "route": "diagnose-simulator",
+  "noteVisible": true,
+  "toggleVisible": true
+ }
+]
