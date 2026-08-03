@@ -1,0 +1,24 @@
+{
+ "$comment": "Products and as-of dates available to the app. Selected via ?product=<slug>&asof=<date>; the first entry is the default. Adding a product means dropping a folder here and adding a line.",
+ "default": {
+  "product": "apollo-sports-capital",
+  "asof": "2026-06-30"
+ },
+ "products": [
+  {
+   "slug": "apollo-sports-capital",
+   "name": "Apollo Sports Capital",
+   "code": "SPORT",
+   "asOfDates": [
+    "2026-06-30"
+   ],
+   "files": {
+    "EMB": "lookthrough.json",
+    "UNI": "universe.json",
+    "PRICING": "legacy-pricing.json",
+    "REVBASE": "repricing.json",
+    "SIM": "simulator.json"
+   }
+  }
+ ]
+}

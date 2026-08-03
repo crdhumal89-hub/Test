@@ -4,12 +4,30 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . && node scripts/check-limits.mjs && node scripts/extract-fixtures.mjs --check",
+    "test": "vitest run",
+    "fixtures:extract": "node scripts/extract-fixtures.mjs",
+    "fixtures:check": "node scripts/extract-fixtures.mjs --check",
     "snapshot:original": "node scripts/snapshot.mjs --target reference/TRACE-Pro-original.html",
-    "gate:parity": "node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json"
+    "gate:parity": "node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json",
+    "gate:static": "npm run build && npm run typecheck && npm run lint",
+    "gate": "npm run gate:static && npm run test && npm run gate:parity"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.56.1",
+    "@types/node": "^26.1.2",
     "d3": "^7.8.5",
+    "eslint": "^10.8.0",
+    "globals": "^17.9.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.66.0",
+    "vite": "^8.2.0",
+    "vitest": "^4.1.10",
     "xlsx": "^0.18.5"
   }
 }
