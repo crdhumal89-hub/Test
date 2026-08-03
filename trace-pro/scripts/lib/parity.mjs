@@ -28,7 +28,11 @@ import path from 'node:path';
  */
 export function numericTokens(s) {
   if (s == null) return [];
-  return (String(s).match(/-?[\d,]+\.?\d*/g) ?? []).map((t) => t.replace(/,/g, ''));
+  // A token must START with a digit. The earlier `[\d,]+` also matched a BARE COMMA, so ordinary
+  // prose punctuation counted as a figure — which made two strings with the same numbers disagree
+  // purely on where their commas fell, and could have masked a real change by shifting positions.
+  // Commas are separators only when they sit inside a number, and are normalised away below.
+  return (String(s).match(/-?\d[\d,]*(?:\.\d+)?/g) ?? []).map((t) => t.replace(/,/g, ''));
 }
 
 export function sameTokens(a, b) {

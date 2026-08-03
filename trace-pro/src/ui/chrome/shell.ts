@@ -9,6 +9,7 @@ import type { Store, ScreenId, LensId, DrawerId } from '../../state/store.js';
 import { routeToHash } from '../../state/store.js';
 import { el, replace } from '../primitives/dom.js';
 import { parity } from '../parity.js';
+import { formatUsd } from '../../domain/money.js';
 import { mountGlossaryDrawer } from '../drawers/glossary.js';
 import { mountSourcesDrawer } from '../drawers/sources.js';
 
@@ -53,17 +54,17 @@ const SCREEN_SCENE: Record<ScreenId, string> = {
 /** The pricing basis, in plain language, shown wherever any figure depends on it (R12). */
 const VIEW_NOTE: Record<'before' | 'after', { tag: string; text: string }> = {
   before: {
-    tag: 'Current marks',
+    tag: 'Before pricing',
     text:
-      'Today’s as-booked reality: positions at their current marks and NAV as reported, with ' +
-      'today’s pricing differences still open.',
+      'Current as-booked reality — positions at their current marks (look-through value) and ' +
+      "reported NAV, with today's pricing gaps & breaks still shown.",
   },
   after: {
-    tag: 'Repriced',
+    tag: 'After pricing',
     text:
-      'The fully repriced view: every fund, SPV and holding valued at its NAV-repriced price and ' +
-      'flown bottom-up to the product. The pricing difference reconciles to $0; what remains is ' +
-      'the non-position component — cash, fees and receivables, not a pricing break.',
+      'Ideal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, ' +
+      'flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the ' +
+      'only residual is the non-position (cash / fees) component, shown as non-trade.',
   },
 };
 
@@ -227,10 +228,16 @@ function renderViewNote(store: Store): void {
     'data-parity',
     store.state.view === 'after' ? 'reconciliation.after.pricing_view_note' : 'chrome.pricing_view_note'
   );
+  // The two headline figures ride along, as they did in the original: a controller reading the
+  // basis should see what that basis costs without moving.
+  const pricingDifference = store.state.view === 'after' ? 0 : store.repricing.dPricing;
   replace(
     host,
     el('span', { class: 'view-tag', text: note.tag }),
-    el('span', { class: 'view-text', text: note.text })
+    el('span', { class: 'view-text', text: note.text }),
+    el('span', { class: 'view-figures' }, [
+      `Pricing difference ${formatUsd(pricingDifference)} · NAV ${formatUsd(store.repricing.N)}`,
+    ])
   );
 }
 

@@ -64,9 +64,18 @@ export function extractEntry(entry) {
 
   if (entry.type === 'count') {
     for (const [key, spec] of Object.entries(entry.keys)) {
-      // A published count is the rendered number itself; otherwise count the original's matches.
+      // Two ways a target can answer a count. If it tags MANY elements with the key, each tagged
+      // element is one of the counted things, so the answer is how many. If it tags exactly one and
+      // that element renders a number, the answer is that number. Otherwise fall back to counting
+      // the original's selector.
+      const tagged = document.querySelectorAll(`[${PARITY_ATTR}="${key}"]`);
+      if (tagged.length > 1) {
+        out[key] = String(tagged.length);
+        continue;
+      }
       const pub = taggedText(key);
-      out[key] = pub == null ? String(document.querySelectorAll(spec.selector).length) : pub;
+      const publishedNumber = pub != null && /^\d+$/.test(pub) ? pub : null;
+      out[key] = publishedNumber ?? String(document.querySelectorAll(spec.selector).length);
     }
     return out;
   }

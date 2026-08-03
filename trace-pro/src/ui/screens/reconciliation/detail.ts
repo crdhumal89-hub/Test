@@ -13,6 +13,7 @@ import {
 } from '../../../domain/money.js';
 import type { LookthroughNode, PricingView, RepricingFixture } from '../../../domain/types.js';
 import { el, replace, trapFocus } from '../../primitives/dom.js';
+import { parity } from '../../parity.js';
 
 const KIND_TEXT: Record<LookthroughNode['kind'], string> = {
   product: 'Product',
@@ -65,36 +66,43 @@ export function renderNodeDetail(
   });
   close.addEventListener('click', onClose);
 
+  const key = (suffix: string): Record<string, string> =>
+    parity(`reconciliation.detail.${node.code}.${suffix}`);
+
   const header = el('header', { class: 'drawer-head' }, [
     el('div', {}, [
-      el('span', { class: 'drawer-symbol', text: symbolOf(node.code) }),
+      el('span', { class: 'drawer-symbol', ...key('symbol'), text: symbolOf(node.code) }),
       verdict.severity
-        ? el('span', { class: `badge badge-${verdict.severity}`, text: 'exception' })
-        : el('span', { class: 'badge badge-ok', text: 'within tolerance' }),
+        ? el('span', { class: `badge badge-${verdict.severity}`, ...key('status_badge'), text: 'exception' })
+        : el('span', { class: 'badge badge-ok', ...key('status_badge'), text: 'within tolerance' }),
     ]),
-    el('div', { class: 'drawer-sub', text: `${node.code} · ${node.name} · ${KIND_TEXT[node.kind]}` }),
+    el('div', {
+      class: 'drawer-sub',
+      ...key('subtitle'),
+      text: `${node.code} · ${node.name} · ${KIND_TEXT[node.kind]}`,
+    }),
     close,
   ]);
 
   const body = el('div', { class: 'drawer-body' });
 
   body.append(
-    section('Reconciliation, attributed to this product', [
+    section('Reconciliation, attributed to this product', key('figures'), [
       pair('NAV', r.nav == null ? '—' : formatUsd(r.nav)),
       pair(
-        after ? 'Look-through value at repriced marks' : 'Look-through value at current marks',
+        after ? 'Look-through value · at repriced marks' : 'Look-through value · current marks',
         formatUsd(r.derived)
       ),
-      pair('Repriced value, NAV-repriced bottom-up', formatUsd(r.revised)),
+      pair('Repriced value · bottom-up from NAV', formatUsd(r.revised)),
       pair(
-        'Pricing difference',
+        'Pricing difference (repriced − look-through)',
         after
           ? '✓ reconciled · $0'
           : formatUsdParens(r.deltaPricing) +
               (r.pricingBps == null ? '' : ` · ${r.pricingBps.toFixed(1)} bps`)
       ),
       pair(
-        'Non-position difference',
+        'Non-position difference (NAV − repriced)',
         r.deltaNonPosition == null
           ? '—'
           : formatUsdParens(r.deltaNonPosition) +
@@ -105,7 +113,7 @@ export function renderNodeDetail(
 
   if (node.kind !== 'product') {
     body.append(
-      section('As booked in the position report', [
+      section('As booked in the position report', {}, [
         pair('Position value attributed to this product', formatUsd(node.position)),
         pair('Book value of the stake', node.carried ? formatUsd(node.carried) : '—'),
         ...(node.kind === 'vehicle'
@@ -118,8 +126,8 @@ export function renderNodeDetail(
 
   if (publishPrice != null) {
     body.append(
-      section('Price to publish', [
-        pair('NAV ÷ units outstanding', formatPrice(publishPrice), 'mono'),
+      section('Price to publish', {}, [
+        pair('NAV ÷ units outstanding', formatPrice(publishPrice), 'mono', key('publish_price')),
         pair('Units outstanding, firm-wide', formatCount(units)),
       ])
     );
@@ -136,7 +144,7 @@ export function renderNodeDetail(
 
   const fund = repricing.funds.find((f) => f.code === node.code);
   if (fund?.holders.length) {
-    const table = el('table', { class: 'mini' });
+    const table = el('table', { class: 'mini', ...key('held_by') });
     table.append(
       el('thead', {}, [
         el('tr', {}, [
@@ -186,13 +194,21 @@ export function renderNodeDetail(
   );
 }
 
-function section(title: string, rows: HTMLElement[]): HTMLElement {
-  return el('div', { class: 'section' }, [el('h3', { text: title }), el('dl', { class: 'kv' }, rows)]);
+function section(title: string, attrs: Record<string, string>, rows: HTMLElement[]): HTMLElement {
+  return el('div', { class: 'section' }, [
+    el('h3', { text: title }),
+    el('dl', { class: 'kv', ...attrs }, rows),
+  ]);
 }
 
-function pair(label: string, value: string, className = ''): HTMLElement {
+function pair(
+  label: string,
+  value: string,
+  className = '',
+  attrs: Record<string, string> = {}
+): HTMLElement {
   return el('div', { class: 'kv-row' }, [
     el('dt', { text: label }),
-    el('dd', { class: className, text: value }),
+    el('dd', { class: className, ...attrs, text: value }),
   ]);
 }

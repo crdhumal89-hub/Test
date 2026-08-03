@@ -213,6 +213,12 @@
    "baseline": "Whole-book reprice · deepest level first → product. Pricing gap reconciled (Δ pricing $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86.",
    "expected": "Whole-book reprice · lowest level first → product. Pricing gap reconciled (pricing difference $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86.",
    "note": "This sentence is the closing line OF simulator.reprice.ledger, which is itself declared and relabels exactly these words. A case-sensitive term scan left it strict while the paragraph containing it was declared; one sentence cannot be both. deepest level -> lowest level, Δ pricing -> pricing difference. All three figures unchanged."
+  },
+  "chrome.footer_assertion": {
+   "baseline": "Deterministic: ownership per node sums to 100%; effective ultimate ownership solved by fixed-point (handles cross-holdings/cycles), verified to conserve. No backend. Ties to the companion Excel to the cent.",
+   "expected": "Deterministic: effective ultimate ownership is solved by fixed point, which handles cross-holdings and cycles. Ownership conserves to 100% for every entity except five the source data cannot close — see Data quality. No backend. Ties to the companion Excel to the cent.",
+   "note": "NOT a vocabulary rename — a CORRECTION. The original asserts ownership is \"verified to conserve\"; it is not, for 5 of 514 entities (ABFSUB6 129.29% via ABFAGB, MIDCAP 3.10%, APVCIAGA/APVCIAGB/APVCIINA just short), because of the circular holdings the Data quality lens reports as High. Rendering the original verbatim would hand a controller a false control statement. The numeric token 100 is preserved, so no figure moves. See docs/issues.md.",
+   "kind": "correction"
   }
  }
 }

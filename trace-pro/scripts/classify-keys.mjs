@@ -226,15 +226,37 @@ if (!renameMap) {
   const missing = [...expectedKeys].filter((k) => !declaredKeys.includes(k));
   const extra = declaredKeys.filter((k) => !expectedKeys.has(k));
 
-  console.log(`  entries        : ${declaredKeys.length}  ${check('rename-map entries', declaredKeys.length, EXPECT.declared)}`);
+  const correctionCount = declaredKeys.filter((k) => renameMap.keys[k]?.kind === 'correction').length;
+  console.log(`  entries        : ${declaredKeys.length}  ${check('rename-map entries', declaredKeys.length - correctionCount, EXPECT.declared)}`);
   console.log(`  vocabulary     : ${Object.keys(renameMap.vocabulary).length} term(s) declared`);
   if (missing.length) {
     failures.push(`rename map is missing ${missing.length} key(s)`);
     missing.forEach((k) => console.log(`  MISSING        : ${k}`));
   }
-  if (extra.length) {
-    failures.push(`rename map declares ${extra.length} key(s) that carry no renamed term`);
-    extra.forEach((k) => console.log(`  NOT A LABEL KEY: ${k}`));
+  /**
+   * A declaration whose key carries no retired term is not automatically wrong — it may be a
+   * CORRECTION rather than a rename. The original prints one assertion that is false (ownership
+   * "verified to conserve", which fails for 5 of 514 entities), and rendering it verbatim would
+   * hand a controller a false control statement. Such an entry must say so with kind:"correction"
+   * and a note. It is still digit-guarded, so it can change words but never a figure.
+   */
+  const corrections = extra.filter((k) => renameMap.keys[k]?.kind === 'correction');
+  const unexplained = extra.filter((k) => renameMap.keys[k]?.kind !== 'correction');
+  if (corrections.length) {
+    console.log(`  corrections    : ${corrections.length} declared, not vocabulary renames`);
+    corrections.forEach((k) => console.log(`     ${k} — ${renameMap.keys[k].note ?? 'no reason given'}`));
+    for (const k of corrections) {
+      if (!renameMap.keys[k].note) {
+        failures.push(`${k} is declared a correction with no reason given`);
+      }
+    }
+  }
+  if (unexplained.length) {
+    failures.push(
+      `rename map declares ${unexplained.length} key(s) that carry no renamed term and are not ` +
+        `marked kind:"correction"`
+    );
+    unexplained.forEach((k) => console.log(`  NOT A LABEL KEY: ${k}`));
   }
 
   const mapProblems = validateRenameMap(renameMap, values);

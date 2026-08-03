@@ -133,9 +133,9 @@ function renderTie(w: ReturnType<typeof buildWaterfall>, view: PricingView): HTM
     el('b', { text: formatUsdParens(w.deltaNonPosition) }),
     document.createTextNode(' = '),
     el('b', { text: formatUsdParens(w.tie) }),
-    document.createTextNode(
-      ` = NAV − ${after ? WATERFALL_LABEL.derivedAfter : WATERFALL_LABEL.derivedBefore} `
-    ),
+    // Under the repriced basis the starting value IS the repriced value, and the declaration in
+    // docs/rename-map.json names it that way — shorter, and it reads correctly in the sentence.
+    document.createTextNode(` = NAV − ${after ? 'repriced value' : 'look-through value'} `),
     el('b', { text: formatUsdParens(w.target) })
   );
   statement.append(detail);
