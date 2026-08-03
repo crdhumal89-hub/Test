@@ -205,3 +205,40 @@ export function simulatorRenderShockPanel(host: HTMLElement, context: SimulatorS
   );
   renderPreview();
 }
+
+/**
+ * Every entity in the structure, by level, as real buttons.
+ *
+ * A keyboard-only route to selecting a fund and, just as importantly, a TEXT LISTING of the
+ * structure the graph draws — the graph is never the only way to reach a node.
+ */
+export function simulatorRenderEntityList(
+  host: HTMLElement,
+  fixture: SimulatorFixture,
+  onSelect: (code: string) => void
+): void {
+  const levels = [...new Set(fixture.treeNodes.map((n) => n.level))].sort((a, b) => a - b);
+  const groups = levels.map((level) => {
+    const list = el('ul', { class: 'entity-level', 'aria-label': `Level ${level}` });
+    for (const node of fixture.treeNodes.filter((n) => n.level === level)) {
+      const fund = fixture.funds[node.id];
+      const button = el('button', {
+        type: 'button',
+        class: 'btn btn-inline',
+        'data-code': node.id,
+        text: node.id,
+        title: fund ? `${fund.name} · ${fund.kind}` : fixture.product,
+      });
+      button.addEventListener('click', () => onSelect(node.id));
+      list.append(el('li', {}, [button]));
+    }
+    return el('div', { class: 'entity-group' }, [el('h5', { text: `Level ${level}` }), list]);
+  });
+  replace(
+    host,
+    el('h4', { text: 'Every entity in the structure, by level' }),
+    el('p', { class: 'note', text:
+      `The same ${fixture.treeNodes.length} nodes as the graph, as buttons: a keyboard-only route to selecting a fund, and a text listing of the structure the graph draws.` }),
+    ...groups
+  );
+}

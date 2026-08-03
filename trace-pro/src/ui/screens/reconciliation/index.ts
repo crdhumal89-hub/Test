@@ -44,7 +44,13 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
 
   function renderTools(): void {
     const tools = qs('#reconciliation-tools', host);
-    const expandAll = el('button', { type: 'button', class: 'btn', id: 'expand-all', text: 'Expand all' });
+    const expandAll = el('button', {
+      type: 'button',
+      class: 'btn',
+      id: 'expand-all',
+      'data-parity-scene': 'step:expandAll',
+      text: 'Expand all',
+    });
     expandAll.addEventListener('click', () =>
       store.set({ expandedNodes: allNodeIds(store.core.lookthrough.nodes) })
     );

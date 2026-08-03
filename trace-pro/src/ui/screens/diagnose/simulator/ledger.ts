@@ -20,24 +20,28 @@ import type { RepricingFixture, SimulatorFixture } from '../../../../domain/type
 import { el, replace } from '../../../primitives/dom.js';
 import { parity } from '../../../parity.js';
 
-const EN = 'en-US';
-
-function simulatorGrouped(n: number, digits: number): string {
-  return Number(n).toLocaleString(EN, { minimumFractionDigits: digits, maximumFractionDigits: digits });
-}
-
 /**
- * Was the Simulator's own `Uc`. The stage carries compact money at TWO decimals — `$1.59m`, not
- * `$1.6m` — which is a different precision from the Reconciliation screen's compact format, so it
- * is a different function rather than a shared one bent to two purposes.
+ * Compact money at TWO decimals, which is the Simulator's own `Uc` / `Ucv` — NOT
+ * `domain/money.formatUsdCompact`, which renders millions at one decimal.
+ *
+ * This is not a stylistic choice and it cannot be replaced by the shared formatter. The frozen
+ * declaration for `simulator.reprice.ledger` in docs/rename-map.json requires the tokens `$1.59m`
+ * and `$385,896.89`, and `simulator.reprice.run_numbers` requires `+$385,896.89`. The shared
+ * formatter yields `$1.6m` and `$385,897`, which the rename map's digit guard rejects outright:
+ * words may change, digits may not. The original shipped two different compact formatters for
+ * exactly this reason; both survive, each on the screen that pins it.
+ *
+ * Every to-the-cent figure below still comes from `domain/money` — `formatUsdCents` and
+ * `formatUsdCentsParens` — so the five reconciling rows are formatted by the shared code.
  */
 export function simulatorCompactUsd(x: number | null | undefined): string {
   if (x == null || !isFinite(x)) return '—';
   const a = Math.abs(x);
   const sign = x < 0 ? '-' : '';
-  if (a >= 1e9) return `${sign}$${simulatorGrouped(a / 1e9, 2)}bn`;
-  if (a >= 1e6) return `${sign}$${simulatorGrouped(a / 1e6, 2)}m`;
-  return `${sign}$${simulatorGrouped(a, 2)}`;
+  const two = (v: number): string => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (a >= 1e9) return `${sign}$${two(a / 1e9)}bn`;
+  if (a >= 1e6) return `${sign}$${two(a / 1e6)}m`;
+  return `${sign}$${two(a)}`;
 }
 
 /** Was the Simulator's own `Ucv`: the same, with negatives in parentheses. */
@@ -53,11 +57,13 @@ export function simulatorCompactUsdParens(x: number | null | undefined): string 
  * The five rows of the whole-book reprice, to the cent, each with its own parity key so the tie to
  * the Reconciliation waterfall is machine-checked rather than asserted.
  *
- * Two deliberate choices. First, the row labels are the ones the original used; the renamed
- * vocabulary of spec §3.1 is carried by the tie note beside the tray and by each row's tooltip, so
- * the figure and its frozen key stay welded together. Second, this ledger renders AT REST as well
- * as after a sweep — the identity is true of the book whether or not anyone pressed a button, and a
- * controller should not have to run an animation to read the answer.
+ * The row labels and the closing sentence are the strings DECLARED for `simulator.reprice.ledger`
+ * in docs/rename-map.json — "Look-through value", "Repricing gain or loss", "Repriced value" — not
+ * the original's. Each row's tooltip names the term it replaced, so a controller who learned the old
+ * label can still find the figure.
+ *
+ * This ledger renders AT REST as well as after a sweep: the identity is true of the book whether or
+ * not anyone pressed a button, and a controller should not have to run an animation to read it.
  */
 export function simulatorRenderRepriceLedger(host: HTMLElement, repricing: RepricingFixture): void {
   const ledger = repriceLedger(repricing);
@@ -69,22 +75,22 @@ export function simulatorRenderRepriceLedger(host: HTMLElement, repricing: Repri
 
   replace(
     host,
-    row('Derived look-through · before', formatUsdCents(ledger.derivedBefore), 'simulator.reprice.derived_before', '', 'Look-through value at current marks'),
+    row('Look-through value · before', formatUsdCents(ledger.derivedBefore), 'simulator.reprice.derived_before', '', 'Was “Derived MV”: the value of the underlyings at current marks'),
     document.createTextNode(' '),
     el('div', { class: 'midarrow', text: '↓ bottom-up reprice', 'aria-hidden': 'true' }),
     document.createTextNode(' '),
-    row('+ Repricing P&L', formatUsdCentsParens(ledger.repricingPnl), 'simulator.reprice.pnl', ledger.repricingPnl >= 0 ? 'pos' : 'neg', 'Pricing difference — what changes when each fund is repriced from its own NAV'),
+    row('+ Repricing gain or loss', formatUsdCentsParens(ledger.repricingPnl), 'simulator.reprice.pnl', ledger.repricingPnl >= 0 ? 'pos' : 'neg', 'The pricing difference: what changes when each fund is repriced from its own NAV'),
     document.createTextNode(' '),
-    row('= Revised look-through', formatUsdCents(ledger.revised), 'simulator.reprice.revised', 'big', 'Repriced value (NAV, bottom-up)'),
+    row('= Repriced value', formatUsdCents(ledger.revised), 'simulator.reprice.revised', 'big', 'Was “Revised MV”: every component repriced bottom-up from its own NAV'),
     document.createTextNode(' '),
-    row('+ Non-position (cash / fees)', formatUsdCentsParens(ledger.nonPosition), 'simulator.reprice.nonposition', '', 'Non-position difference — cash, fees and receivables in NAV but not held as positions'),
+    row('+ Non-position (cash / fees)', formatUsdCentsParens(ledger.nonPosition), 'simulator.reprice.nonposition', '', 'The non-position difference: cash, fees and receivables in NAV but not held as positions'),
     document.createTextNode(' '),
-    row('= Product NAV', formatUsdCents(ledger.productNav), 'simulator.reprice.product_nav', '', 'Σ top-level feeder ENDING_NAV, from the NAV report'),
+    row('= Product NAV', formatUsdCents(ledger.productNav), 'simulator.reprice.product_nav', '', 'The sum of the top-level feeders’ ENDING_NAV, from the NAV report'),
     document.createTextNode(' '),
     el('p', { class: 'shockline', ...parity('simulator.reprice.shockline') }, [
-      'Whole-book reprice · deepest level first → product. Pricing gap ',
+      'Whole-book reprice · lowest level first → product. Pricing gap ',
       el('b', { text: 'reconciled' }),
-      ` (Δ pricing ${simulatorCompactUsdParens(ledger.repricingPnl)}); the residual ${simulatorCompactUsdParens(ledger.nonPosition)} is `,
+      ` (pricing difference ${simulatorCompactUsdParens(ledger.repricingPnl)}); the residual ${simulatorCompactUsdParens(ledger.nonPosition)} is `,
       el('b', { text: 'non-position' }),
       ' (cash / fees — non-trade), ',
       el('b', { text: 'not' }),

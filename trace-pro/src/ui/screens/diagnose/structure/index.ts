@@ -98,7 +98,9 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
   const data = structureGraphData(store.core.lookthrough.nodes);
   const concentration = structureConcentration(data);
   const settings = structureDefaultSettings();
-  settings.focus = store.state.selectedEntity ?? '';
+  // The shared Diagnose selection RINGS a node; it does not seed the focus filter, which fades
+  // everything else. Opening the lens on a position code must not present a blanked-out graph.
+  settings.selected = store.state.selectedEntity;
 
   replace(
     host,
@@ -151,6 +153,9 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
       document.createTextNode(`, ${concentration.levels} levels deep. Concentration: `),
       el('b', { text: `${formatPercent(concentration.topShare)} of the product’s look-through value sits under ${concentration.topCode}` }),
       document.createTextNode(rest ? ` — the remaining top-level feeders are ${rest}. ` : '. '),
+      settings.selected
+        ? el('b', { text: `${settings.selected} is ringed in the graph. ` })
+        : el('span'),
       document.createTextNode(
         'Each edge is labelled with the holder’s direct share of the entity below it (held units ÷ units outstanding). Tab into the graph, then use the arrow keys to walk the nodes and Enter to select one for the other lenses.'
       )
@@ -230,7 +235,7 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
 
   const unsubscribe = store.subscribe((state, changed) => {
     if (changed.has('selectedEntity')) {
-      controls?.setFocus(state.selectedEntity ?? '');
+      controls?.setSelected(state.selectedEntity);
       render();
     }
   });

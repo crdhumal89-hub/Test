@@ -20,15 +20,37 @@ import { el, replace, qs, errorState } from '../../../primitives/dom.js';
 import { parity } from '../../../parity.js';
 import { structureEnsureD3, type StructureD3 } from '../structure/graph.js';
 import { simulatorBuildScene, type SimulatorScene } from './graph.js';
-import { simulatorRenderShockPanel } from './shock-panel.js';
+import { simulatorRenderShockPanel, simulatorRenderEntityList } from './shock-panel.js';
 import { simulatorCreateRepriceRun, type SimulatorRunState } from './reprice-run.js';
 import { simulatorRenderRepriceLedger, simulatorRenderCascadeLedger, simulatorRenderBreaks } from './ledger.js';
 
 export const SIMULATOR_QUESTION =
   'If this fund’s value or units move, what happens to product NAV, and through which holders?';
 
-const SIMULATOR_HELP =
-  'Activate any node — with the mouse, or with Tab then the arrow keys — to shock its MV, units or NAV, then press Run cascade. Reprice everything (bottom-up) sweeps the whole book automatically, deepest level first; Reprice one level at a time hands you each stage. Prices flow up the lit path, and the cascade ledger beside the graph carries the per-holder breakdown.';
+/**
+ * The help line, verbatim. `simulator.help_text` is a STRICT parity key — it is not in
+ * docs/rename-map.json — so it keeps the original's wording, including the old names of the two
+ * sweep controls. The buttons themselves carry the renamed labels of spec §3.1, so the line
+ * immediately below maps one to the other rather than leaving a controller to guess.
+ */
+function simulatorHelpText(): HTMLElement {
+  const b = (text: string): HTMLElement => el('b', { text });
+  return el('p', { class: 'screen-help', id: 'simulator-help', ...parity('simulator.help_text') }, [
+    'Click a node to shock its ',
+    b('MV / Qty / NAV'),
+    ' & hit ',
+    b('Run'),
+    ' · ',
+    b('Run full reprice'),
+    ' sweeps the whole book bottom-up automatically · ',
+    b('Step by stage'),
+    ' lets you ',
+    b('click each level'),
+    ' to reprice it yourself, one stage at a time. Prices flow up the lit path; open the ',
+    b('▤ Ledger'),
+    ' tray for the per-holder breakdown.',
+  ]);
+}
 
 const SIMULATOR_STAGE_STYLE =
   'position:relative;width:100%;height:620px;background:#0A1226;border:1px solid rgba(120,150,200,.28);border-radius:12px;overflow:hidden';
@@ -88,7 +110,14 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
     host,
     el('p', { class: 'screen-question', id: 'simulator-question', text: SIMULATOR_QUESTION }),
     el('div', { class: 'toolbar', id: 'simulator-bar' }),
-    el('p', { class: 'screen-help', id: 'simulator-help', ...parity('simulator.help_text'), text: SIMULATOR_HELP }),
+    simulatorHelpText(),
+    el('p', { class: 'screen-help', id: 'simulator-relabel' }, [
+      'Those two controls are now labelled ',
+      el('b', { text: 'Reprice everything (bottom-up)' }),
+      ' and ',
+      el('b', { text: 'Reprice one level at a time' }),
+      ', and the ledger sits beside the graph rather than in a tray. Every node is reachable with Tab and the arrow keys, and the entity list below the graph is a keyboard-only route to the same 27 nodes.',
+    ]),
     el('div', { id: 'simulator-stage', style: SIMULATOR_STAGE_STYLE }),
     el('div', { class: 'toolbar', id: 'simulator-runline' }, [
       el('span', { class: 'status-line', id: 'simulator-run-label', ...parity('simulator.reprice.run_label'), role: 'status', 'aria-live': 'polite' }),
@@ -214,36 +243,6 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
     );
   }
 
-  /* ---------------------------------------------------------------- the keyboard entity list */
-
-  function renderEntities(): void {
-    const levels = [...new Set(fixture.treeNodes.map((n) => n.level))].sort((a, b) => a - b);
-    const list = el('div', { class: 'entity-list' }, [
-      el('h4', { text: 'Every entity in the structure, by level' }),
-      el('p', { class: 'note', text:
-        'The same 27 nodes as the graph, as buttons: a keyboard-only route to selecting a fund, and a text listing of the structure the graph draws.' }),
-    ]);
-    for (const level of levels) {
-      const group = el('ul', { class: 'entity-level', 'aria-label': `Level ${level}` });
-      for (const node of fixture.treeNodes.filter((n) => n.level === level)) {
-        const fund = fixture.funds[node.id];
-        const item = el('li');
-        const button = el('button', {
-          type: 'button',
-          class: 'btn btn-inline',
-          'data-code': node.id,
-          text: node.id,
-          title: fund ? `${fund.name} · ${fund.kind}` : fixture.product,
-        });
-        button.addEventListener('click', () => activate(node.id));
-        item.append(button);
-        group.append(item);
-      }
-      list.append(el('div', {}, [el('h5', { text: `Level ${level}` }), group]));
-    }
-    replace(qs('#simulator-entities', host), list);
-  }
-
   /* ---------------------------------------------------------------- the toolbar */
 
   const runButtons = new Map<string, HTMLButtonElement>();
@@ -259,13 +258,13 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
 
   function renderBar(): void {
     const bar = qs('#simulator-bar', host);
-    const everything = el('button', { type: 'button', class: 'btn btn-primary', id: 'simulator-reprice', text: 'Reprice everything (bottom-up)', title: 'Sweep the whole book from the deepest level up to the product' });
-    everything.addEventListener('click', () => {
+    const everythingButton = el('button', { type: 'button', class: 'btn btn-primary', id: 'simulator-reprice', text: 'Reprice everything (bottom-up)', title: 'Was “Run full reprice”: sweep the whole book from the lowest level up to the product' });
+    everythingButton.addEventListener('click', () => {
       result = null;
       run.start('auto');
     });
-    const oneLevel = el('button', { type: 'button', class: 'btn', id: 'simulator-step-mode', text: 'Reprice one level at a time', title: 'Walk the sweep yourself: take each level, deepest first' });
-    oneLevel.addEventListener('click', () => {
+    const oneLevelButton = el('button', { type: 'button', class: 'btn', id: 'simulator-step-mode', text: 'Reprice one level at a time', title: 'Was “Step by stage”: walk the sweep yourself, one level at a time, lowest first' });
+    oneLevelButton.addEventListener('click', () => {
       result = null;
       run.start('manual');
     });
@@ -306,8 +305,8 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
         'Product NAV ',
         el('b', { class: 'mono', ...parity('simulator.product_nav'), text: formatUsdCompact(fixture.productNAV) }),
       ]),
-      everything,
-      oneLevel,
+      everythingButton,
+      oneLevelButton,
       stepButton,
       pauseButton,
       resetButton,
@@ -343,7 +342,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
   }
 
   renderBar();
-  renderEntities();
+  simulatorRenderEntityList(qs('#simulator-entities', host), fixture, activate);
   run.renderIdle();
   renderPanels();
 

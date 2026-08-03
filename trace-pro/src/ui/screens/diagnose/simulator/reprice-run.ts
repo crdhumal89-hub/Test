@@ -97,11 +97,11 @@ export function simulatorCreateRepriceRun(context: SimulatorRepriceContext): Sim
     replace(
       hosts.numbers,
       el('span', { class: 'frn' }, [
-        el('i', { text: 'Revised look-through' }),
+        el('i', { text: 'Repriced value' }),
         el('b', { class: 'mono', text: simulatorCompactUsd(progress.lookthrough) }),
       ]),
       el('span', { class: 'frn' }, [
-        el('i', { text: 'Repricing P&L' }),
+        el('i', { text: 'Repricing gain or loss' }),
         el('b', {
           class: `mono ${progress.pnl >= 0 ? 'pos' : 'neg'}`,
           text: (progress.pnl >= 0 ? '+' : '') + simulatorCompactUsdParens(progress.pnl),

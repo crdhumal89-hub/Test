@@ -284,3 +284,15 @@
 }
 .foot-sources { font-weight: 600; color: var(--navy); }
 .export-error { color: var(--bad); font-size: 11.5px; font-weight: 600; }
+
+/* Direct lens links: folded away visually, fully focusable and operable. */
+.nav-direct { list-style: none; margin: 0; padding: 0; display: flex; }
+.nav-direct-link {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; color: var(--navy);
+}
+.nav-direct-link:focus {
+  position: static; width: auto; height: auto; clip-path: none;
+  padding: 8px 12px; background: var(--cream-2); border-radius: 7px;
+  font: 600 12.5px/1 var(--sans); text-decoration: none;
+}

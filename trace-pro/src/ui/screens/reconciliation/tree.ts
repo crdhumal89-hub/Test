@@ -151,7 +151,8 @@ function renderRow(
   name.append(el('span', { class: `tag tag-${node.kind}`, ...apexKey('kind'), text: KIND_LABEL[node.kind] }));
   name.append(el('span', { class: 'row-name', text: node.name }));
   if (node.kind === 'apex' || node.kind === 'vehicle') {
-    name.append(el('span', { class: 'code', text: node.code }));
+    // `codetag` is a harness anchor: the frozen ltRow step finds a row by matching `.codetag`.
+    name.append(el('span', { class: 'code codetag', text: node.code }));
   }
   if (node.isLeaf && node.issuer) {
     name.append(el('div', { class: 'issuer', text: node.issuer }));

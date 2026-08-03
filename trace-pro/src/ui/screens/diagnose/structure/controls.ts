@@ -37,7 +37,7 @@ const STRUCTURE_SLIDERS: StructureSliderSpec[] = [
 
 /** The resting settings. `vertical` is the default because it is the only snapshot-stable layout. */
 export function structureDefaultSettings(): StructureGraphSettings {
-  return { layout: 'vertical', spacing: 1, linkLength: 1, curvature: 0.6, labelDensity: 3, focus: '', showPercent: true };
+  return { layout: 'vertical', selected: null, spacing: 1, linkLength: 1, curvature: 0.6, labelDensity: 3, focus: '', showPercent: true };
 }
 
 function structureSliderText(id: StructureSliderSpec['id'], raw: number): string {
@@ -53,8 +53,8 @@ function structureSliderValue(id: StructureSliderSpec['id'], raw: number): numbe
 export interface StructureControlsHandle {
   /** Live settings object; the lens reads it on every render. */
   readonly settings: StructureGraphSettings;
-  /** Push the focused entity in from shared Diagnose state without re-rendering the controls. */
-  setFocus(code: string): void;
+  /** Push the shared Diagnose selection in. It rings that node; it does not fade the others. */
+  setSelected(code: string | null): void;
 }
 
 export interface StructureControlsCallbacks {
@@ -186,10 +186,8 @@ export function structureRenderControls(
 
   return {
     settings,
-    setFocus(code: string): void {
-      if (focusInput.value === code) return;
-      focusInput.value = code;
-      settings.focus = code;
+    setSelected(code: string | null): void {
+      settings.selected = code;
     },
   };
 }

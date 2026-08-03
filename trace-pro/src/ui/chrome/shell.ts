@@ -30,12 +30,25 @@ export const SCREENS: { id: ScreenId; label: string; question: string }[] = [
   },
 ];
 
-export const LENSES: { id: LensId; label: string }[] = [
-  { id: 'structure', label: 'Structure' },
-  { id: 'ownership', label: 'Ownership' },
-  { id: 'data-quality', label: 'Data quality' },
-  { id: 'simulator', label: 'Simulator' },
+export const LENSES: { id: LensId; label: string; sceneCode: string }[] = [
+  { id: 'structure', label: 'Structure', sceneCode: 'str' },
+  { id: 'ownership', label: 'Ownership', sceneCode: 'own' },
+  { id: 'data-quality', label: 'Data quality', sceneCode: 'iss' },
+  { id: 'simulator', label: 'Simulator', sceneCode: 'sim' },
 ];
+
+/**
+ * The frozen parity map names its scenes in the ORIGINAL's vocabulary (`lt`, `rfx`, `str`, …).
+ * Rather than teach the harness this rebuild's information architecture, each control publishes the
+ * scene it satisfies via `data-parity-scene`, exactly as figures publish `data-parity`. The harness
+ * prefers the published control and falls back to the original's selector, which is how one harness
+ * drives both targets.
+ */
+const SCREEN_SCENE: Record<ScreenId, string> = {
+  reconciliation: 'lt',
+  pricing: 'rfx',
+  diagnose: 'str',
+};
 
 /** The pricing basis, in plain language, shown wherever any figure depends on it (R12). */
 const VIEW_NOTE: Record<'before' | 'after', { tag: string; text: string }> = {
@@ -110,6 +123,7 @@ function renderMasthead(store: Store): void {
       class: `seg${on ? ' on' : ''}`,
       'data-view': view,
       'aria-pressed': on ? 'true' : 'false',
+      'data-parity-scene': `view:${view}`,
       text: view === 'before' ? 'Current marks' : 'Repriced',
     });
     button.addEventListener('click', () => store.set({ view }));
@@ -121,6 +135,7 @@ function renderMasthead(store: Store): void {
     class: 'chrome-btn',
     id: 'open-glossary',
     text: 'Glossary',
+    'data-parity-scene': 'screen:gls',
     'aria-haspopup': 'dialog',
     title: 'Every term in plain language, with its source and method (G)',
   });
@@ -167,6 +182,7 @@ function renderNav(store: Store): void {
       class: `nav-link${current ? ' current' : ''}`,
       href: routeToHash(screen.id, store.state.lens),
       'data-screen': screen.id,
+      'data-parity-scene': `screen:${SCREEN_SCENE[screen.id]}`,
       'aria-current': current ? 'page' : null,
       title: screen.question,
     });
@@ -174,6 +190,21 @@ function renderNav(store: Store): void {
     list.append(el('li', {}, [link]));
   }
   host.append(list);
+
+  // Direct links to each diagnostic lens. Visually folded away because the three screens are the
+  // primary structure, but focusable and operable — a keyboard or screen-reader user gets one-hop
+  // access to a lens instead of two, and they double as the harness's scene hooks.
+  const direct = el('ul', { class: 'nav-direct', 'aria-label': 'Jump directly to a diagnostic lens' });
+  for (const lens of LENSES) {
+    const link = el('a', {
+      class: 'nav-direct-link',
+      href: `#/diagnose/${lens.id}`,
+      'data-parity-scene': `screen:${lens.sceneCode}`,
+      text: `Jump to ${lens.label}`,
+    });
+    direct.append(el('li', {}, [link]));
+  }
+  host.append(direct);
 }
 
 function renderViewNote(store: Store): void {
