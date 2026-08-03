@@ -6,15 +6,15 @@ Read this before planning each iteration. Newest entry last.
 
 | # | Item | State |
 |---|---|---|
-| 1 | build + typecheck + lint all exit 0 | ⬜ not started (Phase 2) |
-| 2 | unit tests pass, with direct tests for ownership solve / look-through walk / repricing cascade / reconciliation bridge | ⬜ not started |
-| 3 | snapshot of NEW app matches `tests/baseline.json` on every key, zero diffs | ⬜ blocked on Phase 2 |
-| 4 | headless suite: 7 screens render, interactions complete, exports produce files, zero console errors | 🟡 harness proves this for the ORIGINAL (0 console errors, 0 offline violations); new-app suite not written |
-| 5 | every `docs/ux-rubric.md` criterion passes the critic pass | ⬜ not started |
-| 6 | no source file > 400 lines; no data literal > 2,000 chars; fixtures in `data/` | ⬜ not started |
-| 7 | zero duplicate top-level identifiers across modules, linter-enforced | ⬜ not started |
-| 8 | zero inline `onclick`, zero `!important`, or documented in `docs/exceptions.md` | ⬜ original has 0 inline `on*=` but 61 `!important` |
-| 9 | app runs with network disabled | 🟡 harness already runs fully offline (vendored xlsx 0.18.5 + d3 7.8.5) |
+| 1 | build + typecheck + lint all exit 0 | ✅ **PASS** — `npm run build` 0, `tsc --noEmit` 0, `eslint` 0, structure 0, fixture check 0 |
+| 2 | unit tests pass, with direct tests for ownership solve / look-through walk / repricing cascade / reconciliation bridge | ✅ **PASS** — 105 tests, all four areas, plus a differential test against the original's solve |
+| 3 | snapshot of NEW app matches `tests/baseline.json` on every key, zero diffs | 🟡 reconciliation + chrome figures verified identical; 2 of 3 screens and 4 lenses still to build |
+| 4 | headless suite: 7 screens render, interactions complete, exports produce files, zero console errors | 🟡 0 console errors / 0 network on what exists; Playwright suite not written |
+| 5 | every `docs/ux-rubric.md` criterion passes the critic pass | ⬜ not gradeable until the screens exist |
+| 6 | no source file > 400 lines; no data literal > 2,000 chars; fixtures in `data/` | ✅ **PASS** — enforced by `scripts/check-limits.mjs` in the lint step; 614 KiB now in `data/` |
+| 7 | zero duplicate top-level identifiers across modules, linter-enforced | ✅ **PASS** — 175 top-level identifiers in `src/`, all unique, machine-checked |
+| 8 | zero inline `onclick`, zero `!important`, or documented in `docs/exceptions.md` | ✅ **PASS** — 0 and 0, machine-checked, no exceptions file needed yet |
+| 9 | app runs with network disabled | ✅ **PASS** — 0 offline violations; xlsx 0.18.5 + d3 7.8.5 vendored |
 | 10 | README explains tree, how to run, how to repoint product/as-of, what each screen answers | ⬜ not started |
 
 ---
@@ -108,3 +108,63 @@ that reason.
 **Blocked on:** the Phase 0 approval gate — specifically which of the three IA alternatives to
 build. Phase 1 was independent of that choice (it runs against the original and keys on
 semantics), which is why it proceeded. Phase 2 is not.
+
+---
+
+## Iteration 3 — Phase 2: toolchain, fixtures out of source, the math layer
+
+**Approved at the gate:** IA **Alternative B** (Reconciliation → Pricing → Diagnose, with Structure
+/ Ownership / Data quality / Simulator as four lenses over one selected entity). Q1 preserve both
+product NAVs and label their bases. Q4 accept rubric R8 as restated.
+
+**Also approved, after I raised it:** the 37 non-glossary label keys conflict with the rename table,
+so the gate splits — 983 keys byte-identical, 37 label keys checked against a frozen
+`docs/rename-map.json` with a digit guard asserting every embedded figure survives unchanged.
+Neither `parity-map.json` nor `tests/baseline.json` is edited.
+
+**Tried.** Vite 8 + TypeScript 6 + Vitest 4 + ESLint 10 + Playwright 1.56. Extracted the five data
+blobs to `data/<product>/<as-of>/*.json`, fetched at runtime, with `--check` asserting deep equality
+against the original so a fixture cannot drift. Then the math, before any UI.
+
+**Found — two things the tests pin rather than smooth over.**
+1. 5 of 514 entities do not conserve ownership: `ABFSUB6` reaches **129.29%** through a single
+   parent (`ABFAGB`) because of the circular holdings the Issue Log reports as High, and `MIDCAP`
+   reaches only **3.10%**. The extracted solve is **bit-identical to the original** across all 514
+   entities and 1,000+ parent weights, so this is a data condition, not a solver fault — but the
+   original's footer claim "ownership per node sums to 100% … verified to conserve" is overstated.
+2. `lookthrough.grand` and `repricing.D` differ by ~4e-7 from summing in different orders. Both
+   round to `$2,060,224,441`, which is why the original can show them side by side without a visible
+   discrepancy.
+
+I wrote three assertions that the real data falsified, and corrected the assertions rather than the
+code — after proving differentially that the code was right.
+
+**Sub-gates.** STATIC pass. UNIT 105 pass. PARITY unchanged (no UI yet). UX CRITIC n/a.
+
+## Iteration 4 — Phase 2: the Reconciliation screen
+
+**Tried.** Shell (masthead, nav, pricing-basis control, drawer hosts) and the Reconciliation screen:
+question line, waterfall, exception strip, hierarchy, per-row drawer with a focus trap.
+
+**Verified by direct comparison against `tests/baseline.json`:** every waterfall figure, the tie
+status, all three exception chips with their counts, all five totals-row figures, and the 9 default
+tree rows. Zero console errors, zero network requests.
+
+**Found.** Two false positives in my own structure checker — TypeScript `interface` bodies read as
+data literals, and the words `!important` inside a CSS comment read as a declaration. Both fixed in
+the checker, not worked around in the source.
+
+**Sub-gates.** STATIC pass (build 0, tsc 0, eslint 0, structure 0, fixtures 0). UNIT 105 pass.
+PARITY partial — see Done item 3. UX CRITIC not yet gradeable.
+
+**Current parity diff count: 0 on every key the built screen owns.**
+
+**Live hypothesis for the top remaining risk.** Unchanged and now closer: the Simulator lens. It is
+a third copy of the structure plus ~600 lines of coupled d3 and animation, and its staged reprice
+must land on the waterfall figures *to the cent* (baseline has `$2,060,610,338.29`). It stays
+scheduled last.
+
+**Remaining, in order:** Pricing screen · Diagnose shell + 4 lenses · Glossary drawer (35 terms) ·
+Sources drawer · `rename-map.json` + `selectors.new.json` + the digit guard in `snapshot.mjs` ·
+Playwright suite · README, `issues.md`, `exceptions.md`, `labels.md`, `first-run.md` · independent
+rubric critic pass · full 1,020-key parity run.
