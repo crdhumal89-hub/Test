@@ -206,7 +206,7 @@ export function structureRenderLegend(): HTMLElement {
     swatch('#6E2932', 'Ultimate', 'Lowest level — prices from NAV ÷ units'),
     el('span', {
       class: 'status-line',
-      text: 'Node size ∝ derived MV. Drag · scroll to zoom · hover to highlight.',
+      text: 'Node size ∝ look-through value. Drag · scroll to zoom · hover to highlight.',
       title: 'Derived MV is the look-through value at current marks',
     })
   );

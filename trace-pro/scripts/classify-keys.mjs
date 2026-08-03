@@ -32,7 +32,7 @@ function arg(name, dflt = null) {
  * future edit to the baseline (or to this classifier) cannot silently move the boundary between
  * "a figure the rebuild must reproduce to the byte" and "a label the rebuild may rename".
  */
-const EXPECT = { figure: 728, empty: 14, text: 278, renamed: 50, glossary: 12, declared: 38 };
+const EXPECT = { figure: 728, empty: 14, text: 278, renamed: 53, glossary: 12, declared: 41 };
 
 /* ------------------------------------------------------------------ classification
  * A `figure` is a string that carries a number and nothing else: no prose, no vocabulary, so no
@@ -76,6 +76,28 @@ function classify(value) {
  * A false positive here is cheap (one extra declared entry, still digit-guarded); a false
  * negative is a gate that demands the original's cryptic vocabulary.
  */
+/**
+ * Matching is case-insensitive per term, EXCEPT for the two bare words that are also ordinary
+ * English.
+ *
+ * Neither blanket rule works. Case-SENSITIVE misses `Δ pricing` written mid-sentence in the
+ * simulator's shockline, leaving that key strict while the hand-written rename entry for the very
+ * paragraph containing it relabels those same words — and one sentence cannot be both strict and
+ * declared. Case-INSENSITIVE over-captures: `ownership.derivation.title` reads "how this % is
+ * derived", where `derived` is a verb, not the retired `Derived MV` label, and declaring it would
+ * force a rename where none is wanted.
+ *
+ * So: multi-word and technical terms match either case, because they are never anything but
+ * labels. The bare words `Derived` and `Revised` match only when capitalised, which is how the
+ * original writes them when they ARE labels (`· Derived $2,060,224,441 → Revised …`).
+ */
+const CASE_SENSITIVE_TERMS = new Set(['Derived', 'Revised']);
+
+function matchesTerm(value, term) {
+  if (CASE_SENSITIVE_TERMS.has(term)) return value.includes(term);
+  return value.toLowerCase().includes(term.toLowerCase());
+}
+
 const RENAMED_TERMS = [
   'Derived MV',
   'Revised MV',
@@ -113,7 +135,7 @@ const buckets = { figure: [], empty: [], text: [] };
 for (const [key, value] of entries) buckets[classify(value)].push([key, value]);
 
 const withRenamedTerm = buckets.text
-  .map(([key, value]) => [key, value, RENAMED_TERMS.filter((t) => value.includes(t))])
+  .map(([key, value]) => [key, value, RENAMED_TERMS.filter((t) => matchesTerm(value, t))])
   .filter(([, , hits]) => hits.length > 0);
 const glossaryHits = withRenamedTerm.filter(([key]) => KEEPS_ORIGINAL_VOCABULARY(key));
 const mustDeclare = withRenamedTerm.filter(([key]) => !KEEPS_ORIGINAL_VOCABULARY(key));
@@ -143,7 +165,7 @@ console.log(
 
 console.log('\n--- per-term incidence (outside glossary.*) ---');
 for (const term of RENAMED_TERMS) {
-  const n = mustDeclare.filter(([, v]) => v.includes(term)).length;
+  const n = mustDeclare.filter(([, v]) => matchesTerm(v, term)).length;
   console.log(`  ${term.padEnd(16)} ${String(n).padStart(2)}`);
 }
 

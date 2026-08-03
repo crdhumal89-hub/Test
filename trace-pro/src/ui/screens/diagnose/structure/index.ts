@@ -198,6 +198,7 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
     class: 'btn',
     'aria-pressed': 'false',
     title: 'Hand the graph the whole viewport (Esc to exit)',
+    'data-parity-scene': 'step:stageFullscreen:str',
     text: '⤢ Full screen',
   });
   fullButton.addEventListener('click', toggleFull);

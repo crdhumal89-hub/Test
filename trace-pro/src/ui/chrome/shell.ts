@@ -160,12 +160,17 @@ function renderMasthead(store: Store): void {
     ]),
     el('div', { class: 'subject' }, [
       el('span', { class: 'subject-label', text: 'Product' }),
-      el('b', { class: 'subject-value', id: 'active-product', text: productName }),
+      el('b', {
+        class: 'subject-value',
+        id: 'active-product',
+        ...parity('chrome.active_product'),
+        text: productName,
+      }),
       el('span', { class: 'subject-code', text: productCode }),
     ]),
     el('div', { class: 'asof', id: 'asof' }, [
       el('span', { class: 'asof-label', text: 'As of' }),
-      el('b', { class: 'asof-value', text: asof }),
+      el('b', { class: 'asof-value', ...parity('chrome.asof'), text: asof }),
     ]),
     el('div', { class: 'chrome-actions' }, [viewToggle, glossary, sources])
   );
@@ -218,6 +223,10 @@ function renderViewNote(store: Store): void {
     return;
   }
   const note = VIEW_NOTE[store.state.view];
+  host.setAttribute(
+    'data-parity',
+    store.state.view === 'after' ? 'reconciliation.after.pricing_view_note' : 'chrome.pricing_view_note'
+  );
   replace(
     host,
     el('span', { class: 'view-tag', text: note.tag }),

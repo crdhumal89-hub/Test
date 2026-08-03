@@ -265,7 +265,10 @@ export function renderPriceTable(
     body.append(pricingRow(fund, repricing, view, selectedCode, callbacks.onSelect));
   }
 
+  // `id="rectable"` is a harness anchor: the frozen rfxRow step selects
+  // `#rectable tbody tr[data-c="CODE"]`, and the rows already publish data-c.
   const table = el('table', {
+    id: 'rectable',
     class: 'tbl',
     'aria-label': `Unit prices and repricing for ${repricing.product}, as of ${asof}`,
   });

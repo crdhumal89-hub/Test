@@ -296,3 +296,5 @@
   padding: 8px 12px; background: var(--cream-2); border-radius: 7px;
   font: 600 12.5px/1 var(--sans); text-decoration: none;
 }
+/* Sits above the basis note, which otherwise intercepts a click on a folded link. */
+.nav-direct-link { z-index: 60; }

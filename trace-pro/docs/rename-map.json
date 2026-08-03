@@ -198,6 +198,21 @@
   "simulator.reprice.run_numbers": {
    "baseline": "Revised look-through$2.06bnRepricing P&L+$385,896.89✓ reconciled · no pricing break",
    "expected": "Repriced value$2.06bnRepricing gain or loss+$385,896.89✓ reconciled · no pricing break"
+  },
+  "pricing.score.delta_pricing_detail": {
+   "baseline": "bottom-up repricing P&L · +1.9 bps",
+   "expected": "bottom-up repricing gain or loss · +1.9 bps",
+   "note": "Repricing P&L -> repricing gain or loss. The bps figure is unchanged."
+  },
+  "structure.legend": {
+   "baseline": "FeederSPV / holdingUltimateNode size ∝ derived MV. Drag · scroll to zoom · hover to highlight.",
+   "expected": "FeederSPV / holdingUltimateNode size ∝ look-through value. Drag · scroll to zoom · hover to highlight.",
+   "note": "Derived MV -> look-through value, in the legend's size explanation. No figures in this string."
+  },
+  "simulator.reprice.shockline": {
+   "baseline": "Whole-book reprice · deepest level first → product. Pricing gap reconciled (Δ pricing $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86.",
+   "expected": "Whole-book reprice · lowest level first → product. Pricing gap reconciled (pricing difference $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86.",
+   "note": "This sentence is the closing line OF simulator.reprice.ledger, which is itself declared and relabels exactly these words. A case-sensitive term scan left it strict while the paragraph containing it was declared; one sentence cannot be both. deepest level -> lowest level, Δ pricing -> pricing difference. All three figures unchanged."
   }
  }
 }

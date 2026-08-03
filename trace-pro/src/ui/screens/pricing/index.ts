@@ -66,6 +66,7 @@ export function mountPricing(host: HTMLElement, store: Store): () => void {
         type: 'button',
         class: `seg${on ? ' on' : ''}`,
         'data-subview': subview.id,
+        'data-parity-scene': `step:rfxView:${subview.id === 'walk' ? 'walk' : 'table'}`,
         'aria-pressed': on ? 'true' : 'false',
         title: subview.hint,
         text: subview.label,

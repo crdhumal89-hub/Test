@@ -60,7 +60,7 @@ export function renderPricingScore(
       'pricing.score.delta_pricing_usd',
       after
         ? 'reconciled · no pricing break'
-        : `bottom-up repricing P&L · ${formatBpsOf(repricing.dPricing, repricing.N)}`,
+        : `bottom-up repricing gain or loss · ${formatBpsOf(repricing.dPricing, repricing.N)}`,
       'pricing.score.delta_pricing_detail',
       after || repricing.dPricing >= 0 ? 'pos' : 'neg'
     ),
