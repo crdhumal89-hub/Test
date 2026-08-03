@@ -118,12 +118,16 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
       el('b', { text: 'Reprice one level at a time' }),
       ', and the ledger sits beside the graph rather than in a tray. Every node is reachable with Tab and the arrow keys, and the entity list below the graph is a keyboard-only route to the same 27 nodes.',
     ]),
-    el('div', { id: 'simulator-stage', style: SIMULATOR_STAGE_STYLE }),
+    // The run line and caption sit ABOVE the stage deliberately. They carry the figures a
+    // controller came for — the repriced value, the repricing gain or loss, the entity counts —
+    // and at 1600x1000 a stage placed first pushes them below the fold, so the answer would need
+    // a scroll (rubric R5). They are also the graph's text alternative.
     el('div', { class: 'toolbar', id: 'simulator-runline' }, [
       el('span', { class: 'status-line', id: 'simulator-run-label', 'data-parity-scene': 'state:repriceStatus', ...parity('simulator.reprice.run_label'), role: 'status', 'aria-live': 'polite' }),
       el('span', { class: 'status-line', id: 'simulator-run-numbers', ...parity('simulator.reprice.run_numbers') }),
     ]),
     el('p', { class: 'screen-help', id: 'simulator-caption' }),
+    el('div', { id: 'simulator-stage', style: SIMULATOR_STAGE_STYLE }),
     el('div', { class: 'layout', id: 'simulator-panels' }, [
       el('section', { class: 'panel', id: 'simulator-shock', 'aria-label': 'Shock panel' }),
       el('aside', { class: 'panel side', id: 'simulator-tray', 'aria-label': 'Ledgers' }, [

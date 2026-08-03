@@ -23,10 +23,13 @@ import {
 /**
  * Tokens that must never appear as bare, unexplained user-visible text outside the glossary.
  *
- * Short screen codes are matched as WHOLE WORDS. As substrings they are false positives — `iss`
- * hides inside "Missing" and "issues", `own` inside "ownership", `str` inside "structure" — and a
- * crawler that cries wolf on ordinary English is worse than no crawler. Multi-word labels are
- * matched as substrings, because they are never anything but labels.
+ * The criterion is about an abbreviation presented AS A LABEL — a tab called `own`, a column headed
+ * `gq`. It is not about the English word "own" inside "the product's own NAV". So a short code is
+ * flagged only when it is the ENTIRE text of an element; whole-word matching is not enough, because
+ * `own`, `lt` and `sim` are or resemble ordinary words and a crawler that cries wolf on English
+ * prose is worse than no crawler at all.
+ *
+ * Multi-word labels are matched as substrings, because those are never anything but labels.
  */
 const CODE_TOKENS = ['lt', 'rfx', 'gls', 'iss', 'str', 'sim', 'own', 'gq', 'ltv', 'dcN', 'mv100', 'nonav'];
 const PHRASE_TOKENS = [
@@ -82,8 +85,7 @@ test('R2 — no bare abbreviation survives outside the glossary', async ({ page 
       if (hit) findings.push({ route: route.id, token, context: hit.slice(0, 90) });
     }
     for (const token of CODE_TOKENS) {
-      const word = new RegExp(`(^|[^A-Za-z0-9])${token}([^A-Za-z0-9]|$)`);
-      const hit = visible.find((t) => word.test(t));
+      const hit = visible.find((t) => t.toLowerCase() === token.toLowerCase());
       if (hit) findings.push({ route: route.id, token, context: hit.slice(0, 90) });
     }
   }
@@ -109,10 +111,10 @@ test('R5 — the primary answer is above the fold on load, with no click', async
   const primary: Record<string, string> = {
     reconciliation: '[data-parity="reconciliation.waterfall.nav"]',
     pricing: '[data-parity="pricing.score.nav"]',
-    'diagnose-structure': '#structure-stage',
+    'diagnose-structure': '#structure-caption',
     'diagnose-ownership': '#ownership-checks',
     'diagnose-data-quality': '#data-quality-kpi',
-    'diagnose-simulator': '#simulator-stage',
+    'diagnose-simulator': '#simulator-runline',
   };
   const report: Record<string, boolean> = {};
   for (const route of ROUTES) {

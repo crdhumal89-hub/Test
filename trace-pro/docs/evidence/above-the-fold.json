@@ -1,0 +1,8 @@
+{
+ "reconciliation": true,
+ "pricing": true,
+ "diagnose-structure": true,
+ "diagnose-ownership": true,
+ "diagnose-data-quality": true,
+ "diagnose-simulator": true
+}
