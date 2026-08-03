@@ -1,12 +1,16 @@
 {
  "denylist": [
+  "lt",
   "rfx",
   "gls",
   "iss",
-  "mv100",
-  "dcN",
-  "ltv",
+  "str",
+  "sim",
+  "own",
   "gq",
+  "ltv",
+  "dcN",
+  "mv100",
   "nonav",
   "in tol",
   "scen a",
@@ -26,13 +30,18 @@
  "findings": [
   {
    "route": "reconciliation",
-   "token": "iss",
-   "context": "Missing NAV"
+   "token": "own",
+   "context": "(what changes when each fund is repriced from its own NAV, deepest first) ="
+  },
+  {
+   "route": "pricing",
+   "token": "own",
+   "context": "sum of top-level feeder NAVs — the product's own NAV,"
   },
   {
    "route": "diagnose-data-quality",
-   "token": "iss",
-   "context": "⬇ Download all issues (CSV)"
+   "token": "own",
+   "context": "Self-mapping (fund holds its own code)"
   }
  ]
 }

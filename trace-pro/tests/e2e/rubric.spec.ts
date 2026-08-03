@@ -20,12 +20,21 @@ import {
   expectClean,
 } from './helpers.js';
 
-/** Tokens that must never appear as bare, unexplained user-visible text outside the glossary. */
-const ABBREVIATION_DENYLIST = [
-  'rfx', 'gls', 'iss', 'mv100', 'dcN', 'ltv', 'gq', 'nonav', 'in tol',
-  'scen a', 'scen b', 'Derived MV', 'Revised MV', 'Publish px', 'Current px', 'Revised px',
-  'Applied px', 'Δ Pricing', 'Δ Non-position', 'Repricing P&L', 'Immediate %', 'Applied %',
+/**
+ * Tokens that must never appear as bare, unexplained user-visible text outside the glossary.
+ *
+ * Short screen codes are matched as WHOLE WORDS. As substrings they are false positives — `iss`
+ * hides inside "Missing" and "issues", `own` inside "ownership", `str` inside "structure" — and a
+ * crawler that cries wolf on ordinary English is worse than no crawler. Multi-word labels are
+ * matched as substrings, because they are never anything but labels.
+ */
+const CODE_TOKENS = ['lt', 'rfx', 'gls', 'iss', 'str', 'sim', 'own', 'gq', 'ltv', 'dcN', 'mv100', 'nonav'];
+const PHRASE_TOKENS = [
+  'in tol', 'scen a', 'scen b', 'Derived MV', 'Revised MV', 'Publish px', 'Current px',
+  'Revised px', 'Applied px', 'Δ Pricing', 'Δ Non-position', 'Repricing P&L', 'Immediate %',
+  'Applied %',
 ];
+const ABBREVIATION_DENYLIST = [...CODE_TOKENS, ...PHRASE_TOKENS];
 
 test.describe('R1 — every screen states the question it answers', () => {
   for (const route of ROUTES) {
@@ -61,15 +70,20 @@ test('R2 — no bare abbreviation survives outside the glossary', async ({ page 
         while (node) {
           const text = (node.textContent ?? '').replace(/\s+/g, ' ').trim();
           const parent = node.parentElement;
-          const inGlossary = !!parent?.closest('.glossary-card, .glossary-section, #drawer-host');
+          const inGlossary = !!parent?.closest('.glscard, .glssec, #drawer-host');
           if (text && !inGlossary) parts.push(text);
           node = walker.nextNode();
         }
       }
       return parts;
     });
-    for (const token of ABBREVIATION_DENYLIST) {
+    for (const token of PHRASE_TOKENS) {
       const hit = visible.find((t) => t.includes(token));
+      if (hit) findings.push({ route: route.id, token, context: hit.slice(0, 90) });
+    }
+    for (const token of CODE_TOKENS) {
+      const word = new RegExp(`(^|[^A-Za-z0-9])${token}([^A-Za-z0-9]|$)`);
+      const hit = visible.find((t) => word.test(t));
       if (hit) findings.push({ route: route.id, token, context: hit.slice(0, 90) });
     }
   }
@@ -157,7 +171,7 @@ test('R7 — the glossary is one action from every screen, and keeps state', asy
     await settled(page);
     const drawer = page.locator('#drawer-host .drawer');
     await expect(drawer, `${route.id}: glossary must open in one action`).toBeVisible();
-    const terms = await page.locator('.glossary-card').count();
+    const terms = await page.locator('.glscard').count();
     expect(terms, 'all 35 terms must be present').toBe(35);
     await page.keyboard.press('Escape');
     await settled(page);

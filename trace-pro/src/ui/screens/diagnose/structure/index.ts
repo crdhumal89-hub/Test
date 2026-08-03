@@ -106,9 +106,13 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
     host,
     el('p', { class: 'screen-question', id: 'structure-question', text: STRUCTURE_QUESTION }),
     el('div', { id: 'structure-controls' }),
+    // The caption sits ABOVE the graph deliberately. It states the counts and where concentration
+    // lies, which is the answer a controller came for; the graph is how they explore it. At
+    // 1600x1000 a stage placed here would fall below the fold, so the answer would need a scroll
+    // (rubric R5). It also serves as the graph's text alternative for anyone not using the SVG.
+    el('p', { class: 'screen-help', id: 'structure-caption' }),
     el('div', { id: 'structure-stage', style: STRUCTURE_STAGE_STYLE }),
     structureRenderLegend(),
-    el('p', { class: 'screen-help', id: 'structure-caption' }),
     el('p', { class: 'screen-help', id: 'structure-basis' })
   );
 

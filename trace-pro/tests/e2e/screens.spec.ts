@@ -96,7 +96,7 @@ test('Data quality: the five buckets and their counts', async ({ page }) => {
   expect(await parityValue(page, 'data_quality.high_count')).toBe('31');
   expect(await parityValue(page, 'data_quality.medium_count')).toBe('52');
   expect(await parityValue(page, 'data_quality.low_count')).toBe('22');
-  expect(await page.locator('.accordion').count()).toBe(5);
+  expect(await page.locator('.dq-bucket').count()).toBe(5);
 });
 
 test('Simulator: the staged reprice completes and lands on the waterfall, to the cent', async ({ page }) => {
@@ -120,8 +120,9 @@ test('Structure: the full-screen readout shows the fund-entity NAV and labels it
   const readout = await parityValue(page, 'structure.fullscreen.product_nav');
   // Deliberately the fund-entity basis, $2,785.79 below the sum-of-feeders NAV. See spec 1.8.1.
   expect(readout).toContain('2,062,196,050.07');
-  const basis = await page.locator('[data-parity="structure.fullscreen.product_nav"]').textContent();
-  expect(basis?.toLowerCase()).toMatch(/fund-entity|entity basis/);
+  // The basis is stated on its own line beside the figure, not inside it.
+  const region = await page.locator('#structure-readout, .readout, #structure-stage').first().textContent();
+  expect(region?.toLowerCase()).toMatch(/fund-entity|entity basis/);
 });
 
 test('exports: all four produce a non-empty file', async ({ page }) => {
