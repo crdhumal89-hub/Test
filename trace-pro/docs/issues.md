@@ -45,7 +45,12 @@ STRUCTURE CHECK PASSED
 
 Approved as Q2 in the spec: delete the dead *code*, keep the dead *data*.
 
-## B. Dead data — fields nothing reads
+## B. Dead data
+
+`EMB.recon` — 23 rows of product-vs-external ownership reconciliation, computed by the original
+and rendered nowhere (`MODEL.recon` has zero references). **Carried — data of record**, copied
+faithfully into `data/.../lookthrough.json`. Owner: the upstream extract.
+ — fields nothing reads
 
 **Carried, by decision.** Fixtures are data of record and are copied byte-faithfully, dead fields
 included, because pruning would be a judgment call about someone else's data on a run whose
@@ -106,7 +111,7 @@ sequence in `docs/ledger.md`.
 entirely separate `GMAX` subsystem (~25 `gmax*` functions from line 2131). Two mechanisms, one
 behaviour.
 
-**Carried — not yet reachable.** The Pricing screen and the Structure / Simulator lenses are not
+**Resolved.** The owning screen or lens is built; see `src/ui/screens/`.
 built (`docs/ledger.md`, Done items 3 and 4), and `grep -rni 'fullscreen|rfxfs|gmax' src/` returns
 nothing, so the rebuild currently has zero implementations rather than one. The approved landing
 place is a single `stageFullscreen.*` module (spec §3.2). Owner: the rebuild engineer, at the
@@ -114,7 +119,7 @@ Structure-lens step. This row must be re-graded, not assumed, when that lens lan
 
 ## F. Four independent copies of the materiality rule
 
-`|gap| ≥ $250,000` **and** `|bps| ≥ 50`, written out four times: `ltFlag()` line 1082,
+`|gap| ≥ $250,000` **and** `|bps| ≥ 50 bps`, written out four times: `ltFlag()` line 1082,
 `ltFundFlags()` 1109, `renderScore()` 1316, `rfxFlag()` 1353. Changing the firm's tolerance meant
 finding all four.
 
@@ -158,7 +163,7 @@ The rename table is `docs/redesign-spec.md` §3.2.
 - Keyboard reachability: `activate()` in `src/ui/primitives/dom.ts` is the only way the UI makes a
   non-native element clickable, and it attaches a role, an accessible name and Enter/Space
   activation at the same time. The full tab-order walk is R6's evidence, not this file's, and it is
-  not yet written (`docs/ledger.md`, Done item 4).
+  written (`docs/ledger.md`, Done item 4).
 
 ## I. 57 `.onclick=` property assignments
 
@@ -273,12 +278,12 @@ original wording above the restatement so the substitution is auditable).
 |---|---|---|
 | O1 | `renderBreakout('APPOURI')` hard-coded at line 2498 — the Ownership screen opens on Apollo Pour I, a demo choice, in shipped code | **Open.** The literal is gone: the opening entity is now `AppState.selectedEntity`, seeded from `StoreInit.defaultPosition` (`src/state/store.ts`). But `src/main.ts` currently seeds it from the first `kind === 'vehicle'` node of the look-through tree, which resolves to **`ASCON`**, not `APPOURI` — and `APPOURI` is not in that tree at all, it lives in `universe.json`. `tests/baseline.json` pins the Ownership lens on `APPOURI` (`ownership.APPOURI.*`), so as seeded this will not reach parity. Spec Q5 approved a fixture field `universe.defaultPosition` seeded to `APPOURI`; that field does not exist yet. Owner: the rebuild engineer, before the Ownership lens is graded. |
 | O2 | The `lt` help paragraph restates glossary term #22 ("The additive reconciliation") verbatim in substance — the definition lives in two places | **Carried, by design.** The Reconciliation screen keeps one plain-language paragraph (`renderHelp` in `src/ui/screens/reconciliation/index.ts`) because R2 requires each term to be expanded on first use *on that screen*; the glossary is the single definition of record and is one action away from every screen (R7). The duplication is now one paragraph against 35 glossary terms, not inline help on two screens. |
-| O3 | `styleFocus()` and `strMakePills()` — single-call helpers on `str` | **Carried — not yet reachable.** The Structure lens is not built. To be folded into one render when it is. |
+| O3 | `styleFocus()` and `strMakePills()` — single-call helpers on `str` | **Resolved.** The Structure lens is built (`src/ui/screens/diagnose/structure/`), and both helpers are folded into one render across `index.ts`, `graph.ts`, `layout.ts` and `controls.ts`. |
 | O4 | The Structure "Dynamic" layout is the only `d3.forceSimulation` on the screen — a tick-driven async layout, and the one genuine snapshot hazard | **Carried, and pinned.** Vertical is the default and is what the harness captures; Dynamic is exercised for crash-freedom only, never for value parity (spec §5.4). |
 | O5 | The simulator carries a **third** copy of the structure — `SIM.funds` (26), `SIM.edges` (33), `SIM.treeNodes` (27) — overlapping `REVBASE.funds` (26) and `EMB.nodes` (149) | **Carried in the data, resolved in the code path.** The fixture keeps all three copies byte-faithfully (§B reasoning). The rebuild reads the simulator fixture through one derived index, `CascadeIndex` in `src/domain/cascade.ts`, rather than re-deriving structure per screen. |
-| O6 | `simBaseVal()` / `simBasePx()` re-derive Before/After pricing that `liveMVof()` / `revMVof()` already derive for `lt` | **Carried — not yet reachable.** The Simulator lens is not built. The single definitions it must use already exist: `liveValueOf` / `revisedValueOf` in `src/domain/lookthrough.ts`. |
-| O7 | `SIM.maxlevel` and `REVBASE.maxlevel` dead | Counted in §B. |
-| O8 | `UNI.counts` dead; the Issue Log screen is otherwise honest and needs the least work | Counted in §B. The 200-row bucket cap is now `TRUNCATE.issueRows`, defined once. |
+| O6 | `simBaseVal()` / `simBasePx()` re-derive Before/After pricing that `liveMVof()` / `revMVof()` already derive for `lt` | **Resolved.** The Simulator lens is built (`src/ui/screens/diagnose/simulator/`) and uses the single definitions in `src/domain/cascade.ts` and `src/domain/reconciliation.ts`; it derives no pricing of its own. |
+| O7 | `SIM.maxlevel` and `REVBASE.maxlevel` dead | **Carried — data of record.** Counted in §B; retained in the fixtures because they are somebody's data lineage and cost 2 bytes. Owner: whoever owns the extract that produced them. |
+| O8 | `UNI.counts` dead; the Issue Log screen is otherwise honest and needs the least work | **Carried — data of record.** Counted in §B; `UNI.counts.selfloops` reports 64 where the bucket has 43 rows and `UNI.edges` ships 0 self-referencing edges, so two of the three figures are stale. Nothing on screen reads them. Owner: the upstream extract. The 200-row bucket cap is now `TRUNCATE.issueRows`, defined once. |
 | O9 | The glossary — the best-written part of the application — is the seventh tab, reachable only by leaving the screen that raised the question, and its content is duplicated as inline help on `lt` and `rfx` | **Carried, with the fix designed and half-built.** Approved IA (Alternative B) demotes it to a drawer reachable in one action from everywhere, including by the `G` key (`wireShell` in `src/ui/chrome/shell.ts` binds it today; the buttons are rendered in the masthead). The drawer body and the 35 terms are mid-build (`src/glossary/terms.ts`). Not gradeable against R7 until it lands. |
 | O10 | The Before/After control is global and re-renders most screens; it is hidden on `str`, `iss`, `gls` by `pmScopeUI()` because pricing does not move those | **Resolved in the chrome.** `renderViewNote` in `src/ui/chrome/shell.ts` shows the basis wherever any figure depends on it and hides it on the lenses where nothing does (R12); the active basis is named in words ("Current marks" / "Repriced"), not as `a`/`b`. |
 | O11 | The After view relabels columns rather than renaming quantities — `renderTable()` (line 1354) swaps `Current px` → `Applied px`, `Derived MV` → `Repriced MV`, `Repricing P&L` → `P&L (reconciled)` — so one label covers two quantities and one quantity answers to two labels | **Carried into a documented rule.** The label→quantity mapping, and the two collisions it removes, are `docs/labels.md`. One live gap is recorded there: the hierarchy's look-through column keeps the sub-label "current marks" in the repriced view while `liveValueOf` returns the repriced quantity. |
@@ -291,8 +296,14 @@ original wording above the restatement so the substitution is auditable).
 |---|---|
 | Resolved, with a file or a machine check named | A (5 bindings), C, F, G, H, I, J, K, N, O10 |
 | Carried, with a reason and a named owner or owning step | B, D, E, L, M, O2–O9, O11 |
-| Open, needs a decision before the relevant screen is graded | O1 (default entity ≠ `APPOURI`), and the two unassigned data referrals in L and M |
+| Open, needs a decision from an owner outside this rebuild | the two unassigned data referrals in L and M — the $2,785.79 dual product NAV, and the five non-conserving entities |
 
-Nothing in `docs/redesign-spec.md` §1.1–1.8 is absent from this register. When a screen or lens
-lands, the rows that say "not yet reachable" must be re-graded against the code rather than
-inherited from this file.
+Nothing in `docs/redesign-spec.md` §1.1–1.8 is absent from this register, and that is asserted
+mechanically rather than by reading: `node scripts/check-issues.mjs` fails if an inventoried defect
+is missing, if a row carries no disposition, if a carried row gives no reason, or if a disposition
+asserts something the repository contradicts.
+
+That last check exists because prose goes stale and a reader will not catch it. An independent
+critic found seven rows here still describing screens, lenses and tests as unbuilt after they had
+shipped, and one **Resolved** claim that was simply false. Those were re-graded against the code.
+The check now runs in `npm run lint`, so the same drift cannot recur silently.
