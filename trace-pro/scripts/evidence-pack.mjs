@@ -203,8 +203,11 @@ function main() {
       : 'The parity log did not contain a summary line this script recognises. Read ' +
         '`docs/evidence/gate/parity.txt` directly rather than trusting a number here.',
     '',
-    'Baseline under comparison: `tests/baseline.json`, frozen at Phase 1 and unmodified since —',
-    'confirm with `git log --oneline -- tests/baseline.json parity-map.json docs/ux-rubric.md`.',
+    'Baseline under comparison: `tests/baseline.json`, frozen at Phase 1 and unmodified since. That',
+    'is not a claim made here — `scripts/check-frozen.mjs` (inside `npm run lint`, above) derives it',
+    'from git: each of the four frozen artifacts must be introduced by exactly one commit and never',
+    'touched again, and its working-tree bytes must equal the blob at that commit. A checksum written',
+    'into a script would prove nothing, because the same commit could change both.',
     '',
     '## UNIT and headless suites',
     '',

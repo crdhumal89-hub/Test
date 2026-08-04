@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . && node scripts/check-limits.mjs && node scripts/check-issues.mjs && node scripts/extract-fixtures.mjs --check && node scripts/classify-keys.mjs",
+    "lint": "eslint . && node scripts/check-frozen.mjs && node scripts/check-limits.mjs && node scripts/check-issues.mjs && node scripts/extract-fixtures.mjs --check && node scripts/classify-keys.mjs",
     "test": "vitest run",
     "fixtures:extract": "node scripts/extract-fixtures.mjs",
     "fixtures:check": "node scripts/extract-fixtures.mjs --check",
@@ -21,7 +21,8 @@
     "test:e2e": "playwright test",
     "test:e2e:app": "playwright test --project=app",
     "test:e2e:offline": "playwright test --project=offline",
-    "evidence": "node scripts/evidence-pack.mjs"
+    "evidence": "node scripts/evidence-pack.mjs",
+    "check:frozen": "node scripts/check-frozen.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
