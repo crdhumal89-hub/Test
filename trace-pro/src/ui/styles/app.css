@@ -59,6 +59,10 @@
  */
 [hidden]:not(:root) { display: none; }
 
+/* The masthead is sticky (R3), so every anchor jump and every scrollIntoView has to clear it —
+   otherwise the skip link lands a controller on a heading hidden behind the chrome. */
+html { scroll-padding-top: 64px; }
+
 body {
   margin: 0;
   background: var(--cream);

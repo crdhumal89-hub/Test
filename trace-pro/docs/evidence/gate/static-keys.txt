@@ -1,0 +1,321 @@
+$ npm run keys:classify
+# sub-gate: STATIC — Parity key classification
+# exit code: 0
+# ----------------------------------------------------------------------------
+
+> trace-pro@0.1.0 keys:classify
+> node scripts/classify-keys.mjs
+
+baseline      : tests/baseline.json — 1020 keys
+figures       : 728  ok
+empty         : 14  ok
+text          : 278  ok
+renamed terms : 53 text keys  ok
+  glossary.*  : 12 — keep the original vocabulary, NO rename entry  ok
+  to declare  : 41 — must appear in docs/rename-map.json  ok
+
+--- per-term incidence (outside glossary.*) ---
+  Derived MV       10
+  Revised MV        8
+  Derived          13
+  Revised          11
+  Publish px        1
+  Current px        1
+  Revised px        1
+  Repricing P&L     5
+  Immediate %       2
+  Applied           0
+  Δ Pricing         9
+  Δ Non-position    5
+  Repriced MV       1
+  mv100             0
+  apex              8
+  terminal         10
+  in tol            0
+  no NAV            0
+
+--- THE 41 DECLARED-LABEL KEYS (baseline values) ---
+  1. chrome.pricing_view_note
+     terms   : Derived MV, Derived, Δ Pricing
+     baseline: "Before pricingCurrent as-booked reality — positions at their current marks (Derived MV) and reported NAV, with today's pricing gaps & breaks still shown.Δ Pricing $385,897 · NAV $2,062,198,836"
+  2. ownership.APPOURI.footnote
+     terms   : Immediate %
+     baseline: "Immediate % = holder qty ÷ total qty of the entity in the row below. Cumulative % chains up the path (shown when you click a row). Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve and sum to 100%."
+  3. ownership.column_headers
+     terms   : Immediate %
+     baseline: "Owner (expand ▸ upward)VPM symbolSPV fund codeQty heldImmediate %share of row below% of APPOUR1-SPVcumulative · effective"
+  4. pricing.banner.narrative
+     terms   : Revised MV, Derived, Revised, Repricing P&L, terminal
+     baseline: "Bottom-up repricing Reprice the deepest funds first — a terminal fund's revised price = NAV ÷ units; a holder's revised MV = Σ held-qty × child revised price + its direct securities, propagated to the product. That lifts Derived $2,060,224,441 to Revised $2,060,610,338 (repricing P&L $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding P&L."
+  5. pricing.bridge.driver_caption
+     terms   : apex
+     baseline: "Per-driver gap = apex NAV − its derived look-through MV — the bars sum to the headline gap (bar scaled to the largest leg; red = NAV above derived / scenario b, green = below / scenario a) — click to inspect"
+  6. pricing.bridge.product_nav_basis
+     terms   : apex
+     baseline: "Σ apex-fund ENDING_NAV — the product's own NAV, not Σ all 26 funds ($7,407,316,163)"
+  7. pricing.detail.SPORTHFC.level_pnl_block
+     terms   : Derived MV, Revised MV, Derived, Revised
+     baseline: "Derived MV · current marks$122,705,103 Revised MV · NAV-repriced$122,977,266 Level P&L$272,162 · 22.6 bps Direct securities (not repriced)$454,674"
+  8. pricing.detail.SPORTHFC.price_equations
+     terms   : Derived MV, Revised MV, Derived, Revised
+     baseline: "Publish · NAV ÷ units$120,620,995 ÷ 117,634,3871.025389 Revised (bottom-up)Revised MV ÷ units1.045419 Current (position marks)Derived MV ÷ units1.043106"
+  9. pricing.detail.SPORTHLD.level_pnl_block
+     terms   : Derived MV, Revised MV, Derived, Revised
+     baseline: "Derived MV · current marks$1,768,255,188 Revised MV · NAV-repriced$1,768,591,226 Level P&L$336,038 · 1.9 bps Direct securities (not repriced)$70,748,593"
+ 10. pricing.detail.SPORTHLD.price_equations
+     terms   : Derived MV, Revised MV, Derived, Revised
+     baseline: "Publish · NAV ÷ units$1,795,754,765 ÷ 1,752,553,7401.024650 Revised (bottom-up)Revised MV ÷ units1.009151 Current (position marks)Derived MV ÷ units1.008959"
+ 11. pricing.fund.APAV.role
+     terms   : terminal
+     baseline: "terminal"
+ 12. pricing.fund.APCAXXII.role
+     terms   : terminal
+     baseline: "terminal"
+ 13. pricing.fund.APRAIL2.role
+     terms   : terminal
+     baseline: "terminal"
+ 14. pricing.fund.ASCHON.role
+     terms   : apex
+     baseline: "apex"
+ 15. pricing.fund.CRIMH.role
+     terms   : terminal
+     baseline: "terminal"
+ 16. pricing.fund.DEUCE.role
+     terms   : terminal
+     baseline: "terminal"
+ 17. pricing.fund.DUNK.role
+     terms   : apex
+     baseline: "apex"
+ 18. pricing.fund.SPORTB.role
+     terms   : terminal
+     baseline: "terminal"
+ 19. pricing.fund.SPORTC.role
+     terms   : terminal
+     baseline: "terminal"
+ 20. pricing.fund.SPORTEUR.role
+     terms   : terminal
+     baseline: "terminal"
+ 21. pricing.fund.SPORTHLD.role
+     terms   : apex
+     baseline: "apex"
+ 22. pricing.fund.SPORTOP.role
+     terms   : terminal
+     baseline: "terminal"
+ 23. pricing.score.delta_pricing_detail
+     terms   : Repricing P&L
+     baseline: "bottom-up repricing P&L · +1.9 bps"
+ 24. pricing.score.nav_detail
+     terms   : apex
+     baseline: "Σ apex ENDING_NAV · 8 flagged"
+ 25. pricing.table.column_headers
+     terms   : Derived MV, Revised MV, Derived, Revised, Publish px, Current px, Revised px, Repricing P&L
+     baseline: "FundSymbolPublish pxCurrent pxRevised pxDerived MVRevised MVRepricing P&Lbps"
+ 26. pricing.walk.total.label
+     terms   : apex
+     baseline: "PRODUCT · SPORT (Σ apex)"
+ 27. reconciliation.after.pricing_view_note
+     terms   : Δ Pricing
+     baseline: "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its revised price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Δ Pricing $0 · NAV $2,062,198,836"
+ 28. reconciliation.after.start_label
+     terms   : Repriced MV
+     baseline: "Repriced MV"
+ 29. reconciliation.after.tie_statement
+     terms   : Δ Pricing, Δ Non-position
+     baseline: "✓ ties to the cent Δ Pricing $0 + Δ Non-position $1,588,498 = $1,588,498 = NAV − Repriced $1,588,498"
+ 30. reconciliation.detail.SPORTHFC.figures
+     terms   : Derived MV, Revised MV, Derived, Revised, Δ Pricing, Δ Non-position
+     baseline: "NAV$120,620,995Derived MV · current marks$122,705,103Revised MV · NAV-repriced$122,977,266Δ Pricing (Revised−Derived)$272,162 · 22.6 bpsΔ Non-position (NAV−Revised)($2,356,271) · -195.3 bps"
+ 31. reconciliation.status_line
+     terms   : Derived, Revised
+     baseline: "Apollo Sports Capital · Derived $2,060,224,441 → Revised $2,060,610,338 → NAV $2,062,198,836 · 26 funds"
+ 32. reconciliation.tie.statement
+     terms   : Derived, Δ Pricing, Δ Non-position
+     baseline: "✓ ties to the cent Δ Pricing $385,897 + Δ Non-position $1,588,498 = $1,974,394 = NAV − Derived $1,974,394"
+ 33. reconciliation.tree.column_headers
+     terms   : Derived MV, Revised MV, Derived, Revised, Δ Pricing, Δ Non-position
+     baseline: "Hierarchy — fund ▸ SPV ▸ securityVPM symbol NAVDerived MVcurrent marks Revised MVNAV-repriced Δ PricingRevised−Derived Δ Non-positionNAV−Revised"
+ 34. reconciliation.waterfall.delta_nonposition_label
+     terms   : Δ Non-position
+     baseline: "Δ Non-position"
+ 35. reconciliation.waterfall.delta_pricing_label
+     terms   : Δ Pricing
+     baseline: "Δ Pricing"
+ 36. reconciliation.waterfall.nav_basis
+     terms   : apex
+     baseline: "Σ apex ENDING_NAV · NAV report"
+ 37. reconciliation.waterfall.start_label
+     terms   : Derived MV, Derived
+     baseline: "Derived MV"
+ 38. simulator.reprice.ledger
+     terms   : Derived, Revised, Repricing P&L, Δ Pricing
+     baseline: "Derived look-through · before$2,060,224,441.40 ↓ bottom-up reprice + Repricing P&L$385,896.89 = Revised look-through$2,060,610,338.29 + Non-position (cash / fees)$1,588,497.57 = Product NAV$2,062,198,835.86 Whole-book reprice · deepest level first → product. Pricing gap reconciled (Δ pricing $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86."
+ 39. simulator.reprice.run_numbers
+     terms   : Revised, Repricing P&L
+     baseline: "Revised look-through$2.06bnRepricing P&L+$385,896.89✓ reconciled · no pricing break"
+ 40. simulator.reprice.shockline
+     terms   : Δ Pricing
+     baseline: "Whole-book reprice · deepest level first → product. Pricing gap reconciled (Δ pricing $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86."
+ 41. structure.legend
+     terms   : Derived MV
+     baseline: "FeederSPV / holdingUltimateNode size ∝ derived MV. Drag · scroll to zoom · hover to highlight."
+
+--- glossary.* keys that mention a retired term (intentionally NOT renamed) ---
+  glossary.term.apex_fund_feeder_terminal_fund.definition  [apex, terminal]
+  glossary.term.before_vs_after_pricing.definition  [Derived MV, Derived, Current px, Repricing P&L, Applied, Repriced MV]
+  glossary.term.current_px_applied_px.definition  [Applied]
+  glossary.term.derived_mv_repriced_mv.definition  [Repriced MV]
+  glossary.term.double_count.definition  [apex]
+  glossary.term.exception_break.definition  [Revised, Publish px, Revised px]
+  glossary.term.product_nav.definition  [apex]
+  glossary.term.publish_px_vs_current_applied_px_vs_revised_px.definition  [Revised, Applied]
+  glossary.term.repricing_p_l_p_l_reconciled.definition  [Derived MV, Revised MV, Derived, Revised]
+  glossary.term.revised_px.definition  [terminal]
+  glossary.term.the_additive_reconciliation.definition  [Derived MV, Revised MV, Derived, Revised, Δ Pricing, Δ Non-position]
+  glossary.term.variance.definition  [Derived, Revised, Revised px, Repricing P&L, Δ Non-position]
+
+=== DIGIT GUARD SELF-CHECK (numericTokens sequence, both directions) ===
+  ok   words change, digits intact → PASS
+  ok   digits ADDED (real incident: an as-of date appended) → FAIL
+  ok   digits REMOVED → FAIL
+  ok   a digit CHANGED → FAIL
+  ok   tokens REORDERED → FAIL
+  ok   two figures un-glued by a space → FAIL (one token becomes two)
+  ok   thousands separators dropped → PASS (formatting only; the strict/declared string compare still catches it)
+  ok   sign flipped → FAIL
+
+=== docs/rename-map.json SELF-CHECK ===
+  entries        : 42  ok
+  vocabulary     : 17 term(s) declared
+  corrections    : 1 declared, not vocabulary renames
+     chrome.footer_assertion — NOT a vocabulary rename — a CORRECTION. The original asserts ownership is "verified to conserve"; it is not, for 5 of 514 entities (ABFSUB6 129.29% via ABFAGB, MIDCAP 3.10%, APVCIAGA/APVCIAGB/APVCIINA just short), because of the circular holdings the Data quality lens reports as High. Rendering the original verbatim would hand a controller a false control statement. The numeric token 100 is preserved, so no figure moves. See docs/issues.md.
+  digit guard    : 42/42 declarations preserve every numeric token, in order
+
+  --- declared replacements ---
+    1. chrome.pricing_view_note
+       was: "Before pricingCurrent as-booked reality — positions at their current marks (Derived MV) and reported NAV, with today's pricing gaps & breaks still shown.Δ Pricing $385,897 · NAV $2,062,198,836"
+       now: "Before pricingCurrent as-booked reality — positions at their current marks (look-through value) and reported NAV, with today's pricing gaps & breaks still shown.Pricing difference $385,897 · NAV $2,062,198,836"
+    2. ownership.APPOURI.footnote
+       was: "Immediate % = holder qty ÷ total qty of the entity in the row below. Cumulative % chains up the path (shown when you click a row). Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve and sum to 100%."
+       now: "Direct share = holder qty ÷ total qty of the entity in the row below. Cumulative % chains up the path (shown when you click a row). Ultimate owners are solved by fixed-point so cross-holdings/cycles resolve and sum to 100%."
+    3. ownership.column_headers
+       was: "Owner (expand ▸ upward)VPM symbolSPV fund codeQty heldImmediate %share of row below% of APPOUR1-SPVcumulative · effective"
+       now: "Owner (expand ▸ upward)VPM symbolSPV fund codeQty heldDirect shareof the level below% of APPOUR1-SPVcumulative · effective"
+    4. pricing.banner.narrative
+       was: "Bottom-up repricing Reprice the deepest funds first — a terminal fund's revised price = NAV ÷ units; a holder's revised MV = Σ held-qty × child revised price + its direct securities, propagated to the product. That lifts Derived $2,060,224,441 to Revised $2,060,610,338 (repricing P&L $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding P&L."
+       now: "Bottom-up repricing Reprice the deepest funds first — a lowest-level fund's repriced unit price = NAV ÷ units; a holder's repriced value = Σ held-qty × child repriced price + its direct securities, propagated to the product. That lifts the look-through value $2,060,224,441 to the repriced value $2,060,610,338 (repricing gain or loss $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding gain or loss."
+    5. pricing.bridge.driver_caption
+       was: "Per-driver gap = apex NAV − its derived look-through MV — the bars sum to the headline gap (bar scaled to the largest leg; red = NAV above derived / scenario b, green = below / scenario a) — click to inspect"
+       now: "Per-driver gap = top-level feeder NAV − its look-through value — the bars sum to the headline gap (bar scaled to the largest leg; red = NAV above look-through / scenario b, green = below / scenario a) — click to inspect"
+    6. pricing.bridge.product_nav_basis
+       was: "Σ apex-fund ENDING_NAV — the product's own NAV, not Σ all 26 funds ($7,407,316,163)"
+       now: "sum of top-level feeder NAVs — the product's own NAV, not the sum of all 26 funds ($7,407,316,163)"
+    7. pricing.detail.SPORTHFC.level_pnl_block
+       was: "Derived MV · current marks$122,705,103 Revised MV · NAV-repriced$122,977,266 Level P&L$272,162 · 22.6 bps Direct securities (not repriced)$454,674"
+       now: "Look-through value · current marks$122,705,103 Repriced value · bottom-up from NAV$122,977,266 Level gain or loss$272,162 · 22.6 bps Direct securities (not repriced)$454,674"
+    8. pricing.detail.SPORTHFC.price_equations
+       was: "Publish · NAV ÷ units$120,620,995 ÷ 117,634,3871.025389 Revised (bottom-up)Revised MV ÷ units1.045419 Current (position marks)Derived MV ÷ units1.043106"
+       now: "Price to publish · NAV ÷ units$120,620,995 ÷ 117,634,3871.025389 Repriced unit price (bottom-up)Repriced value ÷ units1.045419 Current mark (position marks)Look-through value ÷ units1.043106"
+    9. pricing.detail.SPORTHLD.level_pnl_block
+       was: "Derived MV · current marks$1,768,255,188 Revised MV · NAV-repriced$1,768,591,226 Level P&L$336,038 · 1.9 bps Direct securities (not repriced)$70,748,593"
+       now: "Look-through value · current marks$1,768,255,188 Repriced value · bottom-up from NAV$1,768,591,226 Level gain or loss$336,038 · 1.9 bps Direct securities (not repriced)$70,748,593"
+   10. pricing.detail.SPORTHLD.price_equations
+       was: "Publish · NAV ÷ units$1,795,754,765 ÷ 1,752,553,7401.024650 Revised (bottom-up)Revised MV ÷ units1.009151 Current (position marks)Derived MV ÷ units1.008959"
+       now: "Price to publish · NAV ÷ units$1,795,754,765 ÷ 1,752,553,7401.024650 Repriced unit price (bottom-up)Repriced value ÷ units1.009151 Current mark (position marks)Look-through value ÷ units1.008959"
+   11. pricing.fund.APAV.role
+       was: "terminal"
+       now: "Lowest level"
+   12. pricing.fund.APCAXXII.role
+       was: "terminal"
+       now: "Lowest level"
+   13. pricing.fund.APRAIL2.role
+       was: "terminal"
+       now: "Lowest level"
+   14. pricing.fund.ASCHON.role
+       was: "apex"
+       now: "Top-level feeder"
+   15. pricing.fund.CRIMH.role
+       was: "terminal"
+       now: "Lowest level"
+   16. pricing.fund.DEUCE.role
+       was: "terminal"
+       now: "Lowest level"
+   17. pricing.fund.DUNK.role
+       was: "apex"
+       now: "Top-level feeder"
+   18. pricing.fund.SPORTB.role
+       was: "terminal"
+       now: "Lowest level"
+   19. pricing.fund.SPORTC.role
+       was: "terminal"
+       now: "Lowest level"
+   20. pricing.fund.SPORTEUR.role
+       was: "terminal"
+       now: "Lowest level"
+   21. pricing.fund.SPORTHLD.role
+       was: "apex"
+       now: "Top-level feeder"
+   22. pricing.fund.SPORTOP.role
+       was: "terminal"
+       now: "Lowest level"
+   23. pricing.score.nav_detail
+       was: "Σ apex ENDING_NAV · 8 flagged"
+       now: "sum of top-level feeder NAVs · 8 flagged"
+   24. pricing.table.column_headers
+       was: "FundSymbolPublish pxCurrent pxRevised pxDerived MVRevised MVRepricing P&Lbps"
+       now: "FundSymbolPrice to publishCurrent markRepriced unit priceLook-through valueRepriced valueRepricing gain or lossbps"
+   25. pricing.walk.total.label
+       was: "PRODUCT · SPORT (Σ apex)"
+       now: "PRODUCT · SPORT (sum of top-level feeders)"
+   26. reconciliation.after.pricing_view_note
+       was: "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its revised price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Δ Pricing $0 · NAV $2,062,198,836"
+       now: "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836"
+   27. reconciliation.after.start_label
+       was: "Repriced MV"
+       now: "Look-through value at repriced marks"
+   28. reconciliation.after.tie_statement
+       was: "✓ ties to the cent Δ Pricing $0 + Δ Non-position $1,588,498 = $1,588,498 = NAV − Repriced $1,588,498"
+       now: "✓ ties to the cent Pricing difference $0 + Non-position difference $1,588,498 = $1,588,498 = NAV − repriced value $1,588,498"
+   29. reconciliation.detail.SPORTHFC.figures
+       was: "NAV$120,620,995Derived MV · current marks$122,705,103Revised MV · NAV-repriced$122,977,266Δ Pricing (Revised−Derived)$272,162 · 22.6 bpsΔ Non-position (NAV−Revised)($2,356,271) · -195.3 bps"
+       now: "NAV$120,620,995Look-through value · current marks$122,705,103Repriced value · bottom-up from NAV$122,977,266Pricing difference (repriced − look-through)$272,162 · 22.6 bpsNon-position difference (NAV − repriced)($2,356,271) · -195.3 bps"
+   30. reconciliation.status_line
+       was: "Apollo Sports Capital · Derived $2,060,224,441 → Revised $2,060,610,338 → NAV $2,062,198,836 · 26 funds"
+       now: "Apollo Sports Capital · Look-through value $2,060,224,441 → Repriced value $2,060,610,338 → NAV $2,062,198,836 · 26 funds"
+   31. reconciliation.tie.statement
+       was: "✓ ties to the cent Δ Pricing $385,897 + Δ Non-position $1,588,498 = $1,974,394 = NAV − Derived $1,974,394"
+       now: "✓ ties to the cent Pricing difference $385,897 + Non-position difference $1,588,498 = $1,974,394 = NAV − look-through value $1,974,394"
+   32. reconciliation.tree.column_headers
+       was: "Hierarchy — fund ▸ SPV ▸ securityVPM symbol NAVDerived MVcurrent marks Revised MVNAV-repriced Δ PricingRevised−Derived Δ Non-positionNAV−Revised"
+       now: "Hierarchy — fund ▸ SPV ▸ securityVPM symbolNAVreportedLook-through valuecurrent marksRepriced valuebottom-up from NAVPricing differencerepriced − look-throughNon-position differenceNAV − repriced"
+   33. reconciliation.waterfall.delta_nonposition_label
+       was: "Δ Non-position"
+       now: "Non-position difference"
+   34. reconciliation.waterfall.delta_pricing_label
+       was: "Δ Pricing"
+       now: "Pricing difference"
+   35. reconciliation.waterfall.nav_basis
+       was: "Σ apex ENDING_NAV · NAV report"
+       now: "sum of top-level feeder NAVs · NAV report"
+   36. reconciliation.waterfall.start_label
+       was: "Derived MV"
+       now: "Look-through value"
+   37. simulator.reprice.ledger
+       was: "Derived look-through · before$2,060,224,441.40 ↓ bottom-up reprice + Repricing P&L$385,896.89 = Revised look-through$2,060,610,338.29 + Non-position (cash / fees)$1,588,497.57 = Product NAV$2,062,198,835.86 Whole-book reprice · deepest level first → product. Pricing gap reconciled (Δ pricing $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86."
+       now: "Look-through value · before$2,060,224,441.40 ↓ bottom-up reprice + Repricing gain or loss$385,896.89 = Repriced value$2,060,610,338.29 + Non-position (cash / fees)$1,588,497.57 = Product NAV$2,062,198,835.86 Whole-book reprice · lowest level first → product. Pricing gap reconciled (pricing difference $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86."
+   38. simulator.reprice.run_numbers
+       was: "Revised look-through$2.06bnRepricing P&L+$385,896.89✓ reconciled · no pricing break"
+       now: "Repriced value$2.06bnRepricing gain or loss+$385,896.89✓ reconciled · no pricing break"
+   39. pricing.score.delta_pricing_detail
+       was: "bottom-up repricing P&L · +1.9 bps"
+       now: "bottom-up repricing gain or loss · +1.9 bps"
+   40. structure.legend
+       was: "FeederSPV / holdingUltimateNode size ∝ derived MV. Drag · scroll to zoom · hover to highlight."
+       now: "FeederSPV / holdingUltimateNode size ∝ look-through value. Drag · scroll to zoom · hover to highlight."
+   41. simulator.reprice.shockline
+       was: "Whole-book reprice · deepest level first → product. Pricing gap reconciled (Δ pricing $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86."
+       now: "Whole-book reprice · lowest level first → product. Pricing gap reconciled (pricing difference $385,896.89); the residual $1.59m is non-position (cash / fees — non-trade), not a pricing break. Product NAV holds at $2,062,198,835.86."
+   42. chrome.footer_assertion
+       was: "Deterministic: ownership per node sums to 100%; effective ultimate ownership solved by fixed-point (handles cross-holdings/cycles), verified to conserve. No backend. Ties to the companion Excel to the cent."
+       now: "Deterministic: effective ultimate ownership is solved by fixed point, which handles cross-holdings and cycles. Ownership conserves to 100% for every entity except five the source data cannot close — see Data quality. No backend. Ties to the companion Excel to the cent."
+
+RESULT: PASS — 728 figures / 14 empty / 278 text; 41 declared-label keys, all 41 digit-guarded

@@ -174,12 +174,21 @@ is.**
 | What is being decomposed | `#ownership-identity` | symbol · name · code · kind, and total units outstanding |
 | The conservation verdict | `#ownership-checks` | `✓ Owners reconcile to 100%` / `✓ Ultimate owners = 100%` — **or the real figure**, e.g. `⚠ Ultimate owners sum to 129.29%` for `ABFSUB6`. A green tick over a non-conserving entity is a FAIL, not a pass (`docs/issues.md` §M) |
 | The proportional ribbon | `#ownership-ribbon` | up to 40 segments, largest first |
-
 | The count line | `#ownership-status` | n immediate owners · n ultimate parents · top-5 share |
 | The first owner rows | `#ownership-tree` rows 1–5 | units held · direct share · cumulative share |
 
 **Fails if:** the integrity check is below the owner table (a controller must see the verdict before
 the evidence), or the lens opens with nothing searched.
+
+**Amended 2026-08-04 (R5/R6).** `#ownership-ribbon` measured **0px high**: `owner-tree.ts` renders
+`.own-ribbon` / `.own-seg`, and neither class had a single line of CSS. So the primary answer this row
+names was invisible, *and* its 39 segments were 39 zero-height tab stops for R6. Both classes are now
+styled in `components.css` — an 18px strip, `min-width: 5px` per segment so the smallest holder is a
+real target, and no `overflow: hidden` on the strip, because that is precisely what erased the focus
+ring on the pricing-basis control. Three of the eight segment colours were also lightened past the
+point where a focus ring could contrast with them and have been darkened (`owner-tree.ts`). The
+identity line above it, which concatenated to `…code APPOURITotal qty: 1,330,020,204100%`, is styled
+too. Measured after: ribbon 433…451, 40 segments, every one ≥ 5×16px with a 3.28:1 ring or better.
 
 ### 3c. Data quality lens
 
@@ -255,27 +264,43 @@ reachability:
 
 ## Keeping the test in step with this file
 
-`tests/e2e/rubric.spec.ts` (test "R5 — the primary answer is above the fold on load, with no click")
-holds one selector per route and says in a comment that it is kept in step with this file. It is the
-machine half of the same contract, so the two must agree. As of writing they do not, and the
-mismatch is in the test rather than here:
+**Closed 2026-08-04.** The mismatch recorded here — the test asserting one selector per route, three of
+them CSS-only classes that were never rendered, and `#simulator-runline`, which appears nowhere in this
+document — is gone. `tests/e2e/rubric.spec.ts` now holds a `FIRST_RUN` table whose rows are **the rows
+of the tables above**, selector for selector, with a count where this file says "the first five", plus
+`CHROME_ROWS` for the shared chrome and `DIAGNOSE_ROWS` for the Diagnose shell. Every one of them is
+asserted with `rect.top >= 0 && rect.bottom <= innerHeight && height > 0` and, at the end of each route,
+`window.scrollY === 0`, so nothing can pass by having been scrolled into view.
 
-| Route | Selector the test asserts | Rendered? |
+For the record, because this is the third time these selectors have moved: the previous two passes
+changed the *test* to match whatever the app already did. This pass changed the *app*. The only edit to
+the contract is the `#lens-question` → four per-lens ids correction above, which names elements that
+ship instead of one that never did, and the Simulator rows, which lost their `(contract)` markers
+because the elements they name now exist. No selector was replaced with a looser one and `isAboveFold`
+was not relaxed.
+
+| Route | What the test asserts now | Count |
 |---|---|---|
-| `reconciliation` | `[data-parity="reconciliation.waterfall.nav"]` | yes |
-| `pricing` | `[data-parity="pricing.score.nav"]` | yes |
-| `diagnose-structure` | `.graph-stage, .graph-caption` | **no** — those two classes exist only in `components.css`; the elements rendered are `#structure-stage` and `#structure-caption` |
-| `diagnose-ownership` | `.integrity` | **no** — CSS-only class; `#ownership-checks` renders `.chip` children |
-| `diagnose-data-quality` | `.kpi-row` | **no** — CSS-only class; the element rendered is `#data-quality-kpi` |
-| `diagnose-simulator` | `.graph-stage, .score-strip` | `.score-strip` is real (it is the Pricing screen's strip class); the simulator lens is not built |
-
-Three of the six will fail on a selector, not on a layout. Fix the selectors to the ids listed in the
-tables above; do not relax `isAboveFold`.
+| every route | `#masthead`, `#active-product`, `#asof`, `#screen-nav` | 4 |
+| `reconciliation` | question, tie pill, five waterfall steps, NAV, NAV basis, both differences in $ and bps, three exception chips | 10 rows |
+| `pricing` | question, repricing P&L and its bps, NAV, flagged count, **five** price rows, **five** publish prices, `#view-note` | 8 rows |
+| `diagnose-*` | `#diagnose-question`, `#diagnose-subject`, `#diagnose-entity`, four `#lens-tabs [role="tab"]` | 4 rows |
+| `diagnose-structure` | `#structure-question`, `#structure-stage svg`, `#structure-caption`, `#structure-controls` | 4 rows |
+| `diagnose-ownership` | `#ownership-identity`, `#ownership-checks`, `#ownership-ribbon`, `#ownership-status`, **five** `#ownership-tree tbody tr` | 5 rows |
+| `diagnose-data-quality` | `#data-quality-question`, `#data-quality-kpi`, `#data-quality-scope`, `#data-quality-buckets` | 4 rows |
+| `diagnose-simulator` | `#simulator-baseline`, `#simulator-subject`, `#simulator-shock`, its three inputs, `#simulator-run`, `#simulator-stage` | 8 rows |
 
 ## Caveat that must close before this file can be scored
 
-`src/main.ts` currently seeds `defaultPosition` from the first `kind === 'vehicle'` node of the
-look-through tree, which resolves to **`ASCON`**. `tests/baseline.json` pins the Ownership lens on
-**`APPOURI`**, which is not in that tree at all — it is in `universe.json`. Whatever seed is chosen
-must (a) be non-empty, so no lens is ever blank on arrival, and (b) be a fixture field rather than a
-code path, per `docs/redesign-spec.md` Q5. Tracked as `docs/issues.md` §O1.
+`src/main.ts` seeds `defaultPosition` from `data/manifest.json`, which names **`APPOURI`** — the same
+position `tests/baseline.json` pins the Ownership lens on. That satisfies (a) non-empty and (b) a
+fixture field rather than a code path (`docs/redesign-spec.md` Q5), so `docs/issues.md` §O1's stated
+reason ("the fixture field does not exist yet") is stale.
+
+**What is left, narrowed 2026-08-04.** `APPOURI` is a firm-wide universe position, not a fund in this
+product's cascade, so it is not a *shockable* subject. The Simulator lens handles that locally, without
+writing to the store, by falling back to the largest top-level feeder — so no lens is blank on arrival.
+It remains true that one seed is being asked to serve two different entity namespaces, and the clean fix
+is a second manifest field (a shockable default, e.g. `defaultShockSubject`) read in `src/main.ts`.
+**That is in `data/manifest.json` and `src/main.ts`, neither of which this pass owns**, so it is reported
+rather than done.

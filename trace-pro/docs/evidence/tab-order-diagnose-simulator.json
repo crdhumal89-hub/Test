@@ -243,8 +243,8 @@
   "key": "g[button] SPORT::PRODUCT, Apollo Sports Capital, level 0. Ac",
   "tag": "g",
   "role": "button",
-  "w": 61,
-  "h": 28,
+  "w": 58,
+  "h": 27,
   "outlineStyle": "solid",
   "outlineWidth": "2px",
   "tones": [

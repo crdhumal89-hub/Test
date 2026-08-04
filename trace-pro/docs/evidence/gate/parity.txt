@@ -1,0 +1,26 @@
+$ node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json --expect-renamed
+# sub-gate: PARITY — Semantic parity vs frozen baseline
+# exit code: 0
+# ----------------------------------------------------------------------------
+target        : dist/
+scenes        : 22
+keys resolved : 1020 / 1020
+unresolved    : 0
+console errors: 0
+offline viol. : 0
+scene errors  : 0
+
+=== PARITY vs tests/baseline.json ===
+baseline keys : 1020
+current keys  : 1020
+label basis   : REBUILT APP — the 37+ declared keys must render docs/rename-map.json
+
+=== GATE SUMMARY ===
+  978 strict keys
+  42 declared-label keys
+  0 digit violations
+  0 diffs
+
+  ZERO value diffs.
+
+RESULT: PASS (exit 0)

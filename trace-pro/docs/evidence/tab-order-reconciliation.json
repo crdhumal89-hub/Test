@@ -1,6 +1,6 @@
 [
  {
-  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
   "tag": "button",
   "role": "",
   "w": 33,
@@ -16,7 +16,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
   "tag": "button",
   "role": "",
   "w": 23,
@@ -32,7 +32,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] SPV: SPV. A special-purpose vehicle / holding enti",
+  "key": "button[] SPV: A special-purpose vehicle / holding entity th",
   "tag": "button",
   "role": "",
   "w": 23,
@@ -48,7 +48,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] VPM: VPM. The accounting / valuation system the sy",
+  "key": "button[] VPM: The accounting / valuation system the symbols",
   "tag": "button",
   "role": "",
   "w": 25,
@@ -64,7 +64,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "key": "button[] bps: The size of a gap expressed relative to NAV, ",
   "tag": "button",
   "role": "",
   "w": 20,
@@ -144,7 +144,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
   "tag": "button",
   "role": "",
   "w": 24,
@@ -208,7 +208,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
   "tag": "button",
   "role": "",
   "w": 25,
@@ -224,7 +224,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
   "tag": "button",
   "role": "",
   "w": 25,
@@ -240,7 +240,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
   "tag": "button",
   "role": "",
   "w": 25,
@@ -256,7 +256,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "key": "button[] bps: The size of a gap expressed relative to NAV, ",
   "tag": "button",
   "role": "",
   "w": 20,
@@ -272,7 +272,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
   "tag": "button",
   "role": "",
   "w": 25,
@@ -288,7 +288,7 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] SPV: SPV. A special-purpose vehicle / holding enti",
+  "key": "button[] SPV: A special-purpose vehicle / holding entity th",
   "tag": "button",
   "role": "",
   "w": 25,

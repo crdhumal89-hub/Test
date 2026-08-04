@@ -82,7 +82,13 @@ function reuse(step) {
  * shape of that line ever changes this returns null and the pack says so — it does not guess.
  */
 function parityFacts(output) {
-  const keys = /(\d+)\s*\/\s*(\d+)\s+keys/.exec(output) ?? /(\d+) of (\d+) keys/.exec(output);
+  // The harness prints `keys resolved : 1020 / 1020`, with the word `keys` BEFORE the numbers.
+  // The first version of this regex expected it after, matched nothing, and the pack rendered
+  // "? / ?" — a missing figure rather than a wrong one, but still a gap in the evidence.
+  const keys =
+    /keys\s+resolved\s*:\s*(\d+)\s*\/\s*(\d+)/i.exec(output) ??
+    /(\d+)\s*\/\s*(\d+)\s+keys/.exec(output);
+  const unresolved = /unresolved\s*:\s*(\d+)/i.exec(output);
   const diffs = /(\d+)\s+diffs?/.exec(output);
   const digits = /(\d+)\s+digit violations?/.exec(output);
   const strict = /(\d+)\s+strict/.exec(output);
@@ -96,6 +102,7 @@ function parityFacts(output) {
     digits: digits ? Number(digits[1]) : null,
     strict: strict ? Number(strict[1]) : null,
     relabelled: relabel ? Number(relabel[1]) : null,
+    unresolved: unresolved ? Number(unresolved[1]) : null,
     verdict: verdict ? verdict[1] : null,
   };
 }
@@ -194,6 +201,7 @@ function main() {
           ['Measure', 'Observed'],
           ['---', '---'],
           ['Keys resolved', (parity.resolved ?? '?') + ' / ' + (parity.total ?? '?')],
+          ['Unresolved', parity.unresolved ?? '—'],
           ['Compared byte-for-byte (strict)', parity.strict ?? '—'],
           ['Declared relabels (digit-guarded)', parity.relabelled ?? '—'],
           ['Digit violations', parity.digits ?? '—'],

@@ -1,0 +1,8 @@
+$ npm run typecheck
+# sub-gate: STATIC — Typecheck
+# exit code: 0
+# ----------------------------------------------------------------------------
+
+> trace-pro@0.1.0 typecheck
+> tsc --noEmit
+

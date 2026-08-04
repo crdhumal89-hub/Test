@@ -1,0 +1,128 @@
+{
+ "Reconciliation": {
+  "firstPainted": {
+   "top": 182,
+   "left": 22,
+   "id": "reconciliation-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Does this product’s agree with the value of what it holds, and where is the difference?"
+  },
+  "question": {
+   "top": 182,
+   "left": 22,
+   "id": "reconciliation-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Does this product’s agree with the value of what it holds, and where is the difference?"
+  },
+  "aboveTheQuestion": []
+ },
+ "Pricing": {
+  "firstPainted": {
+   "top": 182,
+   "left": 22,
+   "id": "pricing-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "What unit price do I publish for each fund today, and what does repricing do to value?"
+  },
+  "question": {
+   "top": 182,
+   "left": 22,
+   "id": "pricing-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "What unit price do I publish for each fund today, and what does repricing do to value?"
+  },
+  "aboveTheQuestion": []
+ },
+ "Structure": {
+  "firstPainted": {
+   "top": 144,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "question": {
+   "top": 144,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "aboveTheQuestion": []
+ },
+ "Ownership": {
+  "firstPainted": {
+   "top": 144,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "question": {
+   "top": 144,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "aboveTheQuestion": []
+ },
+ "Data quality": {
+  "firstPainted": {
+   "top": 144,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "question": {
+   "top": 144,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "aboveTheQuestion": []
+ },
+ "Simulator": {
+  "firstPainted": {
+   "top": 182,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "question": {
+   "top": 182,
+   "left": 22,
+   "id": "diagnose-question",
+   "tag": "P",
+   "isQuestion": true,
+   "inQuestion": true,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
+  },
+  "aboveTheQuestion": []
+ }
+}

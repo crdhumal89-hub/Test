@@ -33,7 +33,7 @@
  },
  {
   "route": "pricing",
-  "scrollY": 662,
+  "scrollY": 645,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 256,
@@ -41,7 +41,7 @@
  },
  {
   "route": "pricing",
-  "scrollY": 662,
+  "scrollY": 645,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 256,
@@ -124,7 +124,7 @@
   "scrollY": 900,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
-  "figures": 13,
+  "figures": 12,
   "mastheadPosition": "sticky"
  },
  {
@@ -137,7 +137,7 @@
  },
  {
   "route": "diagnose-simulator",
-  "scrollY": 2183,
+  "scrollY": 2163,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 0,
@@ -145,7 +145,7 @@
  },
  {
   "route": "diagnose-simulator",
-  "scrollY": 2183,
+  "scrollY": 2163,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 0,

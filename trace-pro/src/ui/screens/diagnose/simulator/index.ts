@@ -38,9 +38,9 @@ function simulatorHelpText(): HTMLElement {
   ]);
 }
 
-/** 440px, not 620px: at 620 the stage bottom was 1315, past the fold R5 measures (bottom ≤ 1000). */
+/* 420px, not 620px: at 620 the stage bottom was 1315, past the fold R5 measures. `.sim-shock` matches. */
 const SIMULATOR_STAGE_STYLE =
-  'position:relative;width:100%;height:440px;background:#0A1226;border:1px solid rgba(120,150,200,.28);border-radius:12px;overflow:hidden';
+  'position:relative;width:100%;height:420px;background:#0A1226;border:1px solid rgba(120,150,200,.28);border-radius:12px;overflow:hidden';
 
 /** Display value and price per node, per pricing basis. Was `simBaseVal` / `simBasePx`. */
 function simulatorDisplay(store: Store, fixture: SimulatorFixture, view: PricingView) {

@@ -23,7 +23,15 @@ export default defineConfig({
   timeout: 90_000,
   expect: { timeout: 10_000 },
   webServer: {
-    command: 'npx vite preview --port 4178 --strictPort',
+    /*
+     * BUILD, then serve. `vite preview` serves whatever is already in `dist/` and never builds, so
+     * without the `npm run build` here the entire headless suite silently tests the last build
+     * instead of the current source. That is not hypothetical: it is how a real R1 defect survived
+     * a deliberate attempt to reproduce it — the fix was removed from `components.css`, the suite
+     * was re-run, and all six tests passed against the stale bundle that still contained it.
+     * A suite that can pass against code that is not the code under test proves nothing.
+     */
+    command: 'npm run build && npx vite preview --port 4178 --strictPort',
     url: 'http://127.0.0.1:4178/',
     reuseExistingServer: false,
     timeout: 60_000,
