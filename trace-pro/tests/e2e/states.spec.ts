@@ -1,5 +1,6 @@
 /**
- * Rubric R4 and R14, driven rather than asserted.
+ * Rubric R4 and R14, driven rather than asserted — the reconciliation tree, the price table and the
+ * repricing walk.
  *
  * Every state in this file is REACHED in the browser: the loading state by holding a fixture fetch
  * open with `page.route`, the empty state by typing a filter that matches nothing or by serving a
@@ -7,87 +8,18 @@
  * source code, and nothing asserts that a state "exists" — each one is rendered, read out of the
  * DOM and screenshot to docs/evidence/states/.
  *
- * Panels covered: the reconciliation tree, the price table, the repricing walk (three states each),
- * plus the structure graph's caught-error path, which is R14's named defect.
+ * The other R4 panels the rubric enumerates are driven the same way in their own files, because one
+ * file for ten panels would be past the length limit: `states-lenses.spec.ts` (the four Diagnose
+ * lenses), `states-universe.spec.ts` (the lazily fetched universe and the combobox result lists) and
+ * `states-upload.spec.ts` (the two upload slots).
  */
 import { test, expect, type Page } from '@playwright/test';
-import fs from 'node:fs';
-import path from 'node:path';
-import { EVIDENCE, recordProblems, settled, expectClean } from './helpers.js';
-
-const STATES_DIR = path.join(EVIDENCE, 'states');
-
-/** How long a held fixture fetch stays outstanding. Long enough to read the loading state. */
-const STATES_HOLD_MS = 8000;
+import { recordProblems, settled, expectClean } from './helpers.js';
+import { statesPatchFixture, statesMountWhileFetching, statesShot } from './states-helpers.js';
 
 const STATES_TREE = '#reconciliation-tree';
 const STATES_TABLE = '#pricing-price-table';
 const STATES_WALK = '#pricing-walk-table';
-
-/**
- * Screenshot the state and record the sentence it actually rendered, so the evidence is the state
- * as the browser drew it rather than a claim about the code. Merged into one file; the suite runs
- * with a single worker, so read-modify-write is safe.
- */
-async function statesShot(page: Page, name: string, reached: string, selector?: string): Promise<void> {
-  fs.mkdirSync(STATES_DIR, { recursive: true });
-  await page.screenshot({ path: path.join(STATES_DIR, `${name}.png`) });
-  const log = path.join(STATES_DIR, 'states.json');
-  const seen = fs.existsSync(log)
-    ? (JSON.parse(fs.readFileSync(log, 'utf8')) as Record<string, unknown>)
-    : {};
-  seen[name] = {
-    reached,
-    selector: selector ?? null,
-    rendered: selector
-      ? (await page.locator(selector).innerText()).replace(/\s+/g, ' ').trim()
-      : null,
-    screenshot: `docs/evidence/states/${name}.png`,
-  };
-  fs.writeFileSync(log, JSON.stringify(seen, null, 1) + '\n');
-}
-
-/**
- * Serve a real fixture with one field rewritten, so the panel under test gets malformed data while
- * every other panel on the screen keeps working. This is what proves the state is panel-scoped.
- */
-async function statesPatchFixture(
-  page: Page,
-  glob: string,
-  patch: (body: Record<string, never>) => void
-): Promise<void> {
-  await page.route(glob, async (route) => {
-    const response = await route.fetch();
-    const body = (await response.json()) as Record<string, never>;
-    patch(body);
-    await route.fulfill({ json: body });
-  });
-}
-
-/** Hold the lazily-fetched universe fixture open, so `data-fetching` stays set on <html>. */
-async function statesHoldUniverse(page: Page): Promise<void> {
-  await page.route('**/universe.json', async (route) => {
-    await new Promise((resolve) => setTimeout(resolve, STATES_HOLD_MS));
-    await route.continue();
-  });
-}
-
-/**
- * Reach a panel's loading state: open the Ownership lens, which fetches the 472 KiB universe, wait
- * until that fetch is genuinely outstanding, then mount the screen under test while it is in flight.
- */
-async function statesMountWhileFetching(page: Page, hash: string): Promise<void> {
-  await statesHoldUniverse(page);
-  await page.goto('/#/diagnose/ownership', { waitUntil: 'load' });
-  await expect(page.locator('#screen .state-loading')).toContainText('firm-wide ownership universe');
-  expect(
-    await page.evaluate(() => document.documentElement.hasAttribute('data-fetching')),
-    'a fixture fetch must be outstanding for the loading state to be honest'
-  ).toBe(true);
-  await page.evaluate((next) => {
-    location.hash = next;
-  }, hash);
-}
 
 /* ------------------------------------------------------------------ the reconciliation tree */
 
@@ -260,62 +192,5 @@ test('repricing walk · ERROR when the fund rows arrive malformed', async ({ pag
   await expect(state).toContainText('repricing walk could not be built');
   await expect(state.locator('button')).toHaveText('Reload this product’s data');
   await statesShot(page, 'repricing-walk-error', 'repricing.json served with every fund’s ltv and rev as a non-number', `${STATES_WALK} .state-error`);
-  expectClean(problems);
-});
-
-/* ------------------------------------------------------------------ R14: the caught error */
-
-test('structure graph · a caught layout error surfaces outside the SVG and is recorded', async ({
-  page,
-}) => {
-  const failures: string[] = [];
-  page.on('pageerror', (error) => failures.push(String(error)));
-
-  // Two roots: d3.stratify cannot build one tree from this, which is the throw the old handler
-  // swallowed. The fixture's own circular and dangling mappings make it a live possibility.
-  await statesPatchFixture(page, '**/lookthrough.json', (body) => {
-    const nodes = body.nodes as unknown as Record<string, unknown>[];
-    const apex = nodes.find((n) => n.kind === 'apex');
-    if (apex) apex.path = `${String(apex.id)}/`;
-  });
-  await page.goto('/#/diagnose/structure', { waitUntil: 'load' });
-  await settled(page);
-
-  const state = page.locator('#structure-graph-error .state-error');
-  await expect(state).toBeVisible();
-  await expect(state).toContainText('ownership structure could not be drawn');
-  await expect(state).toContainText('do not form a single tree');
-  await expect(state.locator('button')).toHaveText('Reload this product’s data');
-  expect(await state.getAttribute('role'), 'a screen reader must be told').toBe('alert');
-  // The words used to be painted inside the SVG, where neither a reader nor a test could use them
-  // (an SVG has no innerText at all, which is the point).
-  const painted = await page.evaluate(
-    () => document.querySelector('#structure-stage svg')?.textContent ?? ''
-  );
-  expect(painted, 'no error text painted inside the picture').not.toContain('structure unavailable');
-  await statesShot(page, 'structure-graph-error', 'lookthrough.json served with a second root, so d3.stratify throws', '#structure-graph-error .state-error');
-
-  // Recorded on the page AND re-thrown, so the headless suite sees a real failure, not silence.
-  const recorded = await page.evaluate(
-    () => (globalThis as { __structureGraphFailures?: string[] }).__structureGraphFailures ?? []
-  );
-  expect(recorded.length, 'the failure must be recorded').toBeGreaterThan(0);
-  await expect
-    .poll(() => failures.length, { message: 'the caught error must reach the console listener' })
-    .toBeGreaterThan(0);
-});
-
-test('structure graph · the healthy path draws the graph and records nothing', async ({ page }) => {
-  const { problems } = recordProblems(page);
-  await page.goto('/#/diagnose/structure', { waitUntil: 'load' });
-  await settled(page);
-
-  await expect(page.locator('#structure-stage svg .strnode').first()).toBeVisible();
-  expect(await page.locator('#structure-graph-error').count(), 'no error box on the healthy path').toBe(0);
-  expect(
-    await page.evaluate(
-      () => (globalThis as { __structureGraphFailures?: string[] }).__structureGraphFailures ?? []
-    )
-  ).toEqual([]);
   expectClean(problems);
 });

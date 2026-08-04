@@ -25,12 +25,18 @@ interface WorkSheet {
   '!cols'?: { wch: number }[];
   '!freeze'?: { xSplit: number; ySplit: number };
 }
+interface WorkBook {
+  SheetNames: string[];
+  Sheets: Record<string, WorkSheet>;
+}
 interface XlsxApi {
   utils: {
     book_new(): unknown;
     aoa_to_sheet(rows: unknown[][]): WorkSheet;
     book_append_sheet(book: unknown, sheet: WorkSheet, name: string): void;
+    sheet_to_json(sheet: WorkSheet, options: { header: 1; raw: true; defval: null }): unknown[][];
   };
+  read(data: Uint8Array, options: { type: 'array' }): WorkBook;
   writeFile(book: unknown, filename: string): void;
 }
 
@@ -40,7 +46,7 @@ const BPS = '0.0';
 
 let loading: Promise<XlsxApi> | null = null;
 
-/** Load the vendored library once, on first export. */
+/** Load the vendored library once, on first export or first upload of a workbook. */
 export function loadSpreadsheetLibrary(): Promise<XlsxApi> {
   const existing = (globalThis as { XLSX?: XlsxApi }).XLSX;
   if (existing) return Promise.resolve(existing);
@@ -58,6 +64,24 @@ export function loadSpreadsheetLibrary(): Promise<XlsxApi> {
     document.head.append(script);
   });
   return loading;
+}
+
+/**
+ * Read the first sheet of an uploaded workbook as rows of cells.
+ *
+ * This is the only READ of the vendored library, and it lives here because `export/` is the only
+ * module the spec lets touch `vendor/xlsx` (§4). The library is fetched on demand, so an upload of a
+ * workbook has a genuine loading state to show while it arrives — see the Data sources drawer.
+ */
+export async function readWorkbookRows(bytes: Uint8Array): Promise<string[][]> {
+  const api = await loadSpreadsheetLibrary();
+  const book = api.read(bytes, { type: 'array' });
+  const first = book.SheetNames[0];
+  const sheet = first == null ? undefined : book.Sheets[first];
+  if (!sheet) return [];
+  return api.utils
+    .sheet_to_json(sheet, { header: 1, raw: true, defval: null })
+    .map((row) => (Array.isArray(row) ? row.map((cell) => (cell == null ? '' : String(cell))) : []));
 }
 
 function setFormat(sheet: WorkSheet, ref: string, format: string): void {

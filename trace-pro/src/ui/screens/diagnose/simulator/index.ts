@@ -9,66 +9,28 @@
  */
 import { buildCascadeIndex, type CascadeResult } from '../../../../domain/cascade.js';
 import { formatUsdCompact, formatUsdCents, formatUsdCentsParens, formatPercent, formatPrice } from '../../../../domain/money.js';
-import type { PricingView, SimulatorFixture } from '../../../../domain/types.js';
 import type { Store } from '../../../../state/store.js';
-import { el, replace, qs, errorState } from '../../../primitives/dom.js';
+import { el, replace, qs, errorState, stageLoaded, stageLoading } from '../../../primitives/dom.js';
 import { parity } from '../../../parity.js';
 import { structureEnsureD3, type StructureD3 } from '../structure/graph.js';
 import { simulatorBuildScene, type SimulatorScene } from './graph.js';
 import { simulatorRenderShockPanel, simulatorRenderEntityList } from './shock-panel.js';
 import { simulatorCreateRepriceRun, type SimulatorRunState } from './reprice-run.js';
 import { simulatorRenderRepriceLedger, simulatorRenderCascadeLedger, simulatorRenderBreaks } from './ledger.js';
+import { simulatorHelpText, simulatorIntro } from './intro.js';
+import { simulatorDataProblem, simulatorMountEmpty, simulatorMountProblem } from './data-state.js';
+import { simulatorConcentration, simulatorDisplay } from './display.js';
 
-export const SIMULATOR_QUESTION =
-  'If this fund’s value or units move, what happens to product NAV, and through which holders?';
-
-/**
- * The help line, verbatim. `simulator.help_text` is a STRICT parity key — not in
- * docs/rename-map.json — so it keeps the original's wording, including the old names of the two
- * sweep controls, which the paragraph after it maps onto the shipped labels.
+/*
+ * 392px, not 620px: at 620 the stage bottom was 1315, past the fold R5 measures. `.sim-shock`
+ * matches, and that is the number that matters — R5 requires the shock panel's Run button inside a
+ * 1600x1000 viewport on load, and Run sits 344px down the panel's own content. It was 420 until this
+ * lens's R2 vocabulary line arrived above it (this lens renders more denylisted abbreviations than
+ * any other) and pushed Run's bottom to 1002. 392 puts the panel's bottom at 974 and Run's at 955,
+ * so Run is readable without scrolling the panel OR the page.
  */
-function simulatorHelpText(): HTMLElement {
-  const b = (text: string): HTMLElement => el('b', { text });
-  return el('p', { class: 'screen-help', id: 'simulator-help', ...parity('simulator.help_text') }, [
-    'Click a node to shock its ', b('MV / Qty / NAV'), ' & hit ', b('Run'), ' · ',
-    b('Run full reprice'), ' sweeps the whole book bottom-up automatically · ',
-    b('Step by stage'), ' lets you ', b('click each level'),
-    ' to reprice it yourself, one stage at a time. Prices flow up the lit path; open the ',
-    b('▤ Ledger'), ' tray for the per-holder breakdown.',
-  ]);
-}
-
-/* 420px, not 620px: at 620 the stage bottom was 1315, past the fold R5 measures. `.sim-shock` matches. */
 const SIMULATOR_STAGE_STYLE =
-  'position:relative;width:100%;height:420px;background:#0A1226;border:1px solid rgba(120,150,200,.28);border-radius:12px;overflow:hidden';
-
-/** Display value and price per node, per pricing basis. Was `simBaseVal` / `simBasePx`. */
-function simulatorDisplay(store: Store, fixture: SimulatorFixture, view: PricingView) {
-  const revised = new Map(store.repricing.funds.map((f) => [f.code, f]));
-  return {
-    valueOf(id: string): number | null {
-      if (id === fixture.productNodeId) return fixture.productNAV;
-      const fund = fixture.funds[id];
-      if (!fund || fund.nav == null) return null;
-      if (view === 'after') return revised.get(id)?.rev ?? fund.nav;
-      return fund.ltv ?? fund.nav;
-    },
-    priceOf(id: string): number | null {
-      if (id === fixture.productNodeId) return null;
-      const fund = fixture.funds[id];
-      if (!fund) return null;
-      if (view === 'after') return revised.get(id)?.revPx ?? fund.price;
-      return fund.nav != null && fund.ltv != null && fund.gq ? fund.ltv / fund.gq : fund.price;
-    },
-  };
-}
-
-/** Where product NAV is concentrated, from the top-level feeders. Pure. */
-export function simulatorConcentration(fixture: SimulatorFixture): { code: string; share: number }[] {
-  const total = fixture.apex.reduce((sum, code) => sum + Math.abs(fixture.funds[code]?.nav ?? 0), 0) || 1;
-  const nav = (code: string): number => Math.abs(fixture.funds[code]?.nav ?? 0);
-  return fixture.apex.map((code) => ({ code, share: nav(code) / total })).sort((a, b) => b.share - a.share);
-}
+  'position:relative;width:100%;height:392px;background:#0A1226;border:1px solid rgba(120,150,200,.28);border-radius:12px;overflow:hidden';
 
 function simulatorToggle(label: string, pressed: boolean, title: string, onToggle: (next: boolean) => void): HTMLButtonElement {
   const button = el('button', { type: 'button', class: 'btn', 'aria-pressed': pressed ? 'true' : 'false', title, text: label });
@@ -81,7 +43,17 @@ function simulatorToggle(label: string, pressed: boolean, title: string, onToggl
 }
 
 export function mountSimulatorLens(host: HTMLElement, store: Store): () => void {
+  /** The question and vocabulary line R1 and R2 require first — in all three of this lens's states. */
+  const head = (): (Node | string)[] => simulatorIntro(store);
+  // Asked BEFORE the fixture is touched: everything below dereferences it, and a fault used to throw
+  // out of this function, leaving the lens empty with the reason only in the console (R4, R14).
+  const problem = simulatorDataProblem(store.core.simulator);
+  if (problem) return simulatorMountProblem(host, head, problem);
+
   const fixture = store.core.simulator;
+  // A sound file that lists no fund is empty, not broken: an empty state, and nothing is thrown.
+  if (!Object.keys(fixture.funds).length) return simulatorMountEmpty(host, head);
+
   const index = buildCascadeIndex(fixture);
   const concentration = simulatorConcentration(fixture);
 
@@ -94,7 +66,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
 
   replace(
     host,
-    el('p', { class: 'screen-question', id: 'simulator-question', text: SIMULATOR_QUESTION }),
+    ...head(),
     // The resting state, which is this lens's primary answer: no shock has been entered yet, so what
     // a controller needs on arrival is the figure every Δ is measured against and the thing about to
     // move. docs/first-run.md names both ids as (contract); neither existed.
@@ -345,6 +317,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
 
   function buildScene(): void {
     if (!library) return;
+    stageLoaded(stage);
     const display = simulatorDisplay(store, fixture, store.state.view);
     scene = simulatorBuildScene(library, svg, {
       fixture,
@@ -357,6 +330,8 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
     renderCaption();
   }
 
+  // The stage says so while the vendored graph library loads, instead of showing a dark empty box.
+  stageLoading(stage, 'the ownership graph this lens shocks');
   renderBar();
   simulatorRenderEntityList(qs('#simulator-entities', host), fixture, activate);
   run.renderIdle();
@@ -367,11 +342,17 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
       library = loaded;
       buildScene();
     },
-    (error: unknown) =>
+    (error: unknown) => {
+      stageLoaded(stage);
       replace(
         qs('#simulator-caption', host),
-        errorState('The simulator graph could not start.', `${String(error)} Every figure below is still exact — the graph library ships under vendor/; confirm that folder deployed alongside the app.`)
-      )
+        errorState(
+          'The simulator graph could not start.',
+          `${String(error)} Every figure below is still exact — the graph library ships under vendor/; confirm that folder deployed alongside the app.`,
+          { label: 'Reload this product’s data', onAct: () => location.reload() }
+        )
+      );
+    }
   );
 
   const onResize = (): void => buildScene();

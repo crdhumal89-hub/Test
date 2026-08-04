@@ -112,6 +112,22 @@
   "toneSeparation": 4.21
  },
  {
+  "key": "button[] DC: Double-count. The error of adding up NAVs that",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
   "key": "button[] Vertical",
   "tag": "button",
   "role": "",
@@ -323,7 +339,7 @@
   "key": "g[button] Apollo Sports Capital — Apollo Sports Capital, 100",
   "tag": "g",
   "role": "button",
-  "w": 102,
+  "w": 101,
   "h": 64,
   "outlineStyle": "solid",
   "outlineWidth": "2px",

@@ -8,12 +8,13 @@
  * suspecting a fund once and inspecting it four ways must not cost four searches (rubric R16).
  */
 import type { CoreFixtures } from '../data/load.js';
-import type { PricingView, RepricingFixture, UniverseFixture } from '../domain/types.js';
+import type { LookthroughFixture, PricingView, RepricingFixture, UniverseFixture } from '../domain/types.js';
 import { defaultExpansion } from '../domain/lookthrough.js';
 
 export type ScreenId = 'reconciliation' | 'pricing' | 'diagnose';
 export type LensId = 'structure' | 'ownership' | 'data-quality' | 'simulator';
 export type DrawerId = 'glossary' | 'sources' | null;
+export type UniverseStatus = 'idle' | 'loading' | 'ready' | 'failed';
 
 export interface AppState {
   /** Identity of what is being reported on. */
@@ -38,6 +39,13 @@ export interface AppState {
   walkSort: { column: string; direction: 1 | -1 };
   selectedFundCode: string | null;
 
+  /**
+   * Where the lazily fetched firm-wide universe has got to. The Diagnose entity search is a list
+   * over two sources — this product's own funds, always in hand, and the 472 KiB universe — so it
+   * has to be able to say which of the two it is still missing, and why (rubric R4).
+   */
+  universeStatus: UniverseStatus;
+
   /** Diagnose screen — shared across all four lenses. */
   selectedEntity: string | null;
   issueScope: string | null;
@@ -58,8 +66,15 @@ export interface Store {
   universe: UniverseFixture | null;
   set(patch: Partial<AppState>): void;
   subscribe(listener: (state: Readonly<AppState>, changed: ReadonlySet<keyof AppState>) => void): () => void;
-  /** Replace the repricing model after an upload recomputes it. */
+  /** Replace the repricing model after an uploaded NAV report recomputes it. */
   setRepricing(next: RepricingFixture): void;
+  /**
+   * Replace BOTH models after an uploaded position report rebuilds the structure as well as the
+   * values. The expansion is recomputed and the row selection dropped, because node ids belong to
+   * the tree that produced them: keeping them would point the detail panel at a row that no longer
+   * exists, which is the class of bug the original's global `expanded` set produced on every reload.
+   */
+  setModel(next: { lookthrough: LookthroughFixture; repricing: RepricingFixture }): void;
 }
 
 export interface StoreInit {
@@ -77,6 +92,7 @@ export interface StoreInit {
 }
 
 export function createStore(init: StoreInit): Store {
+  let core: CoreFixtures = init.core;
   let repricing = init.core.repricing;
   let universe: UniverseFixture | null = null;
 
@@ -100,6 +116,7 @@ export function createStore(init: StoreInit): Store {
     walkSort: { column: 'level', direction: -1 },
     selectedFundCode: null,
 
+    universeStatus: 'idle',
     selectedEntity: init.defaultPosition,
     issueScope: null,
     issueScopeLabel: 'All fund entities',
@@ -122,7 +139,7 @@ export function createStore(init: StoreInit): Store {
       return state;
     },
     get core() {
-      return init.core;
+      return core;
     },
     get repricing() {
       return repricing;
@@ -145,6 +162,13 @@ export function createStore(init: StoreInit): Store {
     setRepricing(next: RepricingFixture): void {
       repricing = next;
       notify(new Set<keyof AppState>(['product']));
+    },
+    setModel(next): void {
+      core = { ...core, lookthrough: next.lookthrough };
+      repricing = next.repricing;
+      state.expandedNodes = defaultExpansion(next.lookthrough.nodes);
+      state.selectedNodeId = null;
+      notify(new Set<keyof AppState>(['product', 'expandedNodes', 'selectedNodeId']));
     },
     subscribe(listener) {
       listeners.add(listener);

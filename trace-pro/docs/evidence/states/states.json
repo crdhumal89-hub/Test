@@ -58,5 +58,137 @@
   "selector": "#structure-graph-error .state-error",
   "rendered": "This product’s ownership structure could not be drawn. The 46 entities do not form a single tree — multiple roots. That happens when a holding points at a missing entity or two entities own each other, so there is no top to draw from. The same entities are still listed as rows on the Reconciliation screen, and the Data quality lens names every dangling and circular mapping behind this. Reload this product’s data",
   "screenshot": "docs/evidence/states/structure-graph-error.png"
+ },
+ "structure-lens-loading": {
+  "reached": "vendor/d3.min.js held open by page.route while the Structure lens mounted",
+  "selector": "#structure-stage [data-stage-state=\"loading\"]",
+  "rendered": "Loading the ownership structure graph…",
+  "screenshot": "docs/evidence/states/structure-lens-loading.png"
+ },
+ "structure-lens-empty": {
+  "reached": "lookthrough.json served with nodes: []",
+  "selector": "#structure-empty .state-empty",
+  "rendered": "This product’s look-through file lists no entities, so there is no ownership structure to draw. Nothing has failed — the file simply carries no holdings for this product and as-of date. Reload this product’s data",
+  "screenshot": "docs/evidence/states/structure-lens-empty.png"
+ },
+ "simulator-lens-loading": {
+  "reached": "vendor/d3.min.js held open by page.route while the Simulator lens mounted",
+  "selector": "#simulator-stage [data-stage-state=\"loading\"]",
+  "rendered": "Loading the ownership graph this lens shocks…",
+  "screenshot": "docs/evidence/states/simulator-lens-loading.png"
+ },
+ "simulator-lens-empty": {
+  "reached": "simulator.json served with funds: {}",
+  "selector": "#simulator-empty .state-empty",
+  "rendered": "This product has no funds to shock: its simulator file lists no fund at all, so there is no value or unit count that could move. Nothing has failed — there is simply nothing here yet. Reload this product’s data",
+  "screenshot": "docs/evidence/states/simulator-lens-empty.png"
+ },
+ "simulator-lens-error": {
+  "reached": "simulator.json served with its apex list deleted",
+  "selector": "#simulator-error .state-error",
+  "rendered": "The shock simulator could not be built for this product. Its own data file arrived unusable: it lists no top-level feeders, so there is nothing to measure the product against. Nothing is simulated rather than simulated wrongly. The reconciliation, the prices and the other three lenses read different files and are unaffected — the Data quality lens names every fault found in the source data. Reload this product’s data",
+  "screenshot": "docs/evidence/states/simulator-lens-error.png"
+ },
+ "universe-loading": {
+  "reached": "universe.json held open by page.route on first use",
+  "selector": "#screen .state-loading",
+  "rendered": "Loading the firm-wide ownership universe…",
+  "screenshot": "docs/evidence/states/universe-loading.png"
+ },
+ "universe-error": {
+  "reached": "universe.json aborted by page.route on the first attempt",
+  "selector": "#screen .state-error",
+  "rendered": "The firm-wide ownership universe could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/universe.json. Check that the data folder shipped with the app. No ownership figure can be derived without it, so none are shown rather than partial ones. Try again",
+  "screenshot": "docs/evidence/states/universe-error.png"
+ },
+ "ownership-lens-empty": {
+  "reached": "universe.json served with its edges, entities and search index emptied",
+  "selector": "#screen .state-empty",
+  "rendered": "Nothing in the firm-wide universe holds APPOUR1-SPV. It is either an ultimate owner — the top of its own chain — or its holders sit outside the mapped universe. Search for another position",
+  "screenshot": "docs/evidence/states/ownership-lens-empty.png"
+ },
+ "ownership-lens-error": {
+  "reached": "every universe.json request aborted by page.route",
+  "selector": "#screen .state-error",
+  "rendered": "The firm-wide ownership universe could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/universe.json. Check that the data folder shipped with the app. No ownership figure can be derived without it, so none are shown rather than partial ones. Try again",
+  "screenshot": "docs/evidence/states/ownership-lens-error.png"
+ },
+ "ownership-lens-loading": {
+  "reached": "universe.json held open by page.route",
+  "selector": "#screen .state-loading",
+  "rendered": "Loading the firm-wide ownership universe…",
+  "screenshot": "docs/evidence/states/ownership-lens-loading.png"
+ },
+ "data-quality-loading": {
+  "reached": "universe.json held open by page.route",
+  "selector": "#screen .state-loading",
+  "rendered": "Loading the firm-wide ownership universe…",
+  "screenshot": "docs/evidence/states/data-quality-loading.png"
+ },
+ "data-quality-empty": {
+  "reached": "universe.json served with issues: []",
+  "selector": "#screen .state-empty",
+  "rendered": "No data-quality issue touches All fund entities. Its 0 reachable funds are clean across all 0 checks. Scan the whole universe instead",
+  "screenshot": "docs/evidence/states/data-quality-empty.png"
+ },
+ "data-quality-error": {
+  "reached": "every universe.json request aborted by page.route",
+  "selector": "#screen .state-error",
+  "rendered": "The firm-wide ownership universe could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/universe.json. Check that the data folder shipped with the app. The issue log is scanned from that file, so an empty list here would be a lie — nothing is shown instead. Try again",
+  "screenshot": "docs/evidence/states/data-quality-error.png"
+ },
+ "combobox-empty": {
+  "reached": "the Diagnose entity search typed as zzzznothing",
+  "selector": "#diagnose-entity-list .combo-empty",
+  "rendered": "No entity matches that. Clear the box to see every fund and SPV in this product.",
+  "screenshot": "docs/evidence/states/combobox-empty.png"
+ },
+ "combobox-error": {
+  "reached": "universe.json aborted once, then the Diagnose entity list opened",
+  "selector": "#diagnose-entity-list .combo-notice-error",
+  "rendered": "The firm-wide list of positions could not be loaded, so this searches only the 26 funds and SPVs in this product. Anything held elsewhere in the firm is missing from these results.",
+  "screenshot": "docs/evidence/states/combobox-error.png"
+ },
+ "upload-slots-resting": {
+  "reached": "the Data sources drawer opened on load",
+  "selector": "#sources-drawer .sources-slots",
+  "rendered": "Position Report .xlsx Structure and units — who holds what, how many units, and the ultimate securities. Rebuilds the look-through hierarchy and every value derived from it: the reconciliation, the tree, the prices to publish and the repricing walk. Needs Fund Code, SPV Fund Code, Quantity VPM and MV USD columns. No position report uploaded. Every figure on screen comes from the extract this app shipped with. NAV Report .csv Net asset value per fund — the ENDING_NAV column, which sets every price to publish. Reprices the whole book bottom-up from the uploaded net asset values, leaving the structure as it is. Needs a fund-code column and this period’s ENDING_NAV — a previous-day or opening NAV column is ignored rather than mistaken for it. No nav report uploaded. Every figure on screen comes from the extract this app shipped with.",
+  "screenshot": "docs/evidence/states/upload-slots-resting.png"
+ },
+ "upload-nav-empty": {
+  "reached": "a NAV report with a header row and nothing under it",
+  "selector": "#sources-state-nav .state-empty",
+  "rendered": "“nav-headers-only.csv” is a NAV report, but it has no fund rows under its header — nothing to apply. The shipped figures are still on display. Choose a different file",
+  "screenshot": "docs/evidence/states/upload-nav-empty.png"
+ },
+ "upload-nav-error": {
+  "reached": "a file with none of a NAV report’s columns chosen in the NAV slot",
+  "selector": "#sources-state-nav .state-error",
+  "rendered": "No net asset values could be read from “minutes.csv”. A NAV report needs a fund-code column and this period’s ENDING_NAV: either PRODUCT, FUND_CODE, ENDING_NAV, or a per-fund feed with Fund Code and Ending NAV. Nothing on any screen has changed — the shipped figures are still on display. Choose a different file",
+  "screenshot": "docs/evidence/states/upload-nav-error.png"
+ },
+ "upload-nav-applied": {
+  "reached": "a NAV report with every fund lifted 1% applied in the drawer",
+  "selector": "#reconciliation-waterfall",
+  "rendered": "LOOK-THROUGH VALUE $2,060,224,441 look-through of underlyings · current marks + Pricing difference $22,596,383 +108.5 bps bottom-up NAV repricing REPRICED VALUE $2,082,820,824 NAV-repriced bottom-up + Non-position difference $0 +0.0 bps cash, fees, receivables NAV $2,082,820,824 sum of top-level feeder NAVs · NAV report ✓ ties to the cent Pricing difference $22,596,383 + Non-position difference $0 = $22,596,383 = NAV − look-through value $22,596,383",
+  "screenshot": "docs/evidence/states/upload-nav-applied.png"
+ },
+ "upload-position-loading": {
+  "reached": "a workbook chosen while vendor/xlsx.full.min.js is held open by page.route",
+  "selector": "#sources-state-position .state-loading",
+  "rendered": "Loading “positions.xlsx” — reading its rows…",
+  "screenshot": "docs/evidence/states/upload-position-loading.png"
+ },
+ "upload-position-error": {
+  "reached": "a two-column file with none of a position report’s columns",
+  "selector": "#sources-state-position .state-error",
+  "rendered": "“not-positions.csv” could not be read as a Position Report. it carries no Fund Code, no SPV Fund Code, no Quantity VPM, no MV USD column. A Position Report needs Fund Code, SPV Fund Code, Quantity VPM and MV USD; the structure and the values on screen are unchanged. Choose a different file",
+  "screenshot": "docs/evidence/states/upload-position-error.png"
+ },
+ "upload-position-applied": {
+  "reached": "a position report rebuilt from the shipped hierarchy, applied in the drawer",
+  "selector": "#reconciliation-tree",
+  "rendered": "Hierarchy — fund ▸ SPV ▸ security VPM symbol NAV reported Look-through value current marks Repriced value bottom-up from NAV Pricing difference repriced − look-through Non-position difference NAV − repriced ▾PRODUCTApollo Sports Capital $2,062,198,836 $5,843,837,506 $4,306,209,558 ($1,537,627,948) -7456.3 bps ($2,244,010,722) -10881.6 bps ▾FEEDERASCHONASCHON ASCHON $266,441,285 $780,819,468 $582,153,795 ($198,665,673) -7456.3 bps ($315,712,510) -11849.2 bps ▸SPVApollo Sports Capital (Onshore), L.P.ASCON ASCON $280,015,043 $770,579,439 $571,913,766 ($198,665,673) -7094.8 bps ($291,898,723) -10424.4 bps SECURITYFeeder residual CASH-ASCHON — $0 $0 — — SECURITYFund Cash CASH — $10,240,030 $10,240,030 — — ▾FEEDERDUNKDUNK DUNK $2,786 $2,786 $2,786 — — SECURITYFeeder residual CASH-DUNK — $0 $0 — — SECURITYFund Cash CASH — $2,786 $2,786 — — ▾FEEDERSPORTHLDSPORTHLD SPORTHLD $1,795,754,765 $5,063,015,252 $3,724,052,977 ($1,338,962,275) -7456.3 bps ($1,928,298,212) -10738.1 bps ▸SPVApollo Sports Capital (Overseas), L.P.SPORT SPORT $1,685,663,441 $4,992,266,659 $3,653,304,384 ($1,338,962,275) -7943.2 bps ($1,967,640,942) -11672.8 bps SECURITYFeeder residual CASH-SPORTHLD — $0 $0 — — SECURITYFund Cash CASH — $70,748,593 $70,748,593 — — TOTALS · Apollo Sports Capital $2,062,198,836 $5,843,837,506 $4,306,209,558 ($1,537,627,948) ($2,244,010,722)",
+  "screenshot": "docs/evidence/states/upload-position-applied.png"
  }
 }

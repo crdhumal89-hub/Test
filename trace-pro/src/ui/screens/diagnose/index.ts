@@ -10,13 +10,18 @@
 import type { Store } from '../../../state/store.js';
 import { LENSES } from '../../chrome/shell.js';
 import { el, replace, qs, activate } from '../../primitives/dom.js';
-import { createCombobox, type ComboOption } from '../../primitives/combobox.js';
+import { createCombobox, type ComboNotice, type ComboOption } from '../../primitives/combobox.js';
 
 export const DIAGNOSE_QUESTION =
   'Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?';
 
 /** A lens is mounted lazily and told to tear down when the user leaves it. */
 export type LensMount = (host: HTMLElement, store: Store) => (() => void) | void;
+
+/** What the shell needs of the shared universe loader: whether it is here, and how to ask again. */
+export interface DiagnoseUniverseAccess {
+  get(): Promise<unknown>;
+}
 
 export interface DiagnoseLenses {
   structure: LensMount;
@@ -25,7 +30,12 @@ export interface DiagnoseLenses {
   simulator: LensMount;
 }
 
-export function mountDiagnose(host: HTMLElement, store: Store, lenses: DiagnoseLenses): () => void {
+export function mountDiagnose(
+  host: HTMLElement,
+  store: Store,
+  universeAccess: DiagnoseUniverseAccess,
+  lenses: DiagnoseLenses
+): () => void {
   replace(
     host,
     el('p', { class: 'screen-question', id: 'diagnose-question', text: DIAGNOSE_QUESTION }),
@@ -63,6 +73,45 @@ export function mountDiagnose(host: HTMLElement, store: Store, lenses: DiagnoseL
     return options;
   }
 
+  /**
+   * What the result list cannot show yet, and why (rubric R4). The list is over two sources: this
+   * product's own funds, which are always in hand, and the firm-wide universe, which is 472 KiB and
+   * arrives only when a lens that needs it asks. Saying nothing while the second is missing is how a
+   * search for a fund the firm holds elsewhere reads as "no such fund".
+   */
+  function searchNotice(): ComboNotice | null {
+    const status = store.state.universeStatus;
+    const own = store.repricing.funds.length;
+    if (status === 'loading') {
+      return {
+        kind: 'loading',
+        text: `Still loading the firm-wide list of positions — for now this searches only the ${own} funds and SPVs in this product.`,
+      };
+    }
+    if (status === 'failed') {
+      return {
+        kind: 'error',
+        text: `The firm-wide list of positions could not be loaded, so this searches only the ${own} funds and SPVs in this product. Anything held elsewhere in the firm is missing from these results.`,
+      };
+    }
+    return null;
+  }
+
+  /** The recovery action for that error state, which is a real control outside the popup (R6). */
+  function searchRecovery(): HTMLElement | null {
+    if (store.state.universeStatus !== 'failed') return null;
+    const button = el('button', {
+      type: 'button',
+      class: 'btn',
+      id: 'diagnose-entity-retry',
+      text: 'Load the firm-wide list again',
+    });
+    button.addEventListener('click', () => {
+      void universeAccess.get().catch(() => undefined);
+    });
+    return button;
+  }
+
   function renderSubject(): void {
     const subject = qs('#diagnose-subject', host);
     const selected = store.state.selectedEntity;
@@ -71,6 +120,7 @@ export function mountDiagnose(host: HTMLElement, store: Store, lenses: DiagnoseL
       subject,
       el('span', { class: 'subject-prompt', text: 'Entity under examination' }),
       createCombobox({
+        notice: searchNotice,
         id: 'diagnose-entity',
         placeholder: 'Search any fund, SPV or security…',
         ariaLabel: 'Choose the entity to examine across all four lenses',
@@ -80,6 +130,7 @@ export function mountDiagnose(host: HTMLElement, store: Store, lenses: DiagnoseL
           'No entity matches that. Clear the box to see every fund and SPV in this product.',
         onPick: (option) => store.set({ selectedEntity: option.key }),
       }),
+      searchRecovery(),
       el('span', {
         class: 'subject-note',
         text: 'Selected once — all four lenses below follow it.',
@@ -147,6 +198,9 @@ export function mountDiagnose(host: HTMLElement, store: Store, lenses: DiagnoseL
     // A new entity does NOT remount the lens — the lens subscribes and updates in place, so the
     // selection survives and nothing flashes.
     if (changed.has('product')) renderSubject();
+    // The search list's own state moves with the shared fetch: a notice that appeared while the
+    // universe was loading has to come down when it lands, and the retry has to appear when it fails.
+    if (changed.has('universeStatus')) renderSubject();
   });
 
   return () => {

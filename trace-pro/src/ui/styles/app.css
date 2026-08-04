@@ -369,3 +369,6 @@ body {
 .state-headline { color: var(--navy); font-weight: 600; }
 .state-error { background: rgba(192, 57, 43, .05); border-radius: 8px; }
 .state-detail { font-size: 12px; }
+/* A state that stands in for a picture: it fills the stage it replaces, so the box is never blank. */
+.stage-state { position: absolute; inset: 0; z-index: 70; display: grid; place-content: center; padding: 10px; }
+.stage-state .state p { color: var(--navy); }

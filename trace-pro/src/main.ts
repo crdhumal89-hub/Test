@@ -47,10 +47,24 @@ async function boot(): Promise<void> {
   const loader = createUniverseLoader(selection.product, selection.asof);
   const universe = {
     peek: () => store.universe ?? loader.peek(),
+    /*
+     * The status is published on the store as the fetch moves, because the Diagnose entity search is
+     * a list over TWO sources and has to be able to say which one it is missing: while this is
+     * loading it can only offer this product's own funds, and if it fails it can only ever offer
+     * those. A list that silently shows the smaller set is how a controller concludes a fund does
+     * not exist (rubric R4).
+     */
     get: async () => {
-      const fixture = await loader.get();
-      store.universe = fixture;
-      return fixture;
+      store.set({ universeStatus: 'loading' });
+      try {
+        const fixture = await loader.get();
+        store.universe = fixture;
+        store.set({ universeStatus: 'ready' });
+        return fixture;
+      } catch (error: unknown) {
+        store.set({ universeStatus: 'failed' });
+        throw error;
+      }
     },
   };
 
@@ -75,7 +89,7 @@ async function boot(): Promise<void> {
       unmount = mountPricing(host, store) ?? null;
     } else {
       unmount =
-        mountDiagnose(host, store, {
+        mountDiagnose(host, store, universe, {
           structure: (h: HTMLElement, s: Store) => mountStructureLens(h, s),
           ownership: (h: HTMLElement, s: Store) => mountOwnershipLens(h, s, universe),
           'data-quality': (h: HTMLElement, s: Store) => mountDataQualityLens(h, s, universe),

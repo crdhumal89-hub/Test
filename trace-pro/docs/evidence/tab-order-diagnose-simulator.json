@@ -80,6 +80,166 @@
   "toneSeparation": 4.21
  },
  {
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
+  "tag": "button",
+  "role": "",
+  "w": 33,
+  "h": 23,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: A fund’s net asset value — assets minus liabi",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPV: A special-purpose vehicle / holding entity th",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] MV: Carried MV / Position MV. The market value at ",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] qty: Global units / Global quantity. The total num",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] px: Publish px vs Current/Applied px vs Revised px",
+  "tag": "button",
+  "role": "",
+  "w": 13,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Δ: Δ Pricing. The product-level pricing adjustment",
+  "tag": "button",
+  "role": "",
+  "w": 8,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: The size of a gap expressed relative to NAV, ",
+  "tag": "button",
+  "role": "",
+  "w": 20,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] apex: Apex fund (feeder) & terminal fund. An apex ",
+  "tag": "button",
+  "role": "",
+  "w": 26,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] DC: Double-count. The error of adding up NAVs that",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
   "key": "button[] Reprice everything (bottom-up)",
   "tag": "button",
   "role": "",
@@ -243,8 +403,8 @@
   "key": "g[button] SPORT::PRODUCT, Apollo Sports Capital, level 0. Ac",
   "tag": "g",
   "role": "button",
-  "w": 58,
-  "h": 27,
+  "w": 54,
+  "h": 25,
   "outlineStyle": "solid",
   "outlineWidth": "2px",
   "tones": [
@@ -259,7 +419,7 @@
   "key": "input[] ",
   "tag": "input",
   "role": "",
-  "w": 136,
+  "w": 162,
   "h": 28,
   "outlineStyle": "solid",
   "outlineWidth": "2px",
@@ -275,7 +435,7 @@
   "key": "input[] ",
   "tag": "input",
   "role": "",
-  "w": 136,
+  "w": 162,
   "h": 28,
   "outlineStyle": "solid",
   "outlineWidth": "2px",
@@ -291,7 +451,7 @@
   "key": "input[] ",
   "tag": "input",
   "role": "",
-  "w": 136,
+  "w": 162,
   "h": 28,
   "outlineStyle": "solid",
   "outlineWidth": "2px",

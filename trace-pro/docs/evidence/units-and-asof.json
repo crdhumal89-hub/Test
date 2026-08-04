@@ -9,7 +9,7 @@
  },
  {
   "route": "reconciliation",
-  "scrollY": 235,
+  "scrollY": 218,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 53,
@@ -17,7 +17,7 @@
  },
  {
   "route": "reconciliation",
-  "scrollY": 235,
+  "scrollY": 218,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 53,
@@ -57,7 +57,7 @@
  },
  {
   "route": "diagnose-structure",
-  "scrollY": 239,
+  "scrollY": 219,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 139,
@@ -65,7 +65,7 @@
  },
  {
   "route": "diagnose-structure",
-  "scrollY": 239,
+  "scrollY": 219,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 139,
@@ -76,23 +76,23 @@
   "scrollY": 0,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
-  "figures": 51,
+  "figures": 48,
   "mastheadPosition": "sticky"
  },
  {
   "route": "diagnose-ownership",
-  "scrollY": 734,
+  "scrollY": 756,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
-  "figures": 106,
+  "figures": 105,
   "mastheadPosition": "sticky"
  },
  {
   "route": "diagnose-ownership",
-  "scrollY": 734,
+  "scrollY": 756,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
-  "figures": 106,
+  "figures": 105,
   "mastheadPosition": "sticky"
  },
  {
@@ -124,7 +124,7 @@
   "scrollY": 900,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
-  "figures": 12,
+  "figures": 13,
   "mastheadPosition": "sticky"
  },
  {
@@ -137,7 +137,7 @@
  },
  {
   "route": "diagnose-simulator",
-  "scrollY": 2163,
+  "scrollY": 2174,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 0,
@@ -145,7 +145,7 @@
  },
  {
   "route": "diagnose-simulator",
-  "scrollY": 2163,
+  "scrollY": 2174,
   "asofVisible": true,
   "asofText": "As of2026-06-30",
   "figures": 0,

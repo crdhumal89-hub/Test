@@ -135,11 +135,23 @@ export function createUniverseLoader(
     peek: () => cached,
     get: () => {
       if (cached) return Promise.resolve(cached);
-      inFlight ??= getJson<UniverseFixture>(`${dirFor(product, asof)}/universe.json`).then((u) => {
-        cached = u;
-        inFlight = null;
-        return u;
-      });
+      /*
+       * A FAILED attempt must not be cached. The first version of this kept the rejected promise in
+       * `inFlight`, so every later `get()` handed back the same rejection: the "Try again" button on
+       * the error state could never succeed, however healthy the network had become. The failure is
+       * cleared here, which is what makes that recovery action real rather than decorative (R18).
+       */
+      inFlight ??= getJson<UniverseFixture>(`${dirFor(product, asof)}/universe.json`).then(
+        (u) => {
+          cached = u;
+          inFlight = null;
+          return u;
+        },
+        (error: unknown) => {
+          inFlight = null;
+          throw error;
+        }
+      );
       return inFlight;
     },
   };

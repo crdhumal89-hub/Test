@@ -6,14 +6,14 @@
  * as-of lives in the never-collapsible masthead and this drawer carries the *provenance*: which
  * report each figure comes from, the two upload slots, and where the shipped fixtures came from.
  *
- * The upload slots are present but inert. Upload recompute is wired on the Reconciliation screen,
- * where the recomputed figures are actually read; a slot that silently rebuilt every screen from a
- * drawer would be the original's behaviour and the original's surprise. The slots say so, rather
- * than looking broken.
+ * The two upload slots LIVE HERE and work here — see `sources-upload.ts`, which also records why the
+ * previous version of this drawer, which described the slots and then sent the reader to a screen with
+ * no file input on it, was the worst sentence in the application.
  */
 import type { Store } from '../../state/store.js';
 import { el, replace, trapFocus } from '../primitives/dom.js';
 import { formatCount } from '../../domain/money.js';
+import { sourcesUploadBlock } from './sources-upload.js';
 
 export const SOURCES_TITLE = 'Data sources & as-of';
 
@@ -25,29 +25,6 @@ interface SourcesFigureRow {
   field: string;
   note: string;
 }
-
-interface SourcesSlot {
-  key: string;
-  title: string;
-  format: string;
-  purpose: string;
-}
-
-/** The two upload slots the original carried, in the original order. */
-const SOURCES_SLOTS: readonly SourcesSlot[] = [
-  {
-    key: 'position',
-    title: 'Position Report',
-    format: '.xlsx',
-    purpose: 'Structure and units — who holds what, how many units, and the ultimate securities.',
-  },
-  {
-    key: 'nav',
-    title: 'NAV Report',
-    format: '.csv',
-    purpose: 'Net asset value per fund — the ENDING_NAV column, which sets every price to publish.',
-  },
-];
 
 /** Figures that arrive already computed in one of the two reports. */
 function sourcesReportedFigures(feeders: string): SourcesFigureRow[] {
@@ -153,40 +130,6 @@ function sourcesBlock(title: string, ...children: (Node | string | null)[]): HTM
   return el('div', { class: 'section' }, [el('h3', { text: title }), ...children]);
 }
 
-/**
- * The two upload slots: named, described, and visibly not the drop target.
- *
- * They are plain description, not fake controls. A button carrying `aria-disabled` would be
- * announced as unavailable while still firing its handler, and a `<input type="file">` that
- * silently did nothing would be worse than no slot at all. The one real control here is the link
- * to where uploading does work, so the panel is never a dead end (rubric R4).
- */
-function sourcesSlotList(noteId: string): HTMLElement {
-  const list = el('div', { class: 'sources-slots', role: 'list', 'aria-describedby': noteId });
-  for (const slot of SOURCES_SLOTS) {
-    list.append(
-      el('div', { class: 'sources-slot', 'data-slot': slot.key, role: 'listitem' }, [
-        el('span', { class: 'sources-slot-title', text: `${slot.title} ${slot.format}` }),
-        el('span', { class: 'sources-slot-purpose', text: slot.purpose }),
-        el('span', { class: 'sources-slot-state', text: 'Accepted on the Reconciliation screen' }),
-      ])
-    );
-  }
-  return list;
-}
-
-/** The one real control in the upload block: the route to where a file can actually be dropped. */
-function sourcesUploadLink(store: Store): HTMLElement {
-  const link = el('a', {
-    class: 'btn sources-upload-link',
-    id: 'sources-upload-link',
-    href: '#/reconciliation',
-    text: 'Open the Reconciliation screen to upload',
-  });
-  link.addEventListener('click', () => store.set({ drawer: null }));
-  return link;
-}
-
 /** Mount the drawer into `host` (the shell's `#drawer-host`). */
 export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void {
   const panel = el('aside', {
@@ -208,8 +151,40 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
   });
   close.addEventListener('click', () => store.set({ drawer: null }));
 
-  const status = el('span', { class: 'ub-status', id: 'ubstatus', role: 'status', 'aria-live': 'polite' });
+  /*
+   * The drawer's own status line. It used to carry `id="ubstatus"` — the same id as the footer's
+   * status line, which is the element the parity contract selects. Two elements answering to one id
+   * is a defect on its own, and the harness only ever saw the first of them.
+   */
+  const status = el('span', { class: 'ub-status', id: 'sources-upload-status', role: 'status', 'aria-live': 'polite' });
   const body = el('div', { class: 'drawer-body', id: 'sources-body' });
+
+  /**
+   * What the status lines say right now. `build()` runs again whenever an upload replaces a model, so
+   * the sentence has to live outside it — otherwise a successful upload would immediately overwrite
+   * its own confirmation with "Loaded base dataset".
+   */
+  let statusText = SOURCES_STATUS;
+
+  /**
+   * Announce an upload. The footer's `#ubstatus` is the element the parity contract reads, and its
+   * DEFAULT text is the frozen sentence "Loaded base dataset. Upload either file to recompute every
+   * tab." An upload is the one event entitled to replace it, which is exactly what that sentence
+   * invites and what the original did on the same element.
+   */
+  function announce(text: string): void {
+    statusText = text;
+    status.textContent = text;
+    const footer = document.getElementById('ubstatus');
+    if (footer) footer.textContent = text;
+  }
+
+  /*
+   * Built ONCE, and re-appended by every rebuild rather than rebuilt. The slots own the three states
+   * of an upload in progress; recreating them on the notification that an upload itself fires would
+   * throw away the very state the user is reading.
+   */
+  const upload = sourcesUploadBlock(store, announce);
 
   replace(
     panel,
@@ -228,7 +203,7 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
     const lookthrough = store.core.lookthrough;
     const simulator = store.core.simulator;
     const universe = store.universe;
-    status.textContent = SOURCES_STATUS;
+    status.textContent = statusText;
 
     const asofLine = panel.querySelector('#sources-asof');
     if (asofLine) {
@@ -248,16 +223,7 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
       ),
       sourcesBlock(
         'Upload a fresh file',
-        el('p', {
-          class: 'note',
-          id: 'sources-upload-note',
-          text:
-            'These two slots are shown here so the expected inputs are discoverable, but the recompute ' +
-            'is wired on the Reconciliation screen — upload there and the reconciliation, the tree and ' +
-            'every price update in place, in front of you.',
-        }),
-        sourcesSlotList('sources-upload-note'),
-        sourcesUploadLink(store),
+        upload,
         status
       ),
       sourcesBlock(

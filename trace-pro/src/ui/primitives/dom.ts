@@ -119,6 +119,23 @@ export function errorState(
 }
 
 /**
+ * A loading state that stands in for a PICTURE. A graph stage is a fixed-height box, so an ordinary
+ * loading state below it would leave that box blank while the vendored library and the layout land —
+ * which is the "renders blank in the loading state" that R4 fails. This fills the stage instead, and
+ * `stageLoaded` clears it whether the draw succeeded or failed.
+ */
+export function stageLoading(stage: HTMLElement, what: string): void {
+  if (stage.querySelector('[data-stage-state="loading"]')) return;
+  stage.append(
+    el('div', { class: 'stage-state', 'data-stage-state': 'loading' }, [loadingState(what)])
+  );
+}
+
+export function stageLoaded(stage: HTMLElement): void {
+  stage.querySelector('[data-stage-state="loading"]')?.remove();
+}
+
+/**
  * Trap focus inside an overlay while it is open, and restore it on close (R6d).
  * Returns the release function.
  */

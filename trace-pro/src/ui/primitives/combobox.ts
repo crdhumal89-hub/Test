@@ -22,12 +22,29 @@ export interface ComboOption {
   haystack: string;
 }
 
+/**
+ * The result list's own loading and error state (rubric R4).
+ *
+ * A combobox over a lazily fetched source has three states, not one: the options it can offer now,
+ * the options it is still waiting for, and the options it will never get because the fetch failed.
+ * Showing only the first is how a controller concludes a fund does not exist when the truth is that
+ * the firm-wide file has not arrived. The notice rides at the top of the open list, so it is read at
+ * the moment the list is consulted; the recovery action belongs to the caller, next to the input,
+ * because a button inside a listbox popup is not a control a keyboard user can reach.
+ */
+export interface ComboNotice {
+  kind: 'loading' | 'error';
+  text: string;
+}
+
 export interface ComboConfig {
   id: string;
   placeholder: string;
   ariaLabel: string;
   /** Recomputed on every keystroke, so a lazily loaded source can grow underneath it. */
   options: () => ComboOption[];
+  /** Read every time the list opens: what the list cannot show yet, and why. */
+  notice?: () => ComboNotice | null;
   onPick: (option: ComboOption) => void;
   /** Shown when nothing matches. Should name what to do next. */
   emptyMessage?: string;
@@ -42,6 +59,25 @@ export interface ComboConfig {
 }
 
 const DEFAULT_MAX = 50;
+
+/**
+ * The notice row. `aria-disabled` keeps it out of the pick set; the inner element carries the live
+ * region, so a failure is announced (`role=alert`) rather than sitting silently at the top of a list
+ * nobody re-reads.
+ */
+function comboNoticeItem(notice: ComboNotice): HTMLElement {
+  return el(
+    'li',
+    { class: `combo-notice combo-notice-${notice.kind}`, role: 'option', 'aria-disabled': 'true' },
+    [
+      el('span', {
+        class: 'combo-notice-text',
+        role: notice.kind === 'error' ? 'alert' : 'status',
+        text: notice.text,
+      }),
+    ]
+  );
+}
 
 export function createCombobox(config: ComboConfig): HTMLElement {
   const listId = `${config.id}-list`;
@@ -155,6 +191,8 @@ export function createCombobox(config: ComboConfig): HTMLElement {
         list.append(item);
       });
     }
+    const notice = config.notice?.() ?? null;
+    if (notice) list.prepend(comboNoticeItem(notice));
     list.hidden = false;
     input.setAttribute('aria-expanded', 'true');
     active = -1;
