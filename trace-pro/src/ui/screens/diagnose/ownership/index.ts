@@ -22,6 +22,7 @@ import type { UniverseFixture } from '../../../../domain/types.js';
 import type { Store } from '../../../../state/store.js';
 import { createCombobox, type ComboOption } from '../../../primitives/combobox.js';
 import { el, emptyState, errorState, loadingState, qs, replace } from '../../../primitives/dom.js';
+import { termAnnotate, termBindGlossary, termVocabularyLine } from '../../../primitives/term.js';
 import { parity } from '../../../parity.js';
 import { renderOwnershipIdentity, renderOwnershipRibbon, renderOwnershipTree } from './owner-tree.js';
 import { renderOwnershipDerivation, renderOwnershipDerivationPrompt } from './derivation.js';
@@ -45,6 +46,20 @@ export interface OwnershipUniverseLoader {
 
 /** How many search results a keystroke may put on screen. */
 const OWNERSHIP_SEARCH_LIMIT = 40;
+
+/**
+ * The abbreviations this lens renders, measured rather than guessed: `SPV` eleven times (the
+ * "SPV / FUND" row tag, the "SPV fund code" and "% of APPOUR1-SPV" column headers, and eight
+ * positions whose symbol or name carries it), `VPM` in the "VPM symbol" header, `qty` in the
+ * "Qty held" header, the subtotal line and the derivation, and `NAV` in the ownership prose.
+ *
+ * Most of those live inside sortable `<th>` elements and selectable rows, where a nested `term()`
+ * button would be a control inside a control (R6c). So this lens takes R2's route (a) — one visible
+ * expansion, above every use of it — for all of them, and route (b) only where a term can stand
+ * alone. Placed immediately after the question, and repeated in the loading and error frames,
+ * because a reader who only ever sees the error state has still met the vocabulary.
+ */
+const OWNERSHIP_VOCABULARY = ['spv', 'vpm', 'global_units_global_quantity', 'nav'];
 
 /**
  * Every position the firm-wide universe knows: SPVs, funds and — once a position report has been
@@ -72,8 +87,17 @@ export function mountOwnershipLens(
   let rows: readonly OwnershipRow[] = [];
   let selectedRowId: string | null = null;
 
-  const question = (): HTMLElement =>
-    el('p', { class: 'screen-question', id: 'ownership-question', text: OWNERSHIP_QUESTION });
+  termBindGlossary(store);
+
+  /**
+   * The question, then the vocabulary line — in that order, and always both, so no frame of this
+   * lens can render an abbreviation the reader has not been given (R2). `termAnnotate` leaves
+   * OWNERSHIP_QUESTION byte-identical, which is what R1 and the parity gate both measure.
+   */
+  const heading = (): (Node | string)[] => [
+    el('p', { class: 'screen-question', id: 'ownership-question' }, termAnnotate(OWNERSHIP_QUESTION)),
+    termVocabularyLine(OWNERSHIP_VOCABULARY, 'ownership-vocabulary'),
+  ];
 
   const focusSearch = (): void => qs<HTMLInputElement>('#ownership-search', host).focus();
 
@@ -90,7 +114,7 @@ export function mountOwnershipLens(
       ready(cached);
       return;
     }
-    replace(host, question(), loadingState('the firm-wide ownership universe'));
+    replace(host, ...heading(), loadingState('the firm-wide ownership universe'));
     universeLoader
       .get()
       .then((universe) => {
@@ -100,7 +124,7 @@ export function mountOwnershipLens(
         if (disposed) return;
         replace(
           host,
-          question(),
+          ...heading(),
           errorState(
             'The firm-wide ownership universe could not be loaded.',
             `${error instanceof Error ? error.message : String(error)} No ownership figure can be derived without it, so none are shown rather than partial ones.`,
@@ -124,7 +148,7 @@ export function mountOwnershipLens(
   function scaffold(): void {
     replace(
       host,
-      question(),
+      ...heading(),
       el('div', { class: 'toolbar own-toolbar', id: 'ownership-tools' }),
       el('div', { class: 'own-identity', id: 'ownership-identity' }),
       el('div', { class: 'own-ribbon-host', id: 'ownership-ribbon' }),

@@ -35,9 +35,10 @@ const PRICING_ASCENDING_FIRST = new Set(['code', 'sym', 'name']);
  * the strip, the bridge and the price table's last column, `px` in the three price columns, `qty`
  * in the repricing narrative and the walk's Global Qty column, `MV` in the tooltips the walk
  * inherits, `Δ` in the walk's Δ Price / Δ Value / Δ bps headers, `VPM` in the filter and the symbol
- * column, `SPV` in the fund names. Expanded and linked once, above all of them (rubric R2).
+ * column, `SPV` in the fund names, `DC` inside three registered entity names in the price table.
+ * Expanded and linked once, above all of them (rubric R2).
  */
-const PRICING_VOCABULARY = ['nav', 'bps', 'publish_px_vs_current_applied_px_vs_revised_px', 'global_units_global_quantity', 'carried_mv_position_mv', 'pricing', 'vpm', 'spv'];
+const PRICING_VOCABULARY = ['nav', 'bps', 'publish_px_vs_current_applied_px_vs_revised_px', 'global_units_global_quantity', 'carried_mv_position_mv', 'pricing', 'vpm', 'spv', 'double_count'];
 
 export function mountPricing(host: HTMLElement, store: Store): () => void {
   termBindGlossary(store);

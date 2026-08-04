@@ -9,6 +9,7 @@ import type { AppState, Store, ScreenId, LensId, DrawerId } from '../../state/st
 import { routeToHash } from '../../state/store.js';
 import { el, replace } from '../primitives/dom.js';
 import { parity } from '../parity.js';
+import { termAnnotate, termBindGlossary } from '../primitives/term.js';
 import { formatUsd } from '../../domain/money.js';
 import { mountGlossaryDrawer } from '../drawers/glossary.js';
 import { mountSourcesDrawer } from '../drawers/sources.js';
@@ -181,7 +182,11 @@ function renderMasthead(store: Store): void {
     el('div', { class: 'brand' }, [
       el('span', { class: 'wordmark', text: 'TRACE' }),
       el('span', { class: 'wordmark-pro', text: '-Pro' }),
-      el('span', { class: 'tagline', text: 'NAV pricing and look-through' }),
+      // The FIRST `NAV` a reader meets on every one of the six routes, and it is chrome, so it
+      // precedes every screen's vocabulary line — no screen could claim first-use expansion while
+      // this one stayed bare (R2). `termAnnotate` links it without adding or removing a character,
+      // so the tagline still reads "NAV pricing and look-through" byte for byte.
+      el('span', { class: 'tagline' }, termAnnotate('NAV pricing and look-through')),
     ]),
     el('div', { class: 'subject' }, [
       el('span', { class: 'subject-label', text: 'Product' }),
@@ -330,6 +335,9 @@ function closedOverlay(state: Readonly<AppState>, changed: ReadonlySet<keyof App
 
 /** Keep the chrome in step with state, and expose the keyboard route to the glossary (R7). */
 export function wireShell(store: Store): void {
+  // The masthead tagline carries a glossary-linked `NAV`, and the masthead outlives every screen,
+  // so the binding that makes a term open the drawer belongs here as well as on each screen (R7).
+  termBindGlossary(store);
   renderDrawer(store);
   document.addEventListener('focusin', (event) => {
     if ((event.target as Element | null)?.closest?.(OVERLAY_SCOPE)) return;

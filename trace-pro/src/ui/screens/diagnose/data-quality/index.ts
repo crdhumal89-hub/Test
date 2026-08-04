@@ -12,6 +12,7 @@ import type { IssueBucket, UniverseFixture } from '../../../../domain/types.js';
 import type { Store } from '../../../../state/store.js';
 import { createCombobox, type ComboOption } from '../../../primitives/combobox.js';
 import { el, emptyState, errorState, loadingState, qs, replace } from '../../../primitives/dom.js';
+import { termAnnotate, termBindGlossary, termVocabularyLine } from '../../../primitives/term.js';
 import { parity } from '../../../parity.js';
 import { dataQualityDownloadCsv, renderDataQualityBuckets } from './buckets.js';
 
@@ -26,6 +27,15 @@ export interface DataQualityUniverseLoader {
 
 const DATA_QUALITY_SCOPE_LIMIT = 40;
 const DATA_QUALITY_ALL = 'All fund entities';
+
+/**
+ * The abbreviations this lens renders: `SPV` in the "Missing / dangling SPV code" bucket title and
+ * in two bucket explanations, `VPM` in the "Unmapped identifiers (missing VPM symbol / name)" title
+ * and its explanation, `NAV` in the "no NAV" break bucket. The bucket titles are accordion HEADERS —
+ * real controls — so a `term()` inside one would be a control inside a control (R6c); this lens
+ * therefore takes R2's route (a), one visible expansion placed above every use of them.
+ */
+const DATA_QUALITY_VOCABULARY = ['spv', 'vpm', 'nav'];
 
 /** Every scope the issue log can take: the whole universe, or one fund entity's reachable world. */
 function dataQualityScopeIndex(universe: UniverseFixture): ComboOption[] {
@@ -69,8 +79,13 @@ export function mountDataQualityLens(
   let scopes: ComboOption[] = [];
   const open = new Set<string>();
 
-  const question = (): HTMLElement =>
-    el('p', { class: 'screen-question', id: 'data-quality-question', text: DATA_QUALITY_QUESTION });
+  termBindGlossary(store);
+
+  /** Question first, then the vocabulary line — in every frame, including loading and error. */
+  const heading = (): (Node | string)[] => [
+    el('p', { class: 'screen-question', id: 'data-quality-question' }, termAnnotate(DATA_QUALITY_QUESTION)),
+    termVocabularyLine(DATA_QUALITY_VOCABULARY, 'data-quality-vocabulary'),
+  ];
 
   const clearScope = (): void => store.set({ issueScope: null, issueScopeLabel: DATA_QUALITY_ALL });
 
@@ -82,7 +97,7 @@ export function mountDataQualityLens(
       ready(cached);
       return;
     }
-    replace(host, question(), loadingState('the firm-wide ownership universe'));
+    replace(host, ...heading(), loadingState('the firm-wide ownership universe'));
     universeLoader
       .get()
       .then((loaded) => {
@@ -92,7 +107,7 @@ export function mountDataQualityLens(
         if (disposed) return;
         replace(
           host,
-          question(),
+          ...heading(),
           errorState(
             'The firm-wide ownership universe could not be loaded.',
             `${error instanceof Error ? error.message : String(error)} The issue log is scanned from that file, so an empty list here would be a lie — nothing is shown instead.`,
@@ -108,7 +123,7 @@ export function mountDataQualityLens(
     scopes = dataQualityScopeIndex(loaded);
     replace(
       host,
-      question(),
+      ...heading(),
       el('div', { class: 'toolbar dq-toolbar', id: 'data-quality-tools' }),
       el('div', { class: 'dq-kpi', id: 'data-quality-kpi' }),
       el('div', { class: 'dq-buckets', id: 'data-quality-buckets' })

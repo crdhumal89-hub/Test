@@ -58,13 +58,20 @@
  * uses before the screen uses it (rubric R2 route (a)) and links each one to its definition
  * (route (b)). Compact on purpose: it must not push the screen's primary answer below the fold
  * (R5), so it is one small line, not a panel.
+ *
+ * The measure is 190ch and not the 132ch a paragraph would take, because this is a glossary strip
+ * rather than prose: it is scanned for one entry, and the `·` separators chunk it. 132ch wrapped the
+ * Simulator's nine entries onto three lines, which pushed that lens's Run button 2px past the fold
+ * R5 measures — so the vertical cost of a narrow measure is paid by the primary answer, which the
+ * rubric protects, and the horizontal room is free (the content column is 1,556px at the graded
+ * viewport). At 190ch every screen's line is at most two.
  */
 .screen-vocab {
   margin: -2px 0 8px;
   color: var(--muted);
   font-size: 11.5px;
   line-height: 1.45;
-  max-width: 132ch;
+  max-width: 190ch;
 }
 
 .screen-vocab .gterm {

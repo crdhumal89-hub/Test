@@ -15,10 +15,12 @@
 
 /* The Structure stage carries an inline `height: 640px`, which put the bottom of its `svg` at 1195px
    — 195px past the fold R5 measures at 1600×1000. `max-height` clamps the used height without having
-   to beat an inline declaration (and without `!important`, which is banned): 42vh = 420px at the
-   graded viewport, against 444px of room below the caption. Full screen is exempt — it swaps the
-   inline style to `position:fixed;inset:0`. */
-#structure-stage { max-height: 42vh; }
+   to beat an inline declaration (and without `!important`, which is banned): 40vh = 400px at the
+   graded viewport. It was 42vh against 444px of room below the caption; the lens's R2 vocabulary
+   line then took 17px of that room and left the stage bottom at 996 of a 1000px viewport — passing
+   by 4px, which is not a margin. Full screen is exempt: it swaps the inline style to
+   `position:fixed;inset:0`. */
+#structure-stage { max-height: 40vh; }
 #structure-stage[style*='position:fixed'] { max-height: none; }
 
 .graph-stage {
@@ -44,7 +46,7 @@
    docs/first-run.md names as this lens's primary answer, and the stage sits beside the shock panel
    rather than 640px above it, so all four contract elements land inside a 1600×1000 viewport (R5).
    `.sim-shock` scrolls internally at the stage's height; the three inputs and Run sit in its first
-   320px, so they are readable without scrolling anything. */
+   344px of 392px, so they are readable without scrolling anything. */
 .sim-facts { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .sim-tile {
   flex: 1 1 400px; min-width: 0; background: var(--paper);
@@ -57,15 +59,22 @@
 .sim-tile-value { display: block; font-size: 15px; color: var(--navy); }
 .sim-tile-basis { display: block; font-size: 11px; color: var(--muted); }
 
+/* 34%, not 29%: the shock panel is the way IN to this lens and R5 requires its Run button inside a
+   1600x1000 viewport on load. At 29% the panel was 440px wide, which wrapped the identity list and
+   the Δ preview onto enough extra lines to put Run 374px down the panel; 34% is 516px and lifts it
+   to 341px, which is what leaves both Run and the panel's own bottom edge above the fold once the
+   R2 vocabulary line is accounted for. The stage keeps the rest and is still the wider half. */
 .sim-scene {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 29%);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 34%);
   gap: 12px; align-items: start; margin-bottom: 12px;
 }
 .sim-shock, #simulator-tray {
   background: var(--paper); border: 1px solid var(--line);
   border-radius: 9px; padding: 10px 12px; min-width: 0;
 }
-.sim-shock { max-height: 420px; overflow: auto; }
+/* Matches SIMULATOR_STAGE_STYLE's height, which came down from 420 to make room for the lens's
+   R2 vocabulary line without pushing this panel past the fold R5 measures. */
+.sim-shock { max-height: 392px; overflow: auto; }
 #simulator-tray { display: block; margin-bottom: 12px; }
 .sim-shock h4, #simulator-tray h3 { margin: 11px 0 5px; font-size: 12px; color: var(--navy); }
 .sim-shock > h4:first-child { margin-top: 0; }

@@ -36,7 +36,12 @@ const DENYLIST = [
  * crawler. This is a refinement of MATCHING, not of the denylist: every rubric token is still
  * checked on every screen.
  */
-const WORDLIKE = new Set(['lt', 'own', 'str', 'sim', 'iss', 'gls', 'rfx', 'apex', 'px', 'qty']);
+const WORDLIKE = new Set(['lt', 'own', 'str', 'sim', 'iss', 'gls', 'rfx', 'apex']);
+// `px` and `qty` were in the set above and should not have been: neither is an English word, and
+// neither ever appears as prose — they are labels wherever they occur ("px 1.122812" on ~20 SVG
+// captions, "Qty" as a column head). Excusing them unless they were an element's entire text made
+// this test more lenient than the rubric, which lists both unconditionally. They are whole-word
+// matched like every other non-word token.
 
 /** Multi-word rubric entries; these are never anything but labels, so substring matching is right. */
 const PHRASES = new Set(['in tol', 'scen a', 'scen b']);

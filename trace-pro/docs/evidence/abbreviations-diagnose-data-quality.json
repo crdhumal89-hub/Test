@@ -19,13 +19,13 @@
   "scen b": "absent or glossary-linked",
   "mv100": "absent or glossary-linked",
   "dcN": "absent or glossary-linked",
-  "NAV": "BARE ×1",
+  "NAV": "expanded before first use",
   "bps": "absent or glossary-linked",
-  "SPV": "BARE ×3",
-  "VPM": "BARE ×2",
+  "SPV": "expanded before first use",
+  "VPM": "expanded before first use",
   "Δ": "absent or glossary-linked",
   "FR": "absent or glossary-linked",
   "DC": "absent or glossary-linked"
  },
- "textNodes": 58
+ "textNodes": 70
 }

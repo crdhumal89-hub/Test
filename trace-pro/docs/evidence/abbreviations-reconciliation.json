@@ -19,7 +19,7 @@
   "scen b": "absent or glossary-linked",
   "mv100": "absent or glossary-linked",
   "dcN": "absent or glossary-linked",
-  "NAV": "BARE ×1 (expansion comes too late)",
+  "NAV": "expanded before first use",
   "bps": "expanded before first use",
   "SPV": "expanded before first use",
   "VPM": "expanded before first use",
@@ -27,5 +27,5 @@
   "FR": "absent or glossary-linked",
   "DC": "absent or glossary-linked"
  },
- "textNodes": 201
+ "textNodes": 202
 }

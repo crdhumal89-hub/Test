@@ -269,6 +269,20 @@ const TERM_FIRST_USE: Readonly<Record<string, { readonly abbr: string; readonly 
   publish_px_vs_current_applied_px_vs_revised_px: { abbr: 'px', expansion: 'unit price' },
   pricing: { abbr: 'Δ', expansion: 'change' },
   apex_fund_feeder_terminal_fund: { abbr: 'apex', expansion: 'the top-level feeder funds' },
+  /**
+   * `DC` is the one entry whose only on-screen occurrences are NOT the app's vocabulary: every one
+   * of them sits inside a registered entity name — "AP Deuce Intermediate Holdings I (DC), L.P.",
+   * "AP Sports Intermediate Holdings Velocity (DC), L.P.", "AP Sports Debt Holdings II (DC), L.P."
+   * The fixture carries no double-count flag on those nodes, so linking the `(DC)` inside a legal
+   * name to the Double-count card would assert something the data does not say. R2 offers two
+   * routes and this is the one that is honest here: expand the abbreviation once, at the top, and
+   * leave the names themselves as names. The wording says so out loud rather than implying the
+   * parenthesis is a computed flag.
+   */
+  double_count: {
+    abbr: 'DC',
+    expansion: 'double count — and, inside a registered entity name below, part of that name',
+  },
 };
 
 export const TERM_VOCABULARY_LEAD = 'Terms on this screen: ';

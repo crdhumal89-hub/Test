@@ -25,7 +25,7 @@
  */
 import { formatUsdCents, formatPercent } from '../../../../domain/money.js';
 import type { Store } from '../../../../state/store.js';
-import { el, replace, qs, errorState } from '../../../primitives/dom.js';
+import { el, replace, qs, errorState, stageLoaded, stageLoading } from '../../../primitives/dom.js';
 import { termAnnotate, termBindGlossary, termVocabularyLine } from '../../../primitives/term.js';
 import { parity } from '../../../parity.js';
 import {
@@ -37,6 +37,7 @@ import {
 } from './graph.js';
 import type { LookthroughNode } from '../../../../domain/types.js';
 import { structureDefaultSettings, structureRenderControls, structureRenderLegend, type StructureControlsHandle } from './controls.js';
+import { structureCaptionLoading, structureMountEmpty } from './data-state.js';
 
 export const STRUCTURE_QUESTION =
   'How is this product wired — who owns whom, and where is concentration?';
@@ -108,9 +109,11 @@ function structureDepthOf(data: readonly StructureDatum[], node: StructureDatum)
 /**
  * The abbreviations this lens renders: `NAV` in the full-screen readout and the basis note, `SPV`
  * in the legend's "SPV / holding" swatch and in the entity names, `apex` nowhere on screen but in
- * the concept the basis note explains. Expanded and linked above all of them (rubric R2).
+ * the concept the basis note explains, `DC` inside two registered entity names the graph labels
+ * (SVG text, which cannot hold a control — so route (a) is the only route open there).
+ * Expanded and linked above all of them (rubric R2).
  */
-const STRUCTURE_VOCABULARY = ['nav', 'spv'];
+const STRUCTURE_VOCABULARY = ['nav', 'spv', 'double_count'];
 
 export function mountStructureLens(host: HTMLElement, store: Store): () => void {
   termBindGlossary(store);
@@ -121,10 +124,20 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
   // everything else. Opening the lens on a position code must not present a blanked-out graph.
   settings.selected = store.state.selectedEntity;
 
-  replace(
-    host,
+  /** The question and the vocabulary line, which every state of this lens renders (R1, R2). */
+  const head = (): (Node | string)[] => [
     el('p', { class: 'screen-question', id: 'structure-question', text: STRUCTURE_QUESTION }),
     termVocabularyLine(STRUCTURE_VOCABULARY, 'structure-vocabulary'),
+  ];
+
+  // An empty look-through file is not a broken one. Checked here, before the stage exists, because
+  // the graph's own error state would otherwise report "could not be drawn" for a file with nothing
+  // in it to draw — and re-throw, so an empty product would read as a crash (R4).
+  if (!data.length) return structureMountEmpty(host, head);
+
+  replace(
+    host,
+    ...head(),
     el('div', { id: 'structure-controls' }),
     // The caption sits ABOVE the graph deliberately. It states the counts and where concentration
     // lies, which is the answer a controller came for; the graph is how they explore it. At
@@ -174,6 +187,11 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
   let full = false;
 
   function renderCaption(): void {
+    // Before the library resolves there is no graph, so there are no counts to state (R4 loading).
+    if (!library) {
+      structureCaptionLoading(qs('#structure-caption', host));
+      return;
+    }
     const rest = concentration.others
       .map((o) => `${o.code} ${formatPercent(o.share)}`)
       .join(', ');
@@ -218,6 +236,7 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
 
   function render(): void {
     if (!library || !controls) return;
+    stageLoaded(stage);
     graph = structureRenderGraph(library, svg, data, controls.settings, (code) =>
       store.set({ selectedEntity: code })
     );
@@ -249,6 +268,9 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
     onFit: () => graph.fit(),
   });
   qs('#structure-tools', host).append(fullButton);
+  // The stage says it is loading until the vendored library and the layout land, rather than showing
+  // an empty box (rubric R4). `render()` clears it; a load failure replaces it with its own state.
+  stageLoading(stage, 'the ownership structure graph');
   renderCaption();
   renderBasis();
 
@@ -265,11 +287,13 @@ export function mountStructureLens(host: HTMLElement, store: Store): () => void 
       render();
     },
     (error: unknown) => {
+      stageLoaded(stage);
       replace(
         qs('#structure-caption', host),
         errorState(
           'The structure graph could not start.',
-          `${String(error)} The graph library ships with the app under vendor/; confirm that folder deployed alongside it.`
+          `${String(error)} The graph library ships with the app under vendor/; confirm that folder deployed alongside it.`,
+          { label: 'Reload this product’s data', onAct: () => location.reload() }
         )
       );
     }

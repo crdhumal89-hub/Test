@@ -101,7 +101,12 @@ test('Data quality: the five buckets and their counts', async ({ page }) => {
 
 test('Simulator: the staged reprice completes and lands on the waterfall, to the cent', async ({ page }) => {
   await gotoRoute(page, '#/diagnose/simulator');
-  await page.getByRole('button', { name: /reprice everything/i }).click();
+  // By id, not by accessible name. `getByRole('button', { name: /reprice everything/i })` also
+  // matches the glossary-linked `Δ` in the Simulator's vocabulary line, whose accessible name is the
+  // Δ Pricing card's own sentence ("…how much value moves when you reprice everything bottom-up to
+  // NAV…"). A name regex that can match a definition is a weaker locator than the control's id; this
+  // is the sweep button and nothing else.
+  await page.locator('#simulator-reprice').click();
   await page.waitForFunction(
     () => /complete/i.test(document.querySelector('[data-parity="simulator.reprice.run_label"]')?.textContent ?? ''),
     undefined,
