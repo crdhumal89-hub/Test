@@ -1,0 +1,2439 @@
+{
+ "denylistTokenCount": 26,
+ "routes": {
+  "reconciliation": {
+   "r1": {
+    "found": [
+     {
+      "id": "reconciliation-question",
+      "text": "Does this product’s NAV agree with the value of what it holds, and where is the difference?",
+      "len": 91,
+      "top": 182,
+      "bottom": 205,
+      "h": 23,
+      "isQuestion": true
+     }
+    ],
+    "lensHost": null,
+    "lensFirst": null,
+    "questionElements": [
+     "reconciliation-question"
+    ]
+   },
+   "r2": {
+    "bare": [
+     {
+      "token": "NAV",
+      "occurrences": 17,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-1",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-2",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-6",
+        "cls": "gterm"
+       }
+      ]
+     }
+    ],
+    "all": [
+     {
+      "token": "lt",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "rfx",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "str",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "sim",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "iss",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "own",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gls",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "MV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "LTV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "px",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "qty",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gq",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "apex",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "nonav",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "in tol",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen a",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen b",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "mv100",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "dcN",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "NAV",
+      "occurrences": 17,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-1",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-2",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-6",
+        "cls": "gterm"
+       }
+      ]
+     },
+     {
+      "token": "bps",
+      "occurrences": 14,
+      "firstOccurrence": {
+       "text": "bps",
+       "id": "gterm-bps-5",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "SPV",
+      "occurrences": 11,
+      "firstOccurrence": {
+       "text": "SPV",
+       "id": "gterm-spv-3",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "VPM",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "VPM",
+       "id": "gterm-vpm-4",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "Δ",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "FR",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "DC",
+      "occurrences": 0,
+      "verdict": "absent"
+     }
+    ]
+   },
+   "r2TooltipHits": [
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-1",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-2",
+     "cls": "gterm"
+    },
+    {
+     "token": "SPV",
+     "title": "SPV — open the glossary at this term",
+     "id": "gterm-spv-3",
+     "cls": "gterm"
+    },
+    {
+     "token": "VPM",
+     "title": "VPM — open the glossary at this term",
+     "id": "gterm-vpm-4",
+     "cls": "gterm"
+    },
+    {
+     "token": "bps",
+     "title": "bps — open the glossary at this term",
+     "id": "gterm-bps-5",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-6",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "Held funds with no ENDING_NAV in the NAV report",
+     "id": "",
+     "cls": "chip chip-bad"
+    },
+    {
+     "token": "SPV",
+     "title": "Referenced as an SPV but has no positions to look through",
+     "id": "",
+     "cls": "chip chip-bad"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV vs bottom-up value ≥ 50 bps and ≥ $250k — cash / fees / receivables",
+     "id": "",
+     "cls": "chip chip-warn"
+    },
+    {
+     "token": "bps",
+     "title": "NAV vs bottom-up value ≥ 50 bps and ≥ $250k — cash / fees / receivables",
+     "id": "",
+     "cls": "chip chip-warn"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-7",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-8",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-9",
+     "cls": "gterm"
+    },
+    {
+     "token": "bps",
+     "title": "bps — open the glossary at this term",
+     "id": "gterm-bps-10",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-11",
+     "cls": "gterm"
+    },
+    {
+     "token": "SPV",
+     "title": "SPV — open the glossary at this term",
+     "id": "gterm-spv-12",
+     "cls": "gterm"
+    }
+   ],
+   "visibleTextNodes": 201
+  },
+  "pricing": {
+   "r1": {
+    "found": [
+     {
+      "id": "pricing-question",
+      "text": "What unit price do I publish for each fund today, and what does repricing do to value?",
+      "len": 86,
+      "top": 182,
+      "bottom": 205,
+      "h": 23,
+      "isQuestion": true
+     }
+    ],
+    "lensHost": null,
+    "lensFirst": null,
+    "questionElements": [
+     "pricing-question"
+    ]
+   },
+   "r2": {
+    "bare": [
+     {
+      "token": "NAV",
+      "occurrences": 14,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-13",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-31",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-33",
+        "cls": "gterm"
+       }
+      ]
+     }
+    ],
+    "all": [
+     {
+      "token": "lt",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "rfx",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "str",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "sim",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "iss",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "own",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gls",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "MV",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "MV",
+       "id": "gterm-carried_mv_position_mv-17",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": true,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "LTV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "px",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "px",
+       "id": "gterm-publish_px_vs_current_applied_px_vs_revised_px-15",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": true,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": true,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "qty",
+      "occurrences": 3,
+      "firstOccurrence": {
+       "text": "qty",
+       "id": "gterm-global_units_global_quantity-16",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": true,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "gq",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "apex",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "nonav",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "in tol",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen a",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen b",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "mv100",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "dcN",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "NAV",
+      "occurrences": 14,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-13",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-31",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-33",
+        "cls": "gterm"
+       }
+      ]
+     },
+     {
+      "token": "bps",
+      "occurrences": 11,
+      "firstOccurrence": {
+       "text": "bps",
+       "id": "gterm-bps-14",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "SPV",
+      "occurrences": 26,
+      "firstOccurrence": {
+       "text": "SPV",
+       "id": "gterm-spv-20",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 234
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "VPM",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "VPM",
+       "id": "gterm-vpm-19",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 234
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": true,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "Δ",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "Δ",
+       "id": "gterm-pricing-18",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 217
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": true,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "FR",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "DC",
+      "occurrences": 3,
+      "firstOccurrence": {
+       "text": "AP Sports Intermediate Holdings Velocity (DC), L.P.",
+       "id": "",
+       "cls": "row-name",
+       "glossaryLinked": false,
+       "top": 915
+      },
+      "expandedOnFirstUse": true,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     }
+    ]
+   },
+   "r2TooltipHits": [
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-13",
+     "cls": "gterm"
+    },
+    {
+     "token": "bps",
+     "title": "bps — open the glossary at this term",
+     "id": "gterm-bps-14",
+     "cls": "gterm"
+    },
+    {
+     "token": "px",
+     "title": "px — open the glossary at this term",
+     "id": "gterm-publish_px_vs_current_applied_px_vs_revised_px-15",
+     "cls": "gterm"
+    },
+    {
+     "token": "qty",
+     "title": "qty — open the glossary at this term",
+     "id": "gterm-global_units_global_quantity-16",
+     "cls": "gterm"
+    },
+    {
+     "token": "MV",
+     "title": "MV — open the glossary at this term",
+     "id": "gterm-carried_mv_position_mv-17",
+     "cls": "gterm"
+    },
+    {
+     "token": "Δ",
+     "title": "Δ — open the glossary at this term",
+     "id": "gterm-pricing-18",
+     "cls": "gterm"
+    },
+    {
+     "token": "VPM",
+     "title": "VPM — open the glossary at this term",
+     "id": "gterm-vpm-19",
+     "cls": "gterm"
+    },
+    {
+     "token": "SPV",
+     "title": "SPV — open the glossary at this term",
+     "id": "gterm-spv-20",
+     "cls": "gterm"
+    },
+    {
+     "token": "bps",
+     "title": "bps — open the glossary at this term",
+     "id": "gterm-bps-30",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-31",
+     "cls": "gterm"
+    },
+    {
+     "token": "bps",
+     "title": "bps — open the glossary at this term",
+     "id": "gterm-bps-32",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-33",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-34",
+     "cls": "gterm"
+    },
+    {
+     "token": "qty",
+     "title": "qty — open the glossary at this term",
+     "id": "gterm-global_units_global_quantity-35",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-36",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV above look-through value",
+     "id": "",
+     "cls": "bridge-scenario"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV at or below look-through value",
+     "id": "",
+     "cls": "bridge-scenario"
+    },
+    {
+     "token": "SPV",
+     "title": "AP Dunk SPV, LLC · DUNK",
+     "id": "",
+     "cls": "bridge-row"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV at or below look-through value",
+     "id": "",
+     "cls": "bridge-scenario"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-21",
+     "cls": "gterm"
+    },
+    {
+     "token": "qty",
+     "title": "qty — open the glossary at this term",
+     "id": "gterm-global_units_global_quantity-22",
+     "cls": "gterm"
+    },
+    {
+     "token": "MV",
+     "title": "MV — open the glossary at this term",
+     "id": "gterm-carried_mv_position_mv-23",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-24",
+     "cls": "gterm"
+    },
+    {
+     "token": "bps",
+     "title": "bps — open the glossary at this term",
+     "id": "gterm-bps-25",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-26",
+     "cls": "gterm"
+    }
+   ],
+   "visibleTextNodes": 423
+  },
+  "diagnose-structure": {
+   "r1": {
+    "found": [
+     {
+      "id": "diagnose-question",
+      "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+      "len": 103,
+      "top": 144,
+      "bottom": 190,
+      "h": 46,
+      "isQuestion": true
+     },
+     {
+      "id": "structure-question",
+      "text": "How is this product wired — who owns whom, and where is concentration?",
+      "len": 70,
+      "top": 321,
+      "bottom": 344,
+      "h": 23,
+      "isQuestion": true
+     }
+    ],
+    "lensHost": "lens-body",
+    "lensFirst": {
+     "top": 321,
+     "left": 22,
+     "id": "structure-question",
+     "cls": "screen-question",
+     "text": "How is this product wired — who owns whom, and where is concentration?"
+    },
+    "questionElements": [
+     "diagnose-question",
+     "structure-question"
+    ]
+   },
+   "r2": {
+    "bare": [
+     {
+      "token": "NAV",
+      "occurrences": 9,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-37",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-40",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-41",
+        "cls": "gterm"
+       }
+      ]
+     }
+    ],
+    "all": [
+     {
+      "token": "lt",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "rfx",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "str",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "sim",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "iss",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "own",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gls",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "MV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "LTV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "px",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "qty",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gq",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "apex",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "nonav",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "in tol",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen a",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen b",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "mv100",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "dcN",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "NAV",
+      "occurrences": 9,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-37",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-40",
+        "cls": "gterm"
+       },
+       {
+        "text": "NAV",
+        "id": "gterm-nav-41",
+        "cls": "gterm"
+       }
+      ]
+     },
+     {
+      "token": "bps",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "SPV",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "SPV",
+       "id": "gterm-spv-38",
+       "cls": "gterm",
+       "glossaryLinked": true,
+       "top": 356
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": true,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "VPM",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "Δ",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "FR",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "DC",
+      "occurrences": 0,
+      "verdict": "absent"
+     }
+    ]
+   },
+   "r2TooltipHits": [
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-37",
+     "cls": "gterm"
+    },
+    {
+     "token": "SPV",
+     "title": "SPV — open the glossary at this term",
+     "id": "gterm-spv-38",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "Lowest level — prices from NAV ÷ units",
+     "id": "",
+     "cls": "legend-item"
+    },
+    {
+     "token": "MV",
+     "title": "Derived MV is the look-through value at current marks",
+     "id": "",
+     "cls": "status-line"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-40",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-41",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-42",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-43",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-44",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-45",
+     "cls": "gterm"
+    },
+    {
+     "token": "NAV",
+     "title": "NAV — open the glossary at this term",
+     "id": "gterm-nav-46",
+     "cls": "gterm"
+    }
+   ],
+   "visibleTextNodes": 166
+  },
+  "diagnose-ownership": {
+   "r1": {
+    "found": [
+     {
+      "id": "diagnose-question",
+      "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+      "len": 103,
+      "top": 144,
+      "bottom": 190,
+      "h": 46,
+      "isQuestion": true
+     },
+     {
+      "id": "ownership-question",
+      "text": "Who ultimately owns this position, and in what proportion?",
+      "len": 58,
+      "top": 321,
+      "bottom": 344,
+      "h": 23,
+      "isQuestion": true
+     }
+    ],
+    "lensHost": "lens-body",
+    "lensFirst": {
+     "top": 321,
+     "left": 22,
+     "id": "ownership-question",
+     "cls": "screen-question",
+     "text": "Who ultimately owns this position, and in what proportion?"
+    },
+    "questionElements": [
+     "diagnose-question",
+     "ownership-question"
+    ]
+   },
+   "r2": {
+    "bare": [
+     {
+      "token": "qty",
+      "occurrences": 3,
+      "firstOccurrence": {
+       "text": "Total qty: 1,330,020,204",
+       "id": "",
+       "cls": "own-qty",
+       "glossaryLinked": false,
+       "top": 406
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "Total qty: 1,330,020,204",
+        "id": "",
+        "cls": "own-qty"
+       },
+       {
+        "text": "qty ÷ total = direct share",
+        "id": "",
+        "cls": ""
+       },
+       {
+        "text": "Direct share = holder qty ÷ total qty of the entity in the row below. Cumulative",
+        "id": "",
+        "cls": ""
+       }
+      ]
+     },
+     {
+      "token": "NAV",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       }
+      ]
+     },
+     {
+      "token": "SPV",
+      "occurrences": 11,
+      "firstOccurrence": {
+       "text": "SPV / FUND",
+       "id": "",
+       "cls": "tag tag-vehicle",
+       "glossaryLinked": false,
+       "top": 406
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "SPV / FUND",
+        "id": "",
+        "cls": "tag tag-vehicle"
+       },
+       {
+        "text": "APPOUR1-SPV",
+        "id": "",
+        "cls": "own-symbol"
+       },
+       {
+        "text": "SPV fund code",
+        "id": "",
+        "cls": "th-label"
+       },
+       {
+        "text": "% of APPOUR1-SPV",
+        "id": "",
+        "cls": "th-label"
+       }
+      ]
+     },
+     {
+      "token": "VPM",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "VPM symbol",
+       "id": "",
+       "cls": "th-label",
+       "glossaryLinked": false,
+       "top": 511
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "VPM symbol",
+        "id": "",
+        "cls": "th-label"
+       }
+      ]
+     }
+    ],
+    "all": [
+     {
+      "token": "lt",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "rfx",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "str",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "sim",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "iss",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "own",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gls",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "MV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "LTV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "px",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "qty",
+      "occurrences": 3,
+      "firstOccurrence": {
+       "text": "Total qty: 1,330,020,204",
+       "id": "",
+       "cls": "own-qty",
+       "glossaryLinked": false,
+       "top": 406
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "Total qty: 1,330,020,204",
+        "id": "",
+        "cls": "own-qty"
+       },
+       {
+        "text": "qty ÷ total = direct share",
+        "id": "",
+        "cls": ""
+       },
+       {
+        "text": "Direct share = holder qty ÷ total qty of the entity in the row below. Cumulative",
+        "id": "",
+        "cls": ""
+       }
+      ]
+     },
+     {
+      "token": "gq",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "apex",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "nonav",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "in tol",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen a",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen b",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "mv100",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "dcN",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "NAV",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       }
+      ]
+     },
+     {
+      "token": "bps",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "SPV",
+      "occurrences": 11,
+      "firstOccurrence": {
+       "text": "SPV / FUND",
+       "id": "",
+       "cls": "tag tag-vehicle",
+       "glossaryLinked": false,
+       "top": 406
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "SPV / FUND",
+        "id": "",
+        "cls": "tag tag-vehicle"
+       },
+       {
+        "text": "APPOUR1-SPV",
+        "id": "",
+        "cls": "own-symbol"
+       },
+       {
+        "text": "SPV fund code",
+        "id": "",
+        "cls": "th-label"
+       },
+       {
+        "text": "% of APPOUR1-SPV",
+        "id": "",
+        "cls": "th-label"
+       }
+      ]
+     },
+     {
+      "token": "VPM",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "VPM symbol",
+       "id": "",
+       "cls": "th-label",
+       "glossaryLinked": false,
+       "top": 511
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "VPM symbol",
+        "id": "",
+        "cls": "th-label"
+       }
+      ]
+     },
+     {
+      "token": "Δ",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "FR",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "DC",
+      "occurrences": 0,
+      "verdict": "absent"
+     }
+    ]
+   },
+   "r2TooltipHits": [
+    {
+     "token": "SPV",
+     "title": "Apollo Violet Crown DOS SPV, LLC (TPSFVCDO) — 1.33%",
+     "id": "",
+     "cls": "own-seg"
+    },
+    {
+     "token": "VPM",
+     "title": "The symbol this entity trades under in VPM.",
+     "id": "",
+     "cls": "l"
+    },
+    {
+     "token": "SPV",
+     "title": "The SPV fund code that maps the holding.",
+     "id": "",
+     "cls": "l"
+    },
+    {
+     "token": "qty",
+     "title": "Direct share, was \"Immediate %\" — holder qty ÷ units outstanding of the row below.",
+     "id": "",
+     "cls": "r"
+    },
+    {
+     "token": "SPV",
+     "title": "Effective share (of the searched position) — every direct share on the path multiplied together, ending at APP",
+     "id": "",
+     "cls": "l"
+    },
+    {
+     "token": "SPV",
+     "title": "Apollo Violet Crown DOS SPV, LLC · TPSFVCDO",
+     "id": "",
+     "cls": "row-name"
+    }
+   ],
+   "visibleTextNodes": 416
+  },
+  "diagnose-data-quality": {
+   "r1": {
+    "found": [
+     {
+      "id": "diagnose-question",
+      "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+      "len": 103,
+      "top": 144,
+      "bottom": 190,
+      "h": 46,
+      "isQuestion": true
+     },
+     {
+      "id": "data-quality-question",
+      "text": "What is wrong with the source data before I trust any figure above?",
+      "len": 67,
+      "top": 321,
+      "bottom": 344,
+      "h": 23,
+      "isQuestion": true
+     }
+    ],
+    "lensHost": "lens-body",
+    "lensFirst": {
+     "top": 321,
+     "left": 22,
+     "id": "data-quality-question",
+     "cls": "screen-question",
+     "text": "What is wrong with the source data before I trust any figure above?"
+    },
+    "questionElements": [
+     "diagnose-question",
+     "data-quality-question"
+    ]
+   },
+   "r2": {
+    "bare": [
+     {
+      "token": "NAV",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       }
+      ]
+     },
+     {
+      "token": "SPV",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "Missing / dangling SPV code",
+       "id": "",
+       "cls": "dq-name",
+       "glossaryLinked": false,
+       "top": 699
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "Missing / dangling SPV code",
+        "id": "",
+        "cls": "dq-name"
+       }
+      ]
+     },
+     {
+      "token": "VPM",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "Unmapped identifiers (missing VPM symbol / name)",
+       "id": "",
+       "cls": "dq-name",
+       "glossaryLinked": false,
+       "top": 780
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "Unmapped identifiers (missing VPM symbol / name)",
+        "id": "",
+        "cls": "dq-name"
+       }
+      ]
+     }
+    ],
+    "all": [
+     {
+      "token": "lt",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "rfx",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "str",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "sim",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "iss",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "own",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gls",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "MV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "LTV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "px",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "qty",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gq",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "apex",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "nonav",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "in tol",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen a",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen b",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "mv100",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "dcN",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "NAV",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       }
+      ]
+     },
+     {
+      "token": "bps",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "SPV",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "Missing / dangling SPV code",
+       "id": "",
+       "cls": "dq-name",
+       "glossaryLinked": false,
+       "top": 699
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "Missing / dangling SPV code",
+        "id": "",
+        "cls": "dq-name"
+       }
+      ]
+     },
+     {
+      "token": "VPM",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "Unmapped identifiers (missing VPM symbol / name)",
+       "id": "",
+       "cls": "dq-name",
+       "glossaryLinked": false,
+       "top": 780
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "Unmapped identifiers (missing VPM symbol / name)",
+        "id": "",
+        "cls": "dq-name"
+       }
+      ]
+     },
+     {
+      "token": "Δ",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "FR",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "DC",
+      "occurrences": 0,
+      "verdict": "absent"
+     }
+    ]
+   },
+   "r2TooltipHits": [],
+   "visibleTextNodes": 46
+  },
+  "diagnose-simulator": {
+   "r1": {
+    "found": [
+     {
+      "id": "diagnose-question",
+      "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+      "len": 103,
+      "top": 182,
+      "bottom": 228,
+      "h": 46,
+      "isQuestion": true
+     },
+     {
+      "id": "simulator-question",
+      "text": "If this fund’s value or units move, what happens to product NAV, and through which holders?",
+      "len": 91,
+      "top": 359,
+      "bottom": 405,
+      "h": 46,
+      "isQuestion": true
+     }
+    ],
+    "lensHost": "lens-body",
+    "lensFirst": {
+     "top": 359,
+     "left": 22,
+     "id": "simulator-question",
+     "cls": "screen-question",
+     "text": "If this fund’s value or units move, what happens to product NAV, and through which holders"
+    },
+    "questionElements": [
+     "diagnose-question",
+     "simulator-question"
+    ]
+   },
+   "r2": {
+    "bare": [
+     {
+      "token": "px",
+      "occurrences": 20,
+      "firstOccurrence": {
+       "text": "px 1.122812",
+       "id": "",
+       "cls": "[object Object]",
+       "glossaryLinked": false,
+       "top": 650
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "px 1.122812",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "px 1.008959",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "px 1.124532",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "px 1.004788",
+        "id": "",
+        "cls": "[object Object]"
+       }
+      ]
+     },
+     {
+      "token": "NAV",
+      "occurrences": 22,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "If this fund’s value or units move, what happens to product NAV, and through whi",
+        "id": "simulator-question",
+        "cls": "screen-question"
+       },
+       {
+        "text": "Product NAV before any shock",
+        "id": "",
+        "cls": "sim-tile-label"
+       },
+       {
+        "text": "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ ",
+        "id": "",
+        "cls": "sim-tile-basis"
+       }
+      ]
+     },
+     {
+      "token": "bps",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (153 bps) — SPV/underlyings marke",
+       "id": "",
+       "cls": "",
+       "glossaryLinked": false,
+       "top": 1746
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (153 bps) — S",
+        "id": "",
+        "cls": ""
+       }
+      ]
+     },
+     {
+      "token": "SPV",
+      "occurrences": 4,
+      "firstOccurrence": {
+       "text": "SPORTHLD - SPV · value $1,795,754,765.06 · 1.024650 per unit",
+       "id": "",
+       "cls": "sim-tile-value mono",
+       "glossaryLinked": false,
+       "top": 443
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "SPORTHLD - SPV · value $1,795,754,765.06 · 1.024650 per unit",
+        "id": "",
+        "cls": "sim-tile-value mono"
+       },
+       {
+        "text": "AP Dunk SPV, LLC",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "SPORTHLD - SPV",
+        "id": "",
+        "cls": "drawer-symbol"
+       },
+       {
+        "text": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (153 bps) — S",
+        "id": "",
+        "cls": ""
+       }
+      ]
+     },
+     {
+      "token": "Δ",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ below is measured ag",
+       "id": "",
+       "cls": "sim-tile-basis",
+       "glossaryLinked": false,
+       "top": 466
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ ",
+        "id": "",
+        "cls": "sim-tile-basis"
+       },
+       {
+        "text": "Δ value at SPORTHLD $0.00 → estimated product impact ≈ effective share 100.00% ×",
+        "id": "simulator-preview",
+        "cls": "note mono"
+       }
+      ]
+     }
+    ],
+    "all": [
+     {
+      "token": "lt",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "rfx",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "str",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "sim",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "iss",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "own",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "gls",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "MV",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "a move in MV flows through to NAV",
+       "id": "",
+       "cls": "note",
+       "glossaryLinked": false,
+       "top": 788
+      },
+      "expandedOnFirstUse": true,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "LTV",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "px",
+      "occurrences": 20,
+      "firstOccurrence": {
+       "text": "px 1.122812",
+       "id": "",
+       "cls": "[object Object]",
+       "glossaryLinked": false,
+       "top": 650
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "px 1.122812",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "px 1.008959",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "px 1.124532",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "px 1.004788",
+        "id": "",
+        "cls": "[object Object]"
+       }
+      ]
+     },
+     {
+      "token": "qty",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "firm-wide units (was global qty)",
+       "id": "",
+       "cls": "note",
+       "glossaryLinked": false,
+       "top": 788
+      },
+      "expandedOnFirstUse": true,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "gq",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "apex",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "apex",
+       "id": "",
+       "cls": "tag",
+       "glossaryLinked": false,
+       "top": 554
+      },
+      "expandedOnFirstUse": true,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "pass",
+      "bareExamples": []
+     },
+     {
+      "token": "nonav",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "in tol",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen a",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "scen b",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "mv100",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "dcN",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "NAV",
+      "occurrences": 22,
+      "firstOccurrence": {
+       "text": "NAV pricing and look-through",
+       "id": "",
+       "cls": "tagline",
+       "glossaryLinked": false,
+       "top": 20
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV pricing and look-through",
+        "id": "",
+        "cls": "tagline"
+       },
+       {
+        "text": "If this fund’s value or units move, what happens to product NAV, and through whi",
+        "id": "simulator-question",
+        "cls": "screen-question"
+       },
+       {
+        "text": "Product NAV before any shock",
+        "id": "",
+        "cls": "sim-tile-label"
+       },
+       {
+        "text": "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ ",
+        "id": "",
+        "cls": "sim-tile-basis"
+       }
+      ]
+     },
+     {
+      "token": "bps",
+      "occurrences": 1,
+      "firstOccurrence": {
+       "text": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (153 bps) — SPV/underlyings marke",
+       "id": "",
+       "cls": "",
+       "glossaryLinked": false,
+       "top": 1746
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (153 bps) — S",
+        "id": "",
+        "cls": ""
+       }
+      ]
+     },
+     {
+      "token": "SPV",
+      "occurrences": 4,
+      "firstOccurrence": {
+       "text": "SPORTHLD - SPV · value $1,795,754,765.06 · 1.024650 per unit",
+       "id": "",
+       "cls": "sim-tile-value mono",
+       "glossaryLinked": false,
+       "top": 443
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "SPORTHLD - SPV · value $1,795,754,765.06 · 1.024650 per unit",
+        "id": "",
+        "cls": "sim-tile-value mono"
+       },
+       {
+        "text": "AP Dunk SPV, LLC",
+        "id": "",
+        "cls": "[object Object]"
+       },
+       {
+        "text": "SPORTHLD - SPV",
+        "id": "",
+        "cls": "drawer-symbol"
+       },
+       {
+        "text": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (153 bps) — S",
+        "id": "",
+        "cls": ""
+       }
+      ]
+     },
+     {
+      "token": "VPM",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "Δ",
+      "occurrences": 2,
+      "firstOccurrence": {
+       "text": "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ below is measured ag",
+       "id": "",
+       "cls": "sim-tile-basis",
+       "glossaryLinked": false,
+       "top": 466
+      },
+      "expandedOnFirstUse": false,
+      "firstOccurrenceGlossaryLinked": false,
+      "everyOccurrenceGlossaryLinked": false,
+      "verdict": "BARE",
+      "bareExamples": [
+       {
+        "text": "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ ",
+        "id": "",
+        "cls": "sim-tile-basis"
+       },
+       {
+        "text": "Δ value at SPORTHLD $0.00 → estimated product impact ≈ effective share 100.00% ×",
+        "id": "simulator-preview",
+        "cls": "note mono"
+       }
+      ]
+     },
+     {
+      "token": "FR",
+      "occurrences": 0,
+      "verdict": "absent"
+     },
+     {
+      "token": "DC",
+      "occurrences": 0,
+      "verdict": "absent"
+     }
+    ]
+   },
+   "r2TooltipHits": [
+    {
+     "token": "MV",
+     "title": "Was “Derived MV”: the value of the underlyings at current marks",
+     "id": "",
+     "cls": "lab"
+    },
+    {
+     "token": "NAV",
+     "title": "The pricing difference: what changes when each fund is repriced from its own NAV",
+     "id": "",
+     "cls": "lab"
+    },
+    {
+     "token": "MV",
+     "title": "Was “Revised MV”: every component repriced bottom-up from its own NAV",
+     "id": "",
+     "cls": "lab"
+    },
+    {
+     "token": "NAV",
+     "title": "Was “Revised MV”: every component repriced bottom-up from its own NAV",
+     "id": "",
+     "cls": "lab"
+    },
+    {
+     "token": "NAV",
+     "title": "The non-position difference: cash, fees and receivables in NAV but not held as positions",
+     "id": "",
+     "cls": "lab"
+    },
+    {
+     "token": "NAV",
+     "title": "The sum of the top-level feeders’ ENDING_NAV, from the NAV report",
+     "id": "",
+     "cls": "lab"
+    },
+    {
+     "token": "apex",
+     "title": "AP Dunk SPV, LLC · apex",
+     "id": "",
+     "cls": "btn btn-inline"
+    },
+    {
+     "token": "SPV",
+     "title": "AP Dunk SPV, LLC · apex",
+     "id": "",
+     "cls": "btn btn-inline"
+    },
+    {
+     "token": "apex",
+     "title": "Apollo Sports Capital Holdings (Onshore), L.P. · apex",
+     "id": "",
+     "cls": "btn btn-inline"
+    },
+    {
+     "token": "apex",
+     "title": "Apollo Sports Capital Holdings (Overseas), L.P. · apex",
+     "id": "",
+     "cls": "btn btn-inline"
+    },
+    {
+     "token": "DC",
+     "title": "AP Deuce Intermediate Holdings I (DC), L.P. · vehicle",
+     "id": "",
+     "cls": "btn btn-inline"
+    },
+    {
+     "token": "DC",
+     "title": "AP Sports Intermediate Holdings Velocity (DC), L.P. · vehicle",
+     "id": "",
+     "cls": "btn btn-inline"
+    },
+    {
+     "token": "DC",
+     "title": "AP Sports Debt Holdings II (DC), L.P. · vehicle",
+     "id": "",
+     "cls": "btn btn-inline"
+    }
+   ],
+   "visibleTextNodes": 337
+  }
+ },
+ "consoleProblems": []
+}

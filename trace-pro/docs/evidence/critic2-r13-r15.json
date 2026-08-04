@@ -1,0 +1,265 @@
+{
+ "r13": {
+  "sendToPricing-before": {
+   "file": {
+    "target": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl/sendto-before-TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv",
+    "bytes": 995,
+    "name": "TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv"
+   },
+   "header": [
+    "Symbol",
+    "Respective Qty",
+    "Local Price",
+    "Local MV"
+   ],
+   "rowCount": 20,
+   "ties": [
+    {
+     "code": "ASCHON",
+     "fileColumn": "Local Price",
+     "fileValue": "1.024650",
+     "formatted": "1.024650",
+     "parityKey": "pricing.fund.ASCHON.publish_px",
+     "screenText": "1.024650",
+     "tie": true,
+     "visibleOnScreenAtExport": true,
+     "hiddenInside": null
+    },
+    {
+     "code": "ASCHON",
+     "fileColumn": "Respective Qty",
+     "fileValue": "260031425.70",
+     "formatted": "260,031,426",
+     "parityKey": "pricing.walk.fund.ASCHON.global_qty",
+     "screenText": "260,031,426",
+     "tie": true,
+     "visibleOnScreenAtExport": false,
+     "hiddenInside": "pricing-walk-table"
+    },
+    {
+     "code": "ASCHON",
+     "fileColumn": "Local MV",
+     "fileValue": "266441285.01",
+     "formatted": "$266,441,285",
+     "parityKey": "pricing.walk.fund.ASCHON.nav",
+     "screenText": "$266,441,285",
+     "tie": true,
+     "visibleOnScreenAtExport": false,
+     "hiddenInside": "pricing-walk-table"
+    },
+    {
+     "code": "SPORTHLD",
+     "fileColumn": "Local Price",
+     "fileValue": "1.024650",
+     "formatted": "1.024650",
+     "parityKey": "pricing.fund.SPORTHLD.publish_px",
+     "screenText": "1.024650",
+     "tie": true,
+     "visibleOnScreenAtExport": true,
+     "hiddenInside": null
+    },
+    {
+     "code": "SPORTHLD",
+     "fileColumn": "Respective Qty",
+     "fileValue": "1752553740.21",
+     "formatted": "1,752,553,740",
+     "parityKey": "pricing.walk.fund.SPORTHLD.global_qty",
+     "screenText": "1,752,553,740",
+     "tie": true,
+     "visibleOnScreenAtExport": false,
+     "hiddenInside": "pricing-walk-table"
+    },
+    {
+     "code": "SPORTHLD",
+     "fileColumn": "Local MV",
+     "fileValue": "1795754765.06",
+     "formatted": "$1,795,754,765",
+     "parityKey": "pricing.walk.fund.SPORTHLD.nav",
+     "screenText": "$1,795,754,765",
+     "tie": true,
+     "visibleOnScreenAtExport": false,
+     "hiddenInside": "pricing-walk-table"
+    },
+    {
+     "code": "APCAXXII",
+     "fileColumn": "Local Price",
+     "fileValue": "1.056123",
+     "formatted": "1.056123",
+     "parityKey": "pricing.fund.APCAXXII.publish_px",
+     "screenText": "1.056123",
+     "tie": true,
+     "visibleOnScreenAtExport": true,
+     "hiddenInside": null
+    },
+    {
+     "code": "APCAXXII",
+     "fileColumn": "Respective Qty",
+     "fileValue": "102807692.31",
+     "formatted": "102,807,692",
+     "parityKey": "pricing.walk.fund.APCAXXII.global_qty",
+     "screenText": "102,807,692",
+     "tie": true,
+     "visibleOnScreenAtExport": false,
+     "hiddenInside": "pricing-walk-table"
+    },
+    {
+     "code": "APCAXXII",
+     "fileColumn": "Local MV",
+     "fileValue": "108577575.88",
+     "formatted": "$108,577,576",
+     "parityKey": "pricing.walk.fund.APCAXXII.nav",
+     "screenText": "$108,577,576",
+     "tie": true,
+     "visibleOnScreenAtExport": false,
+     "hiddenInside": "pricing-walk-table"
+    }
+   ],
+   "afterOpeningWalkSubview": {
+    "ASCHON.global_qty": {
+     "text": "260,031,426",
+     "visible": true,
+     "inHiddenSubtree": false,
+     "hiddenAncestorId": null
+    },
+    "ASCHON.nav": {
+     "text": "$266,441,285",
+     "visible": true,
+     "inHiddenSubtree": false,
+     "hiddenAncestorId": null
+    }
+   },
+   "walkHeaders": [
+    "Level ▾",
+    "Fund",
+    "Symbol",
+    "Global Qty",
+    "NAV",
+    "Price before",
+    "Value before",
+    "Price after",
+    "Value after",
+    "Δ Price",
+    "Δ Value (P&L)",
+    "Δ bps"
+   ],
+   "problems": []
+  },
+  "sendToPricing-after": {
+   "file": {
+    "target": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl/sendto-after-TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv",
+    "bytes": 995,
+    "name": "TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv"
+   },
+   "header": [
+    "Symbol",
+    "Respective Qty",
+    "Local Price",
+    "Local MV"
+   ],
+   "rowCount": 20,
+   "ties": [
+    {
+     "code": "ASCHON",
+     "error": "no row for symbol undefined"
+    },
+    {
+     "code": "SPORTHLD",
+     "error": "no row for symbol undefined"
+    },
+    {
+     "code": "APCAXXII",
+     "error": "no row for symbol undefined"
+    }
+   ],
+   "afterOpeningWalkSubview": {
+    "ASCHON.global_qty": {
+     "text": "260,031,426",
+     "visible": true,
+     "inHiddenSubtree": false,
+     "hiddenAncestorId": null
+    },
+    "ASCHON.nav": {
+     "text": "$266,441,285",
+     "visible": true,
+     "inHiddenSubtree": false,
+     "hiddenAncestorId": null
+    }
+   },
+   "walkHeaders": [
+    "Level ▾",
+    "Fund",
+    "Symbol",
+    "Global Qty",
+    "NAV",
+    "Price before",
+    "Value before",
+    "Price after",
+    "Value after",
+    "Δ Price",
+    "Δ Value (P&L)",
+    "Δ bps"
+   ],
+   "problems": []
+  }
+ },
+ "r15": {
+  "blockedRequests": [],
+  "consoleProblems": [],
+  "files": [
+   {
+    "target": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl/offline-sendto-TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv",
+    "bytes": 995,
+    "name": "TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv"
+   },
+   {
+    "target": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl/offline-pricing-xlsx-TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx",
+    "bytes": 34509,
+    "name": "TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx"
+   },
+   {
+    "target": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl/offline-lookthrough-TRACE-Pro_lookthrough_Apollo_Sports_Capital_current-marks_2026-06-30.csv",
+    "bytes": 22515,
+    "name": "TRACE-Pro_lookthrough_Apollo_Sports_Capital_current-marks_2026-06-30.csv"
+   },
+   {
+    "target": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl/offline-recon-xlsx-TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx",
+    "bytes": 35596,
+    "name": "TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx"
+   }
+  ],
+  "workbooks": [
+   {
+    "name": "TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx",
+    "bytes": 34509,
+    "sheets": [
+     "Summary",
+     "Pricing"
+    ]
+   },
+   {
+    "name": "TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx",
+    "bytes": 35596,
+    "sheets": [
+     "Summary",
+     "Reconciliation"
+    ]
+   }
+  ],
+  "drawerTerms": [
+   {
+    "opener": "#open-glossary",
+    "visible": [
+     "glossary-drawer"
+    ],
+    "glossaryCards": 35
+   },
+   {
+    "opener": "#open-sources",
+    "visible": [
+     "sources-drawer"
+    ],
+    "glossaryCards": 0
+   }
+  ]
+ }
+}

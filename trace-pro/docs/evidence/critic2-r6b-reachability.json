@@ -1,0 +1,73 @@
+{
+ "reconciliation": {
+  "candidates": 38,
+  "reached": 38,
+  "missingCount": 0,
+  "missing": [],
+  "nonCandidateStops": [
+   "other:a#.skip-link",
+   "other:a#.nav-link"
+  ]
+ },
+ "pricing": {
+  "candidates": 72,
+  "reached": 72,
+  "missingCount": 0,
+  "missing": [],
+  "nonCandidateStops": [
+   "other:a#.skip-link",
+   "other:a#.nav-link"
+  ]
+ },
+ "diagnose-structure": {
+  "candidates": 30,
+  "reached": 30,
+  "missingCount": 0,
+  "missing": [],
+  "nonCandidateStops": [
+   "other:a#.skip-link",
+   "other:a#.nav-link"
+  ]
+ },
+ "diagnose-ownership": {
+  "candidates": 107,
+  "reached": 107,
+  "missingCount": 0,
+  "missing": [],
+  "nonCandidateStops": [
+   "other:ul#ownership-search-list.combo-list",
+   "other:a#.skip-link",
+   "other:a#.nav-link"
+  ]
+ },
+ "diagnose-data-quality": {
+  "candidates": 14,
+  "reached": 14,
+  "missingCount": 0,
+  "missing": [],
+  "nonCandidateStops": [
+   "other:a#.skip-link",
+   "other:a#.nav-link"
+  ]
+ },
+ "diagnose-simulator": {
+  "candidates": 54,
+  "reached": 53,
+  "missingCount": 1,
+  "missing": [
+   "button[]#.btn \"⏸ Pause\""
+  ],
+  "nonCandidateStops": [
+   "other:a#.skip-link",
+   "other:a#.nav-link"
+  ]
+ },
+ "treeHeaderClickable": {
+  "count": 7,
+  "cursor": "auto",
+  "role": null,
+  "tabindex": null,
+  "ariaSort": null,
+  "clickChangedFirstRow": false
+ }
+}

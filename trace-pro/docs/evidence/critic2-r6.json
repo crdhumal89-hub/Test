@@ -1,0 +1,404 @@
+{
+ "routes": {
+  "reconciliation": {
+   "censusCount": 38,
+   "stopCount": 46,
+   "unreachedControls": [],
+   "zeroArea": [],
+   "untyped": [],
+   "thinRing": [],
+   "dimRing": [],
+   "hiddenStops": [],
+   "unnamed": [],
+   "consoleProblems": []
+  },
+  "pricing": {
+   "censusCount": 72,
+   "stopCount": 80,
+   "unreachedControls": [],
+   "zeroArea": [],
+   "untyped": [],
+   "thinRing": [],
+   "dimRing": [],
+   "hiddenStops": [],
+   "unnamed": [],
+   "consoleProblems": []
+  },
+  "diagnose-structure": {
+   "censusCount": 75,
+   "stopCount": 38,
+   "unreachedControls": [],
+   "zeroArea": [],
+   "untyped": [],
+   "thinRing": [],
+   "dimRing": [],
+   "hiddenStops": [],
+   "unnamed": [],
+   "consoleProblems": []
+  },
+  "diagnose-ownership": {
+   "censusCount": 107,
+   "stopCount": 116,
+   "unreachedControls": [],
+   "zeroArea": [],
+   "untyped": [],
+   "thinRing": [],
+   "dimRing": [],
+   "hiddenStops": [],
+   "unnamed": [],
+   "consoleProblems": []
+  },
+  "diagnose-data-quality": {
+   "censusCount": 14,
+   "stopCount": 22,
+   "unreachedControls": [],
+   "zeroArea": [],
+   "untyped": [],
+   "thinRing": [],
+   "dimRing": [],
+   "hiddenStops": [],
+   "unnamed": [],
+   "consoleProblems": []
+  },
+  "diagnose-simulator": {
+   "censusCount": 80,
+   "stopCount": 61,
+   "unreachedControls": [],
+   "zeroArea": [],
+   "untyped": [],
+   "thinRing": [],
+   "dimRing": [],
+   "hiddenStops": [],
+   "unnamed": [],
+   "consoleProblems": []
+  }
+ },
+ "css": {
+  "bareOutlineNone": [],
+  "focusVisibleRuleCount": 3,
+  "focusVisibleRules": [
+   ":focus-visible",
+   ".screen:focus-visible",
+   ".own-seg:focus-visible"
+  ]
+ },
+ "namedTargets": {
+  "sortable price-table header": {
+   "selector": "#pricing-price-table thead th[data-col]",
+   "count": 9,
+   "sample": [
+    {
+     "tag": "th",
+     "role": "columnheader",
+     "name": "Sort by Fund",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 544,
+      "h": 35
+     }
+    },
+    {
+     "tag": "th",
+     "role": "columnheader",
+     "name": "Sort by Symbol",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 148,
+      "h": 35
+     }
+    },
+    {
+     "tag": "th",
+     "role": "columnheader",
+     "name": "Sort by Price to publish",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 121,
+      "h": 35
+     }
+    }
+   ],
+   "keyboard": {
+    "focusReceived": true,
+    "enterChangedScreen": true
+   }
+  },
+  "sortable walk header": {
+   "selector": "#pricing-walk-table thead th[data-col]",
+   "count": 12,
+   "sample": [
+    {
+     "tag": "th",
+     "role": "columnheader",
+     "name": "Level, sorted largest first. Reverse the order.",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 64,
+      "h": 35
+     }
+    },
+    {
+     "tag": "th",
+     "role": "columnheader",
+     "name": "Sort by Fund",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 405,
+      "h": 35
+     }
+    },
+    {
+     "tag": "th",
+     "role": "columnheader",
+     "name": "Sort by Symbol",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 141,
+      "h": 35
+     }
+    }
+   ],
+   "keyboard": {
+    "focusReceived": true,
+    "enterChangedScreen": true
+   }
+  },
+  "reconciliation tree header": {
+   "selector": "#tree thead th",
+   "count": 7,
+   "sample": [
+    {
+     "tag": "th",
+     "role": "",
+     "name": "Hierarchy — fund ▸ SPV ▸ security",
+     "tabindex": null,
+     "focusable": false,
+     "box": {
+      "w": 582,
+      "h": 52
+     }
+    },
+    {
+     "tag": "th",
+     "role": "",
+     "name": "VPM symbol",
+     "tabindex": null,
+     "focusable": false,
+     "box": {
+      "w": 167,
+      "h": 52
+     }
+    },
+    {
+     "tag": "th",
+     "role": "",
+     "name": "NAVreported",
+     "tabindex": null,
+     "focusable": false,
+     "box": {
+      "w": 142,
+      "h": 52
+     }
+    }
+   ],
+   "keyboard": {
+    "focusReceived": false,
+    "enterChangedScreen": false
+   }
+  },
+  "accordion bucket header": {
+   "selector": ".dq-bucket summary, .dq-bucket [role=\"button\"], .dq-bucket button",
+   "count": 10,
+   "sample": [
+    {
+     "tag": "button",
+     "role": "",
+     "name": "Self-mapping (fund holds its own code)43 · Medium▸",
+     "tabindex": null,
+     "focusable": true,
+     "box": {
+      "w": 328,
+      "h": 21
+     }
+    },
+    {
+     "tag": "button",
+     "role": "",
+     "name": "⬇ Download this bucket (CSV) · 43 rows",
+     "tabindex": null,
+     "focusable": true,
+     "box": {
+      "w": 0,
+      "h": 0
+     }
+    },
+    {
+     "tag": "button",
+     "role": "",
+     "name": "Circular mapping (mutual / looping ownership)2 · H",
+     "tabindex": null,
+     "focusable": true,
+     "box": {
+      "w": 343,
+      "h": 21
+     }
+    }
+   ],
+   "keyboard": {
+    "focusReceived": true,
+    "enterChangedScreen": true
+   }
+  },
+  "graph node": {
+   "selector": "#structure-stage .strnode",
+   "count": 46,
+   "sample": [
+    {
+     "tag": "g",
+     "role": "button",
+     "name": "Apollo Sports Capital — Apollo Sports Capital, 100",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 102,
+      "h": 64
+     }
+    },
+    {
+     "tag": "g",
+     "role": "button",
+     "name": "ASCHON — Apollo Sports Capital Holdings (Onshore),",
+     "tabindex": "-1",
+     "focusable": false,
+     "box": {
+      "w": 43,
+      "h": 38
+     }
+    },
+    {
+     "tag": "g",
+     "role": "button",
+     "name": "DUNK — AP Dunk SPV, LLC, 100.00% of its holder",
+     "tabindex": "-1",
+     "focusable": false,
+     "box": {
+      "w": 30,
+      "h": 22
+     }
+    }
+   ],
+   "keyboard": {
+    "focusReceived": true,
+    "enterChangedScreen": true
+   }
+  },
+  "ribbon segment": {
+   "selector": "#ownership-ribbon .own-seg",
+   "count": 39,
+   "sample": [
+    {
+     "tag": "div",
+     "role": "button",
+     "name": "Apollo Credit Strategies Master Fund Ltd., 11.45% ",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 178,
+      "h": 16
+     }
+    },
+    {
+     "tag": "div",
+     "role": "button",
+     "name": "Apollo Credit Strategies Absolute Return Aggregato",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 157,
+      "h": 16
+     }
+    },
+    {
+     "tag": "div",
+     "role": "button",
+     "name": "Apollo Accord+ II Aggregator C, L.P., 9.04% — go t",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 140,
+      "h": 16
+     }
+    }
+   ],
+   "keyboard": {
+    "focusReceived": true,
+    "enterChangedScreen": true
+   }
+  },
+  "flag chip": {
+   "selector": "#reconciliation-exceptions .chip",
+   "count": 3,
+   "sample": [
+    {
+     "tag": "span",
+     "role": "button",
+     "name": "Jump to the first fund flagged Missing NAV",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 118,
+      "h": 32
+     }
+    },
+    {
+     "tag": "span",
+     "role": "button",
+     "name": "Jump to the first fund flagged Dangling SPV",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 125,
+      "h": 32
+     }
+    },
+    {
+     "tag": "span",
+     "role": "button",
+     "name": "Jump to the first fund flagged Material non-positi",
+     "tabindex": "0",
+     "focusable": true,
+     "box": {
+      "w": 192,
+      "h": 32
+     }
+    }
+   ],
+   "keyboard": {
+    "focusReceived": true,
+    "enterChangedScreen": true
+   }
+  }
+ },
+ "drawers": {
+  "glossary": {
+   "focusMovedInside": true,
+   "escapeClosed": true,
+   "focusRestoredTo": "open-glossary",
+   "trapEscapes": [],
+   "trapStops": 60
+  },
+  "sources": {
+   "focusMovedInside": true,
+   "escapeClosed": true,
+   "focusRestoredTo": "open-sources",
+   "trapEscapes": [],
+   "trapStops": 60
+  }
+ }
+}

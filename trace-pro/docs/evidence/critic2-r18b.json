@@ -1,0 +1,87 @@
+{
+ "scoped": {
+  "DUNK": {
+   "scope": "",
+   "total": "105",
+   "buckets": [
+    "Self-mapping (fund holds its own code)43 · Medium▸",
+    "Circular mapping (mutual / looping ownership)2 · High▸",
+    "Missing / dangling SPV code29 · High▸",
+    "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+    "Unmapped identifiers (missing VPM symbol / name)22 · Low▸"
+   ],
+   "emptyStates": [],
+   "noneMarker": true
+  },
+  "ASCHON": {
+   "scope": "",
+   "total": "105",
+   "buckets": [
+    "Self-mapping (fund holds its own code)43 · Medium▸",
+    "Circular mapping (mutual / looping ownership)2 · High▸",
+    "Missing / dangling SPV code29 · High▸",
+    "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+    "Unmapped identifiers (missing VPM symbol / name)22 · Low▸"
+   ],
+   "emptyStates": [],
+   "noneMarker": true
+  },
+  "SPORTHFC": {
+   "scope": "",
+   "total": "105",
+   "buckets": [
+    "Self-mapping (fund holds its own code)43 · Medium▸",
+    "Circular mapping (mutual / looping ownership)2 · High▸",
+    "Missing / dangling SPV code29 · High▸",
+    "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+    "Unmapped identifiers (missing VPM symbol / name)22 · Low▸"
+   ],
+   "emptyStates": [],
+   "noneMarker": true
+  },
+  "APCAXXII": {
+   "scope": "",
+   "total": "105",
+   "buckets": [
+    "Self-mapping (fund holds its own code)43 · Medium▸",
+    "Circular mapping (mutual / looping ownership)2 · High▸",
+    "Missing / dangling SPV code29 · High▸",
+    "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+    "Unmapped identifiers (missing VPM symbol / name)22 · Low▸"
+   ],
+   "emptyStates": [],
+   "noneMarker": true
+  },
+  "ASCON": {
+   "scope": "",
+   "total": "105",
+   "buckets": [
+    "Self-mapping (fund holds its own code)43 · Medium▸",
+    "Circular mapping (mutual / looping ownership)2 · High▸",
+    "Missing / dangling SPV code29 · High▸",
+    "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+    "Unmapped identifiers (missing VPM symbol / name)22 · Low▸"
+   ],
+   "emptyStates": [],
+   "noneMarker": true
+  },
+  "SPORTC": {
+   "scope": "",
+   "total": "105",
+   "buckets": [
+    "Self-mapping (fund holds its own code)43 · Medium▸",
+    "Circular mapping (mutual / looping ownership)2 · High▸",
+    "Missing / dangling SPV code29 · High▸",
+    "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+    "Unmapped identifiers (missing VPM symbol / name)22 · Low▸"
+   ],
+   "emptyStates": [],
+   "noneMarker": true
+  }
+ },
+ "bucketHeads": 10,
+ "expandedBucket": {
+  "rows": 0,
+  "truncationNote": []
+ }
+}

@@ -1,0 +1,128 @@
+{
+ "before": {
+  "pricing": {
+   "treeHeaders": [],
+   "priceHeaders": [
+    "Fund",
+    "Symbol",
+    "Price to publish",
+    "Current mark",
+    "Repriced unit price",
+    "Look-through value",
+    "Repriced value",
+    "Repricing gain or loss",
+    "bps"
+   ],
+   "walkHeaders": [
+    "Level ▾",
+    "Fund",
+    "Symbol",
+    "Global Qty",
+    "NAV",
+    "Price before",
+    "Value before",
+    "Price after",
+    "Value after",
+    "Δ Price",
+    "Δ Value (P&L)",
+    "Δ bps"
+   ],
+   "waterfall": [],
+   "viewNote": "Before pricingCurrent as-booked reality — positions at their current marks (look-through value) and reported NAV, with today's pricing gaps & breaks still shown.Pricing difference $385,897 · NAV $2,062,198,836"
+  },
+  "recon": {
+   "treeHeaders": [
+    "Hierarchy — fund ▸ SPV ▸ security",
+    "VPM symbol",
+    "NAV reported",
+    "Look-through value current marks",
+    "Repriced value bottom-up from NAV",
+    "Pricing difference repriced − look-through",
+    "Non-position difference NAV − repriced"
+   ],
+   "priceHeaders": [],
+   "walkHeaders": [],
+   "waterfall": [
+    "LOOK-THROUGH VALUE $2,060,224,441 look-through of underlyings · current marks",
+    "+ Pricing difference $385,897 +1.9 bps bottom-up NAV repricing",
+    "REPRICED VALUE $2,060,610,338 NAV-repriced bottom-up",
+    "+ Non-position difference $1,588,498 +7.7 bps cash, fees, receivables",
+    "NAV $2,062,198,836 sum of top-level feeder NAVs · NAV report"
+   ],
+   "viewNote": "Before pricingCurrent as-booked reality — positions at their current marks (look-through value) and reported NAV, with today's pricing gaps & breaks still shown.Pricing difference $385,897 · NAV $2,062,198,836"
+  }
+ },
+ "after": {
+  "pricing": {
+   "treeHeaders": [],
+   "priceHeaders": [
+    "Fund",
+    "Symbol",
+    "Price to publish",
+    "Repriced mark",
+    "Repriced unit price",
+    "Look-through value at repriced marks",
+    "Repriced value",
+    "Repricing gain or loss (reconciled)",
+    "bps"
+   ],
+   "walkHeaders": [
+    "Level ▾",
+    "Fund",
+    "Symbol",
+    "Global Qty",
+    "NAV",
+    "Price before",
+    "Value before",
+    "Price after",
+    "Value after",
+    "Δ Price",
+    "Δ Value (P&L)",
+    "Δ bps"
+   ],
+   "waterfall": [],
+   "viewNote": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836"
+  },
+  "recon": {
+   "treeHeaders": [
+    "Hierarchy — fund ▸ SPV ▸ security",
+    "VPM symbol",
+    "NAV reported",
+    "Look-through value at repriced marks",
+    "Repriced value bottom-up from NAV",
+    "Pricing difference reconciled",
+    "Non-position difference NAV − repriced"
+   ],
+   "priceHeaders": [],
+   "walkHeaders": [],
+   "waterfall": [
+    "LOOK-THROUGH VALUE AT REPRICED MARKS $2,060,610,338 every component at its repriced price",
+    "+ Pricing difference $0 +0.0 bps reconciled · no pricing break",
+    "REPRICED VALUE $2,060,610,338 NAV-repriced bottom-up",
+    "+ Non-position difference $1,588,498 +7.7 bps non-trade · cash, fees, receivables",
+    "NAV $2,062,198,836 sum of top-level feeder NAVs · NAV report"
+   ],
+   "viewNote": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836"
+  }
+ },
+ "productNav": {
+  "reconciliation": {
+   "basis": "every component at its repriced price"
+  },
+  "structure": {
+   "basisPara": "Two product net asset values (NAV) exist and both are right, so neither is labelled just “Product NAV”. This lens’s full-screen readout shows Product NAV, fund-entity basis $2,062,196,050.07 — the one NAV stamped on the fund entity. Every other screen shows Product NAV, Σ top-level feeders $2,062,198,835.86. They differ by $2,785.79, which is the whole NAV of the DUNK feeder: a basis difference, not a break. Neither is the sum of every fund’s NAV — that would double-count a parent and its childr",
+   "readoutHidden": true,
+   "readoutText": "Apollo Sports Capital · full screenProduct NAV $2,062,196,050.07 · fund-entity basisOne entity stamp, not the sum of the top-level feeders — every other screen shows that one."
+  },
+  "simulator": {
+   "baseline": "PRODUCT NAV BEFORE ANY SHOCK $2,062,198,835.86 United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ below is measured against"
+  }
+ },
+ "headersThatRelabel": [
+  "pricing.priceHeaders",
+  "pricing.viewNote",
+  "recon.treeHeaders",
+  "recon.waterfall",
+  "recon.viewNote"
+ ]
+}

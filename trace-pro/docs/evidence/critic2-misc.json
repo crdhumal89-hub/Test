@@ -1,0 +1,259 @@
+{
+ "r7": {
+  "reconciliation": {
+   "visible": true,
+   "terms": 35,
+   "role": "dialog",
+   "modal": "true",
+   "stateKept": true,
+   "viaKeyG": true
+  },
+  "pricing": {
+   "visible": true,
+   "terms": 35,
+   "role": "dialog",
+   "modal": "true",
+   "stateKept": true,
+   "viaKeyG": true
+  },
+  "diagnose-structure": {
+   "visible": true,
+   "terms": 35,
+   "role": "dialog",
+   "modal": "true",
+   "stateKept": true,
+   "viaKeyG": true
+  },
+  "diagnose-ownership": {
+   "visible": true,
+   "terms": 35,
+   "role": "dialog",
+   "modal": "true",
+   "stateKept": true,
+   "viaKeyG": true
+  },
+  "diagnose-data-quality": {
+   "visible": true,
+   "terms": 35,
+   "role": "dialog",
+   "modal": "true",
+   "stateKept": true,
+   "viaKeyG": true
+  },
+  "diagnose-simulator": {
+   "visible": true,
+   "terms": 35,
+   "role": "dialog",
+   "modal": "true",
+   "stateKept": true,
+   "viaKeyG": true
+  },
+  "withDrawerOpen": {
+   "detailWasOpen": true,
+   "glossaryCards": 35,
+   "clickRouteBlocked": true
+  },
+  "deepLink": {
+   "text": "NAV",
+   "slug": "nav",
+   "drawerOpen": true,
+   "focusedCardHeading": null,
+   "activeElement": "glscard g-navrec glscard-linked",
+   "searchValue": ""
+  }
+ },
+ "r11": {
+  "structureBasis": "Two product net asset values (NAV) exist and both are right, so neither is labelled just “Product NAV”. This lens’s full-screen readout shows Product NAV, fund-entity basis $2,062,196,050.07 — the one NAV stamped on the fund entity. Every other screen shows Product NAV, Σ top-level feeders $2,062,198,835.86. They differ by $2,785.79, which is the whole NAV of the DUNK feeder: a basis difference, n",
+  "readout": "Apollo Sports Capital · full screenProduct NAV $2,062,196,050.07 · fund-entity basisOne entity stamp, not the sum of the top-level feeders — every other screen shows that one.",
+  "readoutHidden": true,
+  "everyProductNavOccurrence": [
+   {
+    "text": "Product $2,062,196,050.07",
+    "cls": "readout-nav-figure"
+   },
+   {
+    "text": "Product , fund-entity basis $2,062,196,050.07",
+    "cls": ""
+   },
+   {
+    "text": "Product , Σ top-level feeders $2,062,198,835.86",
+    "cls": ""
+   }
+  ]
+ },
+ "r10": {
+  "before": {
+   "treeHeaders": [
+    "Hierarchy — fund ▸ SPV ▸ security",
+    "VPM symbol",
+    "NAVreported",
+    "Look-through valuecurrent marks",
+    "Repriced valuebottom-up from NAV",
+    "Pricing differencerepriced − look-through",
+    "Non-position differenceNAV − repriced"
+   ],
+   "waterfall": [
+    "Look-through value$2,060,224,441look-through of underlyings · current ",
+    "+Pricing difference$385,897+1.9 bpsbottom-up NAV repricing",
+    "Repriced value$2,060,610,338NAV-repriced bottom-up",
+    "+Non-position difference$1,588,498+7.7 bpscash, fees, receivables",
+    "NAV$2,062,198,836sum of top-level feeder NAVs · NAV report"
+   ],
+   "viewNote": "Before pricingCurrent as-booked reality — positions at their current marks (look-through value) and reported NAV, with today's pricing gaps & breaks still shown.Pricing difference $385,897 · NAV $2,062,198,836",
+   "labels": [
+    "Hierarchy — fund ▸ SPV ▸ security",
+    "VPM symbol",
+    "NAV",
+    "Look-through value",
+    "Repriced value",
+    "Pricing difference",
+    "Non-position difference"
+   ]
+  },
+  "after": {
+   "treeHeaders": [
+    "Hierarchy — fund ▸ SPV ▸ security",
+    "VPM symbol",
+    "NAVreported",
+    "Look-through valueat repriced marks",
+    "Repriced valuebottom-up from NAV",
+    "Pricing differencereconciled",
+    "Non-position differenceNAV − repriced"
+   ],
+   "waterfall": [
+    "Look-through value at repriced marks$2,060,610,338every component at i",
+    "+Pricing difference$0+0.0 bpsreconciled · no pricing break",
+    "Repriced value$2,060,610,338NAV-repriced bottom-up",
+    "+Non-position difference$1,588,498+7.7 bpsnon-trade · cash, fees, rece",
+    "NAV$2,062,198,836sum of top-level feeder NAVs · NAV report"
+   ],
+   "viewNote": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836",
+   "labels": [
+    "Hierarchy — fund ▸ SPV ▸ security",
+    "VPM symbol",
+    "NAV",
+    "Look-through value",
+    "Repriced value",
+    "Pricing difference",
+    "Non-position difference"
+   ]
+  },
+  "duplicateLabels": {
+   "before": [],
+   "after": []
+  }
+ },
+ "r12": {
+  "reconciliation": {
+   "toggleVisible": true,
+   "noteVisible": true,
+   "noteHeight": 67,
+   "noteText": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836",
+   "changedByFlip": true
+  },
+  "pricing": {
+   "toggleVisible": true,
+   "noteVisible": true,
+   "noteHeight": 67,
+   "noteText": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836",
+   "changedByFlip": true
+  },
+  "diagnose-structure": {
+   "toggleVisible": false,
+   "noteVisible": false,
+   "noteHeight": 0,
+   "noteText": "",
+   "changedByFlip": false
+  },
+  "diagnose-ownership": {
+   "toggleVisible": false,
+   "noteVisible": false,
+   "noteHeight": 0,
+   "noteText": "",
+   "changedByFlip": false
+  },
+  "diagnose-data-quality": {
+   "toggleVisible": false,
+   "noteVisible": false,
+   "noteHeight": 0,
+   "noteText": "",
+   "changedByFlip": false
+  },
+  "diagnose-simulator": {
+   "toggleVisible": true,
+   "noteVisible": true,
+   "noteHeight": 67,
+   "noteText": "After pricingIdeal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only residual is the non-position (cash / fees) component, shown as non-trade.Pricing difference $0 · NAV $2,062,198,836",
+   "changedByFlip": true
+  }
+ },
+ "r16": {
+  "chosen": "SPORTHFCSPV",
+  "perLens": {
+   "ownership": "SPORTHFCSPV",
+   "data-quality": "SPORTHFCSPV",
+   "simulator": "SPORTHFCSPV",
+   "structure": "SPORTHFCSPV"
+  },
+  "afterDrawer": "SPORTHFCSPV",
+  "afterFlip": "SPORTHFCSPV",
+  "expandedRows": 149,
+  "expandedRowsAfterReturn": 149,
+  "filterAfterReturn": "SPORT",
+  "sortBefore": "descending",
+  "sortAfterReturn": "descending"
+ },
+ "r18": {
+  "combobox": {
+   "text": "No entity matches that. Clear the box to see every fund and SPV in this product.",
+   "actions": []
+  },
+  "pricingFilter": {
+   "text": "No fund matches “zzzz”. All 26 funds are still here.Clear the filter",
+   "actions": [
+    "Clear the filter"
+   ]
+  },
+  "lensLoading": {
+   "structure": {
+    "fetching": false,
+    "loading": [],
+    "screenText": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected once — all four lenses"
+   },
+   "ownership": {
+    "fetching": true,
+    "loading": [
+     "Loading the firm-wide ownership universe…"
+    ],
+    "screenText": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected once — all four lenses"
+   },
+   "data-quality": {
+    "fetching": true,
+    "loading": [
+     "Loading the firm-wide ownership universe…"
+    ],
+    "screenText": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected once — all four lenses"
+   },
+   "simulator": {
+    "fetching": false,
+    "loading": [],
+    "screenText": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected once — all four lenses"
+   }
+  },
+  "sources": {
+   "slotStates": [
+    "Accepted on the Reconciliation screen",
+    "Accepted on the Reconciliation screen"
+   ],
+   "note": "These two slots are shown here so the expected inputs are discoverable, but the recompute is wired on the Reconciliation screen — upload there and the reconciliation, the tree and every price update in place, in front of you.",
+   "fileInputsInDrawer": 0
+  },
+  "afterFollowingUploadLink": {
+   "hash": "#/reconciliation",
+   "fileInputsAnywhere": 0,
+   "anythingSayingUpload": [],
+   "dropTargets": 0
+  },
+  "consoleProblems": []
+ }
+}

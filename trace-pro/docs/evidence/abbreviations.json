@@ -2,30 +2,106 @@
  "denylist": [
   "lt",
   "rfx",
-  "gls",
-  "iss",
   "str",
   "sim",
+  "iss",
   "own",
+  "gls",
+  "MV",
+  "LTV",
+  "px",
+  "qty",
   "gq",
-  "ltv",
-  "dcN",
-  "mv100",
+  "apex",
   "nonav",
   "in tol",
   "scen a",
   "scen b",
-  "Derived MV",
-  "Revised MV",
-  "Publish px",
-  "Current px",
-  "Revised px",
-  "Applied px",
-  "Δ Pricing",
-  "Δ Non-position",
-  "Repricing P&L",
-  "Immediate %",
-  "Applied %"
+  "mv100",
+  "dcN",
+  "NAV",
+  "bps",
+  "SPV",
+  "VPM",
+  "Δ",
+  "FR",
+  "DC"
  ],
- "findings": []
+ "perRoute": {
+  "diagnose-simulator": {
+   "dispositions": {
+    "lt": "absent or glossary-linked",
+    "rfx": "absent or glossary-linked",
+    "str": "absent or glossary-linked",
+    "sim": "absent or glossary-linked",
+    "iss": "absent or glossary-linked",
+    "own": "absent or glossary-linked",
+    "gls": "absent or glossary-linked",
+    "MV": "BARE ×2",
+    "LTV": "absent or glossary-linked",
+    "px": "absent or glossary-linked",
+    "qty": "absent or glossary-linked",
+    "gq": "absent or glossary-linked",
+    "apex": "BARE ×1",
+    "nonav": "absent or glossary-linked",
+    "in tol": "absent or glossary-linked",
+    "scen a": "absent or glossary-linked",
+    "scen b": "absent or glossary-linked",
+    "mv100": "absent or glossary-linked",
+    "dcN": "absent or glossary-linked",
+    "NAV": "BARE ×22",
+    "bps": "BARE ×1",
+    "SPV": "BARE ×5",
+    "VPM": "absent or glossary-linked",
+    "Δ": "BARE ×2",
+    "FR": "absent or glossary-linked",
+    "DC": "BARE ×2 (expansion comes too late)"
+   },
+   "textNodes": 400
+  }
+ },
+ "findings": [
+  {
+   "route": "diagnose-simulator",
+   "token": "MV",
+   "context": "a move in MV flows through to NAV",
+   "where": "note"
+  },
+  {
+   "route": "diagnose-simulator",
+   "token": "apex",
+   "context": "apex",
+   "where": "tag"
+  },
+  {
+   "route": "diagnose-simulator",
+   "token": "NAV",
+   "context": "NAV pricing and look-through",
+   "where": "tagline"
+  },
+  {
+   "route": "diagnose-simulator",
+   "token": "bps",
+   "context": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (153 bps) — SPV/underlyings marke",
+   "where": "P"
+  },
+  {
+   "route": "diagnose-simulator",
+   "token": "SPV",
+   "context": "SPORTHLD - SPV · value $1,795,754,765.06 · 1.024650 per unit",
+   "where": "sim-tile-value mono"
+  },
+  {
+   "route": "diagnose-simulator",
+   "token": "Δ",
+   "context": "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ below is measured ag",
+   "where": "sim-tile-basis"
+  },
+  {
+   "route": "diagnose-simulator",
+   "token": "DC",
+   "context": "DEUCE1DC — AP Deuce Intermediate Holdings I (DC), L.P.",
+   "where": {}
+  }
+ ]
 }

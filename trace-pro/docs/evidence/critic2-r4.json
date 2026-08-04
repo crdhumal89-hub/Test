@@ -1,0 +1,239 @@
+{
+ "lensLoading": {
+  "structure": {
+   "loading": [],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "fetching": false,
+   "problems": []
+  },
+  "ownership": {
+   "loading": [
+    "Loading the firm-wide ownership universe…"
+   ],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "fetching": true,
+   "problems": []
+  },
+  "data-quality": {
+   "loading": [
+    "Loading the firm-wide ownership universe…"
+   ],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "fetching": true,
+   "problems": []
+  },
+  "simulator": {
+   "loading": [],
+   "empty": [
+    {
+     "text": "No shock yet.",
+     "actions": []
+    }
+   ],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "fetching": false,
+   "problems": []
+  }
+ },
+ "lensEmpty": {
+  "structure": {
+   "loading": [],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "ownership": {
+   "loading": [],
+   "empty": [
+    {
+     "text": "Nothing in the firm-wide universe holds DUNK. It is either an ultimate owner — the top of its own chain — or its holders sit outside the mapped universe. Search for another position",
+     "actions": [
+      "Search for another position"
+     ]
+    }
+   ],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "data-quality": {
+   "loading": [],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "simulator": {
+   "loading": [],
+   "empty": [
+    {
+     "text": "No shock yet.",
+     "actions": []
+    }
+   ],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  }
+ },
+ "lensError": {
+  "structure": {
+   "loading": [],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "ownership": {
+   "loading": [],
+   "empty": [],
+   "error": [
+    {
+     "text": "The firm-wide ownership universe could not be loaded. (e.search ?? []).map is not a function No ownership figure can be derived without it, so none are shown rather than partial ones. Try again",
+     "role": "alert",
+     "actions": [
+      "Try again"
+     ]
+    }
+   ],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "data-quality": {
+   "loading": [],
+   "empty": [],
+   "error": [
+    {
+     "text": "The firm-wide ownership universe could not be loaded. (e.entities ?? []).map is not a function or its return value is not iterable The issue log is scanned from that file, so an empty list here would be a lie — nothing is shown instead. Try again",
+     "role": "alert",
+     "actions": [
+      "Try again"
+     ]
+    }
+   ],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "simulator": {
+   "loading": [],
+   "empty": [
+    {
+     "text": "No shock yet.",
+     "actions": []
+    }
+   ],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "structure-simfixture": {
+   "loading": [],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": false,
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+   "problems": []
+  },
+  "simulator-simfixture": {
+   "loading": [],
+   "empty": [],
+   "error": [],
+   "bareDash": false,
+   "blank": true,
+   "text": "",
+   "problems": [
+    "pageerror: TypeError: e.apex.reduce is not a function"
+   ]
+  }
+ },
+ "uploadSlots": {
+  "slots": [
+   {
+    "key": "position",
+    "text": "Position Report .xlsxStructure and units — who holds what, how many units, and the ultimate securities.Accepted on the Reconciliation screen",
+    "controls": 0,
+    "states": 0
+   },
+   {
+    "key": "nav",
+    "text": "NAV Report .csvNet asset value per fund — the ENDING_NAV column, which sets every price to publish.Accepted on the Reconciliation screen",
+    "controls": 0,
+    "states": 0
+   }
+  ],
+  "fileInputs": 0,
+  "theOneRealControl": "Open the Reconciliation screen to upload",
+  "claim": "These two slots are shown here so the expected inputs are discoverable, but the recompute is wired on the Reconciliation screen — upload there and the reconciliation, the tree and every price update in place, in front of you.",
+  "problems": []
+ },
+ "combobox": {
+  "loading": {
+   "listbox": "combo-list",
+   "options": 22,
+   "loadingState": 0,
+   "text": "FUND APAV- SPV AP Aggregator Velocity, L.P. FUND APCAXXII - SPV AP CA XXII, LLC FUND APRAIL2-SPV AP Railroad Holdings II"
+  },
+  "empty": {
+   "text": "No entity matches that. Clear the box to see every fund and SPV in this product.",
+   "actionElements": []
+  },
+  "error": {
+   "options": 50,
+   "comboText": "FUND APAV- SPV AP Aggregator Velocity, L.P. FUND APCAXXII - SPV AP CA XXII, LLC FUND APRAIL2-SPV AP Railroad Holdings II, L.P. SPV APAEV - SPV AP Sports Aggrega",
+   "screenError": [],
+   "problems": []
+  }
+ },
+ "universeFetchAborted": {
+  "loading": [],
+  "empty": [],
+  "error": [
+   {
+    "text": "The firm-wide ownership universe could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/universe.json. Check that the data folder shipped with the app. No ownership figure can be derived without it, so none are shown rather than partial ones. Try again",
+    "role": "alert",
+    "actions": [
+     "Try again"
+    ]
+   }
+  ],
+  "bareDash": false,
+  "blank": false,
+  "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected on",
+  "problems": [
+   "console.error: Failed to load resource: net::ERR_FAILED"
+  ]
+ }
+}

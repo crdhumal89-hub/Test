@@ -1,0 +1,622 @@
+{
+ "reconciliation": [
+  {
+   "step": 0,
+   "scrollY": 0,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 63,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "5",
+     "id": "",
+     "cls": "chip-count",
+     "top": 504,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Missing NAV"
+    },
+    {
+     "text": "1",
+     "id": "",
+     "cls": "chip-count",
+     "top": 504,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Dangling SPV"
+    },
+    {
+     "text": "8",
+     "id": "",
+     "cls": "chip-count",
+     "top": 504,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Material non-position gap"
+    }
+   ]
+  },
+  {
+   "step": 1,
+   "scrollY": 235,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 63,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "5",
+     "id": "",
+     "cls": "chip-count",
+     "top": 269,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Missing NAV"
+    },
+    {
+     "text": "1",
+     "id": "",
+     "cls": "chip-count",
+     "top": 269,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Dangling SPV"
+    },
+    {
+     "text": "8",
+     "id": "",
+     "cls": "chip-count",
+     "top": 269,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Material non-position gap"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "scrollY": 235,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 63,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "5",
+     "id": "",
+     "cls": "chip-count",
+     "top": 269,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Missing NAV"
+    },
+    {
+     "text": "1",
+     "id": "",
+     "cls": "chip-count",
+     "top": 269,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Dangling SPV"
+    },
+    {
+     "text": "8",
+     "id": "",
+     "cls": "chip-count",
+     "top": 269,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Material non-position gap"
+    }
+   ]
+  }
+ ],
+ "pricing": [
+  {
+   "step": 0,
+   "scrollY": 0,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 185,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  },
+  {
+   "step": 1,
+   "scrollY": 645,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 185,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  },
+  {
+   "step": 2,
+   "scrollY": 645,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 185,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  }
+ ],
+ "diagnose-structure": [
+  {
+   "step": 0,
+   "scrollY": 0,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 48,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  },
+  {
+   "step": 1,
+   "scrollY": 239,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 48,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  },
+  {
+   "step": 2,
+   "scrollY": 239,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 48,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  }
+ ],
+ "diagnose-ownership": [
+  {
+   "step": 0,
+   "scrollY": 0,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 118,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  },
+  {
+   "step": 1,
+   "scrollY": 734,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 118,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  },
+  {
+   "step": 2,
+   "scrollY": 734,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 118,
+   "unitlessCount": 0,
+   "unitlessSample": []
+  }
+ ],
+ "diagnose-data-quality": [
+  {
+   "step": 0,
+   "scrollY": 0,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 5,
+   "unitlessCount": 5,
+   "unitlessSample": [
+    {
+     "text": "105",
+     "id": "data-quality-badge",
+     "cls": "dq-badge",
+     "top": 367,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "31",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 426,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "52",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 468,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "22",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 510,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "105",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 552,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    }
+   ]
+  },
+  {
+   "step": 1,
+   "scrollY": 0,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 5,
+   "unitlessCount": 5,
+   "unitlessSample": [
+    {
+     "text": "105",
+     "id": "data-quality-badge",
+     "cls": "dq-badge",
+     "top": 367,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "31",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 426,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "52",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 468,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "22",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 510,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    },
+    {
+     "text": "105",
+     "id": "",
+     "cls": "dq-card-value",
+     "top": 552,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Scope"
+    }
+   ]
+  }
+ ],
+ "diagnose-simulator": [
+  {
+   "step": 0,
+   "scrollY": 0,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 83,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "1,752,553,740",
+     "id": "",
+     "cls": "mono",
+     "top": 629,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "1.024650",
+     "id": "",
+     "cls": "mono",
+     "top": 652,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "6",
+     "id": "",
+     "cls": "",
+     "top": 977,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Product NAV before any shock"
+    }
+   ]
+  },
+  {
+   "step": 1,
+   "scrollY": 900,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 83,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "1,752,553,740",
+     "id": "",
+     "cls": "mono",
+     "top": -271,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "1.024650",
+     "id": "",
+     "cls": "mono",
+     "top": -248,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "6",
+     "id": "",
+     "cls": "",
+     "top": 77,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Product NAV before any shock"
+    }
+   ]
+  },
+  {
+   "step": 2,
+   "scrollY": 1800,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 83,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "1,752,553,740",
+     "id": "",
+     "cls": "mono",
+     "top": -1171,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "1.024650",
+     "id": "",
+     "cls": "mono",
+     "top": -1148,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "6",
+     "id": "",
+     "cls": "",
+     "top": -823,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Product NAV before any shock"
+    }
+   ]
+  },
+  {
+   "step": 3,
+   "scrollY": 2163,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 83,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "1,752,553,740",
+     "id": "",
+     "cls": "mono",
+     "top": -1534,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "1.024650",
+     "id": "",
+     "cls": "mono",
+     "top": -1511,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "6",
+     "id": "",
+     "cls": "",
+     "top": -1186,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Product NAV before any shock"
+    }
+   ]
+  },
+  {
+   "step": 4,
+   "scrollY": 2163,
+   "asofVisible": true,
+   "asofText": "As of2026-06-30",
+   "mastheadPosition": "sticky",
+   "figureCount": 83,
+   "unitlessCount": 3,
+   "unitlessSample": [
+    {
+     "text": "1,752,553,740",
+     "id": "",
+     "cls": "mono",
+     "top": -1534,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "1.024650",
+     "id": "",
+     "cls": "mono",
+     "top": -1511,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Market valuea move in MV flows through t"
+    },
+    {
+     "text": "6",
+     "id": "",
+     "cls": "",
+     "top": -1186,
+     "selfUnit": false,
+     "headerUnit": false,
+     "captionUnit": false,
+     "labelUnit": false,
+     "header": "",
+     "label": "Product NAV before any shock"
+    }
+   ]
+  }
+ ]
+}

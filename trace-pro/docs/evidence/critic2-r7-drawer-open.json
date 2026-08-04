@@ -1,0 +1,54 @@
+{
+ "recon-row-detail": {
+  "drawerOpen": [
+   "reconciliation-detail"
+  ],
+  "glossaryButtonBox": {
+   "top": 14,
+   "left": 1384,
+   "w": 80,
+   "h": 31
+  },
+  "elementAtItsCentre": "div#.",
+  "isTheButton": false,
+  "scrim": null,
+  "clickOk": false,
+  "clickErr": "TimeoutError: locator.click: Timeout 4000ms exceeded.",
+  "afterClick": {
+   "glossaryOpen": false
+  },
+  "afterKeyG": {
+   "open": [
+    "reconciliation-detail",
+    "glossary-drawer"
+   ],
+   "terms": 35
+  }
+ },
+ "pricing-fund-detail": {
+  "drawerOpen": [
+   "pricing-detail",
+   "glossary-drawer"
+  ],
+  "glossaryButtonBox": {
+   "top": 14,
+   "left": 1384,
+   "w": 80,
+   "h": 31
+  },
+  "elementAtItsCentre": "header#.drawer-head",
+  "isTheButton": false,
+  "scrim": null,
+  "clickOk": false,
+  "clickErr": "TimeoutError: locator.click: Timeout 4000ms exceeded.",
+  "afterClick": {
+   "glossaryOpen": true
+  },
+  "afterKeyG": {
+   "open": [
+    "pricing-detail"
+   ],
+   "terms": 0
+  }
+ }
+}

@@ -1,0 +1,203 @@
+{
+ "no-drawer-reconciliation": {
+  "before": {
+   "visibleGlossaryCards": 0,
+   "openDrawers": [],
+   "glossaryButtonHitTest": "button#open-glossary.chrome-btn",
+   "glossaryButtonReceivesPointer": true,
+   "coveringElement": null
+  },
+  "clickOk": true,
+  "clickErr": null,
+  "afterClick": {
+   "visibleGlossaryCards": 35,
+   "openDrawers": [
+    "glossary-drawer"
+   ],
+   "glossaryButtonHitTest": "header#.drawer-head",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "HEADER",
+    "id": "",
+    "cls": "drawer-head",
+    "z": "auto",
+    "pos": "relative",
+    "outer": "<header class=\"drawer-head\"><div class=\"glsintro\"><h2 class=\"glstt\" id=\"glossary-title\">Glossary</h2><p class=\"glssub\" data-parity=\"glossary.intro\">Every term u"
+   }
+  },
+  "afterKeyG": {
+   "visibleGlossaryCards": 35,
+   "openDrawers": [
+    "glossary-drawer"
+   ],
+   "glossaryButtonHitTest": "header#.drawer-head",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "HEADER",
+    "id": "",
+    "cls": "drawer-head",
+    "z": "auto",
+    "pos": "relative",
+    "outer": "<header class=\"drawer-head\"><div class=\"glsintro\"><h2 class=\"glstt\" id=\"glossary-title\">Glossary</h2><p class=\"glssub\" data-parity=\"glossary.intro\">Every term u"
+   }
+  }
+ },
+ "recon-row-detail-open": {
+  "before": {
+   "visibleGlossaryCards": 0,
+   "openDrawers": [
+    "reconciliation-detail"
+   ],
+   "glossaryButtonHitTest": "div#.",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "DIV",
+    "id": "",
+    "cls": "",
+    "z": "auto",
+    "pos": "static",
+    "outer": "<div><span class=\"drawer-symbol\" data-parity=\"reconciliation.detail.ASCHON.symbol\">ASCHON-SPV</span><span class=\"badge badge-warn\" data-parity=\"reconciliation.d"
+   }
+  },
+  "clickOk": false,
+  "clickErr": "TimeoutError: locator.click: Timeout 3500ms exceeded.",
+  "afterClick": {
+   "visibleGlossaryCards": 0,
+   "openDrawers": [
+    "reconciliation-detail"
+   ],
+   "glossaryButtonHitTest": "div#.",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "DIV",
+    "id": "",
+    "cls": "",
+    "z": "auto",
+    "pos": "static",
+    "outer": "<div><span class=\"drawer-symbol\" data-parity=\"reconciliation.detail.ASCHON.symbol\">ASCHON-SPV</span><span class=\"badge badge-warn\" data-parity=\"reconciliation.d"
+   }
+  },
+  "afterKeyG": {
+   "visibleGlossaryCards": 35,
+   "openDrawers": [
+    "reconciliation-detail",
+    "glossary-drawer"
+   ],
+   "glossaryButtonHitTest": "header#.drawer-head",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "HEADER",
+    "id": "",
+    "cls": "drawer-head",
+    "z": "auto",
+    "pos": "relative",
+    "outer": "<header class=\"drawer-head\"><div class=\"glsintro\"><h2 class=\"glstt\" id=\"glossary-title\">Glossary</h2><p class=\"glssub\" data-parity=\"glossary.intro\">Every term u"
+   }
+  }
+ },
+ "pricing-fund-detail-open": {
+  "before": {
+   "visibleGlossaryCards": 0,
+   "openDrawers": [
+    "pricing-detail"
+   ],
+   "glossaryButtonHitTest": "span#.badge badge-ok",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "SPAN",
+    "id": "",
+    "cls": "badge badge-ok",
+    "z": "auto",
+    "pos": "static",
+    "outer": "<span class=\"badge badge-ok\">Top-level feeder</span>"
+   }
+  },
+  "clickOk": false,
+  "clickErr": "TimeoutError: locator.click: Timeout 3500ms exceeded.",
+  "afterClick": {
+   "visibleGlossaryCards": 0,
+   "openDrawers": [
+    "pricing-detail"
+   ],
+   "glossaryButtonHitTest": "span#.badge badge-ok",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "SPAN",
+    "id": "",
+    "cls": "badge badge-ok",
+    "z": "auto",
+    "pos": "static",
+    "outer": "<span class=\"badge badge-ok\">Top-level feeder</span>"
+   }
+  },
+  "afterKeyG": {
+   "visibleGlossaryCards": 35,
+   "openDrawers": [
+    "pricing-detail",
+    "glossary-drawer"
+   ],
+   "glossaryButtonHitTest": "header#.drawer-head",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "HEADER",
+    "id": "",
+    "cls": "drawer-head",
+    "z": "auto",
+    "pos": "relative",
+    "outer": "<header class=\"drawer-head\"><div class=\"glsintro\"><h2 class=\"glstt\" id=\"glossary-title\">Glossary</h2><p class=\"glssub\" data-parity=\"glossary.intro\">Every term u"
+   }
+  }
+ },
+ "sources-drawer-open": {
+  "before": {
+   "visibleGlossaryCards": 0,
+   "openDrawers": [
+    "sources-drawer"
+   ],
+   "glossaryButtonHitTest": "header#.drawer-head",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "HEADER",
+    "id": "",
+    "cls": "drawer-head",
+    "z": "auto",
+    "pos": "relative",
+    "outer": "<header class=\"drawer-head\"><h2 class=\"drawer-title\" id=\"sources-title\">Data sources &amp; as-of</h2><p class=\"drawer-sub\" id=\"sources-asof\">Apollo Sports Capit"
+   }
+  },
+  "clickOk": false,
+  "clickErr": "TimeoutError: locator.click: Timeout 3500ms exceeded.",
+  "afterClick": {
+   "visibleGlossaryCards": 0,
+   "openDrawers": [
+    "sources-drawer"
+   ],
+   "glossaryButtonHitTest": "header#.drawer-head",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "HEADER",
+    "id": "",
+    "cls": "drawer-head",
+    "z": "auto",
+    "pos": "relative",
+    "outer": "<header class=\"drawer-head\"><h2 class=\"drawer-title\" id=\"sources-title\">Data sources &amp; as-of</h2><p class=\"drawer-sub\" id=\"sources-asof\">Apollo Sports Capit"
+   }
+  },
+  "afterKeyG": {
+   "visibleGlossaryCards": 35,
+   "openDrawers": [
+    "glossary-drawer"
+   ],
+   "glossaryButtonHitTest": "header#.drawer-head",
+   "glossaryButtonReceivesPointer": false,
+   "coveringElement": {
+    "tag": "HEADER",
+    "id": "",
+    "cls": "drawer-head",
+    "z": "auto",
+    "pos": "relative",
+    "outer": "<header class=\"drawer-head\"><div class=\"glsintro\"><h2 class=\"glstt\" id=\"glossary-title\">Glossary</h2><p class=\"glssub\" data-parity=\"glossary.intro\">Every term u"
+   }
+  }
+ }
+}

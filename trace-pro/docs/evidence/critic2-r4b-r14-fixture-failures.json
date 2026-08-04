@@ -1,0 +1,1120 @@
+{
+ "lookthrough.json|abort|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check th",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "lookthrough.json|abort|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check th",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "lookthrough.json|abort|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check th",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "lookthrough.json|abort|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check th",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/lookthrough.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "lookthrough.json|http500|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Ser",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ]
+ },
+ "lookthrough.json|http500|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Ser",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ]
+ },
+ "lookthrough.json|http500|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Ser",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ]
+ },
+ "lookthrough.json|http500|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Ser",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json returned 500 Internal Server Error."
+  ]
+ },
+ "lookthrough.json|notJson|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON. Confir",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ]
+ },
+ "lookthrough.json|notJson|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON. Confir",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ]
+ },
+ "lookthrough.json|notJson|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON. Confir",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ]
+ },
+ "lookthrough.json|notJson|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough."
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON. Confir",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/lookthrough.json is not valid JSON."
+  ]
+ },
+ "lookthrough.json|emptyObj|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: e is not iterable Try again"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: e is not iterable Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: e is not iterable"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: e is not iterable"
+  ]
+ },
+ "lookthrough.json|emptyObj|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: e is not iterable Try again"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: e is not iterable Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: e is not iterable"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: e is not iterable"
+  ]
+ },
+ "lookthrough.json|emptyObj|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: e is not iterable Try again"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: e is not iterable Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: e is not iterable"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: e is not iterable"
+  ]
+ },
+ "lookthrough.json|emptyObj|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: e is not iterable Try again"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: e is not iterable Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: e is not iterable"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: e is not iterable"
+  ]
+ },
+ "repricing.json|abort|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "repricing.json|abort|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "repricing.json|abort|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "repricing.json|abort|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/repricing.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "repricing.json|http500|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ]
+ },
+ "repricing.json|http500|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ]
+ },
+ "repricing.json|http500|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ]
+ },
+ "repricing.json|http500|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json returned 500 Internal Server Error."
+  ]
+ },
+ "repricing.json|notJson|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ]
+ },
+ "repricing.json|notJson|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ]
+ },
+ "repricing.json|notJson|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ]
+ },
+ "repricing.json|notJson|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/repricing.json is not valid JSON."
+  ]
+ },
+ "repricing.json|emptyObj|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'length"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'length') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'length')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'length')"
+  ]
+ },
+ "repricing.json|emptyObj|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'length"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'length') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'length')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'length')"
+  ]
+ },
+ "repricing.json|emptyObj|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'find')"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'find') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'find')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'find')"
+  ]
+ },
+ "repricing.json|emptyObj|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'find')"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'find') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'find')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'find')"
+  ]
+ },
+ "simulator.json|abort|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "simulator.json|abort|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "simulator.json|abort|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "simulator.json|abort|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/apollo-sports-capital/2026-06-30/simulator.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "simulator.json|http500|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ]
+ },
+ "simulator.json|http500|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ]
+ },
+ "simulator.json|http500|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ]
+ },
+ "simulator.json|http500|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Serve",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json returned 500 Internal Server Error."
+  ]
+ },
+ "simulator.json|notJson|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ]
+ },
+ "simulator.json|notJson|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ]
+ },
+ "simulator.json|notJson|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ]
+ },
+ "simulator.json|notJson|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.js"
+  ],
+  "bootError": "The product’s data could not be loaded. data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON. Confirm ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/apollo-sports-capital/2026-06-30/simulator.json is not valid JSON."
+  ]
+ },
+ "simulator.json|emptyObj|#/reconciliation": {
+  "screenBlank": false,
+  "screenChars": 2794,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "simulator.json|emptyObj|#/pricing": {
+  "screenBlank": false,
+  "screenChars": 5850,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "simulator.json|emptyObj|#/diagnose/structure": {
+  "screenBlank": false,
+  "screenChars": 2384,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "simulator.json|emptyObj|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: e.edges is not iterable Try again"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: e.edges is not iterable Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: e.edges is not iterable"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: e.edges is not iterable"
+  ]
+ },
+ "universe.json|abort|#/reconciliation": {
+  "screenBlank": false,
+  "screenChars": 2794,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|abort|#/pricing": {
+  "screenBlank": false,
+  "screenChars": 5850,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|abort|#/diagnose/structure": {
+  "screenBlank": false,
+  "screenChars": 2384,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|abort|#/diagnose/simulator": {
+  "screenBlank": false,
+  "screenChars": 6281,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|http500|#/reconciliation": {
+  "screenBlank": false,
+  "screenChars": 2794,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|http500|#/pricing": {
+  "screenBlank": false,
+  "screenChars": 5850,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|http500|#/diagnose/structure": {
+  "screenBlank": false,
+  "screenChars": 2384,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|http500|#/diagnose/simulator": {
+  "screenBlank": false,
+  "screenChars": 6281,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|notJson|#/reconciliation": {
+  "screenBlank": false,
+  "screenChars": 2794,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|notJson|#/pricing": {
+  "screenBlank": false,
+  "screenChars": 5850,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|notJson|#/diagnose/structure": {
+  "screenBlank": false,
+  "screenChars": 2384,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|notJson|#/diagnose/simulator": {
+  "screenBlank": false,
+  "screenChars": 6281,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|emptyObj|#/reconciliation": {
+  "screenBlank": false,
+  "screenChars": 2794,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|emptyObj|#/pricing": {
+  "screenBlank": false,
+  "screenChars": 5850,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|emptyObj|#/diagnose/structure": {
+  "screenBlank": false,
+  "screenChars": 2384,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "universe.json|emptyObj|#/diagnose/simulator": {
+  "screenBlank": false,
+  "screenChars": 6281,
+  "errorStates": [],
+  "bootError": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 ",
+  "questionVisible": true,
+  "uncaught": [],
+  "allProblems": []
+ },
+ "manifest.json|abort|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the data folder shipped with the ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "manifest.json|abort|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the data folder shipped with the ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "manifest.json|abort|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the data folder shipped with the ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "manifest.json|abort|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the"
+  ],
+  "bootError": "The product’s data could not be loaded. Could not reach data/manifest.json. Check that the data folder shipped with the ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: net::ERR_FAILED",
+   "pageerror: FixtureError: Could not reach data/manifest.json. Check that the data folder shipped with the app."
+  ]
+ },
+ "manifest.json|http500|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Er"
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Error. Confirm the data folder s",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ]
+ },
+ "manifest.json|http500|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Er"
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Error. Confirm the data folder s",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ]
+ },
+ "manifest.json|http500|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Er"
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Error. Confirm the data folder s",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ]
+ },
+ "manifest.json|http500|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Er"
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json returned 500 Internal Server Error. Confirm the data folder s",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ],
+  "allProblems": [
+   "console.error: Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+   "pageerror: FixtureError: data/manifest.json returned 500 Internal Server Error."
+  ]
+ },
+ "manifest.json|notJson|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the "
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the data folder shipped alongside ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ]
+ },
+ "manifest.json|notJson|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the "
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the data folder shipped alongside ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ]
+ },
+ "manifest.json|notJson|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the "
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the data folder shipped alongside ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ]
+ },
+ "manifest.json|notJson|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the "
+  ],
+  "bootError": "The product’s data could not be loaded. data/manifest.json is not valid JSON. Confirm the data folder shipped alongside ",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ],
+  "allProblems": [
+   "pageerror: FixtureError: data/manifest.json is not valid JSON."
+  ]
+ },
+ "manifest.json|emptyObj|#/reconciliation": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'produc"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'product') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ]
+ },
+ "manifest.json|emptyObj|#/pricing": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'produc"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'product') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ]
+ },
+ "manifest.json|emptyObj|#/diagnose/structure": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'produc"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'product') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ]
+ },
+ "manifest.json|emptyObj|#/diagnose/simulator": {
+  "screenBlank": true,
+  "screenChars": 0,
+  "errorStates": [
+   "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'produc"
+  ],
+  "bootError": "TRACE-Pro could not start. TypeError: Cannot read properties of undefined (reading 'product') Try again",
+  "questionVisible": false,
+  "uncaught": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ],
+  "allProblems": [
+   "pageerror: TypeError: Cannot read properties of undefined (reading 'product')"
+  ]
+ }
+}

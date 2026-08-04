@@ -1,0 +1,79 @@
+{
+ "mastheadTagline": {
+  "x": 135.15625,
+  "y": 8,
+  "width": 186.375,
+  "height": 42.75,
+  "text": "NAV pricing and look-through",
+  "inGterm": false
+ },
+ "ownershipIdentity": {
+  "x": 10,
+  "y": 393.34375,
+  "width": 900,
+  "height": 43.25,
+  "text": "SPV / FUNDAPPOUR1-SPVAP Pour Holdings, L.P. · code APPOURITotal qty: 1,330,020,204100%",
+  "inGterm": false
+ },
+ "ownershipTreeHeader": {
+  "x": 11,
+  "y": 479.59375,
+  "width": 900,
+  "height": 76,
+  "text": "Owner (expand ▸ upward)VPM symbolSPV fund codeQty heldDirect shareof the level below% of APPOUR1-SPVcumulative · effecti",
+  "inGterm": false
+ },
+ "dqBuckets": {
+  "x": 18,
+  "y": 686.59375,
+  "width": 193.671875,
+  "height": 39,
+  "text": "Missing / dangling SPV code",
+  "inGterm": false
+ },
+ "simulatorSubject": {
+  "x": 23,
+  "y": 431.140625,
+  "width": 771,
+  "height": 46.5,
+  "text": "$2,062,198,835.86",
+  "inGterm": false
+ },
+ "simulatorGraphPx": {
+  "count": 20,
+  "sample": [
+   "px 1.122812",
+   "px 1.008959",
+   "px 1.124532",
+   "px 1.004788",
+   "px 1.011649"
+  ],
+  "anyGlossaryLinked": false
+ },
+ "vocabularyLines": {
+  "#/reconciliation": {
+   "vocabLines": [
+    "Terms on this screen: NAV = net asset value · SPV = special purpose vehicle · VPM = the va"
+   ]
+  },
+  "#/pricing": {
+   "vocabLines": [
+    "Terms on this screen: NAV = net asset value · bps = basis points, one hundredth of a perce"
+   ]
+  },
+  "#/diagnose/structure": {
+   "vocabLines": [
+    "Terms on this screen: NAV = net asset value · SPV = special purpose vehicle. Each dotted t"
+   ]
+  },
+  "#/diagnose/ownership": {
+   "vocabLines": []
+  },
+  "#/diagnose/data-quality": {
+   "vocabLines": []
+  },
+  "#/diagnose/simulator": {
+   "vocabLines": []
+  }
+ }
+}

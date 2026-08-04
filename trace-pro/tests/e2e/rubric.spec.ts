@@ -3,10 +3,11 @@
  * cites in docs/ux-scorecard.md — it does not grade anything itself, and passing it is necessary
  * but not sufficient for the UX gate.
  *
- * Criteria checked here: R1 (screen states its question), R2 (no bare abbreviations), R3 (unit and
+ * Criteria checked here: R1 (screen states its question), R3 (unit and
  * as-of on every figure), R5 (primary answer above the fold), R7 (glossary one action away),
  * R12 (pricing basis never ambiguous), R14 (nothing fails silently), R16 (selection survives
- * navigation), R18 (empty states offer a recovery). R6 is measured in rubric-focus.spec.ts.
+ * navigation), R18 (empty states offer a recovery). R6 is in rubric-focus.spec.ts, R2 in
+ * rubric-vocabulary.spec.ts, and R1's painted-position check in rubric-order.spec.ts.
  */
 import { test, expect } from '@playwright/test';
 import {
@@ -18,24 +19,6 @@ import {
   expectClean,
 } from './helpers.js';
 
-/**
- * Tokens that must never appear as bare, unexplained user-visible text outside the glossary.
- *
- * The criterion is about an abbreviation presented AS A LABEL — a tab called `own`, a column headed
- * `gq`. It is not about the English word "own" inside "the product's own NAV". So a short code is
- * flagged only when it is the ENTIRE text of an element; whole-word matching is not enough, because
- * `own`, `lt` and `sim` are or resemble ordinary words and a crawler that cries wolf on English
- * prose is worse than no crawler at all.
- *
- * Multi-word labels are matched as substrings, because those are never anything but labels.
- */
-const CODE_TOKENS = ['lt', 'rfx', 'gls', 'iss', 'str', 'sim', 'own', 'gq', 'ltv', 'dcN', 'mv100', 'nonav'];
-const PHRASE_TOKENS = [
-  'in tol', 'scen a', 'scen b', 'Derived MV', 'Revised MV', 'Publish px', 'Current px',
-  'Revised px', 'Applied px', 'Δ Pricing', 'Δ Non-position', 'Repricing P&L', 'Immediate %',
-  'Applied %',
-];
-const ABBREVIATION_DENYLIST = [...CODE_TOKENS, ...PHRASE_TOKENS];
 
 test.describe('R1 — every screen states the question it answers', () => {
   for (const route of ROUTES) {
@@ -54,41 +37,6 @@ test.describe('R1 — every screen states the question it answers', () => {
       expectClean(problems);
     });
   }
-});
-
-test('R2 — no bare abbreviation survives outside the glossary', async ({ page }) => {
-  const findings: { route: string; token: string; context: string }[] = [];
-  for (const route of ROUTES) {
-    await gotoRoute(page, route.hash);
-    const visible = await page.evaluate(() => {
-      const main = document.getElementById('screen');
-      const chrome = document.getElementById('masthead');
-      const parts: string[] = [];
-      for (const host of [chrome, main]) {
-        if (!host) continue;
-        const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
-        let node = walker.nextNode();
-        while (node) {
-          const text = (node.textContent ?? '').replace(/\s+/g, ' ').trim();
-          const parent = node.parentElement;
-          const inGlossary = !!parent?.closest('.glscard, .glssec, #drawer-host');
-          if (text && !inGlossary) parts.push(text);
-          node = walker.nextNode();
-        }
-      }
-      return parts;
-    });
-    for (const token of PHRASE_TOKENS) {
-      const hit = visible.find((t) => t.includes(token));
-      if (hit) findings.push({ route: route.id, token, context: hit.slice(0, 90) });
-    }
-    for (const token of CODE_TOKENS) {
-      const hit = visible.find((t) => t.toLowerCase() === token.toLowerCase());
-      if (hit) findings.push({ route: route.id, token, context: hit.slice(0, 90) });
-    }
-  }
-  writeEvidence('abbreviations.json', { denylist: ABBREVIATION_DENYLIST, findings });
-  expect(findings, `bare abbreviations found:\n${JSON.stringify(findings, null, 1)}`).toEqual([]);
 });
 
 /**

@@ -1,0 +1,58 @@
+{
+ "apex-not-an-array|#/diagnose/simulator": {
+  "screenText": "",
+  "bodyText": "TRACE-Pro could not start. TypeError: e.apex.reduce is not a function Try again",
+  "errorStatesAnywhere": 1,
+  "recoveryButtons": [
+   "Try again"
+  ],
+  "mastheadPresent": false,
+  "problems": [
+   "pageerror: TypeError: e.apex.reduce is not a function"
+  ]
+ },
+ "apex-not-an-array|#/reconciliation": {
+  "screenText": "Does this product’s NAV agree with the value of what it holds, and where is the difference? Terms on this screen: NAV = net asset value · SPV = special purpose vehicle · VPM = the valuation portfolio ",
+  "bodyText": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 Current marks Repriced Glossary Data sources Reconciliation Pricing Diagnose Jump to Structure Jump to Ownership Jump to Data quality Jump to Simulator BEFORE PRICING Current as-bo",
+  "errorStatesAnywhere": 0,
+  "recoveryButtons": [],
+  "mastheadPresent": true,
+  "problems": []
+ },
+ "edges-missing|#/diagnose/simulator": {
+  "screenText": "",
+  "bodyText": "TRACE-Pro could not start. TypeError: e.edges is not iterable Try again",
+  "errorStatesAnywhere": 1,
+  "recoveryButtons": [
+   "Try again"
+  ],
+  "mastheadPresent": false,
+  "problems": [
+   "pageerror: TypeError: e.edges is not iterable"
+  ]
+ },
+ "edges-missing|#/reconciliation": {
+  "screenText": "Does this product’s NAV agree with the value of what it holds, and where is the difference? Terms on this screen: NAV = net asset value · SPV = special purpose vehicle · VPM = the valuation portfolio ",
+  "bodyText": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 Current marks Repriced Glossary Data sources Reconciliation Pricing Diagnose Jump to Structure Jump to Ownership Jump to Data quality Jump to Simulator BEFORE PRICING Current as-bo",
+  "errorStatesAnywhere": 0,
+  "recoveryButtons": [],
+  "mastheadPresent": true,
+  "problems": []
+ },
+ "funds-emptied|#/diagnose/simulator": {
+  "screenText": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves? ENTITY UNDER EXAMINATION Selected once — all four lenses below follow it. Structure Ownership Da",
+  "bodyText": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 Current marks Repriced Glossary Data sources Reconciliation Pricing Diagnose Jump to Structure Jump to Ownership Jump to Data quality Jump to Simulator BEFORE PRICING Current as-bo",
+  "errorStatesAnywhere": 0,
+  "recoveryButtons": [],
+  "mastheadPresent": true,
+  "problems": []
+ },
+ "funds-emptied|#/reconciliation": {
+  "screenText": "Does this product’s NAV agree with the value of what it holds, and where is the difference? Terms on this screen: NAV = net asset value · SPV = special purpose vehicle · VPM = the valuation portfolio ",
+  "bodyText": "Skip to the current screen TRACE -Pro NAV pricing and look-through PRODUCT Apollo Sports Capital SPORT AS OF 2026-06-30 Current marks Repriced Glossary Data sources Reconciliation Pricing Diagnose Jump to Structure Jump to Ownership Jump to Data quality Jump to Simulator BEFORE PRICING Current as-bo",
+  "errorStatesAnywhere": 0,
+  "recoveryButtons": [],
+  "mastheadPresent": true,
+  "problems": []
+ }
+}

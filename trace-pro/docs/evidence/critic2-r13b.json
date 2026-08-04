@@ -1,0 +1,336 @@
+{
+ "lookthroughCsv-before": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/lt-before-TRACE-Pro_lookthrough_Apollo_Sports_Capital_current-marks_2026-06-30.csv",
+   "bytes": 22515,
+   "name": "TRACE-Pro_lookthrough_Apollo_Sports_Capital_current-marks_2026-06-30.csv"
+  },
+  "basisRow": [
+   "Pricing basis",
+   "Current marks",
+   "Product",
+   "Apollo Sports Capital",
+   "As of",
+   "2026-06-30"
+  ],
+  "ties": [
+   {
+    "fileCol": "Look-through value USD",
+    "fileValue": "2060224441.40",
+    "formatted": "$2,060,224,441",
+    "key": "reconciliation.totals.derived_mv",
+    "screen": "$2,060,224,441",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "fileCol": "Repriced value USD",
+    "fileValue": "2060610338.29",
+    "formatted": "$2,060,610,338",
+    "key": "reconciliation.totals.revised_mv",
+    "screen": "$2,060,610,338",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "fileCol": "NAV USD",
+    "fileValue": "2062198835.86",
+    "formatted": "$2,062,198,836",
+    "key": "reconciliation.totals.nav",
+    "screen": "$2,062,198,836",
+    "visible": true,
+    "tie": true
+   }
+  ],
+  "problems": []
+ },
+ "reconWorkbook-before": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/recon-before-TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx",
+   "bytes": 35551,
+   "name": "TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx"
+  },
+  "sheets": [
+   "Summary",
+   "Reconciliation"
+  ],
+  "ties": [
+   {
+    "label": "Look-through value",
+    "fileValue": 2060224441.400303,
+    "formatted": "$2,060,224,441",
+    "key": "reconciliation.waterfall.derived_mv",
+    "screen": "$2,060,224,441",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "label": "= NAV",
+    "fileValue": 2062198835.86,
+    "formatted": "$2,062,198,836",
+    "key": "reconciliation.waterfall.nav",
+    "screen": "$2,062,198,836",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "label": "+ Pricing difference",
+    "fileValue": 385896.89000058174,
+    "formatted": "$385,897",
+    "key": "reconciliation.waterfall.delta_pricing_usd",
+    "screen": "$385,897",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "label": "+ Non-position difference",
+    "fileValue": 1588497.5696964264,
+    "formatted": "$1,588,498",
+    "key": "reconciliation.waterfall.delta_nonposition_usd",
+    "screen": "$1,588,498",
+    "visible": true,
+    "tie": true
+   }
+  ]
+ },
+ "pricingWorkbook-before": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/pricing-before-TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx",
+   "bytes": 34509,
+   "name": "TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx"
+  },
+  "sheets": [
+   "Summary",
+   "Pricing"
+  ],
+  "ties": [
+   {
+    "c": "NAV",
+    "fileValue": 266441285.01,
+    "formatted": "$266,441,285",
+    "key": "pricing.walk.fund.ASCHON.nav",
+    "screen": "$266,441,285",
+    "visible": false,
+    "tie": true
+   },
+   {
+    "c": "Look-through value",
+    "fileValue": 291966467.54756945,
+    "formatted": "$291,966,468",
+    "key": "pricing.walk.fund.ASCHON.value_before",
+    "screen": "$291,966,468",
+    "visible": false,
+    "tie": true
+   },
+   {
+    "c": "Repriced value",
+    "fileValue": 292016326.46532005,
+    "formatted": "$292,016,326",
+    "key": "pricing.walk.fund.ASCHON.value_after",
+    "screen": "$292,016,326",
+    "visible": false,
+    "tie": true
+   }
+  ]
+ },
+ "pricingCsv-before": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/pricingcsv-before-TRACE-Pro_pricing_SPORT_2026-06-30.csv",
+   "bytes": 4225,
+   "name": "TRACE-Pro_pricing_SPORT_2026-06-30.csv"
+  },
+  "header": [
+   "Fund",
+   "Code",
+   "VPM symbol",
+   "Level",
+   "Lowest level",
+   "Units outstanding",
+   "NAV USD",
+   "Price to publish",
+   "Current mark",
+   "Repriced unit price",
+   "Look-through value USD",
+   "Repriced value USD",
+   "Repricing gain or loss USD",
+   "Gain or loss bps",
+   "Non-position difference USD"
+  ],
+  "rowCount": 26
+ },
+ "lookthroughCsv-after": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/lt-after-TRACE-Pro_lookthrough_Apollo_Sports_Capital_repriced_2026-06-30.csv",
+   "bytes": 22439,
+   "name": "TRACE-Pro_lookthrough_Apollo_Sports_Capital_repriced_2026-06-30.csv"
+  },
+  "basisRow": [
+   "Pricing basis",
+   "Repriced",
+   "Product",
+   "Apollo Sports Capital",
+   "As of",
+   "2026-06-30"
+  ],
+  "ties": [
+   {
+    "fileCol": "Look-through value at repriced marks USD",
+    "fileValue": "2060610338.29",
+    "formatted": "$2,060,610,338",
+    "key": "reconciliation.totals.derived_mv",
+    "screen": "$2,060,610,338",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "fileCol": "Repriced value USD",
+    "fileValue": "2060610338.29",
+    "formatted": "$2,060,610,338",
+    "key": "reconciliation.totals.revised_mv",
+    "screen": "$2,060,610,338",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "fileCol": "NAV USD",
+    "fileValue": "2062198835.86",
+    "formatted": "$2,062,198,836",
+    "key": "reconciliation.totals.nav",
+    "screen": "$2,062,198,836",
+    "visible": true,
+    "tie": true
+   }
+  ],
+  "problems": []
+ },
+ "reconWorkbook-after": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/recon-after-TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx",
+   "bytes": 35595,
+   "name": "TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx"
+  },
+  "sheets": [
+   "Summary",
+   "Reconciliation"
+  ],
+  "ties": [
+   {
+    "label": "Look-through value at repriced marks",
+    "fileValue": 2060610338.2903035,
+    "formatted": "$2,060,610,338",
+    "key": "reconciliation.after.repriced_mv",
+    "screen": "$2,060,610,338",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "label": "= NAV",
+    "fileValue": 2062198835.86,
+    "formatted": "$2,062,198,836",
+    "key": "reconciliation.after.nav",
+    "screen": "$2,062,198,836",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "label": "+ Pricing difference",
+    "fileValue": 0,
+    "formatted": "$0",
+    "key": "reconciliation.after.delta_pricing_usd",
+    "screen": "$0",
+    "visible": true,
+    "tie": true
+   },
+   {
+    "label": "+ Non-position difference",
+    "fileValue": 1588497.5696964264,
+    "formatted": "$1,588,498",
+    "key": "reconciliation.after.delta_nonposition_usd",
+    "screen": "$1,588,498",
+    "visible": true,
+    "tie": true
+   }
+  ]
+ },
+ "pricingWorkbook-after": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/pricing-after-TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx",
+   "bytes": 34489,
+   "name": "TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx"
+  },
+  "sheets": [
+   "Summary",
+   "Pricing"
+  ],
+  "ties": [
+   {
+    "c": "NAV",
+    "fileValue": 266441285.01,
+    "formatted": "$266,441,285",
+    "key": "pricing.walk.fund.ASCHON.nav",
+    "screen": "$266,441,285",
+    "visible": false,
+    "tie": true
+   },
+   {
+    "c": "Look-through value",
+    "fileValue": 291966467.54756945,
+    "formatted": "$291,966,468",
+    "key": "pricing.walk.fund.ASCHON.value_before",
+    "screen": "$291,966,468",
+    "visible": false,
+    "tie": true
+   },
+   {
+    "c": "Repriced value",
+    "fileValue": 292016326.46532005,
+    "formatted": "$292,016,326",
+    "key": "pricing.walk.fund.ASCHON.value_after",
+    "screen": "$292,016,326",
+    "visible": false,
+    "tie": true
+   }
+  ]
+ },
+ "pricingCsv-after": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/pricingcsv-after-TRACE-Pro_pricing_SPORT_2026-06-30.csv",
+   "bytes": 4225,
+   "name": "TRACE-Pro_pricing_SPORT_2026-06-30.csv"
+  },
+  "header": [
+   "Fund",
+   "Code",
+   "VPM symbol",
+   "Level",
+   "Lowest level",
+   "Units outstanding",
+   "NAV USD",
+   "Price to publish",
+   "Current mark",
+   "Repriced unit price",
+   "Look-through value USD",
+   "Repriced value USD",
+   "Repricing gain or loss USD",
+   "Gain or loss bps",
+   "Non-position difference USD"
+  ],
+  "rowCount": 26
+ },
+ "dataQualityCsv": {
+  "file": {
+   "f": "/tmp/claude-0/-home-user-Test/9010d790-6dea-5fb2-b3d6-f01548d88492/scratchpad/dl2/dq-issues_all.csv",
+   "bytes": 13497,
+   "name": "issues_all.csv"
+  },
+  "header": [
+   "Severity",
+   "Bucket",
+   "VPM_Symbol",
+   "SPV_Code",
+   "Name",
+   "Detail"
+  ],
+  "rowCount": 105
+ }
+}

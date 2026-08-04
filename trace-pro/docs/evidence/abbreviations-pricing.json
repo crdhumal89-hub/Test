@@ -1,0 +1,31 @@
+{
+ "dispositions": {
+  "lt": "absent or glossary-linked",
+  "rfx": "absent or glossary-linked",
+  "str": "absent or glossary-linked",
+  "sim": "absent or glossary-linked",
+  "iss": "absent or glossary-linked",
+  "own": "absent or glossary-linked",
+  "gls": "absent or glossary-linked",
+  "MV": "expanded before first use",
+  "LTV": "absent or glossary-linked",
+  "px": "expanded before first use",
+  "qty": "expanded before first use",
+  "gq": "absent or glossary-linked",
+  "apex": "absent or glossary-linked",
+  "nonav": "absent or glossary-linked",
+  "in tol": "absent or glossary-linked",
+  "scen a": "absent or glossary-linked",
+  "scen b": "absent or glossary-linked",
+  "mv100": "absent or glossary-linked",
+  "dcN": "absent or glossary-linked",
+  "NAV": "BARE ×1 (expansion comes too late)",
+  "bps": "expanded before first use",
+  "SPV": "expanded before first use",
+  "VPM": "expanded before first use",
+  "Δ": "expanded before first use",
+  "FR": "absent or glossary-linked",
+  "DC": "BARE ×1 (expansion comes too late)"
+ },
+ "textNodes": 780
+}

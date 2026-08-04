@@ -1,0 +1,52 @@
+{
+ "retiredLabelsFound": {
+  "before|reconciliation": [],
+  "before|pricing": [
+   "Global Qty"
+  ],
+  "before|diagnose-structure": [],
+  "before|diagnose-ownership": [],
+  "before|diagnose-data-quality": [],
+  "before|diagnose-simulator": [],
+  "after|reconciliation": [],
+  "after|pricing": [
+   "Global Qty"
+  ],
+  "after|diagnose-structure": [],
+  "after|diagnose-ownership": [],
+  "after|diagnose-data-quality": [],
+  "after|diagnose-simulator": []
+ },
+ "duplicateLabels": {
+  "before|reconciliation": [
+   "Hierarchy — fund ▸ SPV ▸ security ×2",
+   "VPM symbol ×2",
+   "NAV ×2"
+  ],
+  "before|pricing": [],
+  "before|diagnose-structure": [],
+  "before|diagnose-ownership": [
+   "Owner (expand ▸ upward) ×2",
+   "VPM symbol ×2",
+   "SPV fund code ×2",
+   "Qty held ×2"
+  ],
+  "before|diagnose-data-quality": [],
+  "before|diagnose-simulator": [],
+  "after|reconciliation": [
+   "Hierarchy — fund ▸ SPV ▸ security ×2",
+   "VPM symbol ×2",
+   "NAV ×2"
+  ],
+  "after|pricing": [],
+  "after|diagnose-structure": [],
+  "after|diagnose-ownership": [
+   "Owner (expand ▸ upward) ×2",
+   "VPM symbol ×2",
+   "SPV fund code ×2",
+   "Qty held ×2"
+  ],
+  "after|diagnose-data-quality": [],
+  "after|diagnose-simulator": []
+ }
+}
