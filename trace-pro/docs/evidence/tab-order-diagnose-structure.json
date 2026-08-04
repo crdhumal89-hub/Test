@@ -1,21 +1,450 @@
 [
- "input[combobox] \"Choose the entity to examine across all four lenses\"",
- "button[tab] \"Structure\"",
- "button[tab] \"Ownership\"",
- "button[tab] \"Data quality\"",
- "button[tab] \"Simulator\"",
- "button \"Vertical\"",
- "button \"Horizontal\"",
- "button \"Radial\"",
- "button \"Dynamic\"",
- "input \"Focus an entity code or name; other entities fade back\"",
- "button \"Show %\"",
- "button \"◎ Fit\"",
- "button \"Reset\"",
- "button \"⤢ Full screen\"",
- "input \"Node spacing\"",
- "input \"Link length\"",
- "input \"Curvature\"",
- "input \"Label density\"",
- "g[button] \"Apollo Sports Capital — Apollo Sports Capital, 100.00% of its holder\""
+ {
+  "key": "input[combobox] Choose the entity to examine across all four lense",
+  "tag": "input",
+  "role": "combobox",
+  "w": 320,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Structure",
+  "tag": "button",
+  "role": "tab",
+  "w": 88,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Ownership",
+  "tag": "button",
+  "role": "tab",
+  "w": 97,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Data quality",
+  "tag": "button",
+  "role": "tab",
+  "w": 104,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Simulator",
+  "tag": "button",
+  "role": "tab",
+  "w": 90,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPV: SPV. A special-purpose vehicle / holding enti",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Vertical",
+  "tag": "button",
+  "role": "",
+  "w": 70,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(27, 42, 74)",
+  "ringContrast": 14.22,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Horizontal",
+  "tag": "button",
+  "role": "",
+  "w": 88,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Radial",
+  "tag": "button",
+  "role": "",
+  "w": 65,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Dynamic",
+  "tag": "button",
+  "role": "",
+  "w": 79,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] Focus an entity code or name; other entities fade ",
+  "tag": "input",
+  "role": "",
+  "w": 185,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Show %",
+  "tag": "button",
+  "role": "",
+  "w": 74,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ◎ Fit",
+  "tag": "button",
+  "role": "",
+  "w": 56,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Reset",
+  "tag": "button",
+  "role": "",
+  "w": 60,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ⤢ Full screen",
+  "tag": "button",
+  "role": "",
+  "w": 105,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] Node spacing",
+  "tag": "input",
+  "role": "",
+  "w": 108,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] Link length",
+  "tag": "input",
+  "role": "",
+  "w": 108,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] Curvature",
+  "tag": "input",
+  "role": "",
+  "w": 108,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] Label density",
+  "tag": "input",
+  "role": "",
+  "w": 108,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "g[button] Apollo Sports Capital — Apollo Sports Capital, 100",
+  "tag": "g",
+  "role": "button",
+  "w": 102,
+  "h": 64,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 242, 232)",
+  "ringContrast": 3.76,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ }
 ]

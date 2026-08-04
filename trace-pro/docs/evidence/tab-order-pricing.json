@@ -1,46 +1,1090 @@
 [
- "button \"Prices to publish\"",
- "button \"Repricing walk\"",
- "input \"Filter the funds by code, VPM symbol or name\"",
- "button \"Export pricing\"",
- "button \"CSV\"",
- "button \"Download Excel\"",
- "div[button] \"Inspect Apollo Sports Capital Holdings (Overseas), L.P., gap $27,499,577\"",
- "div[button] \"Inspect Apollo Sports Capital Holdings (Onshore), L.P., gap ($25,525,183)\"",
- "div[button] \"Inspect AP Dunk SPV, LLC, gap $0\"",
- "th[columnheader] \"Sort by Fund\"",
- "th[columnheader] \"Sort by Symbol\"",
- "th[columnheader] \"Sort by Price to publish\"",
- "th[columnheader] \"Sort by Current mark\"",
- "th[columnheader] \"Sort by Repriced unit price\"",
- "th[columnheader] \"Sort by Look-through value\"",
- "th[columnheader] \"Sort by Repriced value\"",
- "th[columnheader] \"Sort by Repricing gain or loss\"",
- "th[columnheader] \"Sort by bps\"",
- "tr[button] \"Open the pricing derivation for Apollo Sports Capital Holdings (Overseas), L.P.\"",
- "tr[button] \"Open the pricing derivation for Apollo Sports Capital (Overseas), L.P.\"",
- "tr[button] \"Open the pricing derivation for ASC Holdings, SCSp\"",
- "tr[button] \"Open the pricing derivation for AP Sports Aggregator A, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Deuce Holdings, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Debt Holdings (FC), L.P.\"",
- "tr[button] \"Open the pricing derivation for Apollo Sports Capital (Onshore), L.P.\"",
- "tr[button] \"Open the pricing derivation for Apollo Sports Capital Holdings (Onshore), L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Deuce Intermediate Holdings II (FC), L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Aggregator E-Velocity, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Intermediate Holdings Velocity (DC), L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Debt Holdings (EUR) S.a r.l.\"",
- "tr[button] \"Open the pricing derivation for AP Deuce Intermediate Holdings I (DC), L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Railroad Holdings II, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Aggregator D, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Aggregator B, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Intermediate Holdings (FC), L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Sports Debt Holdings II (DC), L.P.\"",
- "tr[button] \"Open the pricing derivation for AP CA XXII, LLC\"",
- "tr[button] \"Open the pricing derivation for AP Sports Aggregator C, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Dunk SPV, LLC\"",
- "tr[button] \"Open the pricing derivation for Crimson Holdco, Ltd.\"",
- "tr[button] \"Open the pricing derivation for Crimson Topco, Ltd.\"",
- "tr[button] \"Open the pricing derivation for AP Aggregator Velocity, L.P.\"",
- "tr[button] \"Open the pricing derivation for AP Crimson Holdings, SCSp\"",
- "tr[button] \"Open the pricing derivation for SPORTOP\""
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "tag": "button",
+  "role": "",
+  "w": 20,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] px: Publish px vs Current/Applied px vs Revised px",
+  "tag": "button",
+  "role": "",
+  "w": 13,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] qty: Global units / Global quantity. The total num",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] MV: Carried MV / Position MV. The market value at ",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Δ: Δ Pricing. The product-level pricing adjustment",
+  "tag": "button",
+  "role": "",
+  "w": 8,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] VPM: VPM. The accounting / valuation system the sy",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPV: SPV. A special-purpose vehicle / holding enti",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Prices to publish",
+  "tag": "button",
+  "role": "",
+  "w": 127,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(27, 42, 74)",
+  "ringContrast": 14.22,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Repricing walk",
+  "tag": "button",
+  "role": "",
+  "w": 115,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] Filter the funds by code, VPM symbol or name",
+  "tag": "input",
+  "role": "",
+  "w": 320,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Export pricing",
+  "tag": "button",
+  "role": "",
+  "w": 111,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] CSV",
+  "tag": "button",
+  "role": "",
+  "w": 52,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Download Excel",
+  "tag": "button",
+  "role": "",
+  "w": 122,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 22,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgba(10, 125, 104, 0.05)",
+  "ringContrast": 5.06,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] qty: Global units / Global quantity. The total num",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgba(10, 125, 104, 0.05)",
+  "ringContrast": 5.06,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgba(10, 125, 104, 0.05)",
+  "ringContrast": 5.06,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Inspect Apollo Sports Capital Holdings (Overseas),",
+  "tag": "div",
+  "role": "button",
+  "w": 1526,
+  "h": 38,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Inspect Apollo Sports Capital Holdings (Onshore), ",
+  "tag": "div",
+  "role": "button",
+  "w": 1526,
+  "h": 38,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Inspect AP Dunk SPV, LLC, gap $0",
+  "tag": "div",
+  "role": "button",
+  "w": 1526,
+  "h": 38,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] qty: Global units / Global quantity. The total num",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] MV: Carried MV / Position MV. The market value at ",
+  "tag": "button",
+  "role": "",
+  "w": 19,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "tag": "button",
+  "role": "",
+  "w": 22,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "tag": "button",
+  "role": "",
+  "w": 20,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Δ: Δ Pricing. The product-level pricing adjustment",
+  "tag": "button",
+  "role": "",
+  "w": 9,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] px: Publish px vs Current/Applied px vs Revised px",
+  "tag": "button",
+  "role": "",
+  "w": 13,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Fund",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 544,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Symbol",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 148,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Price to publish",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 121,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Current mark",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 105,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Repriced unit price",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 141,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Look-through value",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 145,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Repriced value",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 126,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by Repricing gain or loss",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 160,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "th[columnheader] Sort by bps",
+  "tag": "th",
+  "role": "columnheader",
+  "w": 64,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for Apollo Sports Capi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for Apollo Sports Capi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for ASC Holdings, SCSp",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Aggregat",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Deuce Holdings,",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Debt Hol",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for Apollo Sports Capi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for Apollo Sports Capi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Deuce Intermedi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Aggregat",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Intermed",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Debt Hol",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Deuce Intermedi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Railroad Holdin",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Aggregat",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Aggregat",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Intermed",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Debt Hol",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP CA XXII, LLC",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Sports Aggregat",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Dunk SPV, LLC",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for Crimson Holdco, Lt",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for Crimson Topco, Ltd",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Aggregator Velo",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for AP Crimson Holding",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the pricing derivation for SPORTOP",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ }
 ]

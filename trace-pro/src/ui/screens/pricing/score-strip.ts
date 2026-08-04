@@ -10,6 +10,7 @@ import { countFlagged } from '../../../domain/exceptions.js';
 import { formatUsd, formatUsdParens, formatBpsOf } from '../../../domain/money.js';
 import type { PricingView, RepricingFixture, RepricingFund } from '../../../domain/types.js';
 import { el, replace } from '../../primitives/dom.js';
+import { termAnnotate } from '../../primitives/term.js';
 import { parity } from '../../parity.js';
 
 /** New vocabulary for the strip, per docs/redesign-spec.md §3.1. The units ride on the labels. */
@@ -22,6 +23,11 @@ export const PRICING_SCORE_LABEL = {
   nav: '= NAV · USD',
 } as const;
 
+/**
+ * `label` and `detail` go through `termAnnotate`, not through `text:`. Both carry `NAV` and `bps`,
+ * and `pricing.score.delta_pricing_detail` / `.delta_nonposition_detail` / `.nav_detail` are pinned
+ * by docs/rename-map.json, so the abbreviation is linked in place and not one character changes.
+ */
 function pricingTile(
   label: string,
   value: string,
@@ -31,9 +37,9 @@ function pricingTile(
   tone = ''
 ): HTMLElement {
   return el('div', { class: 'score-tile' }, [
-    el('div', { class: 'score-label', text: label }),
+    el('div', { class: 'score-label' }, termAnnotate(label)),
     el('div', { class: `score-value ${tone}`.trim(), ...parity(valueKey), text: value }),
-    el('div', { class: 'score-detail', ...parity(detailKey), text: detail }),
+    el('div', { class: 'score-detail', ...parity(detailKey) }, termAnnotate(detail)),
   ]);
 }
 
@@ -109,16 +115,20 @@ export function renderPricingNarrative(host: HTMLElement, repricing: RepricingFi
   const nodes: (Node | string)[] = [
     el('span', { class: 'narrative-tag', text: 'Bottom-up repricing' }),
     " Reprice the deepest funds first — a lowest-level fund's repriced unit price = ",
-    el('b', { text: 'NAV ÷ units' }),
-    "; a holder's repriced value = Σ held-qty × child repriced price + its direct securities," +
-      ' propagated to the product. That lifts ',
+    // `pricing.banner.narrative` is a DECLARED-LABEL key: the whole paragraph is pinned in
+    // docs/rename-map.json, so `NAV` and `qty` are linked in place rather than expanded.
+    el('b', {}, termAnnotate('NAV ÷ units')),
+    ...termAnnotate(
+      "; a holder's repriced value = Σ held-qty × child repriced price + its direct securities," +
+        ' propagated to the product. That lifts '
+    ),
     el('b', { text: `the look-through value ${formatUsd(repricing.D)}` }),
     ' to ',
     el('b', { text: `the repriced value ${formatUsd(repricing.R)}` }),
     ' (repricing gain or loss ',
     el('b', { text: formatUsdParens(repricing.dPricing) }),
     '), then non-position items bridge to ',
-    el('b', { text: `NAV ${formatUsd(repricing.N)}` }),
+    el('b', {}, termAnnotate(`NAV ${formatUsd(repricing.N)}`)),
     '.',
   ];
   if (big) {

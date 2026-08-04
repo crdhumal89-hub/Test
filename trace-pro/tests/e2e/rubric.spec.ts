@@ -4,9 +4,9 @@
  * but not sufficient for the UX gate.
  *
  * Criteria checked here: R1 (screen states its question), R2 (no bare abbreviations), R3 (unit and
- * as-of on every figure), R5 (primary answer above the fold), R6 (focus and keyboard), R7 (glossary
- * one action away), R12 (pricing basis never ambiguous), R14 (nothing fails silently),
- * R16 (selection survives navigation), R18 (empty states offer a recovery).
+ * as-of on every figure), R5 (primary answer above the fold), R7 (glossary one action away),
+ * R12 (pricing basis never ambiguous), R14 (nothing fails silently), R16 (selection survives
+ * navigation), R18 (empty states offer a recovery). R6 is measured in rubric-focus.spec.ts.
  */
 import { test, expect } from '@playwright/test';
 import {
@@ -14,8 +14,6 @@ import {
   recordProblems,
   settled,
   gotoRoute,
-  isAboveFold,
-  tabOrder,
   writeEvidence,
   expectClean,
 } from './helpers.js';
@@ -93,78 +91,167 @@ test('R2 — no bare abbreviation survives outside the glossary', async ({ page 
   expect(findings, `bare abbreviations found:\n${JSON.stringify(findings, null, 1)}`).toEqual([]);
 });
 
+/**
+ * R3's bar is that every panel of figures "resolves to a visible as-of date … on the figure's panel
+ * or on a persistent chrome element visible SIMULTANEOUSLY with it". Asserting `#asof` is visible on
+ * load is weaker than that by the height of the document: unpinned, scrolling 563px on Pricing left
+ * 146 figures on screen with the as-of 541px above the viewport. So this walks each route top to
+ * bottom in viewport-sized steps and, at every step where a figure is readable, requires the as-of
+ * to be readable at the same moment.
+ */
 test('R3 — a figure is never readable while its as-of date is not', async ({ page }) => {
-  const report: { route: string; asofVisible: boolean; figureCount: number }[] = [];
+  const report: Record<string, unknown>[] = [];
   for (const route of ROUTES) {
     await gotoRoute(page, route.hash);
-    const asofVisible = await page.locator('#asof').isVisible();
-    const figureCount = await page.locator('[data-parity]').count();
-    report.push({ route: route.id, asofVisible, figureCount });
-    expect(asofVisible, `${route.id}: the as-of date must be visible alongside figures`).toBe(true);
+    const steps = await page.evaluate(() =>
+      Math.ceil(document.documentElement.scrollHeight / window.innerHeight)
+    );
+    for (let step = 0; step <= steps; step++) {
+      await page.evaluate((n) => window.scrollTo(0, n * window.innerHeight * 0.9), step);
+      const seen = await page.evaluate(() => {
+        const asof = document.getElementById('asof');
+        const box = asof?.getBoundingClientRect();
+        const asofVisible = !!box && box.height > 0 && box.top >= 0 && box.bottom <= innerHeight;
+        const figures = Array.from(document.querySelectorAll('#screen [data-parity]')).filter((node) => {
+          const rect = node.getBoundingClientRect();
+          return rect.height > 0 && rect.top < innerHeight && rect.bottom > 0;
+        }).length;
+        return {
+          scrollY: Math.round(scrollY),
+          asofVisible,
+          asofText: (asof?.textContent ?? '').replace(/\s+/g, ' ').trim(),
+          figures,
+          mastheadPosition: getComputedStyle(document.querySelector('.masthead') as Element).position,
+        };
+      });
+      report.push({ route: route.id, ...seen });
+      expect(seen.asofText, `${route.id}: the as-of must carry a date`).toMatch(/\d{4}-\d{2}-\d{2}/);
+      const where = `${route.id}: ${seen.figures} figures readable at scrollY ${seen.scrollY}, as-of not`;
+      if (seen.figures > 0) expect(seen.asofVisible, where).toBe(true);
+    }
   }
+  // The walk must actually have read figures while scrolled away from the top, or it proves nothing.
+  const scrolled = report.filter((r) => (r.scrollY as number) > 200 && (r.figures as number) > 0);
+  expect(scrolled.length, 'no route was measured with figures on screen while scrolled').toBeGreaterThan(3);
   writeEvidence('units-and-asof.json', report);
 });
 
+/**
+ * One row per selector docs/first-run.md names as part of that screen's primary answer, in the same
+ * order as the tables in that file. `[label, selector, howManyMustBeAboveTheFold]`.
+ * Changing this list means changing the contract document — not the other way round.
+ */
+const FIRST_RUN: Record<string, [string, string, number?][]> = {
+  reconciliation: [
+    ['question', '#reconciliation-question'],
+    ['tie verdict', '#reconciliation-waterfall .wf-tie-pill'],
+    ['all five waterfall steps', '#reconciliation-waterfall .wf-step, #reconciliation-waterfall .wf-op', 5],
+    ['NAV', '[data-parity="reconciliation.waterfall.nav"]'],
+    ['NAV basis', '#reconciliation-waterfall .wf-basis'],
+    ['pricing difference $', '[data-parity="reconciliation.waterfall.delta_pricing_usd"]'],
+    ['pricing difference bps', '[data-parity="reconciliation.waterfall.delta_pricing_bps"]'],
+    ['non-position difference $', '[data-parity="reconciliation.waterfall.delta_nonposition_usd"]'],
+    ['non-position difference bps', '[data-parity="reconciliation.waterfall.delta_nonposition_bps"]'],
+    ['exception chips', '#reconciliation-exceptions .chip', 3],
+  ],
+  pricing: [
+    ['question', '#pricing-question'],
+    ['repricing P&L', '[data-parity="pricing.score.delta_pricing_usd"]'],
+    ['repricing P&L bps', '[data-parity="pricing.score.delta_pricing_detail"]'],
+    ['NAV', '[data-parity="pricing.score.nav"]'],
+    ['flagged-fund count', '[data-parity="pricing.score.nav_detail"]'],
+    ['first five price rows', '#pricing-price-table tbody tr', 5],
+    ['first five publish prices', '[data-parity^="pricing.fund."][data-parity$=".publish_px"]', 5],
+    ['which basis', '#view-note'],
+  ],
+  'diagnose-structure': [
+    ['question', '#structure-question'],
+    ['graph, laid out', '#structure-stage svg'],
+    ['concentration in words', '#structure-caption'],
+    ['layout and legend controls', '#structure-controls'],
+  ],
+  'diagnose-ownership': [
+    ['what is being decomposed', '#ownership-identity'],
+    ['conservation verdict', '#ownership-checks'],
+    ['proportional ribbon', '#ownership-ribbon'],
+    ['count line', '#ownership-status'],
+    ['first five owner rows', '#ownership-tree tbody tr', 5],
+  ],
+  'diagnose-data-quality': [
+    ['question', '#data-quality-question'],
+    ['the four counts', '#data-quality-kpi'],
+    ['active scope', '#data-quality-scope'],
+    ['all five buckets', '#data-quality-buckets'],
+  ],
+  'diagnose-simulator': [
+    ['product NAV unshocked, with its basis', '#simulator-baseline'],
+    ["the subject's value and unit price", '#simulator-subject'],
+    ['the three shock inputs and Run, no panel to open', '#simulator-shock'],
+    ['market value input', '#simulator-shock-mv'],
+    ['units input', '#simulator-shock-qty'],
+    ['NAV input', '#simulator-shock-nav'],
+    ['Run', '#simulator-run'],
+    ['the stage', '#simulator-stage'],
+  ],
+};
+
+/** Shared chrome, required in the viewport on every screen by docs/first-run.md. */
+const CHROME_ROWS: [string, string, number?][] = [
+  ['masthead', '#masthead'],
+  ['active product', '#active-product'],
+  ['as-of', '#asof'],
+  ['screen nav', '#screen-nav'],
+];
+/** The Diagnose shell, required on every lens. */
+const DIAGNOSE_ROWS: [string, string, number?][] = [
+  ['diagnose question', '#diagnose-question'],
+  ['entity under examination', '#diagnose-subject'],
+  ['entity combobox, already populated', '#diagnose-entity'],
+  ['the four lenses', '#lens-tabs [role="tab"]', 4],
+];
+
 test('R5 — the primary answer is above the fold on load, with no click', async ({ page }) => {
-  // Each entry names the element that carries the screen's primary answer. Kept in step with
-  // docs/first-run.md, which is the human-readable version of the same contract.
-  const primary: Record<string, string> = {
-    reconciliation: '[data-parity="reconciliation.waterfall.nav"]',
-    pricing: '[data-parity="pricing.score.nav"]',
-    'diagnose-structure': '#structure-caption',
-    'diagnose-ownership': '#ownership-checks',
-    'diagnose-data-quality': '#data-quality-kpi',
-    'diagnose-simulator': '#simulator-runline',
-  };
-  const report: Record<string, boolean> = {};
+  const report: Record<string, unknown[]> = {};
   for (const route of ROUTES) {
     await gotoRoute(page, route.hash);
-    const selector = primary[route.id];
-    if (!selector) continue;
-    const above = await isAboveFold(page, selector);
-    report[route.id] = above;
+    const spec = [
+      ...CHROME_ROWS,
+      ...(route.id.startsWith('diagnose') ? DIAGNOSE_ROWS : []),
+      ...(FIRST_RUN[route.id] ?? []),
+    ];
+    const rows = await page.evaluate((entries: [string, string, number?][]) =>
+      entries.map(([label, selector, want]) => {
+        const nodes = Array.from(document.querySelectorAll(selector));
+        const need = want ?? 1;
+        const boxes = nodes.slice(0, need).map((node) => {
+          const rect = node.getBoundingClientRect();
+          return { top: Math.round(rect.top), bottom: Math.round(rect.bottom), h: Math.round(rect.height) };
+        });
+        return {
+          label,
+          selector,
+          found: nodes.length,
+          need,
+          boxes,
+          aboveFold:
+            boxes.length === need &&
+            boxes.every((b) => b.top >= 0 && b.bottom <= window.innerHeight && b.h > 0),
+        };
+      }),
+    spec);
+    report[route.id] = rows;
     await page.screenshot({ path: `docs/evidence/fold-${route.id}.png` });
-    expect(above, `${route.id}: primary answer must be in the viewport on load`).toBe(true);
+    for (const row of rows) {
+      const at = `${route.id}: ${row.label} (${row.selector})`;
+      expect(row.found, `${at} — only ${row.found} of ${row.need} rendered`).toBeGreaterThanOrEqual(row.need);
+      expect(row.aboveFold, `${at} is outside the 1600x1000 viewport on load — ${JSON.stringify(row.boxes)}`).toBe(true);
+    }
+    // No click, no keypress, and nothing was scrolled to get here.
+    expect(await page.evaluate(() => window.scrollY), `${route.id}: read without scrolling`).toBe(0);
   }
   writeEvidence('above-the-fold.json', report);
 });
 
-test.describe('R6 — focus is visible and everything is reachable by keyboard', () => {
-  test('no bare outline:none survives in the stylesheets', async ({ page }) => {
-    await gotoRoute(page, ROUTES[0].hash);
-    const bare = await page.evaluate(() => {
-      const offenders: string[] = [];
-      for (const sheet of Array.from(document.styleSheets)) {
-        let rules: CSSRuleList;
-        try {
-          rules = sheet.cssRules;
-        } catch {
-          continue;
-        }
-        for (const rule of Array.from(rules)) {
-          if (!(rule instanceof CSSStyleRule)) continue;
-          if (/outline\s*:\s*none/.test(rule.cssText) && !/:focus-visible/.test(rule.selectorText)) {
-            offenders.push(rule.selectorText);
-          }
-        }
-      }
-      return offenders;
-    });
-    expect(bare, 'outline:none without a :focus-visible replacement').toEqual([]);
-  });
-
-  for (const route of ROUTES) {
-    test(`${route.label} tab order reaches every control with a visible ring`, async ({ page }) => {
-      await gotoRoute(page, route.hash);
-      const stops = await tabOrder(page);
-      writeEvidence(`tab-order-${route.id}.json`, stops);
-      expect(stops.length, 'must have reachable controls').toBeGreaterThan(3);
-      // Every stop must be a real control or carry an explicit role.
-      const untyped = stops.filter((s) => /^(div|span|td|tr|th)(?!\[)/.test(s));
-      expect(untyped, `stops with no role: ${untyped.join(', ')}`).toEqual([]);
-    });
-  }
-});
 
 test('R7 — the glossary is one action from every screen, and keeps state', async ({ page }) => {
   for (const route of ROUTES) {
@@ -190,20 +277,63 @@ test('R7 — the keyboard route to the glossary works too', async ({ page }) => 
   await expect(page.locator('#drawer-host .drawer')).toBeVisible();
 });
 
-test('R12 — the pricing basis is never ambiguous, and never offered where it does nothing', async ({
-  page,
-}) => {
-  const report: { route: string; noteVisible: boolean; toggleVisible: boolean }[] = [];
+/**
+ * R12 has two halves and the shipped test asserted neither: the basis must be VISIBLE wherever a
+ * figure depends on it, and the control must be ABSENT where nothing does. "Nothing does" is not an
+ * opinion — it is measurable, so this flips the basis on every one of the six routes and compares
+ * `#screen`'s text before and after. The text must change on exactly the routes where the control is
+ * offered, and on no others.
+ *
+ * The flip happens on Pricing and the route is then entered by hash, without a reload, because the
+ * basis is application state rather than part of the URL. `textContent`, not `innerText`: it reads
+ * the graph node captions too, which is where the Simulator's basis-sensitivity lives.
+ */
+test('R12 — the basis is stated where it matters and absent where it does nothing', async ({ page }) => {
+  const DEPENDENT = ['reconciliation', 'pricing', 'diagnose-simulator'];
+  const setBasis = async (view: 'before' | 'after'): Promise<void> => {
+    await page.evaluate(() => (location.hash = '#/pricing'));
+    await settled(page);
+    await page.locator(`#view-toggle button[data-view="${view}"]`).click();
+    await settled(page);
+  };
+  const textAt = async (hash: string, view: 'before' | 'after'): Promise<string> => {
+    await setBasis(view);
+    await page.evaluate((h) => (location.hash = h), hash);
+    await settled(page);
+    return page.evaluate(() => document.getElementById('screen')?.textContent ?? '');
+  };
+
+  const report: Record<string, unknown>[] = [];
+  await gotoRoute(page, '#/pricing');
   for (const route of ROUTES) {
-    await gotoRoute(page, route.hash);
-    const noteVisible = await page.locator('#view-note').isVisible();
-    const toggleVisible = await page.locator('#view-toggle').isVisible();
-    report.push({ route: route.id, noteVisible, toggleVisible });
-    // Where figures depend on the basis, the active basis must be stated on screen.
-    const dependent = ['reconciliation', 'pricing', 'diagnose-simulator'].includes(route.id);
-    if (dependent) {
-      expect(noteVisible, `${route.id}: active basis must be visible`).toBe(true);
-    }
+    const before = await textAt(route.hash, 'before');
+    const after = await textAt(route.hash, 'after');
+    const state = await page.evaluate(() => {
+      const toggle = document.getElementById('view-toggle');
+      const note = document.getElementById('view-note');
+      const box = (n: Element | null): number => (n ? Math.round(n.getBoundingClientRect().height) : -1);
+      return {
+        toggleVisible: !!toggle && getComputedStyle(toggle).display !== 'none' && box(toggle) > 0,
+        toggleHiddenAttr: !!toggle?.hasAttribute('hidden'),
+        noteVisible: !!note && getComputedStyle(note).display !== 'none' && box(note) > 0,
+        noteHeight: box(note),
+        noteTag: note?.querySelector('.view-tag')?.textContent ?? '',
+      };
+    });
+    const dependent = DEPENDENT.includes(route.id);
+    report.push({ route: route.id, dependent, screenChangedByToggle: before !== after, ...state });
+
+    // (a) the control is offered exactly where a figure moves with it.
+    expect(state.toggleVisible, `${route.id}: basis control visible must equal basis-dependent`).toBe(dependent);
+    // (b) `hidden` must actually hide — CSS `display:flex` used to defeat it and leave a 19px band.
+    expect(state.noteVisible, `${route.id}: basis note visible must equal basis-dependent`).toBe(dependent);
+    if (!dependent) expect(state.noteHeight, `${route.id}: the hidden note still occupies space`).toBe(0);
+    else expect(state.noteTag.length, `${route.id}: the active basis must be named`).toBeGreaterThan(3);
+    // (c) and the measurement that makes (a) honest: flipping it changes something, or nothing.
+    expect(
+      before !== after,
+      `${route.id}: flipping the basis ${dependent ? 'changed nothing' : 'changed the screen'}`
+    ).toBe(dependent);
   }
   writeEvidence('pricing-basis.json', report);
 });

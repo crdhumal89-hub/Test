@@ -1,0 +1,90 @@
+/**
+ * Glossary-linked terms, the per-screen vocabulary line, and the deep-linked glossary card.
+ *
+ * Loaded by `src/ui/primitives/term.ts` (a side-effect import), so a term can never render without
+ * its affordance — the two ship together or not at all.
+ *
+ * Same two rules as the other stylesheets: zero `!important`, and every focusable thing keeps a
+ * visible focus ring. `.gterm` inherits the global `:focus-visible` rule in app.css rather than
+ * declaring its own, and never sets `outline: none`.
+ */
+
+/* ------------------------------------------------------------------ the linked term itself */
+/**
+ * A `<button>` that must read as a word inside running prose, a table cell or a chip: it inherits
+ * every text property from its context and contributes no box of its own. The only visible
+ * difference from the surrounding text is the dotted underline — which is drawn with
+ * text-decoration rather than a border, so it cannot shift a single pixel of layout, and so a
+ * parity-pinned string measures and reads exactly as before.
+ */
+.gterm {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: inherit;
+  vertical-align: baseline;
+  cursor: help;
+  text-decoration: underline dotted currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.gterm:hover {
+  color: var(--teal-ink);
+  text-decoration-style: solid;
+}
+
+/* A term inside a chip, tag or coloured tile keeps that context's colour on hover too. */
+.chip .gterm:hover,
+.score-label .gterm:hover,
+.wf-basis .gterm:hover {
+  color: inherit;
+}
+
+/* ------------------------------------------------------------------ the vocabulary line */
+/**
+ * One line, immediately below the screen's question, that expands every abbreviation the screen
+ * uses before the screen uses it (rubric R2 route (a)) and links each one to its definition
+ * (route (b)). Compact on purpose: it must not push the screen's primary answer below the fold
+ * (R5), so it is one small line, not a panel.
+ */
+.screen-vocab {
+  margin: -2px 0 8px;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.45;
+  max-width: 132ch;
+}
+
+.screen-vocab .gterm {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ the deep-linked card */
+/**
+ * `glossaryFocusTerm` scrolls the drawer to one card and focuses it. Two things are needed for
+ * that to be legible: room above the card so `scrollIntoView` does not tuck it under the sticky
+ * search bar, and a marker so the eye lands where the focus went.
+ */
+.glscard {
+  scroll-margin-block: 28px;
+}
+
+.glscard.glscard-linked {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 8px;
+  background: var(--paper);
+}

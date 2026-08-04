@@ -17,13 +17,24 @@ This file names them in advance. The bar it sets is deliberately hard to wriggle
   lens is never a blank frame with a search box in it. The seed is `AppState.selectedEntity`,
   set at boot in `src/main.ts` from `StoreInit.defaultPosition` — see the caveat at the end.
 
-Selectors marked **(contract)** belong to a screen or lens that is not built yet
-(`docs/ledger.md`). They are the ids that screen must render, chosen so the R5 test can be written
-before the screen exists rather than fitted to it afterwards.
+Selectors were marked **(contract)** while a screen or lens was unbuilt (`docs/ledger.md`) — the ids
+that screen must render, chosen so the R5 test could be written before the screen existed rather than
+fitted to it afterwards. **All of them now render**; the markers are kept in the Simulator table with
+a note, so the substitution is auditable.
 
 Shared chrome must be in the viewport on every screen, because R3 forbids a figure being readable
 while its as-of date is not: `#masthead`, `#active-product` (product name), `#asof` (the as-of date,
-never collapsible), `#view-toggle` (which pricing basis is active), and `#screen-nav`.
+never collapsible) and `#screen-nav`.
+
+**Amended 2026-08-04 (R3):** "in the viewport on load" was too weak for what R3 actually says — "a
+persistent chrome element visible *simultaneously* with it". Unpinned, the masthead left the viewport
+after 563px of scrolling on Pricing while 146 figures were still readable. `.masthead` is therefore
+`position: sticky; top: 0` (`src/ui/styles/app.css`), and the R3 test scrolls each route to its bottom
+and requires the as-of to be readable at every step where a figure is.
+
+`#view-toggle` is **deliberately not** in that list. R12 requires the basis control to be absent where
+no figure depends on it, so it is hidden on Structure, Ownership and Data quality. Where it is shown,
+it is in the sticky masthead and therefore cannot scroll away either.
 
 ---
 
@@ -80,10 +91,15 @@ a chart of prices.
 horizontally scrolled out of view; or if the price column is sorted such that no top-level feeder
 appears in the first rows.
 
-**Live risk on this screen:** `mountPricing` renders in the order question → tools → score strip →
-narrative banner → bridge → help → price table. At 1600×1000 the bridge sits between the strip and
-the first price row, so the publish prices are the figure most likely to fall below the fold. If they
-do, the fix is layout, not a rewrite of this file: the primary answer is the prices.
+**The live risk on this screen materialised, and was fixed as this file said it should be.**
+`mountPricing` renders question → tools → score strip → narrative banner → bridge → help → price
+table. At 1600×1000 the 255px bridge and the 94px help paragraph pushed the first publish price to
+y=887 and rows 2–5 below the fold — exactly one row of five. **The fix was layout, not a weaker
+selector:** `#screen` becomes a flex column and `#pricing-bridge` and `#pricing-help` are given a
+later `order` than `#pricing-price-table` (`src/ui/styles/components.css`). Nothing in the markup
+moves, no text changes, DOM order is untouched (so R1's "first text in the content region" still
+holds) and the bridge is one short scroll below the prices where this file always said it belonged.
+Measured after: rows 1–5 at y=582…750, fourteen publish prices above the fold.
 
 ## 3. Diagnose
 
@@ -101,7 +117,17 @@ subject and the choice of instrument, both without a click.
 | The question line | `#diagnose-question` | |
 | The entity under examination, already populated | `#diagnose-subject`, `#diagnose-entity` | symbol, code and name of the pre-selected entity — never an empty search box |
 | The four lenses, with the active one marked | `#lens-tabs [role="tab"]` | Structure · Ownership · Data quality · Simulator |
-| The active lens's own question | `#lens-question` | the sentence for the lens below |
+| The active lens's own question | `#structure-question` / `#ownership-question` / `#data-quality-question` / `#simulator-question` | the sentence for the lens below |
+
+**Amended 2026-08-04 (R5).** The row above used to name a single id, `#lens-question`. **No element
+with that id has ever been rendered.** Each lens renders its own question under its own id, listed in
+the lens tables below, and that is the shipped design: `mountStructureLens` and friends own their
+question because a lens's question belongs to the lens, not to the shell. The contract is corrected to
+name the four ids that exist rather than one that does not. This is a documentation fix, not a
+weakening — the assertion still requires a visible question sentence above the fold on every lens, and
+`.lens-question` remains a live CSS class, which is the thing that made the phantom id plausible.
+Renaming the four ids to one would mean editing `diagnose/index.ts` and all four lens files; if that is
+preferred it is a separate change, in files this pass does not own.
 
 **Fails if:** the entity combobox is empty on arrival, or the lens tabs need a scroll.
 
@@ -128,6 +154,13 @@ $2,785.79 counterpart of the waterfall's Σ-feeder figure (`docs/issues.md` §L)
 exactly this reason — `docs/redesign-spec.md` §5.4), or a product NAV appears anywhere without its
 basis.
 
+**Amended 2026-08-04 (R5).** `#structure-stage` carries an inline `height: 640px`, which put the
+bottom of its `svg` at 1195 — 195px past the fold. It is clamped with `max-height: 42vh`
+(`src/ui/styles/components.css`), which is 420px at the graded viewport against 444px of room below
+the caption; `max-height` is used because an inline `height` cannot be beaten by a stylesheet without
+`!important`, which is banned. Full screen is exempt via `#structure-stage[style*='position:fixed']`,
+so the `structure.fullscreen.*` parity scene is unaffected. Measured after: svg 560…978.
+
 ### 3b. Ownership lens
 
 **Question rendered:** "Who ultimately owns this position, and in what proportion?"
@@ -141,6 +174,7 @@ is.**
 | What is being decomposed | `#ownership-identity` | symbol · name · code · kind, and total units outstanding |
 | The conservation verdict | `#ownership-checks` | `✓ Owners reconcile to 100%` / `✓ Ultimate owners = 100%` — **or the real figure**, e.g. `⚠ Ultimate owners sum to 129.29%` for `ABFSUB6`. A green tick over a non-conserving entity is a FAIL, not a pass (`docs/issues.md` §M) |
 | The proportional ribbon | `#ownership-ribbon` | up to 40 segments, largest first |
+
 | The count line | `#ownership-status` | n immediate owners · n ultimate parents · top-5 share |
 | The first owner rows | `#ownership-tree` rows 1–5 | units held · direct share · cumulative share |
 
@@ -177,13 +211,34 @@ baseline plus the way in.
 
 | Must be in the viewport on load | Selector | Carries |
 |---|---|---|
-| Product NAV, unshocked, with its basis | `#simulator-baseline` **(contract)** | the figure any Δ will be measured against |
-| The selected entity's current value and unit price | `#simulator-subject` **(contract)** | what is about to be shocked |
-| The three shock inputs and Run, without opening a panel | `#simulator-shock` **(contract)** | value / units / NAV shock · Run · Reprice everything (bottom-up) |
-| The stage with the selected node visible and marked | `#simulator-stage` **(contract)** | the path a shock will travel |
+| Product NAV, unshocked, with its basis | `#simulator-baseline` | `$2,062,198,835.86` · "United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ below is measured against" |
+| The selected entity's current value and unit price | `#simulator-subject` | symbol · value · price per unit · name, code and effective share |
+| The three shock inputs and Run, without opening a panel | `#simulator-shock`, and inside it `#simulator-shock-mv`, `#simulator-shock-qty`, `#simulator-shock-nav`, `#simulator-run` | value / units / NAV shock · Run cascade · Reprice everything (bottom-up) |
+| The stage with the selected node visible and marked | `#simulator-stage` | the path a shock will travel |
 
 **Fails if:** the shock panel starts collapsed behind a handle, or product NAV is only shown after a
 run completes.
+
+**Amended 2026-08-04 (R5).** The two **(contract)** markers are gone because the elements now exist.
+Three things were wrong and all three are fixed in `simulator/index.ts` and `components.css`:
+
+1. `#simulator-baseline` and `#simulator-subject` **were never rendered at all**. They are now the two
+   tiles directly under the lens question — the resting state, which is the only honest first-run answer
+   for a simulator, since no shock has been entered.
+2. `#simulator-shock` sat at y=1333, below a 620px stage and two help paragraphs. The stage is now
+   440px and the shock panel sits **beside** it; the run line, the caption and the two help paragraphs
+   moved below the scene. They are the graph's text alternative and the erratum on the two renamed
+   sweep controls — not the first-run answer, and the run line is not named in this file.
+3. The lens arrived saying "Nothing selected yet" while the Diagnose subject bar read `APPOURI`,
+   because `APPOURI` is a universe position and not a fund in this product's cascade. The lens now
+   falls back to the largest top-level feeder (`SPORTHLD`, 87% of product NAV) when the shared
+   selection is not shockable here. It does **not** write to the store, so the selection the other
+   three lenses share is untouched (R16) — see the caveat at the end, which this narrows but does not
+   close.
+
+The contract row asserts the four inner control ids as well as the panel, because a panel that is
+technically in the viewport while its inputs are not would satisfy the letter and not the bar. Measured
+after: baseline and subject 419…490, stage 543…983, market-value input 817…845, Run 917…945.
 
 ## 4. Drawers
 

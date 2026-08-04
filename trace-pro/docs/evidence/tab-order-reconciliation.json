@@ -1,24 +1,546 @@
 [
- "button \"Expand all\"",
- "button \"Collapse\"",
- "button \"Export CSV\"",
- "button \"Download Excel\"",
- "span[button] \"Jump to the first fund flagged Missing NAV\"",
- "span[button] \"Jump to the first fund flagged Dangling SPV\"",
- "span[button] \"Jump to the first fund flagged Material non-position gap\"",
- "tr[button] \"Open the breakdown for Apollo Sports Capital\"",
- "button \"Collapse Apollo Sports Capital\"",
- "tr[button] \"Open the breakdown for Apollo Sports Capital Holdings (Onshore), L.P.\"",
- "button \"Collapse Apollo Sports Capital Holdings (Onshore), L.P.\"",
- "tr[button] \"Open the breakdown for Apollo Sports Capital (Onshore), L.P.\"",
- "button \"Expand Apollo Sports Capital (Onshore), L.P.\"",
- "tr[button] \"Open the breakdown for Fund Cash\"",
- "tr[button] \"Open the breakdown for AP Dunk SPV, LLC\"",
- "button \"Collapse AP Dunk SPV, LLC\"",
- "tr[button] \"Open the breakdown for Fund Cash\"",
- "tr[button] \"Open the breakdown for Apollo Sports Capital Holdings (Overseas), L.P.\"",
- "button \"Collapse Apollo Sports Capital Holdings (Overseas), L.P.\"",
- "tr[button] \"Open the breakdown for Apollo Sports Capital (Overseas), L.P.\"",
- "button \"Expand Apollo Sports Capital (Overseas), L.P.\"",
- "tr[button] \"Open the breakdown for Fund Cash\""
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 33,
+  "h": 23,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPV: SPV. A special-purpose vehicle / holding enti",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] VPM: VPM. The accounting / valuation system the sy",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "tag": "button",
+  "role": "",
+  "w": 20,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand all",
+  "tag": "button",
+  "role": "",
+  "w": 89,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Collapse",
+  "tag": "button",
+  "role": "",
+  "w": 78,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Export CSV",
+  "tag": "button",
+  "role": "",
+  "w": 95,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Download Excel",
+  "tag": "button",
+  "role": "",
+  "w": 122,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 24,
+  "h": 18,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "span[button] Jump to the first fund flagged Missing NAV",
+  "tag": "span",
+  "role": "button",
+  "w": 118,
+  "h": 32,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "span[button] Jump to the first fund flagged Dangling SPV",
+  "tag": "span",
+  "role": "button",
+  "w": 125,
+  "h": 32,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "span[button] Jump to the first fund flagged Material non-positi",
+  "tag": "span",
+  "role": "button",
+  "w": 192,
+  "h": 32,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] bps: bps. The size of a gap expressed relative to ",
+  "tag": "button",
+  "role": "",
+  "w": 20,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] NAV: NAV. A fund’s net asset value — assets minus ",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPV: SPV. A special-purpose vehicle / holding enti",
+  "tag": "button",
+  "role": "",
+  "w": 25,
+  "h": 19,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Apollo Sports Capital",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 50,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Collapse Apollo Sports Capital",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Apollo Sports Capital Holdi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 50,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Collapse Apollo Sports Capital Holdings (Onshore),",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Apollo Sports Capital (Onsh",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 50,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand Apollo Sports Capital (Onshore), L.P.",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Fund Cash",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for AP Dunk SPV, LLC",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Collapse AP Dunk SPV, LLC",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Fund Cash",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Apollo Sports Capital Holdi",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 50,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Collapse Apollo Sports Capital Holdings (Overseas)",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Apollo Sports Capital (Over",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 50,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand Apollo Sports Capital (Overseas), L.P.",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Open the breakdown for Fund Cash",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ }
 ]

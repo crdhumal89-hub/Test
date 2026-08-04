@@ -8,6 +8,7 @@
  */
 import type { Store } from '../../../state/store.js';
 import { el, replace, qs, emptyState } from '../../primitives/dom.js';
+import { term, termAnnotate, termBindGlossary, termVocabularyLine } from '../../primitives/term.js';
 import { parity } from '../../parity.js';
 import { exportSendToPricingCsv, exportPricingCsv } from '../../../export/csv.js';
 import { exportPricingWorkbook } from '../../../export/excel.js';
@@ -29,10 +30,22 @@ const PRICING_SUBVIEWS = [
 /** Columns that read best ascending on first click; everything else opens largest-first. */
 const PRICING_ASCENDING_FIRST = new Set(['code', 'sym', 'name']);
 
+/**
+ * What a reader meets on this screen, in order: `NAV` in the score strip and the bridge, `bps` in
+ * the strip, the bridge and the price table's last column, `px` in the three price columns, `qty`
+ * in the repricing narrative and the walk's Global Qty column, `MV` in the tooltips the walk
+ * inherits, `Δ` in the walk's Δ Price / Δ Value / Δ bps headers, `VPM` in the filter and the symbol
+ * column, `SPV` in the fund names. Expanded and linked once, above all of them (rubric R2).
+ */
+const PRICING_VOCABULARY = ['nav', 'bps', 'publish_px_vs_current_applied_px_vs_revised_px', 'global_units_global_quantity', 'carried_mv_position_mv', 'pricing', 'vpm', 'spv'];
+
 export function mountPricing(host: HTMLElement, store: Store): () => void {
+  termBindGlossary(store);
+
   replace(
     host,
     el('p', { class: 'screen-question', id: 'pricing-question', text: PRICING_QUESTION }),
+    termVocabularyLine(PRICING_VOCABULARY, 'pricing-vocabulary'),
     el('div', { class: 'toolbar', id: 'pricing-tools' }),
     el('div', { class: 'score-strip', id: 'pricing-score' }),
     el('p', { class: 'narrative', id: 'pricing-banner', ...parity('pricing.banner.narrative') }),
@@ -138,17 +151,23 @@ export function mountPricing(host: HTMLElement, store: Store): () => void {
       qs('#pricing-help', host),
       'Read across one fund: its ',
       el('b', { text: 'price to publish' }),
-      ' is its own NAV divided by its units outstanding; its ',
+      ...termAnnotate(' is its own net asset value (NAV) divided by its units outstanding (qty); its '),
       el('b', { text: 'look-through value' }),
-      ' is what its underlyings are worth at today’s marks; its ',
+      ...termAnnotate(' is what its underlyings are worth at today’s marks (their market value, MV); its '),
       el('b', { text: 'repriced value' }),
-      ' is those same underlyings valued from their own NAVs, deepest level first. The difference between the last two is the ',
+      ...termAnnotate(
+        ' is those same underlyings valued from their own NAVs, deepest level first — never the sum of every fund’s NAV, which would double-count. The difference between the last two is the '
+      ),
       el('b', { text: 'repricing gain or loss' }),
       '. ',
-      el('b', { text: 'bps' }),
-      ' (basis points) is that difference divided by the fund’s own NAV, times 10,000 — so 50 bps is half a percent. ',
-      el('b', { text: 'Δ' }),
-      ' means change. Select any row, or any bar in the bridge, for the full derivation.'
+      el('b', {}, [term('bps', 'bps')]),
+      ...termAnnotate(
+        ' (basis points) is that difference divided by the fund’s own NAV, times 10,000 — so 50 bps is half a percent. '
+      ),
+      el('b', {}, [term('Δ', 'pricing')]),
+      ...termAnnotate(
+        ' means change; a unit price is abbreviated px. Select any row, or any bar in the bridge, for the full derivation.'
+      )
     );
   }
 

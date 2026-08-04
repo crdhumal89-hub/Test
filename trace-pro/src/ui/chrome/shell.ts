@@ -5,7 +5,7 @@
  * The as-of date is here and is never collapsible, so no figure is ever readable while its as-of
  * date is not (rubric R3 — the original allowed exactly that, by folding the masthead away).
  */
-import type { Store, ScreenId, LensId, DrawerId } from '../../state/store.js';
+import type { AppState, Store, ScreenId, LensId, DrawerId } from '../../state/store.js';
 import { routeToHash } from '../../state/store.js';
 import { el, replace } from '../primitives/dom.js';
 import { parity } from '../parity.js';
@@ -50,6 +50,18 @@ const SCREEN_SCENE: Record<ScreenId, string> = {
   pricing: 'rfx',
   diagnose: 'str',
 };
+
+/**
+ * True where at least one figure on screen depends on the pricing basis.
+ *
+ * R12: "the control is hidden on screens where it changes nothing". Structure, Ownership and Data
+ * quality read the look-through tree, the ownership graph and the defect scan, none of which move
+ * with the basis — flipping it there left `#screen` byte-identical. So on those three lenses BOTH
+ * the note and the control go, not just the note.
+ */
+function basisApplies(store: Store): boolean {
+  return store.state.screen !== 'diagnose' || store.state.lens === 'simulator';
+}
 
 /** The pricing basis, in plain language, shown wherever any figure depends on it (R12). */
 const VIEW_NOTE: Record<'before' | 'after', { tag: string; text: string }> = {
@@ -104,6 +116,18 @@ export function renderShell(root: HTMLElement, store: Store): void {
   renderMasthead(store);
   renderNav(store);
   renderViewNote(store);
+  renderBasisControl(store);
+}
+
+/**
+ * Show or hide the basis control in place. Deliberately NOT a masthead re-render: re-rendering the
+ * masthead detaches whatever the user was focused on, which is half of why no overlay could restore
+ * focus (R6d).
+ */
+function renderBasisControl(store: Store): void {
+  const toggle = document.getElementById('view-toggle');
+  if (!toggle) return;
+  toggle.hidden = !basisApplies(store);
 }
 
 function renderMasthead(store: Store): void {
@@ -175,6 +199,7 @@ function renderMasthead(store: Store): void {
     ]),
     el('div', { class: 'chrome-actions' }, [viewToggle, glossary, sources])
   );
+  renderBasisControl(store);
 }
 
 function renderNav(store: Store): void {
@@ -217,7 +242,9 @@ function renderViewNote(store: Store): void {
   const host = document.getElementById('view-note');
   if (!host) return;
   // Hidden where nothing depends on the basis, so the control never appears to do nothing (R12).
-  const relevant = store.state.screen !== 'diagnose' || store.state.lens === 'simulator';
+  // `[hidden]` now actually hides: app.css used to give `.view-note` `display: flex`, which beat the
+  // UA rule and left a 19px empty band here on all three lenses.
+  const relevant = basisApplies(store);
   host.hidden = !relevant;
   if (!relevant) {
     replace(host);
@@ -252,14 +279,75 @@ function renderDrawer(store: Store): void {
   else mountSourcesDrawer(host, store);
 }
 
+/* ------------------------------------------------------- focus restoration across overlays (R6d) */
+
+/**
+ * `trapFocus()` in primitives/dom.ts already returns a release function that refocuses the element
+ * that was active when the overlay opened. It was being called — but by release time that element is
+ * a DETACHED NODE, because the shell re-rendered the masthead and the screen re-rendered its tree
+ * while the overlay was open, so `previous?.focus()` was a silent no-op and `document.activeElement`
+ * came back as BODY for the glossary, the sources drawer and the row detail alike.
+ *
+ * Fixed by identity rather than by node reference: record a STABLE SELECTOR for the last control
+ * focused outside any overlay, and refocus by lookup once every subscriber has finished re-rendering.
+ * Survives any number of re-renders, and covers every overlay in the app — including the two row
+ * detail drawers, which are mounted by screens rather than by this file.
+ */
+const OVERLAY_SCOPE = '#drawer-host, .drawer, [role="dialog"]';
+/** Attributes that identify a control across a re-render, in preference order after `id`. */
+const STABLE_ATTRS = ['data-node-id', 'data-own-row', 'data-exception', 'data-code', 'data-lens', 'data-screen', 'data-view'];
+/** Overlay-owning state: when one of these goes empty, its overlay has just closed. */
+const OVERLAY_KEYS: (keyof AppState)[] = ['drawer', 'selectedNodeId', 'selectedFundCode'];
+
+let focusReturn: string | null = null;
+
+function stableSelector(node: EventTarget | null): string | null {
+  if (!(node instanceof HTMLElement) || node === document.body) return null;
+  if (node.id) return `#${CSS.escape(node.id)}`;
+  for (const attr of STABLE_ATTRS) {
+    const value = node.getAttribute(attr);
+    if (value != null) return `${node.tagName.toLowerCase()}[${attr}="${value.replace(/["\\]/g, '\\$&')}"]`;
+  }
+  return null;
+}
+
+/**
+ * Refocus after the current notification finishes. Every screen subscribes after the shell does, so
+ * a synchronous focus here would be thrown away by the re-render that follows it.
+ */
+function restoreFocus(): void {
+  const selector = focusReturn;
+  if (!selector) return;
+  queueMicrotask(() => {
+    const node = document.querySelector<HTMLElement>(selector);
+    if (node && !node.closest(OVERLAY_SCOPE) && node.isConnected) node.focus();
+  });
+}
+
+function closedOverlay(state: Readonly<AppState>, changed: ReadonlySet<keyof AppState>): boolean {
+  return OVERLAY_KEYS.some((key) => changed.has(key) && state[key] == null);
+}
+
 /** Keep the chrome in step with state, and expose the keyboard route to the glossary (R7). */
 export function wireShell(store: Store): void {
   renderDrawer(store);
-  store.subscribe((_state, changed) => {
+  document.addEventListener('focusin', (event) => {
+    if ((event.target as Element | null)?.closest?.(OVERLAY_SCOPE)) return;
+    const selector = stableSelector(event.target);
+    if (selector) focusReturn = selector;
+  });
+  store.subscribe((state, changed) => {
     if (changed.has('drawer')) renderDrawer(store);
-    if (changed.has('view') || changed.has('drawer') || changed.has('product')) renderMasthead(store);
+    // Re-rendering the masthead throws away the focus on the segment the user just pressed, so the
+    // same restore runs here: R6b forbids focus being lost, not just being invisible.
+    if (changed.has('view') || changed.has('product')) {
+      renderMasthead(store);
+      restoreFocus();
+    }
     if (changed.has('screen') || changed.has('lens')) renderNav(store);
     if (changed.has('screen') || changed.has('lens') || changed.has('view')) renderViewNote(store);
+    if (changed.has('screen') || changed.has('lens')) renderBasisControl(store);
+    if (closedOverlay(state, changed)) restoreFocus();
   });
 
   document.addEventListener('keydown', (event) => {

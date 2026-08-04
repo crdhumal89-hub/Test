@@ -1,14 +1,194 @@
 [
- "input[combobox] \"Choose the entity to examine across all four lenses\"",
- "button[tab] \"Structure\"",
- "button[tab] \"Ownership\"",
- "button[tab] \"Data quality\"",
- "button[tab] \"Simulator\"",
- "input[combobox] \"Scope the issue log to one fund entity’s reachable world\"",
- "button \"⬇ Download all issues (CSV)\"",
- "button \"Self-mapping (fund holds its own code)43\"",
- "button \"Circular mapping (mutual / looping owner\"",
- "button \"Missing / dangling SPV code29 · High▸\"",
- "button \"Incomplete look-through (double-count fl\"",
- "button \"Unmapped identifiers (missing VPM symbol\""
+ {
+  "key": "input[combobox] Choose the entity to examine across all four lense",
+  "tag": "input",
+  "role": "combobox",
+  "w": 320,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Structure",
+  "tag": "button",
+  "role": "tab",
+  "w": 88,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Ownership",
+  "tag": "button",
+  "role": "tab",
+  "w": 97,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Data quality",
+  "tag": "button",
+  "role": "tab",
+  "w": 104,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Simulator",
+  "tag": "button",
+  "role": "tab",
+  "w": 90,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[combobox] Scope the issue log to one fund entity’s reachable",
+  "tag": "input",
+  "role": "combobox",
+  "w": 320,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ⬇ Download all issues (CSV)",
+  "tag": "button",
+  "role": "",
+  "w": 197,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Self-mapping (fund holds its own code)43 · Medium▸",
+  "tag": "button",
+  "role": "",
+  "w": 328,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Circular mapping (mutual / looping ownership)2 · H",
+  "tag": "button",
+  "role": "",
+  "w": 343,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Missing / dangling SPV code29 · High▸",
+  "tag": "button",
+  "role": "",
+  "w": 248,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Incomplete look-through (double-count flag, nothin",
+  "tag": "button",
+  "role": "",
+  "w": 452,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Unmapped identifiers (missing VPM symbol / name)22",
+  "tag": "button",
+  "role": "",
+  "w": 382,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ }
 ]

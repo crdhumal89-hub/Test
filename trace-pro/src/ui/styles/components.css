@@ -78,6 +78,25 @@
 .score-value { font: 600 21px/1.2 var(--serif); color: var(--navy); margin-top: 4px; }
 .score-detail { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
+/**
+ * PRICING: the price file is the deliverable, so the prices come before the chart of the prices.
+ * `mountPricing` renders question → tools → score → banner → bridge → help → table, which put the
+ * first publish price at y=887 and rows 2–5 below the fold. docs/first-run.md predicted exactly
+ * this and named the remedy: "the fix is layout, not a rewrite of this file: the primary answer is
+ * the prices." So the screen becomes a flex column and the bridge and the help paragraph move
+ * below the table — no markup moves, no text changes, and the DOM order (and therefore R1's "first
+ * text in the content region") is untouched.
+ */
+#screen:has(> #pricing-price-table) { display: flex; flex-direction: column; }
+#pricing-question { order: 1; }
+#pricing-tools { order: 2; }
+#pricing-score { order: 3; }
+#pricing-banner { order: 4; }
+#pricing-price-table, #pricing-walk-table { order: 5; }
+#pricing-bridge { order: 6; }
+#pricing-help { order: 7; }
+#pricing-detail { order: 8; }
+
 .narrative {
   background: rgba(10, 125, 104, .05); border: 1px solid rgba(10, 125, 104, .18);
   border-radius: 9px; padding: 11px 13px; font-size: 12.5px; color: var(--muted);
@@ -123,7 +142,8 @@
 .bridge-amount { text-align: right; font: 600 12.5px/1.3 var(--mono); }
 .bridge-bps { display: block; font-size: 10.5px; font-weight: 400; color: var(--muted); }
 
-.subview-toggle { display: inline-flex; border: 1px solid var(--navy); border-radius: 9px; overflow: hidden; }
+/* Same clipping fix as .view-toggle: the ring must not be cut off (R6). */
+.subview-toggle { display: inline-flex; border: 1px solid var(--navy); border-radius: 9px; }
 .pub-col { background: rgba(10, 125, 104, .05); }
 .level-pill {
   display: inline-block; font: 700 9.5px/1 var(--mono); letter-spacing: .04em;
@@ -156,6 +176,14 @@
 
 /* ------------------------------------------------------------------ graphs */
 
+/* The Structure stage carries an inline `height: 640px`, which put the bottom of its `svg` at 1195px
+   — 195px past the fold R5 measures at 1600×1000. `max-height` clamps the used height without having
+   to beat an inline declaration (and without `!important`, which is banned): 42vh = 420px at the
+   graded viewport, against 444px of room below the caption. Full screen is exempt — it swaps the
+   inline style to `position:fixed;inset:0`. */
+#structure-stage { max-height: 42vh; }
+#structure-stage[style*='position:fixed'] { max-height: none; }
+
 .graph-stage {
   position: relative; background: var(--paper); border: 1px solid var(--line);
   border-radius: var(--radius); overflow: hidden; height: 60vh; min-height: 380px;
@@ -173,6 +201,45 @@
 .slider-group { display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--muted); }
 .slider-group input[type='range'] { width: 108px; }
 
+/* ------------------------------------------------------------------ simulator */
+
+/* The Simulator's resting state. `#simulator-baseline` and `#simulator-subject` are the two ids
+   docs/first-run.md names as this lens's primary answer, and the stage sits beside the shock panel
+   rather than 640px above it, so all four contract elements land inside a 1600×1000 viewport (R5).
+   `.sim-shock` scrolls internally at the stage's height; the three inputs and Run sit in its first
+   320px, so they are readable without scrolling anything. */
+.sim-facts { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.sim-tile {
+  flex: 1 1 400px; min-width: 0; background: var(--paper);
+  border: 1px solid var(--line); border-radius: 9px; padding: 7px 12px;
+}
+.sim-tile-label {
+  display: block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+}
+.sim-tile-value { display: block; font-size: 15px; color: var(--navy); }
+.sim-tile-basis { display: block; font-size: 11px; color: var(--muted); }
+
+.sim-scene {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 29%);
+  gap: 12px; align-items: start; margin-bottom: 12px;
+}
+.sim-shock, #simulator-tray {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 9px; padding: 10px 12px; min-width: 0;
+}
+.sim-shock { max-height: 440px; overflow: auto; }
+#simulator-tray { display: block; margin-bottom: 12px; }
+.sim-shock h4, #simulator-tray h3 { margin: 11px 0 5px; font-size: 12px; color: var(--navy); }
+.sim-shock > h4:first-child { margin-top: 0; }
+.shock-editor { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.shock-label { display: block; font-size: 10.5px; font-weight: 600; color: var(--navy); }
+.shock-label .note { display: block; margin: 0; font-size: 9.5px; }
+.shock-input {
+  width: 100%; padding: 5px 7px; font: 500 11.5px/1.4 var(--mono);
+  color: var(--ink); border: 1px solid var(--line-2); border-radius: 7px;
+}
+
 /* ------------------------------------------------------------------ ownership */
 
 .ribbon {
@@ -180,6 +247,42 @@
   border: 1px solid var(--line-2); margin: 10px 0;
 }
 .ribbon-segment { height: 100%; cursor: pointer; border: 0; padding: 0; }
+
+/**
+ * The proportional ribbon the Ownership lens actually renders (`.own-ribbon` / `.own-seg`, see
+ * owner-tree.ts). It had NO stylesheet at all, so all 40 segments were 0px high: invisible as the
+ * primary answer R5 names, and 39 zero-height tab stops for R6. Height comes from here; width is
+ * inline, because the width IS the figure.
+ *
+ * Deliberately no `overflow: hidden` on the strip — that is what erased the focus ring on the
+ * pricing-basis segments, and these are focus stops too. `min-width` keeps the smallest holder a
+ * real, clickable, focusable target instead of a sub-pixel sliver.
+ */
+.own-ribbon-host { margin: 8px 0 10px; }
+.own-ribbon {
+  display: flex; align-items: stretch; height: 18px;
+  border: 1px solid var(--line-2); border-radius: 4px; background: var(--cream-2);
+}
+.own-seg { min-width: 5px; cursor: pointer; border: 0; padding: 0; }
+.own-seg:hover { filter: brightness(1.12); }
+/* The two tones swap here. A segment's fill is mid-tone by design, and no single ring colour can
+   clear 3:1 against a mid-tone; the white tone does (≥ 3.2:1 against all eight fills, see
+   OWNERSHIP_RIBBON_COLORS), so on the ribbon white is the ring and `--focus` is the halo. Inset,
+   so the ring is drawn over the segment it belongs to rather than over its neighbours. */
+.own-seg:focus-visible {
+  position: relative; z-index: 1;
+  outline: 2px solid var(--focus-halo); outline-offset: -2px;
+  box-shadow: 0 0 0 2px var(--focus);
+}
+
+/* The identity line: five spans that ran together as `…code APPOURITotal qty: …100%`, unstyled. */
+.own-identity { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.own-symbol { font: 600 13px/1.3 var(--mono); color: var(--navy); }
+.own-name { font-size: 12.5px; color: var(--ink); }
+.own-qty, .own-pie { font-size: 11.5px; color: var(--muted); }
+.own-pie { font-weight: 600; color: var(--teal-ink); }
+.own-checks { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.own-hint { font-size: 11.5px; color: var(--muted); }
 .integrity { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
 .integrity-check {
   font-size: 11.5px; font-weight: 600; border-radius: 999px; padding: 4px 10px;

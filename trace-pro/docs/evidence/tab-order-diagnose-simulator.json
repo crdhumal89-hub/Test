@@ -1,45 +1,786 @@
 [
- "input[combobox] \"Choose the entity to examine across all four lenses\"",
- "button[tab] \"Structure\"",
- "button[tab] \"Ownership\"",
- "button[tab] \"Data quality\"",
- "button[tab] \"Simulator\"",
- "button \"Reprice everything (bottom-up)\"",
- "button \"Reprice one level at a time\"",
- "button \"Next stage ▸\"",
- "button \"↺ Reset run\"",
- "button \"0.5×\"",
- "button \"1×\"",
- "button \"2×\"",
- "button \"Isolate affected\"",
- "button \"Follow camera\"",
- "button \"◎ Fit\"",
- "g[button] \"SPORT::PRODUCT, Apollo Sports Capital, level 0. Activate to shock this fund.\"",
- "button \"SPORT::PRODUCT\"",
- "button \"DUNK\"",
- "button \"ASCHON\"",
- "button \"SPORTHLD\"",
- "button \"ASCON\"",
- "button \"SPORT\"",
- "button \"SPORTA\"",
- "button \"SPORTD\"",
- "button \"SPORTC\"",
- "button \"SPORTHFC\"",
- "button \"APAEV\"",
- "button \"DEUCE1DC\"",
- "button \"ASCHLUSD\"",
- "button \"SPORTOP\"",
- "button \"DEUCE2FC\"",
- "button \"SPORTFC\"",
- "button \"SPORTB\"",
- "button \"APIVDC\"",
- "button \"SPORT2DC\"",
- "button \"DEUCE\"",
- "button \"APAV\"",
- "button \"APRAIL2\"",
- "button \"APCAXXII\"",
- "button \"SPORTEUR\"",
- "button \"CRIMAP\"",
- "button \"CRIMT\"",
- "button \"CRIMH\""
+ {
+  "key": "input[combobox] Choose the entity to examine across all four lense",
+  "tag": "input",
+  "role": "combobox",
+  "w": 320,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Structure",
+  "tag": "button",
+  "role": "tab",
+  "w": 88,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Ownership",
+  "tag": "button",
+  "role": "tab",
+  "w": 97,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Data quality",
+  "tag": "button",
+  "role": "tab",
+  "w": 104,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Simulator",
+  "tag": "button",
+  "role": "tab",
+  "w": 90,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Reprice everything (bottom-up)",
+  "tag": "button",
+  "role": "",
+  "w": 212,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Reprice one level at a time",
+  "tag": "button",
+  "role": "",
+  "w": 183,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Next stage ▸",
+  "tag": "button",
+  "role": "",
+  "w": 100,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ↺ Reset run",
+  "tag": "button",
+  "role": "",
+  "w": 98,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] 0.5×",
+  "tag": "button",
+  "role": "",
+  "w": 51,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] 1×",
+  "tag": "button",
+  "role": "",
+  "w": 41,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(27, 42, 74)",
+  "ringContrast": 14.22,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] 2×",
+  "tag": "button",
+  "role": "",
+  "w": 41,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Isolate affected",
+  "tag": "button",
+  "role": "",
+  "w": 117,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Follow camera",
+  "tag": "button",
+  "role": "",
+  "w": 113,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ◎ Fit",
+  "tag": "button",
+  "role": "",
+  "w": 56,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "g[button] SPORT::PRODUCT, Apollo Sports Capital, level 0. Ac",
+  "tag": "g",
+  "role": "button",
+  "w": 61,
+  "h": 28,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(10, 18, 38)",
+  "ringContrast": 18.63,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] ",
+  "tag": "input",
+  "role": "",
+  "w": 136,
+  "h": 28,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] ",
+  "tag": "input",
+  "role": "",
+  "w": 136,
+  "h": 28,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[] ",
+  "tag": "input",
+  "role": "",
+  "w": 136,
+  "h": 28,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ▶ Run cascade",
+  "tag": "button",
+  "role": "",
+  "w": 117,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Reset",
+  "tag": "button",
+  "role": "",
+  "w": 60,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Inspect SPORT, of which SPORTHLD holds 100.00%",
+  "tag": "button",
+  "role": "",
+  "w": 69,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORT::PRODUCT",
+  "tag": "button",
+  "role": "",
+  "w": 138,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] DUNK",
+  "tag": "button",
+  "role": "",
+  "w": 62,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ASCHON",
+  "tag": "button",
+  "role": "",
+  "w": 80,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTHLD",
+  "tag": "button",
+  "role": "",
+  "w": 95,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ASCON",
+  "tag": "button",
+  "role": "",
+  "w": 71,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORT",
+  "tag": "button",
+  "role": "",
+  "w": 69,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTA",
+  "tag": "button",
+  "role": "",
+  "w": 77,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTD",
+  "tag": "button",
+  "role": "",
+  "w": 78,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTC",
+  "tag": "button",
+  "role": "",
+  "w": 78,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTHFC",
+  "tag": "button",
+  "role": "",
+  "w": 95,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] APAEV",
+  "tag": "button",
+  "role": "",
+  "w": 68,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] DEUCE1DC",
+  "tag": "button",
+  "role": "",
+  "w": 95,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] ASCHLUSD",
+  "tag": "button",
+  "role": "",
+  "w": 95,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTOP",
+  "tag": "button",
+  "role": "",
+  "w": 87,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] DEUCE2FC",
+  "tag": "button",
+  "role": "",
+  "w": 93,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTFC",
+  "tag": "button",
+  "role": "",
+  "w": 86,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTB",
+  "tag": "button",
+  "role": "",
+  "w": 78,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] APIVDC",
+  "tag": "button",
+  "role": "",
+  "w": 73,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORT2DC",
+  "tag": "button",
+  "role": "",
+  "w": 94,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] DEUCE",
+  "tag": "button",
+  "role": "",
+  "w": 70,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] APAV",
+  "tag": "button",
+  "role": "",
+  "w": 59,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] APRAIL2",
+  "tag": "button",
+  "role": "",
+  "w": 79,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] APCAXXII",
+  "tag": "button",
+  "role": "",
+  "w": 85,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] SPORTEUR",
+  "tag": "button",
+  "role": "",
+  "w": 95,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] CRIMAP",
+  "tag": "button",
+  "role": "",
+  "w": 75,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] CRIMT",
+  "tag": "button",
+  "role": "",
+  "w": 66,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] CRIMH",
+  "tag": "button",
+  "role": "",
+  "w": 67,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ }
 ]

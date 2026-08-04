@@ -1,108 +1,1698 @@
 [
- "input[combobox] \"Choose the entity to examine across all four lenses\"",
- "button[tab] \"Structure\"",
- "button[tab] \"Ownership\"",
- "button[tab] \"Data quality\"",
- "button[tab] \"Simulator\"",
- "input[combobox] \"Find a position and trace who owns it\"",
- "ul[listbox] \"FUND12U12012 CMBS-I Fund U-1, LLCSPVAPOL\"",
- "div[button] \"Apollo Credit Strategies Master Fund Ltd., 11.45% — go to its row\"",
- "div[button] \"Apollo Credit Strategies Absolute Return Aggregator C, L.P., 10.11% — go to its row\"",
- "div[button] \"Apollo Accord+ II Aggregator C, L.P., 9.04% — go to its row\"",
- "div[button] \"AAA Multi-Asset Credit Strategies Fund (Z), L.P., 7.85% — go to its row\"",
- "div[button] \"AAA Hybrid Equity Strategy (Z), L.P., 7.85% — go to its row\"",
- "div[button] \"Chestnut Ridge, L.P., 5.64% — go to its row\"",
- "div[button] \"AAA Multi-Asset Credit Strategies Lux Fund (Z), L.P., 5.26% — go to its row\"",
- "div[button] \"AAA Offshore Hybrid Equity Strategy (Z), L.P., 5.26% — go to its row\"",
- "div[button] \"Apollo TR Opportunistic Ltd., 5.07% — go to its row\"",
- "div[button] \"Fox Hedge Intermediate A Limited, 3.39% — go to its row\"",
- "div[button] \"Apollo Calliope Fund, L.P., 2.79% — go to its row\"",
- "div[button] \"Apollo Centre Street Partnership, L.P., 2.30% — go to its row\"",
- "div[button] \"AMAPS 3 SMA LLC, 1.51% — go to its row\"",
- "div[button] \"AMAPS 2 SMA LLC, 1.51% — go to its row\"",
- "div[button] \"AMAPS AssetCo 1 LLC, 1.51% — go to its row\"",
- "div[button] \"Apollo Hostplus Credit II Holdings II, L.P., 1.42% — go to its row\"",
- "div[button] \"Apollo Moultrie Credit Fund, L.P., 1.36% — go to its row\"",
- "div[button] \"Apollo Violet Crown DOS SPV, LLC, 1.33% — go to its row\"",
- "div[button] \"Apollo Lincoln Fixed Income Fund, L.P., 1.29% — go to its row\"",
- "div[button] \"Athora Accord Side Car, a Compartment of Athora Lux Invest NL, 1.13% — go to its row\"",
- "div[button] \"Apollo RWNIH-HSMA LP, 1.13% — go to its row\"",
- "div[button] \"Apollo Delphi Fund, L.P., 0.98% — go to its row\"",
- "div[button] \"Apollo Excelsior, L.P., 0.96% — go to its row\"",
- "div[button] \"Apollo Union Street Partners, L.P., 0.94% — go to its row\"",
- "div[button] \"Apollo Credit Strategies Fund - Global Private Solutions Aggregator II, L.P., 0.94% — go to its row\"",
- "div[button] \"Apollo Credit Fund (Levered) Aggregator A Ltd., 0.90% — go to its row\"",
- "div[button] \"Apollo PPF Credit Strategies, LLC, 0.86% — go to its row\"",
- "div[button] \"Apollo Atlas Master Fund, LLC, 0.81% — go to its row\"",
- "div[button] \"Apollo Libra Credit Opportunities Fund, L.P., 0.79% — go to its row\"",
- "div[button] \"Apollo Oasis Partners, L.P. - Vintage 2 - Tranche A, 0.77% — go to its row\"",
- "div[button] \"Mercer Multi-Asset Credit Fund, 0.56% — go to its row\"",
- "div[button] \"Apollo Golden Falcon Co-Invest Fund, L.P., 0.53% — go to its row\"",
- "div[button] \"Apollo Direct Lending Fund, 0.45% — go to its row\"",
- "div[button] \"AP Kent Credit Master Fund, L.P., 0.45% — go to its row\"",
- "div[button] \"Provident 10 - TRF SMA, 0.43% — go to its row\"",
- "div[button] \"Apollo FGC CDL US Holdings A, L.P., 0.38% — go to its row\"",
- "div[button] \"Apollo H-3 Credit Fund I, L.P., 0.38% — go to its row\"",
- "div[button] \"Apollo Hyperion Fund, L.P., 0.38% — go to its row\"",
- "div[button] \"Apollo Offshore Credit Fund (Unlevered) Aggregator A LP, 0.30% — go to its row\"",
- "tr[button] \"Show how Apollo Credit Strategies Master Fund Ltd. arrives at 11.45% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Credit Strategies Absolute Return Aggregator C, L.P. arrives at 10.11% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Accord+ II Aggregator C, L.P. arrives at 9.04% of APPOUR1-SPV\"",
- "tr[button] \"Show how AAA Multi-Asset Credit Strategies Fund (Z), L.P. arrives at 7.85% of APPOUR1-SPV\"",
- "button \"Expand the owners of AAA Multi-Asset Credit Strategies Fund (Z), L.P.\"",
- "tr[button] \"Show how AAA Hybrid Equity Strategy (Z), L.P. arrives at 7.85% of APPOUR1-SPV\"",
- "button \"Expand the owners of AAA Hybrid Equity Strategy (Z), L.P.\"",
- "tr[button] \"Show how Chestnut Ridge, L.P. arrives at 5.64% of APPOUR1-SPV\"",
- "button \"Expand the owners of Chestnut Ridge, L.P.\"",
- "tr[button] \"Show how AAA Multi-Asset Credit Strategies Lux Fund (Z), L.P. arrives at 5.26% of APPOUR1-SPV\"",
- "button \"Expand the owners of AAA Multi-Asset Credit Strategies Lux Fund (Z), L.P.\"",
- "tr[button] \"Show how AAA Offshore Hybrid Equity Strategy (Z), L.P. arrives at 5.26% of APPOUR1-SPV\"",
- "button \"Expand the owners of AAA Offshore Hybrid Equity Strategy (Z), L.P.\"",
- "tr[button] \"Show how Apollo TR Opportunistic Ltd. arrives at 5.07% of APPOUR1-SPV\"",
- "button \"Expand the owners of Apollo TR Opportunistic Ltd.\"",
- "tr[button] \"Show how Fox Hedge Intermediate A Limited arrives at 3.39% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Calliope Fund, L.P. arrives at 2.79% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Centre Street Partnership, L.P. arrives at 2.30% of APPOUR1-SPV\"",
- "tr[button] \"Show how AMAPS 3 SMA LLC arrives at 1.51% of APPOUR1-SPV\"",
- "tr[button] \"Show how AMAPS 2 SMA LLC arrives at 1.51% of APPOUR1-SPV\"",
- "tr[button] \"Show how AMAPS AssetCo 1 LLC arrives at 1.51% of APPOUR1-SPV\"",
- "button \"Expand the owners of AMAPS AssetCo 1 LLC\"",
- "tr[button] \"Show how Apollo Hostplus Credit II Holdings II, L.P. arrives at 1.42% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Moultrie Credit Fund, L.P. arrives at 1.36% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Violet Crown DOS SPV, LLC arrives at 1.33% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Lincoln Fixed Income Fund, L.P. arrives at 1.29% of APPOUR1-SPV\"",
- "tr[button] \"Show how Athora Accord Side Car, a Compartment of Athora Lux Invest NL arrives at 1.13% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo RWNIH-HSMA LP arrives at 1.13% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Delphi Fund, L.P. arrives at 0.98% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Excelsior, L.P. arrives at 0.96% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Union Street Partners, L.P. arrives at 0.94% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Credit Strategies Fund - Global Private Solutions Aggregator II, L.P. arrives at 0.94% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Credit Fund (Levered) Aggregator A Ltd. arrives at 0.90% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo PPF Credit Strategies, LLC arrives at 0.86% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Atlas Master Fund, LLC arrives at 0.81% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Libra Credit Opportunities Fund, L.P. arrives at 0.79% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Oasis Partners, L.P. - Vintage 2 - Tranche A arrives at 0.77% of APPOUR1-SPV\"",
- "tr[button] \"Show how Mercer Multi-Asset Credit Fund arrives at 0.56% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Golden Falcon Co-Invest Fund, L.P. arrives at 0.53% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Direct Lending Fund arrives at 0.45% of APPOUR1-SPV\"",
- "button \"Expand the owners of Apollo Direct Lending Fund\"",
- "tr[button] \"Show how AP Kent Credit Master Fund, L.P. arrives at 0.45% of APPOUR1-SPV\"",
- "tr[button] \"Show how Provident 10 - TRF SMA arrives at 0.43% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo FGC CDL US Holdings A, L.P. arrives at 0.38% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo H-3 Credit Fund I, L.P. arrives at 0.38% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Hyperion Fund, L.P. arrives at 0.38% of APPOUR1-SPV\"",
- "tr[button] \"Show how Apollo Offshore Credit Fund (Unlevered) Aggregator A LP arrives at 0.30% of APPOUR1-SPV\"",
- "button[listitem] \"AAAIDFAApollo Aligned Alternatives IDF A\"",
- "button[listitem] \"CSTRApollo Credit Strategies Master Fund\"",
- "button[listitem] \"DEFINEDCApollo Credit Strategies Absolut\"",
- "button[listitem] \"ACCPL2CApollo Accord+ II Aggregator C, L\"",
- "button[listitem] \"AAALUXAApollo Aligned Alternatives Lux A\"",
- "button[listitem] \"CHNTINHOChestnut Ridge Intermediate Hold\"",
- "button[listitem] \"TRMFApollo Multi Asset Credit Replacemen\"",
- "button[listitem] \"AAALTApollo Aligned Alternatives Aggrega\"",
- "button[listitem] \"FOXAFox Hedge Intermediate A Limited3.39\"",
- "button[listitem] \"CALLIOPEApollo Calliope Fund, L.P.2.79% \"",
- "button[listitem] \"ACSPApollo Centre Street Partnership, L.\"",
- "button[listitem] \"AMAPS3SAMAPS 3 SMA LLC1.51% · 20,117,522\"",
- "button \"Show all 39 ultimate owners\""
+ {
+  "key": "input[combobox] Choose the entity to examine across all four lense",
+  "tag": "input",
+  "role": "combobox",
+  "w": 320,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Structure",
+  "tag": "button",
+  "role": "tab",
+  "w": 88,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Ownership",
+  "tag": "button",
+  "role": "tab",
+  "w": 97,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Data quality",
+  "tag": "button",
+  "role": "tab",
+  "w": 104,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[tab] Simulator",
+  "tag": "button",
+  "role": "tab",
+  "w": 90,
+  "h": 33,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "input[combobox] Find a position and trace who owns it",
+  "tag": "input",
+  "role": "combobox",
+  "w": 320,
+  "h": 35,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "ul[listbox] FUND12U12012 CMBS-I Fund U-1, LLCSPVAPOLLO CRDT SC",
+  "tag": "ul",
+  "role": "listbox",
+  "w": 320,
+  "h": 320,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgba(27, 42, 74, 0.4)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 14.22,
+  "toneSeparation": 3.38
+ },
+ {
+  "key": "div[button] Apollo Credit Strategies Master Fund Ltd., 11.45% ",
+  "tag": "div",
+  "role": "button",
+  "w": 178,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(20, 53, 107)",
+  "ringContrast": 11.99,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Credit Strategies Absolute Return Aggregato",
+  "tag": "div",
+  "role": "button",
+  "w": 157,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(14, 143, 131)",
+  "ringContrast": 3.98,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Accord+ II Aggregator C, L.P., 9.04% — go t",
+  "tag": "div",
+  "role": "button",
+  "w": 140,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(58, 92, 146)",
+  "ringContrast": 6.72,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AAA Multi-Asset Credit Strategies Fund (Z), L.P., ",
+  "tag": "div",
+  "role": "button",
+  "w": 122,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(10, 157, 107)",
+  "ringContrast": 3.47,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AAA Hybrid Equity Strategy (Z), L.P., 7.85% — go t",
+  "tag": "div",
+  "role": "button",
+  "w": 122,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(196, 127, 23)",
+  "ringContrast": 3.28,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Chestnut Ridge, L.P., 5.64% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 88,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(92, 107, 118)",
+  "ringContrast": 5.5,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AAA Multi-Asset Credit Strategies Lux Fund (Z), L.",
+  "tag": "div",
+  "role": "button",
+  "w": 82,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(106, 131, 170)",
+  "ringContrast": 3.86,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AAA Offshore Hybrid Equity Strategy (Z), L.P., 5.2",
+  "tag": "div",
+  "role": "button",
+  "w": 82,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(78, 154, 145)",
+  "ringContrast": 3.3,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo TR Opportunistic Ltd., 5.07% — go to its ro",
+  "tag": "div",
+  "role": "button",
+  "w": 79,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(20, 53, 107)",
+  "ringContrast": 11.99,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Fox Hedge Intermediate A Limited, 3.39% — go to it",
+  "tag": "div",
+  "role": "button",
+  "w": 53,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(14, 143, 131)",
+  "ringContrast": 3.98,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Calliope Fund, L.P., 2.79% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 43,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(58, 92, 146)",
+  "ringContrast": 6.72,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Centre Street Partnership, L.P., 2.30% — go",
+  "tag": "div",
+  "role": "button",
+  "w": 36,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(10, 157, 107)",
+  "ringContrast": 3.47,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AMAPS 3 SMA LLC, 1.51% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 24,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(196, 127, 23)",
+  "ringContrast": 3.28,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AMAPS 2 SMA LLC, 1.51% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 23,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(92, 107, 118)",
+  "ringContrast": 5.5,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AMAPS AssetCo 1 LLC, 1.51% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 23,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(106, 131, 170)",
+  "ringContrast": 3.86,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Hostplus Credit II Holdings II, L.P., 1.42%",
+  "tag": "div",
+  "role": "button",
+  "w": 22,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(78, 154, 145)",
+  "ringContrast": 3.3,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Moultrie Credit Fund, L.P., 1.36% — go to i",
+  "tag": "div",
+  "role": "button",
+  "w": 21,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(20, 53, 107)",
+  "ringContrast": 11.99,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Violet Crown DOS SPV, LLC, 1.33% — go to it",
+  "tag": "div",
+  "role": "button",
+  "w": 21,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(14, 143, 131)",
+  "ringContrast": 3.98,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Lincoln Fixed Income Fund, L.P., 1.29% — go",
+  "tag": "div",
+  "role": "button",
+  "w": 20,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(58, 92, 146)",
+  "ringContrast": 6.72,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Athora Accord Side Car, a Compartment of Athora Lu",
+  "tag": "div",
+  "role": "button",
+  "w": 18,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(10, 157, 107)",
+  "ringContrast": 3.47,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo RWNIH-HSMA LP, 1.13% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 18,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(196, 127, 23)",
+  "ringContrast": 3.28,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Delphi Fund, L.P., 0.98% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 15,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(92, 107, 118)",
+  "ringContrast": 5.5,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Excelsior, L.P., 0.96% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 15,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(106, 131, 170)",
+  "ringContrast": 3.86,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Union Street Partners, L.P., 0.94% — go to ",
+  "tag": "div",
+  "role": "button",
+  "w": 15,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(78, 154, 145)",
+  "ringContrast": 3.3,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Credit Strategies Fund - Global Private Sol",
+  "tag": "div",
+  "role": "button",
+  "w": 15,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(20, 53, 107)",
+  "ringContrast": 11.99,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Credit Fund (Levered) Aggregator A Ltd., 0.",
+  "tag": "div",
+  "role": "button",
+  "w": 14,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(14, 143, 131)",
+  "ringContrast": 3.98,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo PPF Credit Strategies, LLC, 0.86% — go to i",
+  "tag": "div",
+  "role": "button",
+  "w": 13,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(58, 92, 146)",
+  "ringContrast": 6.72,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Atlas Master Fund, LLC, 0.81% — go to its r",
+  "tag": "div",
+  "role": "button",
+  "w": 13,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(10, 157, 107)",
+  "ringContrast": 3.47,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Libra Credit Opportunities Fund, L.P., 0.79",
+  "tag": "div",
+  "role": "button",
+  "w": 12,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(196, 127, 23)",
+  "ringContrast": 3.28,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Oasis Partners, L.P. - Vintage 2 - Tranche ",
+  "tag": "div",
+  "role": "button",
+  "w": 12,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(92, 107, 118)",
+  "ringContrast": 5.5,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Mercer Multi-Asset Credit Fund, 0.56% — go to its ",
+  "tag": "div",
+  "role": "button",
+  "w": 9,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(106, 131, 170)",
+  "ringContrast": 3.86,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Golden Falcon Co-Invest Fund, L.P., 0.53% —",
+  "tag": "div",
+  "role": "button",
+  "w": 8,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(78, 154, 145)",
+  "ringContrast": 3.3,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Direct Lending Fund, 0.45% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 7,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(20, 53, 107)",
+  "ringContrast": 11.99,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] AP Kent Credit Master Fund, L.P., 0.45% — go to it",
+  "tag": "div",
+  "role": "button",
+  "w": 7,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(14, 143, 131)",
+  "ringContrast": 3.98,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Provident 10 - TRF SMA, 0.43% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 7,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(58, 92, 146)",
+  "ringContrast": 6.72,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo FGC CDL US Holdings A, L.P., 0.38% — go to ",
+  "tag": "div",
+  "role": "button",
+  "w": 6,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(10, 157, 107)",
+  "ringContrast": 3.47,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo H-3 Credit Fund I, L.P., 0.38% — go to its ",
+  "tag": "div",
+  "role": "button",
+  "w": 6,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(196, 127, 23)",
+  "ringContrast": 3.28,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Hyperion Fund, L.P., 0.38% — go to its row",
+  "tag": "div",
+  "role": "button",
+  "w": 6,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(92, 107, 118)",
+  "ringContrast": 5.5,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "div[button] Apollo Offshore Credit Fund (Unlevered) Aggregator",
+  "tag": "div",
+  "role": "button",
+  "w": 5,
+  "h": 16,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(255, 255, 255)",
+   "rgb(13, 139, 122)"
+  ],
+  "fill": "rgb(106, 131, 170)",
+  "ringContrast": 3.86,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Credit Strategies Master Fund Ltd.",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Credit Strategies Absolute Return ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Accord+ II Aggregator C, L.P. arri",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AAA Multi-Asset Credit Strategies Fund (Z",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of AAA Multi-Asset Credit Strate",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AAA Hybrid Equity Strategy (Z), L.P. arri",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of AAA Hybrid Equity Strategy (Z",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Chestnut Ridge, L.P. arrives at 5.64% of ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of Chestnut Ridge, L.P.",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AAA Multi-Asset Credit Strategies Lux Fun",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of AAA Multi-Asset Credit Strate",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AAA Offshore Hybrid Equity Strategy (Z), ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of AAA Offshore Hybrid Equity St",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo TR Opportunistic Ltd. arrives at 5",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of Apollo TR Opportunistic Ltd.",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Fox Hedge Intermediate A Limited arrives ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Calliope Fund, L.P. arrives at 2.7",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Centre Street Partnership, L.P. ar",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AMAPS 3 SMA LLC arrives at 1.51% of APPOU",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AMAPS 2 SMA LLC arrives at 1.51% of APPOU",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AMAPS AssetCo 1 LLC arrives at 1.51% of A",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of AMAPS AssetCo 1 LLC",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Hostplus Credit II Holdings II, L.",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Moultrie Credit Fund, L.P. arrives",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Violet Crown DOS SPV, LLC arrives ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Lincoln Fixed Income Fund, L.P. ar",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Athora Accord Side Car, a Compartment of ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo RWNIH-HSMA LP arrives at 1.13% of ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Delphi Fund, L.P. arrives at 0.98%",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Excelsior, L.P. arrives at 0.96% o",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Union Street Partners, L.P. arrive",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Credit Strategies Fund - Global Pr",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Credit Fund (Levered) Aggregator A",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo PPF Credit Strategies, LLC arrives",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Atlas Master Fund, LLC arrives at ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Libra Credit Opportunities Fund, L",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Oasis Partners, L.P. - Vintage 2 -",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Mercer Multi-Asset Credit Fund arrives at",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Golden Falcon Co-Invest Fund, L.P.",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Direct Lending Fund arrives at 0.4",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Expand the owners of Apollo Direct Lending Fund",
+  "tag": "button",
+  "role": "",
+  "w": 18,
+  "h": 13,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how AP Kent Credit Master Fund, L.P. arrives ",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Provident 10 - TRF SMA arrives at 0.43% o",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo FGC CDL US Holdings A, L.P. arrive",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo H-3 Credit Fund I, L.P. arrives at",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Hyperion Fund, L.P. arrives at 0.3",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "tr[button] Show how Apollo Offshore Credit Fund (Unlevered) A",
+  "tag": "tr",
+  "role": "button",
+  "w": 1554,
+  "h": 34,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] AAAIDFAApollo Aligned Alternatives IDF Aggregator,",
+  "tag": "button",
+  "role": "listitem",
+  "w": 507,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] CSTRApollo Credit Strategies Master Fund Ltd.11.45",
+  "tag": "button",
+  "role": "listitem",
+  "w": 453,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] DEFINEDCApollo Credit Strategies Absolute Return A",
+  "tag": "button",
+  "role": "listitem",
+  "w": 591,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] ACCPL2CApollo Accord+ II Aggregator C, L.P.9.04% ·",
+  "tag": "button",
+  "role": "listitem",
+  "w": 437,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] AAALUXAApollo Aligned Alternatives Lux Aggregator,",
+  "tag": "button",
+  "role": "listitem",
+  "w": 496,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] CHNTINHOChestnut Ridge Intermediate Holdings, L.P.",
+  "tag": "button",
+  "role": "listitem",
+  "w": 479,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] TRMFApollo Multi Asset Credit Replacement (Master)",
+  "tag": "button",
+  "role": "listitem",
+  "w": 502,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] AAALTApollo Aligned Alternatives Aggregator, L.P.3",
+  "tag": "button",
+  "role": "listitem",
+  "w": 455,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] FOXAFox Hedge Intermediate A Limited3.39% · 45,075",
+  "tag": "button",
+  "role": "listitem",
+  "w": 393,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] CALLIOPEApollo Calliope Fund, L.P.2.79% · 37,062,1",
+  "tag": "button",
+  "role": "listitem",
+  "w": 377,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] ACSPApollo Centre Street Partnership, L.P.2.30% · ",
+  "tag": "button",
+  "role": "listitem",
+  "w": 414,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[listitem] AMAPS3SAMAPS 3 SMA LLC1.51% · 20,117,522",
+  "tag": "button",
+  "role": "listitem",
+  "w": 334,
+  "h": 21,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(239, 239, 239)",
+  "ringContrast": 3.66,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] Show all 39 ultimate owners",
+  "tag": "button",
+  "role": "",
+  "w": 193,
+  "h": 29,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(255, 255, 255)",
+  "ringContrast": 4.21,
+  "toneSeparation": 4.21
+ }
 ]

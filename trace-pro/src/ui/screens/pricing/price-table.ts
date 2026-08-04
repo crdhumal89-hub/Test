@@ -9,10 +9,72 @@
 import { flagForFund, WARN_BPS, BAD_BPS } from '../../../domain/exceptions.js';
 import { bpsOf, formatPrice, formatUsd, formatUsdParens } from '../../../domain/money.js';
 import type { PricingView, RepricingFixture, RepricingFund } from '../../../domain/types.js';
-import { el, replace, activate, emptyState } from '../../primitives/dom.js';
+import { el, replace, activate, loadingState, emptyState, errorState } from '../../primitives/dom.js';
 import { parity } from '../../parity.js';
 
 const PRICING_DASH = '—';
+
+/* ------------------------------------------- the states both pricing tables can render (R4) */
+
+/**
+ * `src/data/load.ts` publishes the count of outstanding fixture fetches as `data-fetching` on
+ * `<html>`. While one is in flight a price on this screen can still be superseded, and a price that
+ * is about to change is the one figure a controller must not read, so both pricing panels hold a
+ * loading state until the fetch settles. It is the same signal the verification harness waits on
+ * (`scripts/lib/browser.mjs` `settle`), so a snapshot is never taken while this state is up.
+ * Defined here and imported by the walk, so the rule has one definition (R9).
+ */
+export function pricingFixturesInFlight(): boolean {
+  return document.documentElement.hasAttribute('data-fetching');
+}
+
+/** Re-run `render` as soon as the last outstanding fixture fetch settles. */
+export function pricingAfterFixtures(host: HTMLElement, render: () => void): void {
+  const observer = new MutationObserver(() => {
+    if (pricingFixturesInFlight()) return;
+    observer.disconnect();
+    if (host.isConnected) render();
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-fetching'] });
+  // The attribute can be dropped between the check above and the observer attaching.
+  if (!pricingFixturesInFlight()) {
+    observer.disconnect();
+    render();
+  }
+}
+
+/**
+ * What is wrong with the fund rows both pricing panels need, in plain language — or null when they
+ * are sound. A row whose value is not a number would otherwise print as `$NaN`, which is exactly
+ * the silent failure R14 exists to stop.
+ */
+export function pricingDataProblem(repricing: RepricingFixture | null | undefined): string | null {
+  if (!repricing || !Array.isArray(repricing.funds)) {
+    return 'the repricing model arrived without its list of funds';
+  }
+  if (!repricing.funds.length) return 'the repricing model arrived with no fund rows at all';
+  const broken = repricing.funds.filter(
+    (f) => typeof f?.code !== 'string' || !f.code || !Number.isFinite(f.ltv) || !Number.isFinite(f.rev)
+  ).length;
+  if (broken) {
+    return `${broken} of ${repricing.funds.length} fund rows carry no usable value to price from`;
+  }
+  return null;
+}
+
+/** The shared error panel: what failed, what it does not affect, and what to do next. */
+export function pricingErrorPanel(host: HTMLElement, panel: string, problem: string): void {
+  replace(
+    host,
+    errorState(
+      `The ${panel} could not be built.`,
+      `This product’s repricing data arrived incomplete: ${problem}. No price on this panel can be` +
+        ' trusted until that is fixed, so none is shown; the funds themselves are still there.' +
+        ' Reload to fetch the data again, or open Data sources to see which file is at fault.',
+      { label: 'Reload this product’s data', onAct: () => location.reload() }
+    )
+  );
+}
 
 /** Column order is the original's; the words are the rename table's (§3.1). */
 export const PRICE_COLUMNS = [
@@ -247,6 +309,18 @@ export function renderPriceTable(
   callbacks: PriceTableCallbacks
 ): void {
   const { repricing, view, sort, filter, selectedCode, asof } = options;
+
+  if (pricingFixturesInFlight()) {
+    replace(host, loadingState('the prices to publish'));
+    pricingAfterFixtures(host, () => renderPriceTable(host, options, callbacks));
+    return;
+  }
+  const problem = pricingDataProblem(repricing);
+  if (problem) {
+    pricingErrorPanel(host, 'table of prices to publish', problem);
+    return;
+  }
+
   const rows = pricingSortRows(pricingFilterFunds(repricing.funds, filter), sort);
 
   if (!rows.length) {

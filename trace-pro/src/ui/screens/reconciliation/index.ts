@@ -8,6 +8,7 @@ import { groupExceptions, EXCEPTION_TIPS } from '../../../domain/exceptions.js';
 import { allNodeIds, defaultExpansion, expansionRevealing } from '../../../domain/lookthrough.js';
 import type { Store } from '../../../state/store.js';
 import { el, replace, qs, activate, emptyState } from '../../primitives/dom.js';
+import { term, termAnnotate, termBindGlossary, termVocabularyLine } from '../../primitives/term.js';
 import { parity } from '../../parity.js';
 import { exportLookthroughCsv } from '../../../export/csv.js';
 import { exportReconciliationWorkbook } from '../../../export/excel.js';
@@ -18,10 +19,25 @@ import { renderNodeDetail } from './detail.js';
 export const RECONCILIATION_QUESTION =
   'Does this product’s NAV agree with the value of what it holds, and where is the difference?';
 
+/**
+ * The abbreviations this screen renders, in the order a reader meets them, expanded and linked
+ * once at the top (rubric R2). `NAV` is inside the screen question and every waterfall label,
+ * `SPV` in the "Dangling SPV" chip and the tree's hierarchy column, `VPM` in the symbol column,
+ * `bps` beside every difference. The list is short on purpose: a term that is not on the screen
+ * does not belong on its vocabulary line.
+ */
+const RECONCILIATION_VOCABULARY = ['nav', 'spv', 'vpm', 'bps'];
+
 export function mountReconciliation(host: HTMLElement, store: Store): () => void {
+  // Every term() on this screen opens the glossary at its own definition through this binding.
+  termBindGlossary(store);
+
   replace(
     host,
-    el('p', { class: 'screen-question', id: 'reconciliation-question', text: RECONCILIATION_QUESTION }),
+    // The question is unchanged text — `docs/first-run.md` quotes it and R1 measures it — with
+    // its one abbreviation wrapped rather than expanded, so textContent is byte-identical.
+    el('p', { class: 'screen-question', id: 'reconciliation-question' }, termAnnotate(RECONCILIATION_QUESTION)),
+    termVocabularyLine(RECONCILIATION_VOCABULARY, 'reconciliation-vocabulary'),
     el('div', { class: 'toolbar', id: 'reconciliation-tools' }),
     el('div', { class: 'waterfall', id: 'reconciliation-waterfall' }),
     el('div', { class: 'exceptions', id: 'reconciliation-exceptions' }),
@@ -60,7 +76,13 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
     );
     const csv = el('button', { type: 'button', class: 'btn', id: 'export-csv', text: 'Export CSV' });
     csv.addEventListener('click', () =>
-      exportLookthroughCsv(store.core.lookthrough.nodes, store.repricing, store.state.asof)
+      // The active basis travels with the file: the CSV must say what the tree says (R13).
+      exportLookthroughCsv(
+        store.core.lookthrough.nodes,
+        store.repricing,
+        store.state.view,
+        store.state.asof
+      )
     );
     const excel = el('button', {
       type: 'button',
@@ -88,12 +110,13 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
       collapse,
       csv,
       excel,
-      el('span', {
-        class: 'status-line',
-        id: 'reconciliation-status',
-        ...parity('reconciliation.status_line'),
-        text: reconciliationStatusLine(store.repricing),
-      })
+      // A DECLARED-LABEL parity key: docs/rename-map.json pins this whole sentence, so its `NAV`
+      // is annotated in place rather than expanded.
+      el(
+        'span',
+        { class: 'status-line', id: 'reconciliation-status', ...parity('reconciliation.status_line') },
+        termAnnotate(reconciliationStatusLine(store.repricing))
+      )
     );
   }
 
@@ -105,16 +128,16 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
       el('b', { text: 'look-through value' }),
       document.createTextNode(' (what the underlyings are worth at today’s marks) + '),
       el('b', { text: 'pricing difference' }),
-      document.createTextNode(' (what changes when each fund is repriced from its own NAV, deepest first) = '),
+      ...termAnnotate(' (what changes when each fund is repriced from its own NAV, deepest first) = '),
       el('b', { text: 'repriced value' }),
       document.createTextNode(', then + '),
       el('b', { text: 'non-position difference' }),
-      document.createTextNode(
-        ' (cash, fees and receivables that sit in NAV but are not held as positions) = '
+      ...termAnnotate(
+        ' (cash, fees and receivables that sit in net asset value (NAV) but are not held as positions) = '
       ),
-      el('b', { text: 'NAV' }),
-      document.createTextNode(
-        '. Every difference also shows basis points — the difference divided by NAV, times 10,000. Select any row for its full breakdown.'
+      el('b', {}, [term('NAV', 'nav')]),
+      ...termAnnotate(
+        '. Every difference also shows basis points (bps) — the difference divided by NAV, times 10,000. A fund entity may hold through a special purpose vehicle (SPV); the hierarchy column names each one. Select any row for its full breakdown.'
       )
     );
   }
@@ -140,6 +163,10 @@ export function mountReconciliation(host: HTMLElement, store: Store): () => void
         ...parity(`reconciliation.exception.${category.title.replace(/[^A-Za-z0-9_.>-]+/g, '_')}`),
         title: EXCEPTION_TIPS[category.title] ?? category.title,
       });
+      // The chip label is NOT wrapped in term(): `activate()` makes the whole chip a
+      // role="button" that jumps to the first flagged fund, and nesting a second control inside a
+      // control is an R6 defect, not an R2 fix. `SPV` in "Dangling SPV" is disposed of by route
+      // (a) instead — expanded and linked on the vocabulary line above, which precedes this strip.
       chip.append(
         el('span', {
           class: 'chip-count',

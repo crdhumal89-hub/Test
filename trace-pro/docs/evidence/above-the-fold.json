@@ -1,8 +1,1270 @@
 {
- "reconciliation": true,
- "pricing": true,
- "diagnose-structure": true,
- "diagnose-ownership": true,
- "diagnose-data-quality": true,
- "diagnose-simulator": true
+ "reconciliation": [
+  {
+   "label": "masthead",
+   "selector": "#masthead",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 0,
+     "bottom": 60,
+     "h": 60
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "active product",
+   "selector": "#active-product",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 20,
+     "bottom": 35,
+     "h": 15
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "as-of",
+   "selector": "#asof",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 22,
+     "bottom": 38,
+     "h": 16
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "screen nav",
+   "selector": "#screen-nav",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 60,
+     "bottom": 126,
+     "h": 67
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "question",
+   "selector": "#reconciliation-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 182,
+     "bottom": 205,
+     "h": 23
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "tie verdict",
+   "selector": "#reconciliation-waterfall .wf-tie-pill",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 443,
+     "bottom": 469,
+     "h": 26
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "all five waterfall steps",
+   "selector": "#reconciliation-waterfall .wf-step, #reconciliation-waterfall .wf-op",
+   "found": 5,
+   "need": 5,
+   "boxes": [
+    {
+     "top": 316,
+     "bottom": 416,
+     "h": 100
+    },
+    {
+     "top": 316,
+     "bottom": 416,
+     "h": 100
+    },
+    {
+     "top": 316,
+     "bottom": 416,
+     "h": 100
+    },
+    {
+     "top": 316,
+     "bottom": 416,
+     "h": 100
+    },
+    {
+     "top": 316,
+     "bottom": 416,
+     "h": 100
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "NAV",
+   "selector": "[data-parity=\"reconciliation.waterfall.nav\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 340,
+     "bottom": 368,
+     "h": 29
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "NAV basis",
+   "selector": "#reconciliation-waterfall .wf-basis",
+   "found": 3,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 372,
+     "bottom": 390,
+     "h": 17
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "pricing difference $",
+   "selector": "[data-parity=\"reconciliation.waterfall.delta_pricing_usd\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 357,
+     "bottom": 376,
+     "h": 19
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "pricing difference bps",
+   "selector": "[data-parity=\"reconciliation.waterfall.delta_pricing_bps\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 376,
+     "bottom": 393,
+     "h": 17
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "non-position difference $",
+   "selector": "[data-parity=\"reconciliation.waterfall.delta_nonposition_usd\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 357,
+     "bottom": 376,
+     "h": 19
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "non-position difference bps",
+   "selector": "[data-parity=\"reconciliation.waterfall.delta_nonposition_bps\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 376,
+     "bottom": 393,
+     "h": 17
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "exception chips",
+   "selector": "#reconciliation-exceptions .chip",
+   "found": 3,
+   "need": 3,
+   "boxes": [
+    {
+     "top": 498,
+     "bottom": 530,
+     "h": 32
+    },
+    {
+     "top": 498,
+     "bottom": 530,
+     "h": 32
+    },
+    {
+     "top": 498,
+     "bottom": 530,
+     "h": 32
+    }
+   ],
+   "aboveFold": true
+  }
+ ],
+ "pricing": [
+  {
+   "label": "masthead",
+   "selector": "#masthead",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 0,
+     "bottom": 60,
+     "h": 60
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "active product",
+   "selector": "#active-product",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 20,
+     "bottom": 35,
+     "h": 15
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "as-of",
+   "selector": "#asof",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 22,
+     "bottom": 38,
+     "h": 16
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "screen nav",
+   "selector": "#screen-nav",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 60,
+     "bottom": 126,
+     "h": 67
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "question",
+   "selector": "#pricing-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 238,
+     "bottom": 261,
+     "h": 23
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "repricing P&L",
+   "selector": "[data-parity=\"pricing.score.delta_pricing_usd\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 361,
+     "bottom": 386,
+     "h": 25
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "repricing P&L bps",
+   "selector": "[data-parity=\"pricing.score.delta_pricing_detail\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 390,
+     "bottom": 406,
+     "h": 17
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "NAV",
+   "selector": "[data-parity=\"pricing.score.nav\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 361,
+     "bottom": 386,
+     "h": 25
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "flagged-fund count",
+   "selector": "[data-parity=\"pricing.score.nav_detail\"]",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 390,
+     "bottom": 406,
+     "h": 17
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "first five price rows",
+   "selector": "#pricing-price-table tbody tr",
+   "found": 26,
+   "need": 5,
+   "boxes": [
+    {
+     "top": 582,
+     "bottom": 616,
+     "h": 34
+    },
+    {
+     "top": 616,
+     "bottom": 650,
+     "h": 34
+    },
+    {
+     "top": 650,
+     "bottom": 684,
+     "h": 34
+    },
+    {
+     "top": 684,
+     "bottom": 718,
+     "h": 34
+    },
+    {
+     "top": 718,
+     "bottom": 752,
+     "h": 34
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "first five publish prices",
+   "selector": "[data-parity^=\"pricing.fund.\"][data-parity$=\".publish_px\"]",
+   "found": 26,
+   "need": 5,
+   "boxes": [
+    {
+     "top": 582,
+     "bottom": 616,
+     "h": 34
+    },
+    {
+     "top": 616,
+     "bottom": 650,
+     "h": 34
+    },
+    {
+     "top": 650,
+     "bottom": 684,
+     "h": 34
+    },
+    {
+     "top": 684,
+     "bottom": 718,
+     "h": 34
+    },
+    {
+     "top": 718,
+     "bottom": 752,
+     "h": 34
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "which basis",
+   "selector": "#view-note",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 126,
+     "bottom": 164,
+     "h": 38
+    }
+   ],
+   "aboveFold": true
+  }
+ ],
+ "diagnose-structure": [
+  {
+   "label": "masthead",
+   "selector": "#masthead",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 0,
+     "bottom": 60,
+     "h": 60
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "active product",
+   "selector": "#active-product",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 20,
+     "bottom": 35,
+     "h": 15
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "as-of",
+   "selector": "#asof",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 22,
+     "bottom": 38,
+     "h": 16
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "screen nav",
+   "selector": "#screen-nav",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 60,
+     "bottom": 126,
+     "h": 67
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "diagnose question",
+   "selector": "#diagnose-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 144,
+     "bottom": 190,
+     "h": 46
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity under examination",
+   "selector": "#diagnose-subject",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 204,
+     "bottom": 265,
+     "h": 61
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity combobox, already populated",
+   "selector": "#diagnose-entity",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 217,
+     "bottom": 252,
+     "h": 35
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the four lenses",
+   "selector": "#lens-tabs [role=\"tab\"]",
+   "found": 4,
+   "need": 4,
+   "boxes": [
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "question",
+   "selector": "#structure-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 321,
+     "bottom": 344,
+     "h": 23
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "graph, laid out",
+   "selector": "#structure-stage svg",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 560,
+     "bottom": 978,
+     "h": 418
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "concentration in words",
+   "selector": "#structure-caption",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 454,
+     "bottom": 547,
+     "h": 94
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "layout and legend controls",
+   "selector": "#structure-controls",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 381,
+     "bottom": 442,
+     "h": 61
+    }
+   ],
+   "aboveFold": true
+  }
+ ],
+ "diagnose-ownership": [
+  {
+   "label": "masthead",
+   "selector": "#masthead",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 0,
+     "bottom": 60,
+     "h": 60
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "active product",
+   "selector": "#active-product",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 20,
+     "bottom": 35,
+     "h": 15
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "as-of",
+   "selector": "#asof",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 22,
+     "bottom": 38,
+     "h": 16
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "screen nav",
+   "selector": "#screen-nav",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 60,
+     "bottom": 126,
+     "h": 67
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "diagnose question",
+   "selector": "#diagnose-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 144,
+     "bottom": 190,
+     "h": 46
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity under examination",
+   "selector": "#diagnose-subject",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 204,
+     "bottom": 265,
+     "h": 61
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity combobox, already populated",
+   "selector": "#diagnose-entity",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 217,
+     "bottom": 252,
+     "h": 35
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the four lenses",
+   "selector": "#lens-tabs [role=\"tab\"]",
+   "found": 4,
+   "need": 4,
+   "boxes": [
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "what is being decomposed",
+   "selector": "#ownership-identity",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 405,
+     "bottom": 425,
+     "h": 19
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "conservation verdict",
+   "selector": "#ownership-checks",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 461,
+     "bottom": 491,
+     "h": 30
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "proportional ribbon",
+   "selector": "#ownership-ribbon",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 433,
+     "bottom": 451,
+     "h": 18
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "count line",
+   "selector": "#ownership-status",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 367,
+     "bottom": 385,
+     "h": 18
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "first five owner rows",
+   "selector": "#ownership-tree tbody tr",
+   "found": 40,
+   "need": 5,
+   "boxes": [
+    {
+     "top": 544,
+     "bottom": 577,
+     "h": 34
+    },
+    {
+     "top": 577,
+     "bottom": 611,
+     "h": 34
+    },
+    {
+     "top": 611,
+     "bottom": 645,
+     "h": 34
+    },
+    {
+     "top": 645,
+     "bottom": 679,
+     "h": 34
+    },
+    {
+     "top": 679,
+     "bottom": 712,
+     "h": 34
+    }
+   ],
+   "aboveFold": true
+  }
+ ],
+ "diagnose-data-quality": [
+  {
+   "label": "masthead",
+   "selector": "#masthead",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 0,
+     "bottom": 60,
+     "h": 60
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "active product",
+   "selector": "#active-product",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 20,
+     "bottom": 35,
+     "h": 15
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "as-of",
+   "selector": "#asof",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 22,
+     "bottom": 38,
+     "h": 16
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "screen nav",
+   "selector": "#screen-nav",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 60,
+     "bottom": 126,
+     "h": 67
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "diagnose question",
+   "selector": "#diagnose-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 144,
+     "bottom": 190,
+     "h": 46
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity under examination",
+   "selector": "#diagnose-subject",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 204,
+     "bottom": 265,
+     "h": 61
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity combobox, already populated",
+   "selector": "#diagnose-entity",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 217,
+     "bottom": 252,
+     "h": 35
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the four lenses",
+   "selector": "#lens-tabs [role=\"tab\"]",
+   "found": 4,
+   "need": 4,
+   "boxes": [
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    },
+    {
+     "top": 277,
+     "bottom": 310,
+     "h": 33
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "question",
+   "selector": "#data-quality-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 321,
+     "bottom": 344,
+     "h": 23
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the four counts",
+   "selector": "#data-quality-kpi",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 405,
+     "bottom": 594,
+     "h": 189
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "active scope",
+   "selector": "#data-quality-scope",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 358,
+     "bottom": 393,
+     "h": 35
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "all five buckets",
+   "selector": "#data-quality-buckets",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 611,
+     "bottom": 799,
+     "h": 188
+    }
+   ],
+   "aboveFold": true
+  }
+ ],
+ "diagnose-simulator": [
+  {
+   "label": "masthead",
+   "selector": "#masthead",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 0,
+     "bottom": 60,
+     "h": 60
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "active product",
+   "selector": "#active-product",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 20,
+     "bottom": 35,
+     "h": 15
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "as-of",
+   "selector": "#asof",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 22,
+     "bottom": 38,
+     "h": 16
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "screen nav",
+   "selector": "#screen-nav",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 60,
+     "bottom": 126,
+     "h": 67
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "diagnose question",
+   "selector": "#diagnose-question",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 182,
+     "bottom": 228,
+     "h": 46
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity under examination",
+   "selector": "#diagnose-subject",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 242,
+     "bottom": 303,
+     "h": 61
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "entity combobox, already populated",
+   "selector": "#diagnose-entity",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 255,
+     "bottom": 290,
+     "h": 35
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the four lenses",
+   "selector": "#lens-tabs [role=\"tab\"]",
+   "found": 4,
+   "need": 4,
+   "boxes": [
+    {
+     "top": 315,
+     "bottom": 348,
+     "h": 33
+    },
+    {
+     "top": 315,
+     "bottom": 348,
+     "h": 33
+    },
+    {
+     "top": 315,
+     "bottom": 348,
+     "h": 33
+    },
+    {
+     "top": 315,
+     "bottom": 348,
+     "h": 33
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "product NAV unshocked, with its basis",
+   "selector": "#simulator-baseline",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 419,
+     "bottom": 490,
+     "h": 71
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the subject's value and unit price",
+   "selector": "#simulator-subject",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 419,
+     "bottom": 490,
+     "h": 71
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the three shock inputs and Run, no panel to open",
+   "selector": "#simulator-shock",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 543,
+     "bottom": 983,
+     "h": 440
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "market value input",
+   "selector": "#simulator-shock-mv",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 817,
+     "bottom": 845,
+     "h": 28
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "units input",
+   "selector": "#simulator-shock-qty",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 817,
+     "bottom": 845,
+     "h": 28
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "NAV input",
+   "selector": "#simulator-shock-nav",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 803,
+     "bottom": 831,
+     "h": 28
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "Run",
+   "selector": "#simulator-run",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 917,
+     "bottom": 945,
+     "h": 29
+    }
+   ],
+   "aboveFold": true
+  },
+  {
+   "label": "the stage",
+   "selector": "#simulator-stage",
+   "found": 1,
+   "need": 1,
+   "boxes": [
+    {
+     "top": 543,
+     "bottom": 983,
+     "h": 440
+    }
+   ],
+   "aboveFold": true
+  }
+ ]
 }

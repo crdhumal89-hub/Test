@@ -1,0 +1,163 @@
+{
+ "r3": [
+  {
+   "route": "reconciliation",
+   "scrollY": 235,
+   "docHeight": 1235,
+   "mastheadPosition": "sticky",
+   "asofTop": 22,
+   "asofVisible": true,
+   "figuresInViewport": 53
+  },
+  {
+   "route": "pricing",
+   "scrollY": 645,
+   "docHeight": 1645,
+   "mastheadPosition": "sticky",
+   "asofTop": 22,
+   "asofVisible": true,
+   "figuresInViewport": 256
+  },
+  {
+   "route": "diagnose-structure",
+   "scrollY": 239,
+   "docHeight": 1239,
+   "mastheadPosition": "sticky",
+   "asofTop": 22,
+   "asofVisible": true,
+   "figuresInViewport": 139
+  },
+  {
+   "route": "diagnose-ownership",
+   "scrollY": 734,
+   "docHeight": 1734,
+   "mastheadPosition": "sticky",
+   "asofTop": 22,
+   "asofVisible": true,
+   "figuresInViewport": 106
+  },
+  {
+   "route": "diagnose-data-quality",
+   "scrollY": 0,
+   "docHeight": 1000,
+   "mastheadPosition": "sticky",
+   "asofTop": 22,
+   "asofVisible": true,
+   "figuresInViewport": 11
+  },
+  {
+   "route": "diagnose-simulator",
+   "scrollY": 2183,
+   "docHeight": 3183,
+   "mastheadPosition": "sticky",
+   "asofTop": 22,
+   "asofVisible": true,
+   "figuresInViewport": 0
+  }
+ ],
+ "r5": [
+  {
+   "route": "reconciliation",
+   "scrollY": 0
+  },
+  {
+   "route": "pricing",
+   "scrollY": 0
+  },
+  {
+   "route": "diagnose-structure",
+   "scrollY": 0
+  },
+  {
+   "route": "diagnose-ownership",
+   "scrollY": 0
+  },
+  {
+   "route": "diagnose-data-quality",
+   "scrollY": 0
+  },
+  {
+   "route": "diagnose-simulator",
+   "scrollY": 0
+  }
+ ],
+ "r6": {
+  "basis-segment": {
+   "box": "111x29",
+   "outline": "solid 2px rgb(13, 139, 122)",
+   "outlineOffset": "2px",
+   "halo": "rgb(255, 255, 255) 0px 0px 0px 2px",
+   "fill": "rgb(27, 42, 74)"
+  },
+  "basis-segment-active": {
+   "box": "81x29",
+   "outline": "solid 2px rgb(13, 139, 122)",
+   "outlineOffset": "2px",
+   "halo": "rgb(255, 255, 255) 0px 0px 0px 2px",
+   "fill": "rgb(255, 255, 255)"
+  },
+  "ribbon-segment": {
+   "box": "178x16",
+   "outline": "solid 2px rgb(255, 255, 255)",
+   "outlineOffset": "-2px",
+   "halo": "rgb(13, 139, 122) 0px 0px 0px 2px",
+   "fill": "rgb(20, 53, 107)"
+  }
+ },
+ "r12": [
+  {
+   "route": "reconciliation",
+   "toggleHidden": false,
+   "toggleDisplay": "flex",
+   "toggleHeight": 31,
+   "noteHidden": false,
+   "noteDisplay": "flex",
+   "noteHeight": 38
+  },
+  {
+   "route": "pricing",
+   "toggleHidden": false,
+   "toggleDisplay": "flex",
+   "toggleHeight": 31,
+   "noteHidden": false,
+   "noteDisplay": "flex",
+   "noteHeight": 38
+  },
+  {
+   "route": "diagnose-structure",
+   "toggleHidden": true,
+   "toggleDisplay": "none",
+   "toggleHeight": 0,
+   "noteHidden": true,
+   "noteDisplay": "none",
+   "noteHeight": 0
+  },
+  {
+   "route": "diagnose-ownership",
+   "toggleHidden": true,
+   "toggleDisplay": "none",
+   "toggleHeight": 0,
+   "noteHidden": true,
+   "noteDisplay": "none",
+   "noteHeight": 0
+  },
+  {
+   "route": "diagnose-data-quality",
+   "toggleHidden": true,
+   "toggleDisplay": "none",
+   "toggleHeight": 0,
+   "noteHidden": true,
+   "noteDisplay": "none",
+   "noteHeight": 0
+  },
+  {
+   "route": "diagnose-simulator",
+   "toggleHidden": false,
+   "toggleDisplay": "flex",
+   "toggleHeight": 31,
+   "noteHidden": false,
+   "noteDisplay": "flex",
+   "noteHeight": 38
+  }
+ ]
+}

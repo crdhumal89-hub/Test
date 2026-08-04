@@ -1,32 +1,62 @@
 [
  {
   "route": "reconciliation",
+  "dependent": true,
+  "screenChangedByToggle": true,
+  "toggleVisible": true,
+  "toggleHiddenAttr": false,
   "noteVisible": true,
-  "toggleVisible": true
+  "noteHeight": 67,
+  "noteTag": "After pricing"
  },
  {
   "route": "pricing",
+  "dependent": true,
+  "screenChangedByToggle": true,
+  "toggleVisible": true,
+  "toggleHiddenAttr": false,
   "noteVisible": true,
-  "toggleVisible": true
+  "noteHeight": 67,
+  "noteTag": "After pricing"
  },
  {
   "route": "diagnose-structure",
-  "noteVisible": true,
-  "toggleVisible": true
+  "dependent": false,
+  "screenChangedByToggle": false,
+  "toggleVisible": false,
+  "toggleHiddenAttr": true,
+  "noteVisible": false,
+  "noteHeight": 0,
+  "noteTag": ""
  },
  {
   "route": "diagnose-ownership",
-  "noteVisible": true,
-  "toggleVisible": true
+  "dependent": false,
+  "screenChangedByToggle": false,
+  "toggleVisible": false,
+  "toggleHiddenAttr": true,
+  "noteVisible": false,
+  "noteHeight": 0,
+  "noteTag": ""
  },
  {
   "route": "diagnose-data-quality",
-  "noteVisible": true,
-  "toggleVisible": true
+  "dependent": false,
+  "screenChangedByToggle": false,
+  "toggleVisible": false,
+  "toggleHiddenAttr": true,
+  "noteVisible": false,
+  "noteHeight": 0,
+  "noteTag": ""
  },
  {
   "route": "diagnose-simulator",
+  "dependent": true,
+  "screenChangedByToggle": true,
+  "toggleVisible": true,
+  "toggleHiddenAttr": false,
   "noteVisible": true,
-  "toggleVisible": true
+  "noteHeight": 67,
+  "noteTag": "After pricing"
  }
 ]

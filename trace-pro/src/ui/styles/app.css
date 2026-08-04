@@ -21,7 +21,25 @@
   --good: #0a9d6b;
   --warn: #c47f17;
   --bad: #c0392b;
-  --focus: #0a7d68;
+
+  /**
+   * The focus ring. R6a wants ≥ 2px at ≥ 3:1 contrast, and the previous #0a7d68 measured **2.81:1**
+   * on the navy fill of an active segment, so no ring was legible there (and none was DRAWN at all
+   * on the basis toggle — see `.view-toggle`).
+   *
+   * #0d8b7a is picked by arithmetic, not by eye. Relative luminance 0.1996 puts it inside the only
+   * band that clears 3:1 against every solid surface a control sits on in this app — navy #1b2a4a
+   * 3.39:1, paper 4.21:1, cream 3.74:1, cream-2 3.45:1, the Structure stage #F6F2E8 3.75:1 and the
+   * Simulator stage #0A1226 3.93:1. (The band is L ∈ [0.171, 0.237]: below it the ring dies on navy,
+   * above it on cream-2.)
+   *
+   * No single tone can also clear 3:1 against a mid-tone fill like a ribbon segment — the arithmetic
+   * leaves no room — so the ring is DUAL TONE: `--focus-halo` is painted in the 2px `outline-offset`
+   * gap, giving a second edge at 4.21:1 from `--focus`. On the ribbon the two swap (see `.own-seg`),
+   * where white-on-segment is the ≥ 3:1 pair. Measured per focus stop in tests/e2e/rubric.spec.ts.
+   */
+  --focus: #0d8b7a;
+  --focus-halo: #ffffff;
 
   --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -33,6 +51,14 @@
 
 * { box-sizing: border-box; }
 
+/**
+ * `hidden` must actually hide. The UA rule for `[hidden]` is beaten by any author `display`
+ * declaration, which is how `#view-note` stayed a 19px empty band on the three lenses where
+ * renderViewNote sets `hidden = true` (rubric R12). `:not(:root)` only raises specificity so this
+ * beats a single-class `display` rule in either stylesheet, whatever the source order.
+ */
+[hidden]:not(:root) { display: none; }
+
 body {
   margin: 0;
   background: var(--cream);
@@ -41,11 +67,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Focus is visible on everything, always. */
+/**
+ * Focus is visible on everything, always — and the ring must SURVIVE its surroundings.
+ * `box-shadow` paints the halo in the 2px gap `outline-offset` opens up, so the indicator is
+ * 4px of two contrasting tones. No ancestor may clip it: `overflow: hidden` on a wrapper used to
+ * erase the ring on the pricing-basis segments entirely, so the wrappers now round their own
+ * children instead of clipping them.
+ */
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
   border-radius: 3px;
+  box-shadow: 0 0 0 2px var(--focus-halo);
 }
 
 .skip-link {
@@ -74,7 +107,15 @@ body {
 
 /* ------------------------------------------------------------------ masthead */
 
+/**
+ * STICKY, and that is a rubric requirement rather than a flourish. R3 forbids a figure being
+ * readable while its as-of date is not; the masthead carries `#asof` and the active pricing basis,
+ * and the document scrolls to 3,234px on the Simulator. Unpinned, scrolling 563px on Pricing left
+ * 146 figures on screen with the as-of 541px above the viewport. `z-index` clears the sticky table
+ * headers (1) and the combobox list (30) and stays under the drawers (40).
+ */
 .masthead {
+  position: sticky; top: 0; z-index: 35;
   display: flex; align-items: baseline; gap: 22px; flex-wrap: wrap;
   padding: 14px 22px; background: var(--paper); border-bottom: 1px solid var(--line);
 }
@@ -97,7 +138,12 @@ body {
 .asof-value { font: 600 13.5px/1 var(--mono); color: var(--navy); }
 
 .chrome-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.view-toggle { display: inline-flex; border: 1px solid var(--navy); border-radius: 9px; overflow: hidden; }
+/* No `overflow: hidden`: it clipped the focus ring on the segments to invisibility (R6). The
+   children round their own outer corners instead, so the control looks identical. */
+.view-toggle { display: inline-flex; border: 1px solid var(--navy); border-radius: 9px; }
+.view-toggle .seg:first-child, .subview-toggle .seg:first-child { border-radius: 8px 0 0 8px; }
+.view-toggle .seg:last-child, .subview-toggle .seg:last-child { border-radius: 0 8px 8px 0; }
+.view-toggle[hidden] { display: none; }
 .seg {
   appearance: none; border: 0; background: var(--paper); color: var(--navy);
   font: 600 12.5px/1 var(--sans); padding: 8px 13px; cursor: pointer;

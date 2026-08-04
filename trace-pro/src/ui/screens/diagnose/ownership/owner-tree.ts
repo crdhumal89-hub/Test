@@ -27,16 +27,25 @@ import { parity } from '../../../parity.js';
 /** 16px per level, matching the original's indent so a deep chain stays readable. */
 const OWNERSHIP_INDENT = 16;
 
-/** The eight-colour ribbon rotation, as shipped. Colour is never the only cue: each segment names itself. */
+/**
+ * The eight-colour ribbon rotation. Colour is never the only cue: each segment names itself in its
+ * accessible name and its `title`.
+ *
+ * Three of the eight shipped tones (`#0fb5a6`, `#8aa0c0`, `#7fc8bf`) were too light to carry a focus
+ * ring: every segment is a focus stop (R6), and the ring's white halo needs ≥ 3:1 against the fill
+ * it is drawn over. Darkened to relative luminance ≤ 0.30, which puts the halo at 3.2:1 (was 1.9:1)
+ * on the palest segment while keeping the hue rotation legible. Measured per stop in
+ * tests/e2e/rubric.spec.ts.
+ */
 const OWNERSHIP_RIBBON_COLORS = [
   '#14356b',
-  '#0fb5a6',
+  '#0e8f83',
   '#3a5c92',
   '#0a9d6b',
   '#c47f17',
   '#5c6b76',
-  '#8aa0c0',
-  '#7fc8bf',
+  '#6a83aa',
+  '#4e9a91',
 ];
 
 /**

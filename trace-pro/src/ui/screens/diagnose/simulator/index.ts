@@ -1,16 +1,11 @@
 /**
- * Simulator — a Diagnose lens.
- *
- * Question it answers: if this fund's value or units move, what happens to product NAV, and through
- * which holders does it travel?
+ * Simulator — a Diagnose lens. If this fund's value or units move, what happens to product NAV, and
+ * through which holders does it travel?
  *
  * Two runs, one scene. A SINGLE SHOCK moves one fund and books the P&L up every ownership path to
- * the product. The WHOLE-BOOK REPRICE sweeps every level bottom-up and lands on the five figures
- * the Reconciliation waterfall shows — to the cent. That identity is the reason this lens exists,
- * so the reprice ledger is on screen at rest, not hidden behind a button.
- *
- * Every figure comes from `domain/cascade` or `domain/reconciliation`. This file lays out, wires and
- * narrates; it computes nothing.
+ * the product. The WHOLE-BOOK REPRICE sweeps every level bottom-up and lands on the five figures the
+ * Reconciliation waterfall shows — to the cent. So the reprice ledger is on screen at rest.
+ * Every figure comes from `domain/cascade`; this file lays out, wires and narrates.
  */
 import { buildCascadeIndex, type CascadeResult } from '../../../../domain/cascade.js';
 import { formatUsdCompact, formatUsdCents, formatUsdCentsParens, formatPercent, formatPrice } from '../../../../domain/money.js';
@@ -28,32 +23,24 @@ export const SIMULATOR_QUESTION =
   'If this fund’s value or units move, what happens to product NAV, and through which holders?';
 
 /**
- * The help line, verbatim. `simulator.help_text` is a STRICT parity key — it is not in
+ * The help line, verbatim. `simulator.help_text` is a STRICT parity key — not in
  * docs/rename-map.json — so it keeps the original's wording, including the old names of the two
- * sweep controls. The buttons themselves carry the renamed labels of spec §3.1, so the line
- * immediately below maps one to the other rather than leaving a controller to guess.
+ * sweep controls, which the paragraph after it maps onto the shipped labels.
  */
 function simulatorHelpText(): HTMLElement {
   const b = (text: string): HTMLElement => el('b', { text });
   return el('p', { class: 'screen-help', id: 'simulator-help', ...parity('simulator.help_text') }, [
-    'Click a node to shock its ',
-    b('MV / Qty / NAV'),
-    ' & hit ',
-    b('Run'),
-    ' · ',
-    b('Run full reprice'),
-    ' sweeps the whole book bottom-up automatically · ',
-    b('Step by stage'),
-    ' lets you ',
-    b('click each level'),
+    'Click a node to shock its ', b('MV / Qty / NAV'), ' & hit ', b('Run'), ' · ',
+    b('Run full reprice'), ' sweeps the whole book bottom-up automatically · ',
+    b('Step by stage'), ' lets you ', b('click each level'),
     ' to reprice it yourself, one stage at a time. Prices flow up the lit path; open the ',
-    b('▤ Ledger'),
-    ' tray for the per-holder breakdown.',
+    b('▤ Ledger'), ' tray for the per-holder breakdown.',
   ]);
 }
 
+/** 440px, not 620px: at 620 the stage bottom was 1315, past the fold R5 measures (bottom ≤ 1000). */
 const SIMULATOR_STAGE_STYLE =
-  'position:relative;width:100%;height:620px;background:#0A1226;border:1px solid rgba(120,150,200,.28);border-radius:12px;overflow:hidden';
+  'position:relative;width:100%;height:440px;background:#0A1226;border:1px solid rgba(120,150,200,.28);border-radius:12px;overflow:hidden';
 
 /** Display value and price per node, per pricing basis. Was `simBaseVal` / `simBasePx`. */
 function simulatorDisplay(store: Store, fixture: SimulatorFixture, view: PricingView) {
@@ -79,9 +66,8 @@ function simulatorDisplay(store: Store, fixture: SimulatorFixture, view: Pricing
 /** Where product NAV is concentrated, from the top-level feeders. Pure. */
 export function simulatorConcentration(fixture: SimulatorFixture): { code: string; share: number }[] {
   const total = fixture.apex.reduce((sum, code) => sum + Math.abs(fixture.funds[code]?.nav ?? 0), 0) || 1;
-  return fixture.apex
-    .map((code) => ({ code, share: Math.abs(fixture.funds[code]?.nav ?? 0) / total }))
-    .sort((a, b) => b.share - a.share);
+  const nav = (code: string): number => Math.abs(fixture.funds[code]?.nav ?? 0);
+  return fixture.apex.map((code) => ({ code, share: nav(code) / total })).sort((a, b) => b.share - a.share);
 }
 
 function simulatorToggle(label: string, pressed: boolean, title: string, onToggle: (next: boolean) => void): HTMLButtonElement {
@@ -109,7 +95,27 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
   replace(
     host,
     el('p', { class: 'screen-question', id: 'simulator-question', text: SIMULATOR_QUESTION }),
+    // The resting state, which is this lens's primary answer: no shock has been entered yet, so what
+    // a controller needs on arrival is the figure every Δ is measured against and the thing about to
+    // move. docs/first-run.md names both ids as (contract); neither existed.
+    el('div', { class: 'sim-facts', id: 'simulator-facts' }, [
+      el('div', { class: 'sim-tile', id: 'simulator-baseline' }),
+      el('div', { class: 'sim-tile', id: 'simulator-subject' }),
+    ]),
     el('div', { class: 'toolbar', id: 'simulator-bar' }),
+    // Stage and shock panel side by side. The way IN to the lens used to sit 1,333px down the page,
+    // below a 620px stage and two help paragraphs; R5 requires both inside a 1600x1000 viewport on
+    // load. Run line, caption and help text follow the scene: text alternative and erratum, not the
+    // first-run answer.
+    el('div', { class: 'sim-scene', id: 'simulator-scene' }, [
+      el('div', { id: 'simulator-stage', style: SIMULATOR_STAGE_STYLE }),
+      el('section', { class: 'panel sim-shock', id: 'simulator-shock', 'aria-label': 'Shock panel' }),
+    ]),
+    el('div', { class: 'toolbar', id: 'simulator-runline' }, [
+      el('span', { class: 'status-line', id: 'simulator-run-label', 'data-parity-scene': 'state:repriceStatus', ...parity('simulator.reprice.run_label'), role: 'status', 'aria-live': 'polite' }),
+      el('span', { class: 'status-line', id: 'simulator-run-numbers', ...parity('simulator.reprice.run_numbers') }),
+    ]),
+    el('p', { class: 'screen-help', id: 'simulator-caption' }),
     simulatorHelpText(),
     el('p', { class: 'screen-help', id: 'simulator-relabel' }, [
       'Those two controls are now labelled ',
@@ -118,28 +124,15 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
       el('b', { text: 'Reprice one level at a time' }),
       ', and the ledger sits beside the graph rather than in a tray. Every node is reachable with Tab and the arrow keys, and the entity list below the graph is a keyboard-only route to the same 27 nodes.',
     ]),
-    // The run line and caption sit ABOVE the stage deliberately. They carry the figures a
-    // controller came for — the repriced value, the repricing gain or loss, the entity counts —
-    // and at 1600x1000 a stage placed first pushes them below the fold, so the answer would need
-    // a scroll (rubric R5). They are also the graph's text alternative.
-    el('div', { class: 'toolbar', id: 'simulator-runline' }, [
-      el('span', { class: 'status-line', id: 'simulator-run-label', 'data-parity-scene': 'state:repriceStatus', ...parity('simulator.reprice.run_label'), role: 'status', 'aria-live': 'polite' }),
-      el('span', { class: 'status-line', id: 'simulator-run-numbers', ...parity('simulator.reprice.run_numbers') }),
-    ]),
-    el('p', { class: 'screen-help', id: 'simulator-caption' }),
-    el('div', { id: 'simulator-stage', style: SIMULATOR_STAGE_STYLE }),
-    el('div', { class: 'layout', id: 'simulator-panels' }, [
-      el('section', { class: 'panel', id: 'simulator-shock', 'aria-label': 'Shock panel' }),
-      el('aside', { class: 'panel side', id: 'simulator-tray', 'aria-label': 'Ledgers' }, [
-        el('h3', {}, [
-          'Whole-book reprice ledger · ',
-          el('b', { ...parity('simulator.ledger_product'), text: fixture.productCode }),
-        ]),
-        el('div', { class: 'simscore', id: 'simulator-score', ...parity('simulator.reprice.ledger') }),
-        el('p', { class: 'note', id: 'simulator-tie' }),
-        el('div', { id: 'simulator-cascade' }),
-        el('div', { id: 'simulator-breaks' }),
+    el('aside', { class: 'panel side', id: 'simulator-tray', 'aria-label': 'Ledgers' }, [
+      el('h3', {}, [
+        'Whole-book reprice ledger · ',
+        el('b', { ...parity('simulator.ledger_product'), text: fixture.productCode }),
       ]),
+      el('div', { class: 'simscore', id: 'simulator-score', ...parity('simulator.reprice.ledger') }),
+      el('p', { class: 'note', id: 'simulator-tie' }),
+      el('div', { id: 'simulator-cascade' }),
+      el('div', { id: 'simulator-breaks' }),
     ]),
     el('div', { id: 'simulator-entities' })
   );
@@ -164,6 +157,19 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
 
   /* ---------------------------------------------------------------- selection and shock */
 
+  /**
+   * The fund this lens is pointed at. The shared Diagnose selection wins whenever it names a fund in
+   * THIS product's cascade; the seed in data/manifest.json (`APPOURI`) does not, and the lens
+   * answered that with "Nothing selected yet" — an empty frame on arrival, which R5 fails. The
+   * fallback is the largest top-level feeder. It never writes to the store, so the selection the
+   * other three lenses share is untouched (R16).
+   */
+  function subjectCode(): string | null {
+    const shared = store.state.selectedEntity;
+    if (shared && fixture.funds[shared]) return shared;
+    return concentration.find((c) => fixture.funds[c.code])?.code ?? null;
+  }
+
   function activate(code: string): void {
     if (run.clickNode(code)) return;
     if (code === fixture.productNodeId) return;
@@ -181,16 +187,34 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
     renderPanels();
   }
 
+  /** The two resting-state tiles: the denominator of every Δ, and the thing about to move. */
+  function renderFacts(): void {
+    const code = subjectCode();
+    const fund = code ? fixture.funds[code] : undefined;
+    const tile = (id: string, label: string, value: string, basis: string): void =>
+      replace(
+        qs(id, host),
+        el('span', { class: 'sim-tile-label', text: label }),
+        el('b', { class: 'sim-tile-value mono', text: value }),
+        el('span', { class: 'sim-tile-basis', text: basis })
+      );
+    tile('#simulator-baseline', 'Product NAV before any shock', formatUsdCents(fixture.productNAV),
+      'United States dollars · Σ top-level feeder NAV · the unshocked baseline every Δ below is measured against');
+    tile('#simulator-subject', 'The fund about to be shocked',
+      fund ? `${fund.sym || fund.code} · value ${fund.nav == null ? 'no NAV reported' : formatUsdCents(fund.nav)} · ${formatPrice(fund.price)} per unit` : 'No fund in this product can be shocked.',
+      fund ? `${fund.name} · code ${fund.code} · United States dollars · effective share of the product ${formatPercent(fund.eff ?? 0)}` : 'Choose a fund from the entity list below the graph.');
+  }
+
   function renderPanels(): void {
-    const selected = store.state.selectedEntity;
+    const selected = subjectCode();
     simulatorRenderShockPanel(qs('#simulator-shock', host), {
       fixture,
       index,
-      selected: selected && fixture.funds[selected] ? selected : null,
+      selected,
       onRun: (next) => onRun(next),
       onClear: () => {
         result = null;
-        scene?.paintBase(store.state.selectedEntity);
+        scene?.paintBase(subjectCode());
         renderPanels();
       },
       onSelect: activate,
@@ -198,6 +222,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
     simulatorRenderRepriceLedger(qs('#simulator-score', host), store.repricing);
     simulatorRenderCascadeLedger(qs('#simulator-cascade', host), fixture, result);
     simulatorRenderBreaks(qs('#simulator-breaks', host), fixture, selected, result);
+    renderFacts();
     renderTie();
     renderCaption();
   }
@@ -205,44 +230,34 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
   function renderTie(): void {
     replace(
       qs('#simulator-tie', host),
-      document.createTextNode('Read the five rows above as the Reconciliation waterfall: '),
-      el('b', { text: 'look-through value at current marks' }),
-      document.createTextNode(' + '),
-      el('b', { text: 'pricing difference' }),
-      document.createTextNode(' = '),
-      el('b', { text: 'repriced value' }),
-      document.createTextNode(', + '),
-      el('b', { text: 'non-position difference' }),
-      document.createTextNode(' (cash, fees and receivables) = '),
+      'Read the five rows above as the Reconciliation waterfall: ',
+      el('b', { text: 'look-through value at current marks' }), ' + ',
+      el('b', { text: 'pricing difference' }), ' = ',
+      el('b', { text: 'repriced value' }), ', + ',
+      el('b', { text: 'non-position difference' }), ' (cash, fees and receivables) = ',
       el('b', { text: 'NAV' }),
-      document.createTextNode(
-        `. The completed sweep lands on ${formatUsdCents(store.repricing.N)} — the same figure, to the cent, that the Reconciliation screen publishes. If the two ever disagreed, one of them would be wrong.`
-      )
+      `. The completed sweep lands on ${formatUsdCents(store.repricing.N)} — the same figure, to the cent, that the Reconciliation screen publishes. If the two ever disagreed, one of them would be wrong.`
     );
   }
 
   function renderCaption(): void {
     const ranked = concentration.map((c) => `${c.code} ${formatPercent(c.share)}`).join(', ');
-    const selected = store.state.selectedEntity;
+    const selected = subjectCode();
     const fund = selected ? fixture.funds[selected] : undefined;
     replace(
       qs('#simulator-caption', host),
-      document.createTextNode('Text alternative for the graph: '),
+      'Text alternative for the graph: ',
       el('b', { text: `${scene?.nodeCount ?? fixture.treeNodes.length} nodes` }),
-      document.createTextNode(' — the product, its '),
+      ' — the product, its ',
       el('b', { text: `${fixture.apex.length} top-level feeders` }),
-      document.createTextNode(` and ${fixture.nFunds} funds — joined by `),
+      ` and ${fixture.nFunds} funds — joined by `,
       el('b', { text: `${scene?.edgeCount ?? 0} ownership edges` }),
-      document.createTextNode(`, ${fixture.maxlevel} levels deep. Concentration by feeder NAV: ${ranked}. `),
+      `, ${fixture.maxlevel} levels deep. Concentration by feeder NAV: ${ranked}. `,
       fund
-        ? el('b', {
-            text: `Selected: ${selected} — NAV ${fund.nav == null ? 'not reported' : formatUsdCents(fund.nav)}, unit price ${formatPrice(fund.price)}, effective share of the product ${formatPercent(fund.eff ?? 0)}.`,
-          })
+        ? el('b', { text: `Selected: ${selected} — NAV ${fund.nav == null ? 'not reported' : formatUsdCents(fund.nav)}, unit price ${formatPrice(fund.price)}, effective share of the product ${formatPercent(fund.eff ?? 0)}.` })
         : el('b', { text: 'Nothing selected yet — choose a fund from the entity list below.' }),
       result
-        ? el('span', {
-            text: ` Last shock: ${result.shocked}, ${result.bookings.length} bookings across ${result.affected.size} holders, product NAV moves ${formatUsdCentsParens(result.productValueDelta)}.`,
-          })
+        ? el('span', { text: ` Last shock: ${result.shocked}, ${result.bookings.length} bookings across ${result.affected.size} holders, product NAV moves ${formatUsdCentsParens(result.productValueDelta)}.` })
         : el('span', { text: ' No shock has been run.' })
     );
   }
@@ -262,22 +277,22 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
 
   function renderBar(): void {
     const bar = qs('#simulator-bar', host);
-    const everythingButton = el('button', { type: 'button', class: 'btn btn-primary', id: 'simulator-reprice', 'data-parity-scene': 'step:simFullReprice', text: 'Reprice everything (bottom-up)', title: 'Was “Run full reprice”: sweep the whole book from the lowest level up to the product' });
-    everythingButton.addEventListener('click', () => {
+    const btn = (attrs: Record<string, string>, onClick: () => void): HTMLButtonElement => {
+      const button = el('button', { type: 'button', class: 'btn', ...attrs });
+      button.addEventListener('click', onClick);
+      return button;
+    };
+    const everythingButton = btn({ class: 'btn btn-primary', id: 'simulator-reprice', 'data-parity-scene': 'step:simFullReprice', text: 'Reprice everything (bottom-up)', title: 'Was “Run full reprice”: sweep the whole book from the lowest level up to the product' }, () => {
       result = null;
       run.start('auto');
     });
-    const oneLevelButton = el('button', { type: 'button', class: 'btn', id: 'simulator-step-mode', text: 'Reprice one level at a time', title: 'Was “Step by stage”: walk the sweep yourself, one level at a time, lowest first' });
-    oneLevelButton.addEventListener('click', () => {
+    const oneLevelButton = btn({ id: 'simulator-step-mode', text: 'Reprice one level at a time', title: 'Was “Step by stage”: walk the sweep yourself, one level at a time, lowest first' }, () => {
       result = null;
       run.start('manual');
     });
-    const stepButton = el('button', { type: 'button', class: 'btn', text: 'Next stage ▸', title: 'Advance one level' });
-    stepButton.addEventListener('click', () => run.step());
-    const pauseButton = el('button', { type: 'button', class: 'btn', text: '⏸ Pause' });
-    pauseButton.addEventListener('click', () => run.togglePause());
-    const resetButton = el('button', { type: 'button', class: 'btn', text: '↺ Reset run' });
-    resetButton.addEventListener('click', () => {
+    const stepButton = btn({ text: 'Next stage ▸', title: 'Advance one level' }, () => run.step());
+    const pauseButton = btn({ text: '⏸ Pause' }, () => run.togglePause());
+    const resetButton = btn({ text: '↺ Reset run' }, () => {
       result = null;
       run.cancel();
       renderPanels();
@@ -295,9 +310,6 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
       return button;
     });
     speedGroup.append(...speedButtons);
-
-    const fitButton = el('button', { type: 'button', class: 'btn', text: '◎ Fit' });
-    fitButton.addEventListener('click', () => scene?.fit());
 
     replace(
       bar,
@@ -318,13 +330,13 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
       simulatorToggle('Isolate affected', isolate, 'Fade everything the shock does not touch', (next) => {
         isolate = next;
         if (result) scene?.showCascade(result, isolate);
-        else scene?.paintBase(store.state.selectedEntity);
+        else scene?.paintBase(subjectCode());
       }),
       simulatorToggle('Follow camera', follow, 'Keep the repricing level centred as the sweep rises', (next) => {
         follow = next;
         if (!follow) scene?.fit();
       }),
-      fitButton
+      btn({ text: '◎ Fit' }, () => scene?.fit())
     );
     syncRunButtons(run.state());
   }
@@ -341,7 +353,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
       nameOf: (id) => (id === fixture.productNodeId ? fixture.product : fixture.funds[id]?.name ?? id),
       onActivate: activate,
     });
-    scene.paintBase(store.state.selectedEntity);
+    scene.paintBase(subjectCode());
     renderCaption();
   }
 
@@ -355,15 +367,11 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
       library = loaded;
       buildScene();
     },
-    (error: unknown) => {
+    (error: unknown) =>
       replace(
         qs('#simulator-caption', host),
-        errorState(
-          'The simulator graph could not start.',
-          `${String(error)} Every figure below is still exact — the graph library ships under vendor/; confirm that folder deployed alongside the app.`
-        )
-      );
-    }
+        errorState('The simulator graph could not start.', `${String(error)} Every figure below is still exact — the graph library ships under vendor/; confirm that folder deployed alongside the app.`)
+      )
   );
 
   const onResize = (): void => buildScene();
@@ -379,7 +387,7 @@ export function mountSimulatorLens(host: HTMLElement, store: Store): () => void 
     }
     if (changed.has('selectedEntity')) {
       renderPanels();
-      scene?.paintBase(store.state.selectedEntity);
+      scene?.paintBase(subjectCode());
     }
   });
 

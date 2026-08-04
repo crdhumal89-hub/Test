@@ -1,14 +1,11 @@
 /**
- * The Glossary drawer — an overlay, not the original's seventh tab.
- *
- * The original made a controller *leave the screen that raised the question* to read the answer,
- * which is why its content was also duplicated as inline help on two other tabs. Here it opens over
- * whatever is on screen, from anywhere, in one action (rubric R7), and closes without disturbing the
- * selection underneath.
- *
- * Structure and class names deliberately match the original's (`#glsbody .glscard`, `.glsplain`,
- * `.glschip[data-group]`), because parity-map.json addresses them by those selectors; the
- * `data-parity` attributes carry the same keys semantically.
+ * The Glossary drawer — an overlay, not the original's seventh tab. The original made a controller
+ * *leave the screen that raised the question* to read the answer, which is why its content was also
+ * duplicated as inline help on two other tabs. Here it opens over whatever is on screen, from
+ * anywhere, in one action (rubric R7) — and, since `focusTerm()` below, AT the term whose label was
+ * clicked — and closes without disturbing the selection underneath. Structure and class names match
+ * the original's (`#glsbody .glscard`, `.glsplain`, `.glschip[data-group]`), because
+ * parity-map.json addresses them by those selectors.
  */
 import {
   GLOSSARY_SECTIONS,
@@ -21,6 +18,7 @@ import {
 import type { GlossaryCategory, GlossarySection, GlossaryTerm } from '../../glossary/terms.js';
 import type { Store } from '../../state/store.js';
 import { el, replace, trapFocus, emptyState, errorState } from '../primitives/dom.js';
+import { termBindGlossary } from '../primitives/term.js';
 
 export const GLOSSARY_INTRO =
   'Every term used in TRACE-Pro, in plain language — with its SOURCE (which report/system the ' +
@@ -143,20 +141,16 @@ interface GlossarySectionRef {
   cards: GlossaryCardRef[];
 }
 
-function glossaryEmptyNode(query: string, group: string, onReset: (patch: {
-  glossaryQuery?: string;
-  glossaryGroup?: string;
-}) => void): HTMLElement {
+type GlossaryReset = (patch: { glossaryQuery?: string; glossaryGroup?: string }) => void;
+
+function glossaryEmptyNode(query: string, group: string, onReset: GlossaryReset): HTMLElement {
   const scoped = group === 'all' ? '' : ' in that category';
   const node = query
     ? emptyState(
         `No terms match “${query}”${scoped}. Try “publish px”, “revised”, “ownership”, “NAV”, or “bps”.`,
         { label: 'Clear the search', onAct: () => onReset({ glossaryQuery: '', glossaryGroup: 'all' }) }
       )
-    : emptyState('That category has no terms.', {
-        label: 'Show all categories',
-        onAct: () => onReset({ glossaryGroup: 'all' }),
-      });
+    : emptyState('That category has no terms.', { label: 'Show all categories', onAct: () => onReset({ glossaryGroup: 'all' }) });
   if (query && group !== 'all') {
     const wider = el('button', { type: 'button', class: 'btn', text: 'Search every category' });
     wider.addEventListener('click', () => onReset({ glossaryGroup: 'all' }));
@@ -187,7 +181,8 @@ export function mountGlossaryDrawer(host: HTMLElement, store: Store): () => void
     'aria-label': 'Close the glossary',
     text: '×',
   });
-  close.addEventListener('click', () => store.set({ drawer: null }));
+  // Closing clears the deep link, so the next `G` opens the whole glossary, not the last term.
+  close.addEventListener('click', () => store.set({ drawer: null, glossaryFocusTerm: null }));
 
   const search = el('input', {
     id: 'glssearch',
@@ -326,12 +321,31 @@ export function mountGlossaryDrawer(host: HTMLElement, store: Store): () => void
 
   search.addEventListener('input', () => store.set({ glossaryQuery: search.value }));
 
-  /** Open the glossary at one term — the deep link behind every glossary-linked label (R7). */
+  /**
+   * Open the glossary AT one term — R7's fourth clause, and the disposition every glossary-linked
+   * abbreviation depends on (R2 route (b)). `glossaryFocusTerm` used to be written in exactly one
+   * place, as `null`; `term()` writes it now and this consumes it. Three things must hold for "one
+   * action" to be real: the card must be VISIBLE (a leftover search or category filter would hide
+   * the very term that was clicked), SCROLLED to, and FOCUSED. The re-filter is explicit because
+   * the drawer's own subscription is registered after the first sync().
+   */
   function focusTerm(wanted: string): void {
     const slug = glossarySlug(wanted);
     const card = cards.find((c) => c.slug === slug);
-    if (!card) return;
-    if (card.node.hidden) store.set({ glossaryQuery: '', glossaryGroup: 'all' });
+    for (const other of cards) other.node.classList.remove('glscard-linked');
+    // An unknown slug is a caller bug, not a user error: land in the search box, not a blank drawer.
+    if (!card) {
+      if (store.state.glossaryQuery || store.state.glossaryGroup !== 'all') {
+        store.set({ glossaryQuery: '', glossaryGroup: 'all' });
+      }
+      search.focus();
+      return;
+    }
+    if (card.node.hidden) {
+      store.set({ glossaryQuery: '', glossaryGroup: 'all' });
+      applyFilter();
+    }
+    card.node.classList.add('glscard-linked');
     card.node.scrollIntoView({ block: 'center' });
     card.node.focus();
   }
@@ -349,12 +363,16 @@ export function mountGlossaryDrawer(host: HTMLElement, store: Store): () => void
       return;
     }
     applyFilter();
-    release = trapFocus(panel, () => store.set({ drawer: null }));
+    // Escape closes and restores focus to whatever raised it — including the `term()` that deep-
+    // linked into it (R6d, R7).
+    release = trapFocus(panel, () => store.set({ drawer: null, glossaryFocusTerm: null }));
     const wanted = store.state.glossaryFocusTerm;
     if (wanted) focusTerm(wanted);
     else search.focus();
   }
 
+  // Belt and braces: the shell mounts this drawer lazily, so screens bind the term listener too.
+  termBindGlossary(store);
   build();
   applyFilter();
   sync();
