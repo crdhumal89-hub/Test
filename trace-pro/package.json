@@ -20,7 +20,8 @@
     "gate": "npm run gate:static && npm run test && npm run test:e2e && npm run gate:parity",
     "test:e2e": "playwright test",
     "test:e2e:app": "playwright test --project=app",
-    "test:e2e:offline": "playwright test --project=offline"
+    "test:e2e:offline": "playwright test --project=offline",
+    "evidence": "node scripts/evidence-pack.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

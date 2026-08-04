@@ -4,7 +4,8 @@
  * Figures come from the same domain functions the screens read, so an export cannot disagree with
  * what is on screen — rubric R13 asserts exactly that by parsing the downloaded file back.
  */
-import type { LookthroughNode, RepricingFixture } from '../domain/types.js';
+import type { LookthroughNode, PricingView, RepricingFixture } from '../domain/types.js';
+import { reconcileNode } from '../domain/lookthrough.js';
 
 /** RFC 4180 quoting: wrap when needed, double any embedded quote. */
 function csvCell(value: string | number | null | undefined): string {
@@ -33,13 +34,28 @@ function slug(text: string): string {
   return text.replace(/\W+/g, '_').replace(/^_|_$/g, '');
 }
 
-/** The look-through hierarchy, one row per node, at full precision. */
+/** The words the tree's basis-sensitive column header uses, so the file can use the same ones. */
+export function csvBasisLabel(view: PricingView): string {
+  return view === 'after' ? 'Repriced' : 'Current marks';
+}
+
+/**
+ * The look-through hierarchy, one row per node, at full precision — in the ACTIVE pricing basis.
+ *
+ * This used to write `node.derived` unconditionally, so the file was byte-identical in both bases
+ * and, under the repriced basis, its look-through column contradicted the very column on screen it
+ * was taken from (rubric R13). The figures now come from `reconcileNode`, which is the same
+ * function the tree renders from, so the file and the screen cannot diverge; and the basis is
+ * stated in row 1 and in the column heading rather than left for the reader to guess.
+ */
 export function exportLookthroughCsv(
   nodes: readonly LookthroughNode[],
   repricing: RepricingFixture,
+  view: PricingView,
   asof: string
 ): void {
   const rows: (string | number | null)[][] = [
+    ['Pricing basis', csvBasisLabel(view), 'Product', repricing.product, 'As of', asof],
     [
       'Level',
       'Kind',
@@ -50,12 +66,17 @@ export function exportLookthroughCsv(
       'Direct share %',
       'Effective share %',
       'Value of whole entity USD',
-      'Look-through value USD',
+      view === 'after' ? 'Look-through value at repriced marks USD' : 'Look-through value USD',
+      'Repriced value USD',
+      'NAV USD',
+      'Pricing difference USD',
+      'Non-position difference USD',
       'Position value USD',
       'Look-through minus as-booked USD',
     ],
   ];
   for (const node of nodes) {
+    const r = reconcileNode(node, repricing, view);
     rows.push([
       node.level,
       node.kind,
@@ -66,13 +87,17 @@ export function exportLookthroughCsv(
       (node.ownpct * 100).toFixed(4),
       (node.applied * 100).toFixed(6),
       node.mv100.toFixed(2),
-      node.derived.toFixed(2),
+      r.derived.toFixed(2),
+      r.revised.toFixed(2),
+      r.nav == null ? '' : r.nav.toFixed(2),
+      r.deltaPricing.toFixed(2),
+      r.deltaNonPosition == null ? '' : r.deltaNonPosition.toFixed(2),
       node.position.toFixed(2),
       node.variance.toFixed(2),
     ]);
   }
   downloadFile(
-    `TRACE-Pro_lookthrough_${slug(repricing.product)}_${asof}.csv`,
+    `TRACE-Pro_lookthrough_${slug(repricing.product)}_${csvBasisLabel(view).toLowerCase().replace(/\W+/g, '-')}_${asof}.csv`,
     toCsv(rows),
     'text/csv;charset=utf-8'
   );
@@ -127,8 +152,21 @@ export function exportPricingCsv(repricing: RepricingFixture, asof: string): voi
 
 /**
  * The send-to-pricing file: one row per priced fund, in the four columns the pricing system takes.
+ *
+ * The column NAMES are the downstream system's, not this app's — renaming them to the screen's
+ * vocabulary would break the consumer — but every one of the four is a figure the Pricing screen
+ * renders, which is what rubric R13 asks (a machine handoff may not carry a figure the operator
+ * cannot see):
+ *
+ *   Symbol         → the price table's Symbol column        (pricing.fund.<code>.symbol)
+ *   Respective Qty → the Repricing walk's Global Qty column (pricing.walk.fund.<code>.global_qty)
+ *   Local Price    → the price table's Price to publish     (pricing.fund.<code>.publish_px)
+ *   Local MV       → the Repricing walk's NAV column        (pricing.walk.fund.<code>.nav)
+ *
  * Local price is the fund's own unit price (NAV ÷ units); local market value is price × units, which
- * is the fund's NAV by construction.
+ * is the fund's NAV by construction. Neither depends on the pricing basis — the price a fund
+ * publishes is its own NAV per unit whichever basis the screen is showing — so unlike the
+ * look-through file this one is deliberately identical in both bases.
  */
 export function exportSendToPricingCsv(repricing: RepricingFixture, asof: string): void {
   const rows: (string | number | null)[][] = [['Symbol', 'Respective Qty', 'Local Price', 'Local MV']];

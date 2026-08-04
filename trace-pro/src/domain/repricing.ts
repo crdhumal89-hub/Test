@@ -10,6 +10,7 @@
 import type { RepricingFixture, RepricingFund } from './types.js';
 import type { PositionIndex } from './lookthrough.js';
 import { lookThroughValue, ownershipShare } from './lookthrough.js';
+import { TRUNCATE } from './exceptions.js';
 
 /** The structure the recompute walks: children with the share held, plus direct securities. */
 export interface RepricingStructure {
@@ -273,7 +274,7 @@ export function repriceFromPositions(
       const holders = (holdersOf.get(code) ?? [])
         .map(([h, units]) => ({ h, units, ownpct: gq ? units / gq : 0 }))
         .sort((a, b) => b.units - a.units)
-        .slice(0, 14);
+        .slice(0, TRUNCATE.simHolders);
       return {
         code,
         name: index.fundName.get(code) ?? code,

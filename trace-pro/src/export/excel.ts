@@ -5,9 +5,16 @@
  * app work with the network off. The original loaded it eagerly from cdnjs and failed with an
  * `alert()` when that failed; here a load failure surfaces as a real error the caller can show.
  */
-import type { RepricingFixture } from '../domain/types.js';
+import type { PricingView, RepricingFixture, RepricingFund } from '../domain/types.js';
 import { buildWaterfall } from '../domain/reconciliation.js';
-import type { PricingView } from '../domain/types.js';
+import {
+  EXCEPTION_TIPS,
+  MATERIAL_BPS,
+  MATERIAL_USD,
+  evaluateEntity,
+  groupExceptions,
+  isMaterial,
+} from '../domain/exceptions.js';
 
 /** The slice of the SheetJS surface this module uses, typed narrowly rather than as `any`. */
 interface SheetCell {
@@ -71,7 +78,9 @@ function summaryRows(repricing: RepricingFixture, view: PricingView, asof: strin
     ['Pricing basis', view === 'after' ? 'Repriced' : 'Current marks'],
     [],
     ['The additive reconciliation', 'USD', 'bps'],
-    ['Look-through value', w.start, ''],
+    // The first step changes meaning with the basis, so it must change words with it — the screen's
+    // waterfall relabels this step "…at repriced marks" and the file has to say the same thing.
+    [view === 'after' ? 'Look-through value at repriced marks' : 'Look-through value', w.start, ''],
     ['+ Pricing difference', w.deltaPricing, repricing.N ? (w.deltaPricing / repricing.N) * 1e4 : ''],
     ['= Repriced value', w.revised, ''],
     ['+ Non-position difference', w.deltaNonPosition, repricing.N ? (w.deltaNonPosition / repricing.N) * 1e4 : ''],
@@ -80,6 +89,12 @@ function summaryRows(repricing: RepricingFixture, view: PricingView, asof: strin
     ['Tie check: the two differences', w.tie, ''],
     ['must equal NAV minus look-through value', w.target, ''],
     ['residual', w.residual, ''],
+    [],
+    // Stated, not restated: the numbers below are read from the single rule in domain/exceptions.ts
+    // rather than typed here, which is what stops this file becoming a fourth copy of it (R9).
+    ['Materiality rule', `|difference| ≥ $${MATERIAL_USD.toLocaleString('en-US')} and ≥ ${MATERIAL_BPS} bps`],
+    ['Pricing difference is material', isMaterial(w.deltaPricing, w.nav) ? 'Yes' : 'No'],
+    ['Non-position difference is material', isMaterial(w.deltaNonPosition, w.nav) ? 'Yes' : 'No'],
   ];
 }
 
@@ -91,6 +106,49 @@ function appendSummary(xlsx: XlsxApi, book: unknown, repricing: RepricingFixture
     setFormat(sheet, 'C' + row, BPS);
   }
   xlsx.utils.book_append_sheet(book, sheet, 'Summary');
+}
+
+/**
+ * The Exception column, in the SAME words the screen's chips use and from the SAME rule.
+ *
+ * This used to re-derive the whole dollar-and-bps materiality test inline, twice, and invent its
+ * own wording ("Material non-position difference"), so the file that leaves the building carried a
+ * third copy of the firm's tolerance and disagreed with the screen in words as well as provenance
+ * (rubric R9). There is no threshold and no vocabulary here now: `groupExceptions` decides both,
+ * and `EXCEPTION_TIPS` is keyed by the very titles it returns.
+ */
+function xlsExceptionsByFund(repricing: RepricingFixture, view: PricingView): Map<string, string[]> {
+  const byCode = new Map<string, string[]>();
+  // `groupExceptions` is the function the Reconciliation screen's chips are built from, so taking
+  // the categories from it means the file cannot name a category the screen does not — including
+  // the rename the repriced basis applies to the non-position category.
+  for (const category of groupExceptions(repricing, view)) {
+    for (const code of category.codes) {
+      const list = byCode.get(code);
+      if (list) list.push(category.title);
+      else byCode.set(code, [category.title]);
+    }
+  }
+  return byCode;
+}
+
+/** The plain-language gloss for each category, from the same table the screen's tooltips read. */
+function xlsExceptionMeaning(titles: readonly string[]): string {
+  return titles.map((t) => EXCEPTION_TIPS[t] ?? '').filter(Boolean).join('; ');
+}
+
+/** The severity the tree colours the fund's row with, so the file carries the same verdict. */
+function xlsFundSeverity(fund: RepricingFund, view: PricingView): string {
+  const verdict = evaluateEntity({
+    nav: fund.nav,
+    revised: fund.rev,
+    derived: fund.ltv,
+    globalUnits: fund.gq || null,
+    view,
+    // The workbook shows the category and its gloss, not the sentence, so no prose is needed here.
+    describe: () => ({ nonPosition: '', pricing: '' }),
+  });
+  return verdict.severity ?? '';
 }
 
 /** Reconciliation workbook: the chain, plus one row per fund with both differences. */
@@ -106,27 +164,24 @@ export async function exportReconciliationWorkbook(
   const header = [
     'Fund', 'Code', 'VPM symbol', 'Level', 'NAV', 'Look-through value', 'Repriced value',
     'Pricing difference', 'Pricing bps', 'Non-position difference', 'Non-position bps', 'Exception',
+    'What the exception means', 'Severity',
   ];
+  const exceptions = xlsExceptionsByFund(repricing, view);
   const funds = repricing.funds.slice().sort((a, b) => (b.nav ?? b.rev) - (a.nav ?? a.rev));
   const body = funds.map((f) => {
-    const exception =
-      f.hasNav === 0 && f.gq
-        ? 'No NAV reported'
-        : f.nav && Math.abs(f.dNonPos ?? 0) >= 250_000 && Math.abs(((f.dNonPos ?? 0) / f.nav) * 1e4) >= 50
-          ? 'Material non-position difference'
-          : f.nav && Math.abs(f.dPricing) >= 250_000 && Math.abs((f.dPricing / f.nav) * 1e4) >= 50
-            ? 'Material pricing difference'
-            : '';
+    const titles = exceptions.get(f.code) ?? [];
     return [
       f.name ?? f.code, f.code, f.sym, f.level, f.nav, f.ltv, f.rev, f.dPricing,
       f.nav ? (f.dPricing / f.nav) * 1e4 : null,
-      f.dNonPos, f.nav && f.dNonPos != null ? (f.dNonPos / f.nav) * 1e4 : null, exception,
+      f.dNonPos, f.nav && f.dNonPos != null ? (f.dNonPos / f.nav) * 1e4 : null,
+      titles.join('; '), xlsExceptionMeaning(titles), xlsFundSeverity(f, view),
     ];
   });
   const sheet = xlsx.utils.aoa_to_sheet([header, ...body]);
   sheet['!cols'] = [
     { wch: 38 }, { wch: 12 }, { wch: 14 }, { wch: 6 }, { wch: 18 }, { wch: 20 },
-    { wch: 20 }, { wch: 18 }, { wch: 11 }, { wch: 22 }, { wch: 13 }, { wch: 28 },
+    { wch: 20 }, { wch: 18 }, { wch: 11 }, { wch: 22 }, { wch: 13 }, { wch: 28 }, { wch: 56 },
+    { wch: 10 },
   ];
   sheet['!freeze'] = { xSplit: 0, ySplit: 1 };
   for (let i = 0; i < body.length; i++) {

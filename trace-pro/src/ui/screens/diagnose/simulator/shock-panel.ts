@@ -9,6 +9,7 @@
  * `.onclick`. Here every row is a real button, so the whole panel is keyboard-operable.
  */
 import { pendingShock, shockCascade, type CascadeIndex, type CascadeResult, type PendingShock } from '../../../../domain/cascade.js';
+import { TRUNCATE } from '../../../../domain/exceptions.js';
 import { formatCount, formatPercent, formatPrice, formatUsdCents, formatUsdCentsParens } from '../../../../domain/money.js';
 import type { SimFund, SimulatorFixture } from '../../../../domain/types.js';
 import { el, replace } from '../../../primitives/dom.js';
@@ -165,7 +166,7 @@ export function simulatorRenderShockPanel(host: HTMLElement, context: SimulatorS
       `Inspect ${h.i}, of which ${selected} holds ${formatPercent(h.ownpct)}`
     )
   );
-  const leafRows = (fund.leaves ?? []).slice(0, 8).map((l) =>
+  const leafRows = (fund.leaves ?? []).slice(0, TRUNCATE.simLeaves).map((l) =>
     el('tr', {}, [
       el('td', { class: 'l' }, [l.sec.slice(0, 24), el('div', { class: 'note', text: (l.name ?? '').slice(0, 40) })]),
       el('td', { class: 'mono', text: simulatorCompactUsd(l.mv) }),

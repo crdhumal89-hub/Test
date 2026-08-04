@@ -24,6 +24,9 @@ export const TRUNCATE = {
   ribbonSegments: 40,
   ultimateOwners: 12,
   issueRows: 200,
+  // The simulator's two: `simLeaves` caps the shock panel's leaf table, `simHolders` the holders
+  // list the repricing model builds. Both sites used to type the number; `tests/unit/rules.spec.ts`
+  // now asserts NO key in this table is shadowed by a literal, so a copy drifting back fails there.
   simLeaves: 8,
   simHolders: 14,
 } as const;
@@ -154,14 +157,21 @@ export function groupExceptions(
     .sort((a, b) => order[a.severity] - order[b.severity]);
 }
 
+/**
+ * The rule in words, built FROM the constants rather than restated beside them. The tooltip an
+ * operator reads and the comparison the code makes are now the same two numbers, so the tolerance
+ * cannot be changed in one place and quietly misdescribed in the other (rubric R9).
+ */
+const MATERIALITY_IN_WORDS = `≥ ${MATERIAL_BPS} bps and ≥ $${MATERIAL_USD / 1000}k`;
+
 /** Plain-language tooltips for each exception category. */
 export const EXCEPTION_TIPS: Record<string, string> = {
   'Missing NAV': 'Held funds with no ENDING_NAV in the NAV report',
   'Material non-position gap':
-    'NAV vs bottom-up value ≥ 50 bps and ≥ $250k — cash / fees / receivables',
+    `NAV vs bottom-up value ${MATERIALITY_IN_WORDS} — cash / fees / receivables`,
   'Non-position residual (non-trade)':
-    'NAV vs bottom-up value ≥ 50 bps and ≥ $250k — cash / fees / receivables',
-  'Material pricing gap': 'Repricing to NAV moves value ≥ 50 bps and ≥ $250k',
+    `NAV vs bottom-up value ${MATERIALITY_IN_WORDS} — cash / fees / receivables`,
+  'Material pricing gap': `Repricing to NAV moves value ${MATERIALITY_IN_WORDS}`,
   'Non-positive price': 'NAV ÷ units is not positive',
   'Ownership > 100%': 'Held units exceed the fund’s global units',
   'Dangling SPV': 'Referenced as an SPV but has no positions to look through',
