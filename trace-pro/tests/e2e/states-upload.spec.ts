@@ -125,8 +125,8 @@ test('upload slots · both are real file inputs, in the drawer that describes th
     'Loaded base dataset. Upload either file to recompute every tab.'
   );
   // Each slot states where it stands before anything is chosen — never blank.
-  await expect(page.locator('#sources-state-nav')).toContainText('No nav report uploaded');
-  await expect(page.locator('#sources-state-position')).toContainText('No position report uploaded');
+  await expect(page.locator('#sources-state-nav')).toContainText('No NAV Report uploaded yet');
+  await expect(page.locator('#sources-state-position')).toContainText('No Position Report uploaded yet');
   await statesShot(page, 'upload-slots-resting', 'the Data sources drawer opened on load', '#sources-drawer .sources-slots');
   expectClean(problems);
 });
@@ -135,10 +135,14 @@ test('upload slots · both are real file inputs, in the drawer that describes th
 
 test('NAV slot · LOADING while a large report is being read', async ({ page }) => {
   const { problems } = recordProblems(page);
-  // 30,000 rows: the reader works in chunks and yields between them, so the state is on screen for
-  // long enough to be read rather than being a frame nobody sees.
+  /*
+   * 200,000 rows, not 30,000. The reader works in chunks of 2,000 and yields between them, so at
+   * 30,000 rows it made 15 yields and finished in tens of milliseconds — the loading state was real
+   * but gone before it could be photographed, and this test raced its own subject. At 200,000 it is
+   * 100 yields and seconds of work, so the state is observable rather than a frame nobody sees.
+   */
   const rows = ['PRODUCT,FUND_CODE,ENDING_NAV'];
-  for (let i = 0; i < 30_000; i += 1) rows.push(`"Apollo Sports Capital","ZZ${i}",${1000 + i}`);
+  for (let i = 0; i < 200_000; i += 1) rows.push(`"Apollo Sports Capital","ZZ${i}",${1000 + i}`);
   for (const [code, nav] of Object.entries(uploadNavByFund())) {
     rows.push(`"Apollo Sports Capital","${code}",${nav.toFixed(2)}`);
   }
@@ -148,9 +152,19 @@ test('NAV slot · LOADING while a large report is being read', async ({ page }) 
   await page.locator('#sources-file-nav').setInputFiles(file);
   const state = page.locator('#sources-state-nav .state-loading');
   await expect(state).toBeVisible();
-  await expect(state).toContainText('nav-large.csv');
-  await expect(state).toContainText('reading');
-  await statesShot(page, 'upload-nav-loading', 'a 30,000-row NAV report chosen in the NAV slot; the reader yields between chunks', '#sources-state-nav .state-loading');
+  /*
+   * Wait for the PROGRESS form specifically, with one retrying assertion, before reading anything.
+   * The slot's first frame is "reading its rows…" — it has not counted a chunk yet — so a single
+   * immediate read catches that instead of the running total and then fails on it. One retrying
+   * assertion to arrive at the state, then one plain read of the sentence it settled on: chaining
+   * several retrying assertions at a transient state lets each of them be the one that arrives after
+   * it has gone, which is the race this test used to lose.
+   */
+  await expect(state).toContainText('rows read so far');
+  const sentence = (await state.innerText()).replace(/\s+/g, ' ').trim();
+  await statesShot(page, 'upload-nav-loading', 'a 200,000-row NAV report chosen in the NAV slot; the reader yields between chunks', '#sources-state-nav .state-loading');
+  expect(sentence).toContain('nav-large.csv');
+  expect(sentence).toContain('rows read so far');
 
   // Transient, not a dead end.
   await expect(page.locator('#sources-state-nav')).toContainText('applied', { timeout: 30_000 });
@@ -263,9 +277,10 @@ test('position slot · EMPTY when the report describes no holdings for this prod
 
   const state = page.locator('#sources-state-position .state-empty');
   await expect(state).toBeVisible();
-  await expect(state).toContainText('describes no holdings');
-  await expect(state).toContainText('shipped structure is still on display');
+  await expect(state).toContainText('none of them is Apollo Sports Capital');
+  await expect(state).toContainText('Nothing was replaced');
   await expect(state.locator('button')).toHaveText('Choose a different file');
+  await expect(page.locator('#ubstatus')).toContainText('Loaded base dataset');
   await statesShot(page, 'upload-position-empty', 'a position report whose only row is for a different fund entity', '#sources-state-position .state-empty');
   expectClean(problems);
 });

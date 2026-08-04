@@ -152,7 +152,7 @@
  "upload-slots-resting": {
   "reached": "the Data sources drawer opened on load",
   "selector": "#sources-drawer .sources-slots",
-  "rendered": "Position Report .xlsx Structure and units — who holds what, how many units, and the ultimate securities. Rebuilds the look-through hierarchy and every value derived from it: the reconciliation, the tree, the prices to publish and the repricing walk. Needs Fund Code, SPV Fund Code, Quantity VPM and MV USD columns. No position report uploaded. Every figure on screen comes from the extract this app shipped with. NAV Report .csv Net asset value per fund — the ENDING_NAV column, which sets every price to publish. Reprices the whole book bottom-up from the uploaded net asset values, leaving the structure as it is. Needs a fund-code column and this period’s ENDING_NAV — a previous-day or opening NAV column is ignored rather than mistaken for it. No nav report uploaded. Every figure on screen comes from the extract this app shipped with.",
+  "rendered": "Position Report .xlsx Structure and units — who holds what, how many units, and the ultimate securities. Rebuilds the look-through hierarchy and every value derived from it: the reconciliation, the tree, the prices to publish and the repricing walk. Needs the Fund Code, SPV Fund Code, Quantity VPM (units held) and MV USD (market value, US dollars) columns. No Position Report uploaded yet. Every figure on screen comes from the extract this app shipped with. NAV Report .csv Net asset value per fund — the ENDING_NAV column, which sets every price to publish. Reprices the whole book bottom-up from the uploaded net asset values, leaving the structure as it is. Needs a fund-code column and this period’s ENDING_NAV — a previous-day or opening NAV column is ignored rather than mistaken for it. No NAV Report uploaded yet. Every figure on screen comes from the extract this app shipped with.",
   "screenshot": "docs/evidence/states/upload-slots-resting.png"
  },
  "upload-nav-empty": {
@@ -190,5 +190,23 @@
   "selector": "#reconciliation-tree",
   "rendered": "Hierarchy — fund ▸ SPV ▸ security VPM symbol NAV reported Look-through value current marks Repriced value bottom-up from NAV Pricing difference repriced − look-through Non-position difference NAV − repriced ▾PRODUCTApollo Sports Capital $2,062,198,836 $5,843,837,506 $4,306,209,558 ($1,537,627,948) -7456.3 bps ($2,244,010,722) -10881.6 bps ▾FEEDERASCHONASCHON ASCHON $266,441,285 $780,819,468 $582,153,795 ($198,665,673) -7456.3 bps ($315,712,510) -11849.2 bps ▸SPVApollo Sports Capital (Onshore), L.P.ASCON ASCON $280,015,043 $770,579,439 $571,913,766 ($198,665,673) -7094.8 bps ($291,898,723) -10424.4 bps SECURITYFeeder residual CASH-ASCHON — $0 $0 — — SECURITYFund Cash CASH — $10,240,030 $10,240,030 — — ▾FEEDERDUNKDUNK DUNK $2,786 $2,786 $2,786 — — SECURITYFeeder residual CASH-DUNK — $0 $0 — — SECURITYFund Cash CASH — $2,786 $2,786 — — ▾FEEDERSPORTHLDSPORTHLD SPORTHLD $1,795,754,765 $5,063,015,252 $3,724,052,977 ($1,338,962,275) -7456.3 bps ($1,928,298,212) -10738.1 bps ▸SPVApollo Sports Capital (Overseas), L.P.SPORT SPORT $1,685,663,441 $4,992,266,659 $3,653,304,384 ($1,338,962,275) -7943.2 bps ($1,967,640,942) -11672.8 bps SECURITYFeeder residual CASH-SPORTHLD — $0 $0 — — SECURITYFund Cash CASH — $70,748,593 $70,748,593 — — TOTALS · Apollo Sports Capital $2,062,198,836 $5,843,837,506 $4,306,209,558 ($1,537,627,948) ($2,244,010,722)",
   "screenshot": "docs/evidence/states/upload-position-applied.png"
+ },
+ "combobox-loading": {
+  "reached": "universe.json held open, then the Diagnose entity list opened",
+  "selector": "#diagnose-entity-list .combo-notice-loading",
+  "rendered": "Still loading the firm-wide list of positions — for now this searches only the 26 funds and SPVs in this product.",
+  "screenshot": "docs/evidence/states/combobox-loading.png"
+ },
+ "upload-nav-loading": {
+  "reached": "a 200,000-row NAV report chosen in the NAV slot; the reader yields between chunks",
+  "selector": "#sources-state-nav .state-loading",
+  "rendered": "Loading “nav-large.csv” — 56,000 rows read so far…",
+  "screenshot": "docs/evidence/states/upload-nav-loading.png"
+ },
+ "upload-position-empty": {
+  "reached": "a position report whose only row is for a different fund entity",
+  "selector": "#sources-state-position .state-empty",
+  "rendered": "“positions-other-entity.csv” describes 1 fund entities, and none of them is Apollo Sports Capital: Some Other Product. Nothing was replaced — this drawer only ever applies a report for the product named at the top of it. Choose a different file",
+  "screenshot": "docs/evidence/states/upload-position-empty.png"
  }
 }

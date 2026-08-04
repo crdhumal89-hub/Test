@@ -1,13 +1,42 @@
 {
+ "route": "diagnose-ownership",
+ "denylist": [
+  "lt",
+  "rfx",
+  "str",
+  "sim",
+  "iss",
+  "own",
+  "gls",
+  "MV",
+  "LTV",
+  "px",
+  "qty",
+  "gq",
+  "apex",
+  "nonav",
+  "in tol",
+  "scen a",
+  "scen b",
+  "mv100",
+  "dcN",
+  "NAV",
+  "bps",
+  "SPV",
+  "VPM",
+  "Δ",
+  "FR",
+  "DC"
+ ],
  "dispositions": {
   "lt": "absent or glossary-linked",
   "rfx": "absent or glossary-linked",
-  "str": "absent or glossary-linked",
-  "sim": "absent or glossary-linked",
+  "str": "expanded before first use",
+  "sim": "expanded before first use",
   "iss": "absent or glossary-linked",
-  "own": "absent or glossary-linked",
+  "own": "expanded before first use",
   "gls": "absent or glossary-linked",
-  "MV": "absent or glossary-linked",
+  "MV": "expanded before first use",
   "LTV": "absent or glossary-linked",
   "px": "absent or glossary-linked",
   "qty": "expanded before first use",
@@ -27,5 +56,12 @@
   "FR": "absent or glossary-linked",
   "DC": "absent or glossary-linked"
  },
- "textNodes": 433
+ "findings": [],
+ "textNodes": 545,
+ "hosts": [
+  "masthead",
+  "screen",
+  "drawer:sources",
+  "drawer:glossary"
+ ]
 }

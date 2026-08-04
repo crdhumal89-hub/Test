@@ -14,8 +14,8 @@ frozen artifacts — one commit each, working tree equal to it
   reference/TRACE-Pro-original.html    Phase 1  f98dcd678748   934,142 B     sha256:c57e0392ee9b8cfe…  1 commit
 
 FROZEN CHECK PASSED
-checked 88 files (58 shipped UI sources)
-  top-level identifiers in src/: 498, all unique
+checked 102 files (66 shipped UI sources)
+  top-level identifiers in src/: 557, all unique
   inline on*= attributes: 0
   !important declarations: 0
 

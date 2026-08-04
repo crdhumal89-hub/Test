@@ -17,6 +17,7 @@
 import { test, expect } from '@playwright/test';
 import { recordProblems, settled, expectClean } from './helpers.js';
 import {
+  statesExpectClean,
   statesFailFixture,
   statesHoldUniverse,
   statesPatchFixture,
@@ -62,7 +63,7 @@ test('universe fixture · ERROR when the fetch fails, and the retry actually rec
   await retry.click();
   await expect(page.locator('#ownership-search')).toBeVisible({ timeout: 20_000 });
   expect(await page.locator('#screen .state-error').count(), 'the retry must clear the error').toBe(0);
-  expectClean(problems);
+  statesExpectClean(problems);
 });
 
 /* ------------------------------------------------------------------ the Ownership lens */
@@ -98,7 +99,7 @@ test('ownership lens · ERROR when the universe it depends on cannot be fetched'
   // No half-built ownership figure is left on screen next to the failure.
   expect(await page.locator('#ownership-ribbon').count()).toBe(0);
   await statesShot(page, 'ownership-lens-error', 'every universe.json request aborted by page.route', '#screen .state-error');
-  expectClean(problems);
+  statesExpectClean(problems);
 });
 
 test('ownership lens · LOADING states the file it is waiting for, not a bare spinner', async ({ page }) => {
@@ -157,7 +158,7 @@ test('data quality lens · ERROR when the universe it scans cannot be fetched', 
   expect(await state.getAttribute('role')).toBe('alert');
   expect(await page.locator('#data-quality-buckets').count(), 'no empty bucket list beside the error').toBe(0);
   await statesShot(page, 'data-quality-error', 'every universe.json request aborted by page.route', '#screen .state-error');
-  expectClean(problems);
+  statesExpectClean(problems);
 });
 
 /* ------------------------------------------------------------------ combobox result lists */
@@ -169,7 +170,8 @@ test('combobox list · LOADING says which of its two sources has not arrived', a
   // over the same universe plus this product's own funds, and stays usable while it waits.
   await page.goto('/#/diagnose/ownership', { waitUntil: 'load' });
   await expect(page.locator('#screen .state-loading')).toBeVisible();
-  await page.locator('#diagnose-entity').click();
+  // Cleared, so the list is the whole set rather than a filter on the pre-selected entity's label.
+  await page.locator('#diagnose-entity').fill('');
 
   const notice = page.locator('#diagnose-entity-list .combo-notice-loading');
   await expect(notice).toBeVisible();
@@ -205,7 +207,7 @@ test('combobox list · ERROR is announced in the list and recovers from beside i
   await statesFailFixture(page, '**/universe.json', 1);
   await page.goto('/#/diagnose/ownership', { waitUntil: 'load' });
   await settled(page);
-  await page.locator('#diagnose-entity').click();
+  await page.locator('#diagnose-entity').fill('');
 
   const notice = page.locator('#diagnose-entity-list .combo-notice-error');
   await expect(notice).toBeVisible();
@@ -218,7 +220,17 @@ test('combobox list · ERROR is announced in the list and recovers from beside i
 
   await recover.click();
   await expect(page.locator('#diagnose-entity-retry')).toHaveCount(0, { timeout: 20_000 });
-  await page.locator('#diagnose-entity').click();
-  expect(await page.locator('#diagnose-entity-list .combo-notice-error').count()).toBe(0);
-  expectClean(problems);
+  // Wait for the second attempt to land rather than for a redraw: the list is rebuilt from the
+  // universe the moment it arrives, and re-opening it before then would prove nothing.
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.hasAttribute('data-fetching')), {
+      timeout: 20_000,
+    })
+    .toBe(false);
+  // APPOURI is in the firm-wide universe and NOT among this product's own funds, so finding it is
+  // proof that the recovery really restored the source the notice said was missing.
+  await page.locator('#diagnose-entity').fill('APPOUR');
+  await expect(page.locator('#diagnose-entity-list .combo-option[data-key="APPOURI"]')).toHaveCount(1);
+  expect(await page.locator('#diagnose-entity-list .combo-notice').count(), 'no notice once it is here').toBe(0);
+  statesExpectClean(problems);
 });

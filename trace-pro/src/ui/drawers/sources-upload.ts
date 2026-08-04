@@ -57,8 +57,8 @@ export const SOURCES_SLOTS: readonly SourcesSlot[] = [
     purpose: 'Structure and units — who holds what, how many units, and the ultimate securities.',
     effect:
       'Rebuilds the look-through hierarchy and every value derived from it: the reconciliation, the ' +
-      'tree, the prices to publish and the repricing walk. Needs Fund Code, SPV Fund Code, ' +
-      'Quantity VPM and MV USD columns.',
+      'tree, the prices to publish and the repricing walk. Needs the Fund Code, SPV Fund Code, ' +
+      'Quantity VPM (units held) and MV USD (market value, US dollars) columns.',
   },
   {
     key: 'nav',
@@ -76,10 +76,23 @@ export const SOURCES_SLOTS: readonly SourcesSlot[] = [
 /** How many lines are read before the reader yields the thread, so the loading state paints. */
 const SOURCES_CHUNK = 2000;
 
+/**
+ * Yield the thread between chunks — with a TIMER, deliberately not `requestAnimationFrame`.
+ *
+ * rAF only fires while the page is being painted. A background tab, a minimised window or a headless
+ * browser that has stopped compositing does not tick it, so a read that yields on rAF does not slow
+ * down: it STOPS, and the loading state sits there for as long as the user is looking at something
+ * else. That is a stalled upload with a plausible-looking spinner, which is worse than a slow one.
+ *
+ * It also made the gate unreliable. `states-upload.spec.ts` "LOADING while a large report is being
+ * read" timed out at 90s in one full-suite run and passed in 3.8s standalone, because 16 rAF ticks
+ * either arrive in 0.3s or never. A timer is throttled in a hidden tab but always fires, so the read
+ * always finishes; the loading state still paints, because the browser is free to render between
+ * macrotasks.
+ */
 function sourcesYield(): Promise<void> {
   return new Promise((resolve) => {
-    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => resolve());
-    else setTimeout(resolve, 0);
+    setTimeout(resolve, 0);
   });
 }
 
@@ -210,9 +223,24 @@ function sourcesApplyPositions(store: Store, rows: string[][], file: string, vie
     return;
   }
   const index = positionIndexFromRows(rows);
-  const { product } = positionEntities(index, store.state.productName);
+  const { entities } = positionEntities(index, store.state.productName);
+  const product = store.state.productName;
+  /*
+   * The report has to be FOR this product. The original quietly fell back to the first fund entity in
+   * the file, which meant dropping a colleague's report replaced every figure on screen with a
+   * different product's — under the heading of the product you thought you were looking at.
+   */
+  if (!entities.includes(product)) {
+    sourcesSetState(view, emptyState(
+      `“${file}” describes ${formatCount(entities.length)} fund entities, and none of them is ` +
+        `${product}: ${entities.slice(0, 4).join(', ') || 'none named'}. Nothing was replaced — this ` +
+        'drawer only ever applies a report for the product named at the top of it.',
+      sourcesRetry(input)
+    ));
+    return;
+  }
   const lookthrough = lookthroughFromPositions(index, product, store.state.asof);
-  if (!lookthrough.nodes.length || lookthrough.nodes.length === 1) {
+  if (lookthrough.nodes.length <= 1) {
     sourcesSetState(view, emptyState(
       `“${file}” parsed, but it describes no holdings for ${product} — there is no hierarchy to build ` +
         'from it. The shipped structure is still on display.',
@@ -246,7 +274,7 @@ function sourcesSlotElement(store: Store, slot: SourcesSlot, announce: (text: st
   const state = el('div', { class: 'sources-slot-state', id: stateId }, [
     el('p', {
       class: 'sources-slot-idle',
-      text: `No ${slot.title.toLowerCase()} uploaded. Every figure on screen comes from the extract this app shipped with.`,
+      text: `No ${slot.title} uploaded yet. Every figure on screen comes from the extract this app shipped with.`,
     }),
   ]);
   const view: SourcesSlotView = { state, announce };

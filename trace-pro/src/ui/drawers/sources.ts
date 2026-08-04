@@ -14,6 +14,16 @@ import type { Store } from '../../state/store.js';
 import { el, replace, trapFocus } from '../primitives/dom.js';
 import { formatCount } from '../../domain/money.js';
 import { sourcesUploadBlock } from './sources-upload.js';
+import { termVocabularyLine } from '../primitives/term.js';
+
+/**
+ * The abbreviations this drawer puts on screen, in the order a reader meets them.
+ *
+ * `vpm` and `carried_mv_position_mv` are here for the source files' own column names — "Quantity
+ * VPM" and "MV USD". Those names are the upstream system's, not this app's, so renaming them would
+ * misdescribe the file a controller has to go and look at; the honest move is to say what they mean.
+ */
+const SOURCES_VOCABULARY = ['nav', 'vpm', 'carried_mv_position_mv', 'spv', 'global_units_global_quantity'];
 
 export const SOURCES_TITLE = 'Data sources & as-of';
 
@@ -214,6 +224,12 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
 
     replace(
       body,
+      // The drawer declares its own vocabulary, first, exactly as each screen does. It is not
+      // decoration: this drawer quotes the source files' literal column names — `Quantity VPM`,
+      // `MV USD`, `SIM` — and it quoted them ABOVE the prose that explained them, so a reader met
+      // every abbreviation before its definition. R2's bar names drawers, and a definition that
+      // arrives after the table it describes is not an expansion "on first use".
+      termVocabularyLine(SOURCES_VOCABULARY, 'sources-vocabulary'),
       sourcesBlock(
         'Which report each figure comes from',
         sourcesTable(
@@ -233,7 +249,9 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
           text:
             'No backend. The five fixtures in data/ were extracted from the original TRACE-Pro artifact ' +
             'by scripts/extract-fixtures.mjs, and npm run fixtures:check asserts deep equality against ' +
-            'that artifact, so they cannot drift from the file they came from.',
+            'that artifact, so they cannot drift from the file they came from. "Was called" gives the ' +
+            'original’s own names for them, kept so a figure can be traced back to it: EMB (embedded ' +
+            'look-through), UNI (universe), REVBASE (revision base) and SIM (simulator).',
         }),
         sourcesTable(
           ['File in data/', 'Was called', 'Contents', 'Read by'],

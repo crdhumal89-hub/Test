@@ -7,11 +7,11 @@ $ npm run build
 > vite build
 
 vite v8.2.0 building client environment for production...
-[2Ktransforming...✓ 58 modules transformed.
+[2Ktransforming...✓ 67 modules transformed.
 rendering chunks...
 computing gzip size...
 dist/index.html                   0.58 kB │ gzip:  0.39 kB
-dist/assets/index-CGZZxfB7.css   25.17 kB │ gzip:  5.58 kB
-dist/assets/index-j4W1Pn_j.js   190.75 kB │ gzip: 61.53 kB
+dist/assets/index-BOEAn9_h.css   26.20 kB │ gzip:  5.77 kB
+dist/assets/index-C878PWa7.js   212.70 kB │ gzip: 69.46 kB
 
-✓ built in 89ms
+✓ built in 114ms

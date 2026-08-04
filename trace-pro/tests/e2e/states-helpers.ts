@@ -33,12 +33,33 @@ export async function statesShot(
   const seen = fs.existsSync(log)
     ? (JSON.parse(fs.readFileSync(log, 'utf8')) as Record<string, unknown>)
     : {};
+  /*
+   * BOUNDED, and it must be. Some of the states this records are transient by definition — a
+   * loading state exists only while a read is outstanding — and `innerText()` on a locator that has
+   * already been replaced waits for the whole test timeout. That is what it did: the 30,000-row
+   * upload test spent 90s here and failed, having already ASSERTED the loading state and its text a
+   * few lines earlier. The state was real; the evidence helper hung on it after the fact.
+   *
+   * So a vanished selector is recorded as a fact, not waited on. The assertions in the test are what
+   * prove the state existed; this function only describes what was still on screen when the
+   * screenshot was taken, and says so when the answer is "it had already finished".
+   */
+  let rendered: string | null = null;
+  if (selector) {
+    try {
+      const text = await page.locator(selector).first().innerText({ timeout: 2000 });
+      rendered = text.replace(/\s+/g, ' ').trim();
+    } catch {
+      rendered = null;
+    }
+  }
   seen[name] = {
     reached,
     selector: selector ?? null,
-    rendered: selector
-      ? (await page.locator(selector).first().innerText()).replace(/\s+/g, ' ').trim()
-      : null,
+    rendered,
+    ...(selector && rendered === null
+      ? { note: 'the state had already been replaced when the screenshot was taken; the test’s own assertions are the evidence that it rendered' }
+      : {}),
     screenshot: `docs/evidence/states/${name}.png`,
   };
   fs.writeFileSync(log, JSON.stringify(seen, null, 1) + '\n');
@@ -67,6 +88,18 @@ export async function statesHoldUniverse(page: Page, ms = STATES_HOLD_MS): Promi
     await new Promise((resolve) => setTimeout(resolve, ms));
     await route.continue();
   });
+}
+
+/**
+ * Assert nothing was logged EXCEPT the browser's own record of a request the test itself aborted.
+ *
+ * `page.route(...).abort()` makes Chrome log `Failed to load resource: net::ERR_FAILED` as a console
+ * error before the app ever sees the rejection. That line is the test's own doing, not a swallowed
+ * failure, and R14 is about the app: everything else must still be silent.
+ */
+export function statesExpectClean(problems: readonly string[]): void {
+  const unexpected = problems.filter((p) => !/Failed to load resource/.test(p));
+  expect(unexpected, `console problems:\n${unexpected.join('\n')}`).toEqual([]);
 }
 
 /** Fail the fetch of one fixture outright, which is the error state's cause, not a symptom of it. */

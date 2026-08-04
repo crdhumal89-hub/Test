@@ -40,8 +40,8 @@ into a script would prove nothing, because the same commit could change both.
 
 | Suite | Passed | Failed |
 | --- | --- | --- |
-| `npm test` (Vitest, domain) | 114 | 0 |
-| `npx playwright test` (all projects) | 64 | — |
+| `npm test` (Vitest, domain) | 128 | 0 |
+| `npx playwright test` (all projects) | 96 | — |
 
 ## UX CRITIC
 
@@ -52,67 +52,59 @@ non-zero FAIL count above means this sub-gate is RED regardless of the test suit
 
 ## Structure limits
 
-88 source files under `src/`, `scripts/` and `tests/`. No file under `src/` exceeds 400 lines.
+102 source files under `src/`, `scripts/` and `tests/`. No file under `src/` exceeds 400 lines.
 
 ### Ten largest files
 
 | File | Lines |
 | --- | --- |
 | `tests/baseline.json` | 1031 |
-| `src/ui/screens/diagnose/simulator/index.ts` | 400 |
 | `tests/e2e/exports.spec.ts` | 400 |
-| `tests/e2e/rubric.spec.ts` | 400 |
 | `src/ui/drawers/glossary.ts` | 398 |
 | `src/ui/screens/diagnose/structure/graph.ts` | 394 |
+| `src/ui/screens/diagnose/simulator/index.ts` | 381 |
+| `src/ui/chrome/shell.ts` | 378 |
+| `src/ui/styles/app.css` | 375 |
 | `src/ui/screens/diagnose/simulator/graph.ts` | 373 |
-| `src/ui/styles/app.css` | 372 |
-| `src/ui/chrome/shell.ts` | 370 |
 | `src/ui/screens/pricing/price-table.ts` | 361 |
+| `src/domain/repricing.ts` | 353 |
 
 ## Verbatim gate output
 
 ### STATIC — Build (exit 0)
 
 ```
-$ npm run build
-# sub-gate: STATIC — Build
-# exit code: 0
-# ----------------------------------------------------------------------------
 
 > trace-pro@0.1.0 build
 > vite build
 
 vite v8.2.0 building client environment for production...
-[2Ktransforming...✓ 58 modules transformed.
+[2Ktransforming...✓ 67 modules transformed.
 rendering chunks...
 computing gzip size...
 dist/index.html                   0.58 kB │ gzip:  0.39 kB
-dist/assets/index-CGZZxfB7.css   25.17 kB │ gzip:  5.58 kB
-dist/assets/index-j4W1Pn_j.js   190.75 kB │ gzip: 61.53 kB
+dist/assets/index-BOEAn9_h.css   26.20 kB │ gzip:  5.77 kB
+dist/assets/index-C878PWa7.js   212.70 kB │ gzip: 69.46 kB
 
-✓ built in 89ms
+✓ built in 114ms
 ```
 
-Full log: `docs/evidence/gate/static-build.txt`
+Full log: `docs/evidence/gate/static-build.txt` (0.5s)
 
 ### STATIC — Typecheck (exit 0)
 
 ```
-$ npm run typecheck
-# sub-gate: STATIC — Typecheck
-# exit code: 0
-# ----------------------------------------------------------------------------
 
 > trace-pro@0.1.0 typecheck
 > tsc --noEmit
 ```
 
-Full log: `docs/evidence/gate/static-typecheck.txt`
+Full log: `docs/evidence/gate/static-typecheck.txt` (2.9s)
 
 ### STATIC — Lint + structure limits + fixtures (exit 0)
 
 ```
-… 228 earlier lines in the full log …
+… 224 earlier lines in the full log …
     4. pricing.banner.narrative
        was: "Bottom-up repricing Reprice the deepest funds first — a terminal fund's revised price = NAV ÷ units; a holder's revised MV = Σ held-qty × child revised price + its direct securities, propagated to the product. That lifts Derived $2,060,224,441 to Revised $2,060,610,338 (repricing P&L $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding P&L."
        now: "Bottom-up repricing Reprice the deepest funds first — a lowest-level fund's repriced unit price = NAV ÷ units; a holder's repriced value = Σ held-qty × child repriced price + its direct securities, propagated to the product. That lifts the look-through value $2,060,224,441 to the repriced value $2,060,610,338 (repricing gain or loss $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding gain or loss."
@@ -234,12 +226,12 @@ Full log: `docs/evidence/gate/static-typecheck.txt`
 RESULT: PASS — 728 figures / 14 empty / 278 text; 41 declared-label keys, all 41 digit-guarded
 ```
 
-Full log: `docs/evidence/gate/static-lint.txt`
+Full log: `docs/evidence/gate/static-lint.txt` (3.3s)
 
 ### STATIC — Parity key classification (exit 0)
 
 ```
-… 202 earlier lines in the full log …
+… 198 earlier lines in the full log …
     4. pricing.banner.narrative
        was: "Bottom-up repricing Reprice the deepest funds first — a terminal fund's revised price = NAV ÷ units; a holder's revised MV = Σ held-qty × child revised price + its direct securities, propagated to the product. That lifts Derived $2,060,224,441 to Revised $2,060,610,338 (repricing P&L $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding P&L."
        now: "Bottom-up repricing Reprice the deepest funds first — a lowest-level fund's repriced unit price = NAV ÷ units; a holder's repriced value = Σ held-qty × child repriced price + its direct securities, propagated to the product. That lifts the look-through value $2,060,224,441 to the repriced value $2,060,610,338 (repricing gain or loss $385,897), then non-position items bridge to NAV $2,062,198,836. Largest repricing tier: SPORT ($336,038 across its 9 holdings). Click any fund for its per-holding gain or loss."
@@ -361,15 +353,11 @@ Full log: `docs/evidence/gate/static-lint.txt`
 RESULT: PASS — 728 figures / 14 empty / 278 text; 41 declared-label keys, all 41 digit-guarded
 ```
 
-Full log: `docs/evidence/gate/static-keys.txt`
+Full log: `docs/evidence/gate/static-keys.txt` (0.2s)
 
 ### UNIT — Unit tests (domain) (exit 0)
 
 ```
-$ npm test
-# sub-gate: UNIT — Unit tests (domain)
-# exit code: 0
-# ----------------------------------------------------------------------------
 
 > trace-pro@0.1.0 test
 > vitest run
@@ -377,116 +365,141 @@ $ npm test
 
  RUN  v4.1.10 /home/user/Test/trace-pro
 
- ✓ tests/unit/rules.spec.ts (9 tests) 57ms
- ✓ tests/unit/ownership.spec.ts (20 tests) 79ms
- ✓ tests/unit/ownership-differential.spec.ts (3 tests) 110ms
- ✓ tests/unit/lookthrough.spec.ts (26 tests) 29ms
- ✓ tests/unit/cascade.spec.ts (27 tests) 19ms
- ✓ tests/unit/reconciliation.spec.ts (29 tests) 9ms
+ ✓ tests/unit/rules.spec.ts (9 tests) 46ms
+ ✓ tests/unit/ownership.spec.ts (20 tests) 50ms
+ ✓ tests/unit/ownership-differential.spec.ts (3 tests) 96ms
+ ✓ tests/unit/cascade.spec.ts (27 tests) 18ms
+ ✓ tests/unit/lookthrough.spec.ts (26 tests) 36ms
+ ✓ tests/unit/ingest.spec.ts (14 tests) 11ms
+ ✓ tests/unit/reconciliation.spec.ts (29 tests) 10ms
 
- Test Files  6 passed (6)
-      Tests  114 passed (114)
-   Start at  10:24:50
-   Duration  689ms (transform 334ms, setup 0ms, import 665ms, tests 303ms, environment 1ms)
+ Test Files  7 passed (7)
+      Tests  128 passed (128)
+   Start at  12:59:29
+   Duration  765ms (transform 356ms, setup 0ms, import 664ms, tests 267ms, environment 1ms)
 ```
 
-Full log: `docs/evidence/gate/unit.txt`
+Full log: `docs/evidence/gate/unit.txt` (1.3s)
 
 ### UX CRITIC — Headless suite (Playwright) (exit 0)
 
 ```
-$ npx playwright test
-# sub-gate: UX CRITIC — Headless suite (Playwright)
-# exit code: 0
-# ----------------------------------------------------------------------------
 
-Running 64 tests using 1 worker
+Running 96 tests using 1 worker
 
   ✓   1 [app] › tests/e2e/exports.spec.ts:177:1 › R13 · look-through CSV ties to the tree, in both bases (2.1s)
-  ✓   2 [app] › tests/e2e/exports.spec.ts:232:1 › R13 · reconciliation workbook ties to the waterfall, in both bases (2.1s)
+  ✓   2 [app] › tests/e2e/exports.spec.ts:232:1 › R13 · reconciliation workbook ties to the waterfall, in both bases (2.0s)
   ✓   3 [app] › tests/e2e/exports.spec.ts:327:1 › R13 · pricing workbook ties to the pricing screen, in both bases (2.2s)
   ✓   4 [app] › tests/e2e/exports.spec.ts:366:1 › R13 · send-to-pricing CSV ties to the pricing screen and is basis-invariant (1.5s)
-  ✓   5 [app] › tests/e2e/rubric-focus.spec.ts:98:3 › R6 — focus is visible and everything is reachable by keyboard › no bare outline:none survives in the stylesheets (541ms)
-  ✓   6 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Reconciliation — every tab stop has a box, a role and a ≥3:1 ring (995ms)
-  ✓   7 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Pricing — every tab stop has a box, a role and a ≥3:1 ring (1.9s)
-  ✓   8 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Structure — every tab stop has a box, a role and a ≥3:1 ring (944ms)
-  ✓   9 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Ownership — every tab stop has a box, a role and a ≥3:1 ring (2.5s)
-  ✓  10 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Data quality — every tab stop has a box, a role and a ≥3:1 ring (609ms)
-  ✓  11 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Simulator — every tab stop has a box, a role and a ≥3:1 ring (1.3s)
+  ✓   5 [app] › tests/e2e/rubric-focus.spec.ts:98:3 › R6 — focus is visible and everything is reachable by keyboard › no bare outline:none survives in the stylesheets (526ms)
+  ✓   6 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Reconciliation — every tab stop has a box, a role and a ≥3:1 ring (1.0s)
+  ✓   7 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Pricing — every tab stop has a box, a role and a ≥3:1 ring (2.0s)
+  ✓   8 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Structure — every tab stop has a box, a role and a ≥3:1 ring (1.0s)
+  ✓   9 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Ownership — every tab stop has a box, a role and a ≥3:1 ring (2.6s)
+  ✓  10 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Data quality — every tab stop has a box, a role and a ≥3:1 ring (648ms)
+  ✓  11 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Simulator — every tab stop has a box, a role and a ≥3:1 ring (1.5s)
   ✓  12 [app] › tests/e2e/rubric-focus.spec.ts:159:3 › R6 — focus is visible and everything is reachable by keyboard › the ring is actually painted, not clipped away by an ancestor (2.2s)
   ✓  13 [app] › tests/e2e/rubric-focus.spec.ts:192:3 › R6 — focus is visible and everything is reachable by keyboard › every overlay restores focus to the control that opened it (3.2s)
-  ✓  14 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Reconciliation paints its question above all other text (524ms)
-  ✓  15 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Pricing paints its question above all other text (601ms)
-  ✓  16 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Structure paints its question above all other text (526ms)
-  ✓  17 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Ownership paints its question above all other text (576ms)
-  ✓  18 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Data quality paints its question above all other text (497ms)
-  ✓  19 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Simulator paints its question above all other text (570ms)
-  ✓  20 [app] › tests/e2e/rubric.spec.ts:42:5 › R1 — every screen states the question it answers › Reconciliation opens with one question (570ms)
-  ✓  21 [app] › tests/e2e/rubric.spec.ts:42:5 › R1 — every screen states the question it answers › Pricing opens with one question (625ms)
-  ✓  22 [app] › tests/e2e/rubric.spec.ts:42:5 › R1 — every screen states the question it answers › Structure opens with one question (551ms)
-  ✓  23 [app] › tests/e2e/rubric.spec.ts:42:5 › R1 — every screen states the question it answers › Ownership opens with one question (615ms)
-  ✓  24 [app] › tests/e2e/rubric.spec.ts:42:5 › R1 — every screen states the question it answers › Data quality opens with one question (499ms)
-  ✓  25 [app] › tests/e2e/rubric.spec.ts:42:5 › R1 — every screen states the question it answers › Simulator opens with one question (610ms)
-  ✓  26 [app] › tests/e2e/rubric.spec.ts:59:1 › R2 — no bare abbreviation survives outside the glossary (2.3s)
-  ✓  27 [app] › tests/e2e/rubric.spec.ts:102:1 › R3 — a figure is never readable while its as-of date is not (2.5s)
-  ✓  28 [app] › tests/e2e/rubric.spec.ts:213:1 › R5 — the primary answer is above the fold on load, with no click (2.9s)
-  ✓  29 [app] › tests/e2e/rubric.spec.ts:256:1 › R7 — the glossary is one action from every screen, and keeps state (6.3s)
-  ✓  30 [app] › tests/e2e/rubric.spec.ts:273:1 › R7 — the keyboard route to the glossary works too (896ms)
-  ✓  31 [app] › tests/e2e/rubric.spec.ts:291:1 › R12 — the basis is stated where it matters and absent where it does nothing (12.7s)
-  ✓  32 [app] › tests/e2e/rubric.spec.ts:341:1 › R12 — switching the basis relabels or moves every basis-sensitive figure (872ms)
-  ✓  33 [app] › tests/e2e/rubric.spec.ts:352:1 › R14 — nothing fails silently across a full walk of the app (6.1s)
-  ✓  34 [app] › tests/e2e/rubric.spec.ts:365:1 › R16 — the Diagnose entity selection survives every lens switch (3.0s)
-  ✓  35 [app] › tests/e2e/rubric.spec.ts:389:1 › R18 — an empty result offers a way out, not a dead end (882ms)
-  ✓  36 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Reconciliation renders with no console problem (538ms)
-  ✓  37 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Pricing renders with no console problem (642ms)
-  ✓  38 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Structure renders with no console problem (581ms)
-  ✓  39 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Ownership renders with no console problem (585ms)
-  ✓  40 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Data quality renders with no console problem (518ms)
-  ✓  41 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Simulator renders with no console problem (611ms)
-  ✓  42 [app] › tests/e2e/screens.spec.ts:24:1 › Reconciliation: the reconciliation ties, and the figures are the frozen ones (560ms)
-  ✓  43 [app] › tests/e2e/screens.spec.ts:34:1 › Reconciliation: expand all reveals the whole tree, collapse returns to the default (1.3s)
-  ✓  44 [app] › tests/e2e/screens.spec.ts:46:1 › Reconciliation: a row opens its breakdown, Escape closes it and restores focus (1.2s)
-  ✓  45 [app] › tests/e2e/screens.spec.ts:57:1 › Reconciliation: an exception chip jumps to the offending fund (912ms)
-  ✓  46 [app] › tests/e2e/screens.spec.ts:66:1 › Pricing: the score strip and bridge carry the frozen figures (622ms)
-  ✓  47 [app] › tests/e2e/screens.spec.ts:76:1 › Pricing: the walk total ties to the waterfall (626ms)
-  ✓  48 [app] › tests/e2e/screens.spec.ts:84:1 › Ownership: the default position resolves and its owners reconcile (584ms)
-  ✓  49 [app] › tests/e2e/screens.spec.ts:93:1 › Data quality: the five buckets and their counts (487ms)
-  ✓  50 [app] › tests/e2e/screens.spec.ts:102:1 › Simulator: the staged reprice completes and lands on the waterfall, to the cent (1.0s)
-  ✓  51 [app] › tests/e2e/screens.spec.ts:118:1 › Structure: the full-screen readout shows the fund-entity NAV and labels its basis (573ms)
-  ✓  52 [app] › tests/e2e/screens.spec.ts:128:1 › exports: all four produce a non-empty file (1.2s)
-  ✓  53 [app] › tests/e2e/states.spec.ts:94:1 › tree · LOADING while a fixture fetch is outstanding (8.3s)
-  ✓  54 [app] › tests/e2e/states.spec.ts:109:1 › tree · EMPTY when the product has no look-through rows (683ms)
-  ✓  55 [app] › tests/e2e/states.spec.ts:126:1 › tree · ERROR when the hierarchy arrives malformed (695ms)
-  ✓  56 [app] › tests/e2e/states.spec.ts:148:1 › price table · LOADING while a fixture fetch is outstanding (8.3s)
-  ✓  57 [app] › tests/e2e/states.spec.ts:162:1 › price table · EMPTY when the filter matches nothing, and the recovery works (1.4s)
-  ✓  58 [app] › tests/e2e/states.spec.ts:181:1 › price table · ERROR when the fund rows arrive malformed (694ms)
-  ✓  59 [app] › tests/e2e/states.spec.ts:210:1 › repricing walk · LOADING while a fixture fetch is outstanding (10.0s)
-  ✓  60 [app] › tests/e2e/states.spec.ts:227:1 › repricing walk · EMPTY when the filter matches nothing, and the recovery works (1.8s)
-  ✓  61 [app] › tests/e2e/states.spec.ts:246:1 › repricing walk · ERROR when the fund rows arrive malformed (995ms)
-  ✓  62 [app] › tests/e2e/states.spec.ts:268:1 › structure graph · a caught layout error surfaces outside the SVG and is recorded (640ms)
-  ✓  63 [app] › tests/e2e/states.spec.ts:308:1 › structure graph · the healthy path draws the graph and records nothing (562ms)
-  ✓  64 [offline] › tests/e2e/offline.spec.ts:11:1 › the whole app runs with every off-origin request blocked (6.4s)
+  ✓  14 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Reconciliation paints its question above all other text (530ms)
+  ✓  15 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Pricing paints its question above all other text (625ms)
+  ✓  16 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Structure paints its question above all other text (538ms)
+  ✓  17 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Ownership paints its question above all other text (602ms)
+  ✓  18 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Data quality paints its question above all other text (484ms)
+  ✓  19 [app] › tests/e2e/rubric-order.spec.ts:79:5 › R1 — the question is the first thing painted, not merely first in the DOM › Simulator paints its question above all other text (598ms)
+  ✓  20 [app] › tests/e2e/rubric-vocabulary.spec.ts:198:3 › R2 — no bare abbreviation survives outside the glossary › the denylist is the rubric’s, token for token (2ms)
+  ✓  21 [app] › tests/e2e/rubric-vocabulary.spec.ts:206:5 › R2 — no bare abbreviation survives outside the glossary › Reconciliation leaves no denylist token bare (11.0s)
+  ✓  22 [app] › tests/e2e/rubric-vocabulary.spec.ts:206:5 › R2 — no bare abbreviation survives outside the glossary › Pricing leaves no denylist token bare (11.2s)
+  ✓  23 [app] › tests/e2e/rubric-vocabulary.spec.ts:206:5 › R2 — no bare abbreviation survives outside the glossary › Structure leaves no denylist token bare (11.1s)
+  ✓  24 [app] › tests/e2e/rubric-vocabulary.spec.ts:206:5 › R2 — no bare abbreviation survives outside the glossary › Ownership leaves no denylist token bare (11.1s)
+  ✓  25 [app] › tests/e2e/rubric-vocabulary.spec.ts:206:5 › R2 — no bare abbreviation survives outside the glossary › Data quality leaves no denylist token bare (10.9s)
+  ✓  26 [app] › tests/e2e/rubric-vocabulary.spec.ts:206:5 › R2 — no bare abbreviation survives outside the glossary › Simulator leaves no denylist token bare (11.1s)
+  ✓  27 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Reconciliation opens with one question (550ms)
+  ✓  28 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Pricing opens with one question (639ms)
+  ✓  29 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Structure opens with one question (557ms)
+  ✓  30 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Ownership opens with one question (626ms)
+  ✓  31 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Data quality opens with one question (505ms)
+  ✓  32 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Simulator opens with one question (648ms)
+  ✓  33 [app] › tests/e2e/rubric.spec.ts:50:1 › R3 — a figure is never readable while its as-of date is not (2.6s)
+  ✓  34 [app] › tests/e2e/rubric.spec.ts:161:1 › R5 — the primary answer is above the fold on load, with no click (3.0s)
+  ✓  35 [app] › tests/e2e/rubric.spec.ts:204:1 › R7 — the glossary is one action from every screen, and keeps state (6.5s)
+  ✓  36 [app] › tests/e2e/rubric.spec.ts:221:1 › R7 — the keyboard route to the glossary works too (928ms)
+  ✓  37 [app] › tests/e2e/rubric.spec.ts:239:1 › R12 — the basis is stated where it matters and absent where it does nothing (12.7s)
+  ✓  38 [app] › tests/e2e/rubric.spec.ts:289:1 › R12 — switching the basis relabels or moves every basis-sensitive figure (909ms)
+  ✓  39 [app] › tests/e2e/rubric.spec.ts:300:1 › R14 — nothing fails silently across a full walk of the app (6.2s)
+  ✓  40 [app] › tests/e2e/rubric.spec.ts:313:1 › R16 — the Diagnose entity selection survives every lens switch (3.1s)
+  ✓  41 [app] › tests/e2e/rubric.spec.ts:337:1 › R18 — an empty result offers a way out, not a dead end (904ms)
+  ✓  42 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Reconciliation renders with no console problem (544ms)
+  ✓  43 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Pricing renders with no console problem (650ms)
+  ✓  44 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Structure renders with no console problem (562ms)
+  ✓  45 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Ownership renders with no console problem (617ms)
+  ✓  46 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Data quality renders with no console problem (527ms)
+  ✓  47 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Simulator renders with no console problem (645ms)
+  ✓  48 [app] › tests/e2e/screens.spec.ts:24:1 › Reconciliation: the reconciliation ties, and the figures are the frozen ones (590ms)
+  ✓  49 [app] › tests/e2e/screens.spec.ts:34:1 › Reconciliation: expand all reveals the whole tree, collapse returns to the default (1.3s)
+  ✓  50 [app] › tests/e2e/screens.spec.ts:46:1 › Reconciliation: a row opens its breakdown, Escape closes it and restores focus (1.2s)
+  ✓  51 [app] › tests/e2e/screens.spec.ts:57:1 › Reconciliation: an exception chip jumps to the offending fund (889ms)
+  ✓  52 [app] › tests/e2e/screens.spec.ts:66:1 › Pricing: the score strip and bridge carry the frozen figures (605ms)
+  ✓  53 [app] › tests/e2e/screens.spec.ts:76:1 › Pricing: the walk total ties to the waterfall (581ms)
+  ✓  54 [app] › tests/e2e/screens.spec.ts:84:1 › Ownership: the default position resolves and its owners reconcile (566ms)
+  ✓  55 [app] › tests/e2e/screens.spec.ts:93:1 › Data quality: the five buckets and their counts (524ms)
+  ✓  56 [app] › tests/e2e/screens.spec.ts:102:1 › Simulator: the staged reprice completes and lands on the waterfall, to the cent (1.0s)
+  ✓  57 [app] › tests/e2e/screens.spec.ts:123:1 › Structure: the full-screen readout shows the fund-entity NAV and labels its basis (545ms)
+  ✓  58 [app] › tests/e2e/screens.spec.ts:133:1 › exports: all four produce a non-empty file (1.2s)
+  ✓  59 [app] › tests/e2e/states-lenses.spec.ts:33:1 › structure lens · LOADING while the graph library is still arriving (9.3s)
+  ✓  60 [app] › tests/e2e/states-lenses.spec.ts:54:1 › structure lens · EMPTY when the look-through file lists no entities (604ms)
+  ✓  61 [app] › tests/e2e/states-lenses.spec.ts:77:1 › simulator lens · LOADING while the graph library is still arriving (8.4s)
+  ✓  62 [app] › tests/e2e/states-lenses.spec.ts:92:1 › simulator lens · EMPTY when the simulator file lists no funds (628ms)
+  ✓  63 [app] › tests/e2e/states-lenses.spec.ts:111:1 › simulator lens · ERROR when the simulator file is malformed, announced and re-thrown (649ms)
+  ✓  64 [app] › tests/e2e/states-lenses.spec.ts:148:1 › structure graph · a caught layout error surfaces outside the SVG and is recorded (643ms)
+  ✓  65 [app] › tests/e2e/states-lenses.spec.ts:188:1 › structure graph · the healthy path draws the graph and records nothing (571ms)
+  ✓  66 [app] › tests/e2e/states-universe.spec.ts:29:1 › universe fixture · LOADING while the 472 KiB fetch is outstanding (9.2s)
+  ✓  67 [app] › tests/e2e/states-universe.spec.ts:47:1 › universe fixture · ERROR when the fetch fails, and the retry actually recovers (832ms)
+  ✓  68 [app] › tests/e2e/states-universe.spec.ts:71:1 › ownership lens · EMPTY when the universe knows nothing about the selected position (632ms)
+  ✓  69 [app] › tests/e2e/states-universe.spec.ts:88:1 › ownership lens · ERROR when the universe it depends on cannot be fetched (571ms)
+  ✓  70 [app] › tests/e2e/states-universe.spec.ts:105:1 › ownership lens · LOADING states the file it is waiting for, not a bare spinner (344ms)
+  ✓  71 [app] › tests/e2e/states-universe.spec.ts:119:1 › data quality lens · LOADING while the universe it scans is in flight (286ms)
+  ✓  72 [app] › tests/e2e/states-universe.spec.ts:132:1 › data quality lens · EMPTY when the scanned universe reports no issues (646ms)
+  ✓  73 [app] › tests/e2e/states-universe.spec.ts:148:1 › data quality lens · ERROR when the universe it scans cannot be fetched (581ms)
+  ✓  74 [app] › tests/e2e/states-universe.spec.ts:166:1 › combobox list · LOADING says which of its two sources has not arrived (397ms)
+  ✓  75 [app] › tests/e2e/states-universe.spec.ts:186:1 › combobox list · EMPTY names the recovery, and the recovery works (1.3s)
+  ✓  76 [app] › tests/e2e/states-universe.spec.ts:205:1 › combobox list · ERROR is announced in the list and recovers from beside it (880ms)
+  ✓  77 [app] › tests/e2e/states-upload.spec.ts:109:1 › upload slots · both are real file inputs, in the drawer that describes them (790ms)
+  ✓  78 [app] › tests/e2e/states-upload.spec.ts:136:1 › NAV slot · LOADING while a large report is being read (2.0s)
+  ✓  79 [app] › tests/e2e/states-upload.spec.ts:174:1 › NAV slot · EMPTY when the report has no fund rows to apply (770ms)
+  ✓  80 [app] › tests/e2e/states-upload.spec.ts:191:1 › NAV slot · ERROR when the file is not a NAV report, announced with what was wanted (838ms)
+  ✓  81 [app] › tests/e2e/states-upload.spec.ts:208:1 › NAV slot · a position report in the NAV slot is named, not silently ignored (672ms)
+  ✓  82 [app] › tests/e2e/states-upload.spec.ts:221:1 › NAV slot · an applied report reprices the reconciliation, and yesterday’s NAV column is ignored (1.5s)
+  ✓  83 [app] › tests/e2e/states-upload.spec.ts:249:1 › position slot · LOADING while the spreadsheet library is still arriving (777ms)
+  ✓  84 [app] › tests/e2e/states-upload.spec.ts:268:1 › position slot · EMPTY when the report describes no holdings for this product (779ms)
+  ✓  85 [app] › tests/e2e/states-upload.spec.ts:288:1 › position slot · ERROR when the columns it needs are missing (762ms)
+  ✓  86 [app] › tests/e2e/states-upload.spec.ts:305:1 › position slot · an applied report rebuilds the hierarchy the tree draws (1.1s)
+  ✓  87 [app] › tests/e2e/states.spec.ts:26:1 › tree · LOADING while a fixture fetch is outstanding (8.3s)
+  ✓  88 [app] › tests/e2e/states.spec.ts:41:1 › tree · EMPTY when the product has no look-through rows (633ms)
+  ✓  89 [app] › tests/e2e/states.spec.ts:58:1 › tree · ERROR when the hierarchy arrives malformed (677ms)
+  ✓  90 [app] › tests/e2e/states.spec.ts:80:1 › price table · LOADING while a fixture fetch is outstanding (8.3s)
+  ✓  91 [app] › tests/e2e/states.spec.ts:94:1 › price table · EMPTY when the filter matches nothing, and the recovery works (1.4s)
+  ✓  92 [app] › tests/e2e/states.spec.ts:113:1 › price table · ERROR when the fund rows arrive malformed (666ms)
+  ✓  93 [app] › tests/e2e/states.spec.ts:142:1 › repricing walk · LOADING while a fixture fetch is outstanding (10.0s)
+  ✓  94 [app] › tests/e2e/states.spec.ts:159:1 › repricing walk · EMPTY when the filter matches nothing, and the recovery works (1.7s)
+  ✓  95 [app] › tests/e2e/states.spec.ts:178:1 › repricing walk · ERROR when the fund rows arrive malformed (986ms)
+  ✓  96 [offline] › tests/e2e/offline.spec.ts:11:1 › the whole app runs with every off-origin request blocked (6.4s)
 
-  64 passed (2.1m)
-(node:14543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+  96 passed (3.9m)
+(node:30559) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:14543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:30559) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:15221) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:31542) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:15221) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:31542) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
 ```
 
-Full log: `docs/evidence/gate/e2e.txt`
+Full log: `docs/evidence/gate/e2e.txt` (237.1s)
 
 ### PARITY — Semantic parity vs frozen baseline (exit 0)
 
 ```
-$ node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json --expect-renamed
-# sub-gate: PARITY — Semantic parity vs frozen baseline
-# exit code: 0
-# ----------------------------------------------------------------------------
 target        : dist/
 scenes        : 22
 keys resolved : 1020 / 1020
@@ -511,5 +524,5 @@ label basis   : REBUILT APP — the 37+ declared keys must render docs/rename-ma
 RESULT: PASS (exit 0)
 ```
 
-Full log: `docs/evidence/gate/parity.txt`
+Full log: `docs/evidence/gate/parity.txt` (25.9s)
 

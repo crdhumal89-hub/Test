@@ -107,7 +107,13 @@ export function mountDiagnose(
       text: 'Load the firm-wide list again',
     });
     button.addEventListener('click', () => {
-      void universeAccess.get().catch(() => undefined);
+      // On success the lens below is re-mounted as well. Recovering the search list while the lens
+      // that needed the same file still showed "could not be loaded" would leave two answers on one
+      // screen, one of them stale.
+      void universeAccess.get().then(
+        () => renderLens(),
+        () => undefined
+      );
     });
     return button;
   }
