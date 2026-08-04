@@ -229,3 +229,52 @@ the figures: 41 strings must match a frozen declaration exactly, and several are
 single word or a missing space between adjacent inline elements is a diff. I have already hit that
 twice (the tie statement's missing space, the column headers' glue). Expect the next run's diffs to
 be concentrated there rather than in any number.
+
+---
+
+## Iteration — closing the 13 rubric failures (post-critic)
+
+**Read before planning.** The critic's central finding is the thing to hold on to: *"in several
+places the test was fitted to the code, not to the criterion."* The four named instances were R2's
+denylist 11 tokens short of the rubric's 26, R3 checking one element instead of every figure, R5
+asserting `#simulator-runline` — a selector absent from `docs/first-run.md`, which I had changed
+twice to make the test pass — and R13 checking file size instead of tie-out. Every fix in this
+iteration is therefore graded against the criterion's own words, and each fix agent was told the
+bar, not the failing assertion.
+
+**Landed and committed.**
+
+- `fa171fa` **R8** — `scripts/check-issues.mjs`, a machine check for the register: inventory
+  coverage of all 33 items, disposition presence, and stale-claim re-derivation *from the repo*, so
+  a row claiming "not built" that is now built fails the check. Wired into `npm run lint`. Seven
+  stale rows re-graded, two undisposed rows dispositioned, O1 closed.
+- `c839984` **R9 + R13** — the materiality rule's third copy deleted from `src/export/excel.ts`;
+  the look-through CSV now reads `reconcileNode()` so the file and the tree cannot disagree under
+  the repriced basis (it previously wrote `2060224441.40` where the screen showed
+  `$2,060,610,338`). Also closed the debt R9's own work recorded rather than hid: two `TRUNCATE`
+  keys were declared and dead because two sites typed 14 and 8; both substituted, and
+  `rules.spec.ts` flips to "no truncation constant is shadowed", located by content rather than by
+  line number so an edit above them cannot flip the verdict either way.
+- `7f57dda` **R4 + R14** — loading/empty/error routing on the three panels a controller reads,
+  `pricingDataProblem()` catching the non-finite values that used to render `$NaN`, and the
+  swallowed `d3.stratify` failure replaced with a `role=alert` error outside the SVG plus a
+  re-throw on a fresh task so a `pageerror` listener can see it. Eleven browser-driven state tests.
+
+**In flight.** R3+R5+R6+R12 (layout, focus ring, basis) and R2+R7+R10+R17 (vocabulary, precision).
+`src/ui/styles/components.css` is 405 lines — over the limit — and one `rubric.spec.ts` R5 assertion
+regressed on `diagnose-simulator`; both sit inside the R3/R5/R6/R12 change set and are that agent's
+to land, not mine to patch around.
+
+**Decided without escalating.** Two things a fix agent reported as critic errors are recorded here
+rather than corrected in `docs/ux-scorecard.md`. Editing a critic's grades to say the critic was
+wrong is the same act as fitting a test to the code, one document further out. The claim is that
+`Respective Qty` and `Local MV` *are* on the Pricing screen — in its Repricing walk subview, as
+`Global Qty` and `NAV` — so the send-to-pricing file carries no figure the operator cannot see. It
+may well be right; it does not get to grade itself. Both rebuttals go to a **second independent
+critic**, on a fresh agent that has not seen these fixes, which re-grades all 18 criteria from
+`docs/ux-rubric.md` unmodified. A critic that reviewed my repairs is not independent of them.
+
+**Evidence.** `scripts/evidence-pack.mjs` (`npm run evidence`) runs the four sub-gates, captures
+each one's output verbatim to `docs/evidence/gate/`, and assembles `docs/evidence/PHASE3.md`. Its
+verdict is `codes.every(c => c === 0)` and nothing else: no flag forces a pass, and it writes the
+pack red when the gate is red, because a red pack is the deliverable when the gate is red.
