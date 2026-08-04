@@ -12,6 +12,7 @@
  * and in the built app, so the app runs offline and no CDN is ever involved.
  */
 
+import { el, errorState } from '../../../primitives/dom.js';
 import { structureRoveNodes } from './controls.js';
 import { structureEdgePath, structureLayoutNodes, type StructureEdgeMode } from './layout.js';
 
@@ -191,6 +192,64 @@ export interface StructureGraphResult {
 const STRUCTURE_FILL: Record<string, string> = { leaf: '#6E2932', vehicle: '#1F4A4F' };
 const STRUCTURE_LABEL_MIN = [999, 17, 9, 0];
 
+/* ------------------------------------------------ when the tree cannot be assembled (R4 + R14) */
+
+/**
+ * The graph's error state lives in the DOM beside the SVG, never as words painted inside it: text
+ * drawn in an empty `<svg>` is invisible to a screen reader, carries no recovery action, and cannot
+ * be asserted as a state. The box is removed on every successful render, so the healthy path is
+ * byte-for-byte unchanged.
+ */
+const STRUCTURE_ERROR_ID = 'structure-graph-error';
+const STRUCTURE_ERROR_STYLE =
+  'position:absolute;inset:0;z-index:70;display:grid;place-content:start center;padding:10px;background:rgba(246,242,232,.97)';
+
+interface StructureFailureLog {
+  /** Every graph failure this page has seen, in order, for the headless suite to read. */
+  __structureGraphFailures?: string[];
+}
+
+function structureClearGraphError(svgNode: SVGSVGElement): void {
+  svgNode.parentElement?.querySelector(`#${STRUCTURE_ERROR_ID}`)?.remove();
+}
+
+/**
+ * Record the failure so it cannot pass silently (R14). `src/` may not call `console.*`, so the
+ * error is both logged on the page for a test to read and re-thrown on a fresh task, which the
+ * console listeners in `tests/e2e/helpers.ts` and `scripts/lib/browser.mjs` see as a `pageerror`.
+ * Re-throwing here rather than inline keeps the lens the user is looking at intact.
+ */
+function structureRecordGraphFailure(error: unknown): Error {
+  const failure = error instanceof Error ? error : new Error(String(error));
+  const log = globalThis as StructureFailureLog;
+  log.__structureGraphFailures ??= [];
+  log.__structureGraphFailures.push(`${failure.name}: ${failure.message}`);
+  setTimeout(() => {
+    throw failure;
+  }, 0);
+  return failure;
+}
+
+/** Surface the failure where a reader, a screen reader and a test can all see it. */
+function structureShowGraphError(svgNode: SVGSVGElement, count: number, error: unknown): void {
+  const failure = structureRecordGraphFailure(error);
+  const stage = svgNode.parentElement;
+  if (!stage) return;
+  structureClearGraphError(svgNode);
+  stage.append(
+    el('div', { id: STRUCTURE_ERROR_ID, style: STRUCTURE_ERROR_STYLE }, [
+      errorState(
+        'This product’s ownership structure could not be drawn.',
+        `The ${count} entities do not form a single tree — ${failure.message}. That happens when a` +
+          ' holding points at a missing entity or two entities own each other, so there is no top to' +
+          ' draw from. The same entities are still listed as rows on the Reconciliation screen, and' +
+          ' the Data quality lens names every dangling and circular mapping behind this.',
+        { label: 'Reload this product’s data', onAct: () => location.reload() }
+      ),
+    ])
+  );
+}
+
 /** Was `strPctText`. Identical to the Simulator's per-edge %, so the two lenses tie. */
 export function structurePercentText(v: number): string {
   return (v * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
@@ -206,6 +265,7 @@ export function structureRenderGraph(
 ): StructureGraphResult {
   const svg = d3.select<StructureDatum>(svgNode);
   svg.selectAll('*').remove();
+  structureClearGraphError(svgNode);
   const width = Math.max(600, svgNode.parentElement?.clientWidth ?? 0);
   const height = Math.max(400, svgNode.parentElement?.clientHeight ?? 0);
   svg.attr('viewBox', `0 0 ${width} ${height}`);
@@ -225,8 +285,10 @@ export function structureRenderGraph(
       .stratify<StructureDatum>()
       .id((d) => String(d.id))
       .parentId((d) => (d.pid == null ? null : String(d.pid)))(data);
-  } catch {
-    svg.append('text').attr('x', 20).attr('y', 30).attr('fill', '#1A1F2E').text('structure unavailable');
+  } catch (error) {
+    // Bound, surfaced outside the SVG with a recovery action, and recorded — not two words painted
+    // inside an empty picture (R14).
+    structureShowGraphError(svgNode, data.length, error);
     return { nodeCount: 0, edgeCount: 0, fit: () => undefined };
   }
 

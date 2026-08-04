@@ -6,10 +6,58 @@ import { reconcileNode, hasChildren, visibleNodes } from '../../../domain/lookth
 import { evaluateEntity } from '../../../domain/exceptions.js';
 import { formatUsd, formatUsdParens, formatPercent } from '../../../domain/money.js';
 import type { LookthroughNode, PricingView, RepricingFixture } from '../../../domain/types.js';
-import { el, replace, activate } from '../../primitives/dom.js';
+import { el, replace, activate, loadingState, emptyState, errorState } from '../../primitives/dom.js';
 import { parity } from '../../parity.js';
 
 const EM_DASH = '—';
+
+/* ------------------------------------------------------------- the panel's three states (R4) */
+
+/**
+ * `src/data/load.ts` publishes the count of outstanding fixture fetches as `data-fetching` on
+ * `<html>`. While one is in flight the rows this panel would lay out can still be superseded, so
+ * the panel holds a loading state rather than drawing figures that are about to be replaced. It is
+ * the same signal the verification harness waits on (`scripts/lib/browser.mjs` `settle`), so a
+ * snapshot is never taken while this state is up.
+ */
+function treeFixturesInFlight(): boolean {
+  return document.documentElement.hasAttribute('data-fetching');
+}
+
+/** Re-run `render` as soon as the last outstanding fixture fetch settles. */
+function treeAfterFixtures(host: HTMLElement, render: () => void): void {
+  const observer = new MutationObserver(() => {
+    if (treeFixturesInFlight()) return;
+    observer.disconnect();
+    if (host.isConnected) render();
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-fetching'] });
+  // The attribute can be dropped between the check above and the observer attaching.
+  if (!treeFixturesInFlight()) {
+    observer.disconnect();
+    render();
+  }
+}
+
+/**
+ * What is wrong with the data this panel needs, in plain language — or null when it is sound.
+ * Absent or malformed data must produce a sentence and a next action, never a blank table and
+ * never a bare em-dash (R4), and never a thrown layout error nobody sees (R14).
+ */
+export function treeDataProblem(
+  nodes: readonly LookthroughNode[] | null | undefined,
+  repricing: RepricingFixture | null | undefined
+): string | null {
+  if (!Array.isArray(nodes)) return 'the look-through hierarchy did not arrive as a list of rows';
+  if (!repricing || !Array.isArray(repricing.funds)) {
+    return 'the repricing model that gives every row its reported NAV did not arrive';
+  }
+  const broken = nodes.filter(
+    (n) => typeof n?.path !== 'string' || typeof n?.id !== 'number' || typeof n?.level !== 'number'
+  ).length;
+  if (broken) return `${broken} of ${nodes.length} rows carry no position in the hierarchy`;
+  return null;
+}
 
 export const TREE_COLUMNS = [
   { key: 'hierarchy', label: 'Hierarchy — fund ▸ SPV ▸ security', align: 'l' },
@@ -40,6 +88,39 @@ export function renderTree(
   callbacks: TreeCallbacks
 ): void {
   const { nodes, repricing, view, expanded, selectedId, symbolOf, asof } = options;
+
+  if (treeFixturesInFlight()) {
+    replace(host, loadingState('the look-through hierarchy'));
+    treeAfterFixtures(host, () => renderTree(host, options, callbacks));
+    return;
+  }
+  const problem = treeDataProblem(nodes, repricing);
+  if (problem) {
+    replace(
+      host,
+      errorState(
+        'The look-through hierarchy could not be laid out.',
+        `This product’s look-through data arrived incomplete: ${problem}. The totals and differences` +
+          ' above this panel come from the NAV report and are unaffected — only the row-by-row' +
+          ' hierarchy is missing. Reload to fetch the data again, or open Data sources to see which' +
+          ' file is at fault.',
+        { label: 'Reload this product’s data', onAct: () => location.reload() }
+      )
+    );
+    return;
+  }
+  if (!nodes.length) {
+    replace(
+      host,
+      emptyState(
+        `${repricing.product} has no look-through rows as of ${asof}, so there is nothing to walk` +
+          ' fund by fund. Its reported totals above still stand.',
+        { label: 'Reload this product’s data', onAct: () => location.reload() }
+      )
+    );
+    return;
+  }
+
   const after = view === 'after';
 
   const head = el('tr', { ...parity('reconciliation.tree.column_headers') }, [

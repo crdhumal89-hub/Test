@@ -7,9 +7,15 @@
  */
 import { bpsOf, formatBpsSigned, formatCount, formatPrice, formatPriceDelta, formatUsd, formatUsdParens } from '../../../domain/money.js';
 import type { RepricingFixture, RepricingFund } from '../../../domain/types.js';
-import { el, replace, activate, emptyState } from '../../primitives/dom.js';
+import { el, replace, activate, loadingState, emptyState } from '../../primitives/dom.js';
 import { parity } from '../../parity.js';
-import { pricingFilterFunds } from './price-table.js';
+import {
+  pricingFilterFunds,
+  pricingFixturesInFlight,
+  pricingAfterFixtures,
+  pricingDataProblem,
+  pricingErrorPanel,
+} from './price-table.js';
 
 const WALK_DASH = '—';
 
@@ -222,6 +228,19 @@ export function renderRepricingWalk(
   callbacks: WalkCallbacks
 ): void {
   const { repricing, sort, filter, selectedCode, asof } = options;
+
+  // The same three states as the price table, from the same two rules — see `price-table.ts`.
+  if (pricingFixturesInFlight()) {
+    replace(host, loadingState('the repricing walk'));
+    pricingAfterFixtures(host, () => renderRepricingWalk(host, options, callbacks));
+    return;
+  }
+  const problem = pricingDataProblem(repricing);
+  if (problem) {
+    pricingErrorPanel(host, 'repricing walk', problem);
+    return;
+  }
+
   const rows = pricingWalkSortRows(pricingFilterFunds(repricing.funds, filter), sort);
 
   if (!rows.length) {

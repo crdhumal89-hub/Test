@@ -1,0 +1,62 @@
+{
+ "tree-loading": {
+  "reached": "universe.json held open by page.route, then the Reconciliation screen mounted while data-fetching was set",
+  "selector": "#reconciliation-tree .state-loading",
+  "rendered": "Loading the look-through hierarchy…",
+  "screenshot": "docs/evidence/states/tree-loading.png"
+ },
+ "tree-empty": {
+  "reached": "lookthrough.json served with nodes: []",
+  "selector": "#reconciliation-tree .state-empty",
+  "rendered": "Apollo Sports Capital has no look-through rows as of 2026-06-30, so there is nothing to walk fund by fund. Its reported totals above still stand. Reload this product’s data",
+  "screenshot": "docs/evidence/states/tree-empty.png"
+ },
+ "tree-error": {
+  "reached": "lookthrough.json served with every row’s path deleted",
+  "selector": "#reconciliation-tree .state-error",
+  "rendered": "The look-through hierarchy could not be laid out. This product’s look-through data arrived incomplete: 149 of 149 rows carry no position in the hierarchy. The totals and differences above this panel come from the NAV report and are unaffected — only the row-by-row hierarchy is missing. Reload to fetch the data again, or open Data sources to see which file is at fault. Reload this product’s data",
+  "screenshot": "docs/evidence/states/tree-error.png"
+ },
+ "price-table-loading": {
+  "reached": "universe.json held open by page.route, then the Pricing screen mounted while data-fetching was set",
+  "selector": "#pricing-price-table .state-loading",
+  "rendered": "Loading the prices to publish…",
+  "screenshot": "docs/evidence/states/price-table-loading.png"
+ },
+ "price-table-empty": {
+  "reached": "the filter typed as zzzz, which matches none of the 26 funds",
+  "selector": "#pricing-price-table .state-empty",
+  "rendered": "No fund matches “zzzz”. All 26 funds are still here. Clear the filter",
+  "screenshot": "docs/evidence/states/price-table-empty.png"
+ },
+ "price-table-error": {
+  "reached": "repricing.json served with every fund’s ltv and rev as a non-number",
+  "selector": "#pricing-price-table .state-error",
+  "rendered": "The table of prices to publish could not be built. This product’s repricing data arrived incomplete: 26 of 26 fund rows carry no usable value to price from. No price on this panel can be trusted until that is fixed, so none is shown; the funds themselves are still there. Reload to fetch the data again, or open Data sources to see which file is at fault. Reload this product’s data",
+  "screenshot": "docs/evidence/states/price-table-error.png"
+ },
+ "repricing-walk-loading": {
+  "reached": "universe.json held open by page.route, then the Pricing screen mounted on the walk subview while data-fetching was set",
+  "selector": "#pricing-walk-table .state-loading",
+  "rendered": "Loading the repricing walk…",
+  "screenshot": "docs/evidence/states/repricing-walk-loading.png"
+ },
+ "repricing-walk-empty": {
+  "reached": "the filter typed as zzzz, which matches none of the 26 funds",
+  "selector": "#pricing-walk-table .state-empty",
+  "rendered": "No fund matches “zzzz”. All 26 funds are still here. Clear the filter",
+  "screenshot": "docs/evidence/states/repricing-walk-empty.png"
+ },
+ "repricing-walk-error": {
+  "reached": "repricing.json served with every fund’s ltv and rev as a non-number",
+  "selector": "#pricing-walk-table .state-error",
+  "rendered": "The repricing walk could not be built. This product’s repricing data arrived incomplete: 26 of 26 fund rows carry no usable value to price from. No price on this panel can be trusted until that is fixed, so none is shown; the funds themselves are still there. Reload to fetch the data again, or open Data sources to see which file is at fault. Reload this product’s data",
+  "screenshot": "docs/evidence/states/repricing-walk-error.png"
+ },
+ "structure-graph-error": {
+  "reached": "lookthrough.json served with a second root, so d3.stratify throws",
+  "selector": "#structure-graph-error .state-error",
+  "rendered": "This product’s ownership structure could not be drawn. The 46 entities do not form a single tree — multiple roots. That happens when a holding points at a missing entity or two entities own each other, so there is no top to draw from. The same entities are still listed as rows on the Reconciliation screen, and the Data quality lens names every dangling and circular mapping behind this. Reload this product’s data",
+  "screenshot": "docs/evidence/states/structure-graph-error.png"
+ }
+}
