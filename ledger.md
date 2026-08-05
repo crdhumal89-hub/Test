@@ -280,6 +280,81 @@ either — network policy is set at environment creation and likely needs a new 
 
 Not resolved by assumption. Re-raised with the controller.
 
+## 5b. Iteration 2 — constants module and spec-fidelity test
+
+All nine threshold ambiguities are now resolved by controller ruling, so
+`app/constants.py` and `tests/test_spec_fidelity.py` were built. Neither needs market
+data, which is why they were done while sourcing is still blocked.
+
+### Controller rulings, iteration 2
+
+| Ambiguity | Ruling |
+|---|---|
+| C1 Deep Value "Picks: 5–10" | 10, upper bound, as a maximum |
+| C1 Magic Formula "Picks: 10→5" | rank top 10 by summed rank, report top 5 |
+| C2 Piotroski fallback formula | `ceil(7/9 × available)` — pro-rate the stated cutoff |
+| C3 quintile / ranking population | all companies whose required figures resolve with a verified filing date |
+| C4a ROIC vs ROCE | ROCE, matching Coffee Can at line 34 |
+| C4b "stable/expanding gross margins" | latest GM ≥ GM five years earlier, no invented tolerance |
+| C5 tangible capital employed | net working capital + net fixed assets (Greenblatt) |
+| Publication dates | join BSE/NSE filing-announcement dates to screener.in figures |
+| As-of scope | today only; survivorship rule does not bite on a current universe |
+
+### Correction logged
+
+The AskUserQuestion option that the controller selected for C2 was labelled "At 9 → 7,
+matching the base rule. At 6 → 6." The second figure was miscalculated:
+`ceil(7/9 × 6) = ceil(4.67) = 5`, not 6. The **rule** chosen is unaffected; only the
+illustrative example was wrong. Code and tests use 5. Disclosed to the controller.
+
+### Design
+
+`app/constants.py` holds three distinct kinds of entry so a decision can never be
+mistaken for a transcription:
+
+- `SpecValue` — a number the spec states, carrying file, line, verbatim quote, and how
+  the number is written (`2/3`, `0.5`, `15` with `percent=True`).
+- `SpecFact` — a spec instruction with no number (the `[E]` tag mandate, the
+  financials/utilities exclusion), verified by quote alone.
+- `Ruling` — a value the spec does not supply, carrying the ambiguity, the decision and
+  the date. Never claims spec provenance.
+
+Thresholds are `Fraction`, not `float`. Screening must be byte-identical per as-of date
+and exact rational arithmetic removes the boundary-rounding class of ordering difference
+before it can appear.
+
+`tests/test_spec_fidelity.py` re-reads the spec on every run rather than trusting a
+one-time transcription. It sweeps every registered constant, asserts the quote is still
+on the cited line and the coded number still equals the written one, then asserts each
+DoD-named threshold individually. Registration completeness is itself asserted, so
+dropping a constant breaks the test rather than silently shrinking coverage. A structural
+test forbids decimal literals and `Fraction(` anywhere in `app/` outside `constants.py`,
+enforcing "that module is the only place a threshold may appear."
+
+### Mutation-tested
+
+A fidelity test that cannot detect drift is decoration. Six mutations, each reverted:
+
+| Mutation | Result |
+|---|---|
+| F-Score cutoff 7 → 6 | 3 failed |
+| Coffee Can 10 years → 7 | 3 failed |
+| FCF conversion 80% → 60% | 2 failed |
+| Leverage D/E 0.5 → 1.5 | 2 failed |
+| A ruling stripped of its disclosure | 1 failed |
+| Constant citing text no longer on its spec line | 2 failed |
+| (restored) | **71 passed** |
+
+### Gate after iteration 2
+
+| Gate item | Exit | Note |
+|---|---|---|
+| 1 `pytest -q` | **0** | 71 passed |
+| 2 spec-fidelity | **0** | 71 passed, mutation-tested |
+| 3 reference tests | — | not built; blocked on data |
+| 4 look-ahead + reproducibility | — | not built; blocked on data |
+| 5 `node playwright_gate.js` | **1** | no app yet; assertions filled and self-tested |
+
 ## 6. Current hypothesis / next step on unblock
 
 The build order in the operating loop is sound and unchanged: constants module → data
