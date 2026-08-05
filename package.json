@@ -1,0 +1,23 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "playwright_gate.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crdhumal89-hub/Test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crdhumal89-hub/Test/issues"
+  },
+  "homepage": "https://github.com/crdhumal89-hub/Test#readme",
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}
