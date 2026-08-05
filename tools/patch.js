@@ -116,10 +116,11 @@ function patchTracePro(src, assets) {
     '<meta name="viewport" content="width=device-width,initial-scale=1">' + iosGuards('#f6f1e7'),
     'tracepro: iOS guards');
 
-  // --- phase 1 stylesheet -------------------------------------------------
+  // --- phase 1 + cycle 1 stylesheets --------------------------------------
   t = replaceOnce(t, '</style></head><body>',
-    '</style>\n<style id="phase1-css">\n' + assets.css + '\n</style></head><body>',
-    'tracepro: phase1 css');
+    '</style>\n<style id="phase1-css">\n' + assets.css + '\n</style>' +
+    '\n<style id="cycle1-css">\n' + assets.varCss + '\n</style></head><body>',
+    'tracepro: phase1 + cycle1 css');
 
   // --- bulk override panel, above the tree --------------------------------
   t = replaceOnce(t,
@@ -127,10 +128,12 @@ function patchTracePro(src, assets) {
     assets.panel + '  <div class="recwrap">\n    <div class="rectable" id="lttablewrap">',
     'tracepro: bulk panel');
 
-  // --- phase 1 behaviour, last classic script -----------------------------
+  // --- phase 1 then cycle 1 behaviour, last classic scripts ---------------
+  // cycle 1 loads after phase 1 so its renderTree wrapper runs on decorated rows.
   t = replaceOnce(t, '</script></body></html>',
-    '</script>\n<script id="phase1-js">\n' + assets.js + '\n</script></body></html>',
-    'tracepro: phase1 js');
+    '</script>\n<script id="phase1-js">\n' + assets.js + '\n</script>' +
+    '\n<script id="cycle1-js">\n' + assets.varJs + '\n</script></body></html>',
+    'tracepro: phase1 + cycle1 js');
 
   return t;
 }
@@ -178,7 +181,9 @@ function main() {
   const assets = {
     css: fs.readFileSync('assets/tracepro-phase1.css', 'utf8').trim(),
     js: fs.readFileSync('assets/tracepro-phase1.js', 'utf8').trim(),
-    panel: fs.readFileSync('assets/bulk-panel.html', 'utf8')
+    panel: fs.readFileSync('assets/bulk-panel.html', 'utf8'),
+    varCss: fs.readFileSync('assets/cycle1-variance.css', 'utf8').trim(),
+    varJs: fs.readFileSync('assets/cycle1-variance.js', 'utf8').trim()
   };
 
   for (const [name, text] of Object.entries(assets)) {

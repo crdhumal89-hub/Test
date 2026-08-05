@@ -1,0 +1,171 @@
+{
+ "T1": {
+  "id": "T1",
+  "title": "Name the SPV contributing the largest delta Pricing, and state its value",
+  "clicks": 13,
+  "seconds": 1.23,
+  "ok": true,
+  "problem": null,
+  "answer": {
+   "code": "SPORTHLD",
+   "value": 336038,
+   "name": "▾FEEDERSUBTOTALApollo Sports Capital Holdings (Overseas), L.P.SPORTHLD"
+  },
+  "expected": {
+   "code": "SPORTHLD",
+   "value": 336037.97224998474
+  },
+  "trail": [
+   "click .tab[data-tab=\"lt\"] (open lt tab)",
+   "click #expand (expand all)",
+   "scroll page to reveal #lttablewrap",
+   "scroll #lttablewrap",
+   "scroll #lttablewrap",
+   "scroll #lttablewrap",
+   "scroll #lttablewrap",
+   "scroll #lttablewrap"
+  ],
+  "consoleErrors": 0
+ },
+ "T2": {
+  "id": "T2",
+  "title": "State today's product NAV and whether the additive bridge ties within tolerance",
+  "clicks": 1,
+  "seconds": 0.13,
+  "ok": true,
+  "problem": null,
+  "answer": {
+   "nav": 2062198836,
+   "ties": true
+  },
+  "expected": {
+   "nav": 2062198836,
+   "ties": true
+  },
+  "trail": [
+   "click .tab[data-tab=\"lt\"] (open lt tab)"
+  ],
+  "consoleErrors": 0
+ },
+ "T3": {
+  "id": "T3",
+  "title": "List every SPV whose derived MV and position MV differ by more than 10 bps",
+  "clicks": 39,
+  "seconds": 4.7,
+  "ok": true,
+  "problem": null,
+  "answer": [
+   "APAEV",
+   "APIVDC",
+   "APRAIL2",
+   "ASCHLUSD",
+   "ASCHON",
+   "ASCON",
+   "CRIMAP",
+   "CRIMH",
+   "CRIMT",
+   "DEUCE1DC",
+   "DEUCE2FC",
+   "SPORT",
+   "SPORT2DC",
+   "SPORTA",
+   "SPORTB",
+   "SPORTD",
+   "SPORTEUR",
+   "SPORTFC",
+   "SPORTHFC",
+   "SPORTHLD"
+  ],
+  "expected": [
+   "APAEV",
+   "APIVDC",
+   "APRAIL2",
+   "ASCHLUSD",
+   "ASCHON",
+   "ASCON",
+   "CRIMAP",
+   "CRIMH",
+   "CRIMT",
+   "DEUCE1DC",
+   "DEUCE2FC",
+   "SPORT",
+   "SPORT2DC",
+   "SPORTA",
+   "SPORTB",
+   "SPORTD",
+   "SPORTEUR",
+   "SPORTFC",
+   "SPORTHFC",
+   "SPORTHLD"
+  ],
+  "trail": [
+   "click .tab[data-tab=\"lt\"] (open lt tab)",
+   "click #expand (expand all)",
+   "scroll page to reveal #lttablewrap",
+   "click #tree tbody tr[data-id=\"1\"] (open ASCHON)",
+   "click #tree tbody tr[data-id=\"2\"] (open ASCON)",
+   "click #tree tbody tr[data-id=\"3\"] (open APAEV)",
+   "click #tree tbody tr[data-id=\"4\"] (open APAV)",
+   "click #tree tbody tr[data-id=\"9\"] (open ASCHLUSD)"
+  ],
+  "consoleErrors": 0
+ },
+ "T4": {
+  "id": "T4",
+  "title": "Load administrator marks for 12 SPVs and state the resulting product NAV change",
+  "clicks": 2,
+  "seconds": 0.17,
+  "ok": true,
+  "problem": null,
+  "answer": {
+   "delta": 10872664,
+   "rows": 12
+  },
+  "expected": {
+   "delta": 10872664,
+   "rows": 12
+  },
+  "trail": [
+   "click .tab[data-tab=\"lt\"] (open lt tab)",
+   "upload overrides_12.csv"
+  ],
+  "consoleErrors": 0
+ },
+ "T5": {
+  "id": "T5",
+  "title": "Trace a named security to its ultimate owners and state each effective percentage",
+  "clicks": 6,
+  "seconds": 1.43,
+  "ok": true,
+  "problem": null,
+  "answer": [
+   "ABFHE=4.85%",
+   "ACCPL2L=4.28%",
+   "ACSMF=5.20%",
+   "AMAPS4LX=0.90%",
+   "CHNTLX=4.31%",
+   "CRIMCO=10.29%",
+   "DEFINELX=3.80%",
+   "FOXALUX=1.65%"
+  ],
+  "expected": [
+   "ABFHE=4.85%",
+   "ACCPL2L=4.28%",
+   "ACSMF=5.20%",
+   "AMAPS4LX=0.90%",
+   "CHNTLX=4.31%",
+   "CRIMCO=10.29%",
+   "DEFINELX=3.80%",
+   "FOXALUX=1.65%"
+  ],
+  "trail": [
+   "click .tab[data-tab=\"own\"] (open own tab)",
+   "type \"Crimson\" into #objinput",
+   "click <handle> (select SPV\nCRIMAP-SPV\nAP Crimso)",
+   "click #rollupmore (show all ultimate owners)",
+   "scroll :document",
+   "scroll :document"
+  ],
+  "consoleErrors": 0
+ }
+}

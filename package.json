@@ -9,6 +9,7 @@
     "snapshot": "node tools/snapshot_figures.js dist/TRACE_Platform.html --compare baseline/figures.json",
     "selfcontained": "node tools/check_selfcontained.js dist/TRACE_Platform.html",
     "browser": "node playwright_gate.js dist/TRACE_Platform.html",
-    "gate": "npm run build && npm run snapshot && npm test && npm run browser && npm run selfcontained"
+    "gate": "npm run build && npm run harness && npm run snapshot && npm test && npm run browser && npm run selfcontained",
+    "harness": "node tools/task_harness.js dist/TRACE_Platform.html --compare baseline/harness.json --target T3"
   }
 }

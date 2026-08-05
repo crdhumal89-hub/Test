@@ -630,6 +630,9 @@
     window.__phase1.metricsFor = metricsFor;
     window.__phase1.ovStruct = ovStruct;
     window.__phase1.setFilter = setFilter;
+    // exposed so a later decorator that changes the identity cell's width can
+    // re-measure the frozen-column offset after its own mutation
+    window.__phase1.syncFrozenOffset = syncFrozenOffset;
     window.__phase1.activeFilter = function () { return WF; };
     window.__phase1.ready = true;
   }

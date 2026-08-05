@@ -1,0 +1,51 @@
+/* ==========================================================================
+   Cycle 1 - position-variance exceptions (Look-Through)
+   Derived MV vs position MV lives only in the per-SPV drawer today, so a
+   material difference is effectively hidden. This surfaces it.
+   Presentation only: no figure renders until the panel is opened.
+   ========================================================================== */
+
+/* --- the chip, sitting with the other exception flags ------------------- */
+#ltflags .flagchip.varflag{
+  font:inherit;cursor:pointer;
+  background:rgba(184,137,59,.12);color:#8E6724;
+  border:1px solid rgba(184,137,59,.34)}
+#ltflags .flagchip.varflag:hover{background:rgba(184,137,59,.2)}
+#ltflags .flagchip.varflag:focus-visible{outline:2px solid #0f7a63;outline-offset:2px}
+#ltflags .flagchip.varflag[aria-expanded="true"]{
+  background:#8E6724;color:#fff;border-color:#8E6724}
+#ltflags .flagchip.varflag .vfx{font-weight:900;margin-right:5px}
+
+/* --- the exception panel ------------------------------------------------ */
+.ltvar{margin:8px 0 10px;border:1px solid rgba(184,137,59,.34);border-radius:12px;
+  background:#fffdf8;overflow:hidden}
+.ltvar-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding:10px 13px;border-bottom:1px solid rgba(184,137,59,.24)}
+.ltvar-h b{font-size:13px;color:var(--navy)}
+.ltvar-h .sub{font-size:11.5px;color:var(--mut);flex:1 1 320px;line-height:1.45}
+.ltvar-h button{border:1px solid var(--line);background:#fff;border-radius:8px;
+  padding:4px 11px;font-size:11.5px;font-weight:700;color:var(--mut);cursor:pointer}
+.ltvar-h button:hover{background:#f4f7fb;color:var(--navy)}
+
+.ltvar-scroll{max-height:420px;overflow:auto;overscroll-behavior:contain}
+.ltvartab{width:100%;border-collapse:collapse;font-size:11.5px;
+  font-variant-numeric:tabular-nums}
+.ltvartab th{position:sticky;top:0;background:#fdf8ee;text-align:right;
+  font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--mut);padding:7px 10px;border-bottom:2px solid rgba(184,137,59,.24);z-index:1}
+.ltvartab th.l,.ltvartab td.l{text-align:left}
+.ltvartab td{padding:6px 10px;border-bottom:1px solid #f0ece3;text-align:right}
+.ltvartab tbody tr:hover{background:#fdf8ee}
+.ltvartab .code{font:800 11px ui-monospace,Menlo,monospace;color:var(--navy)}
+.ltvartab .nm{color:var(--mut);margin-left:7px}
+.ltvartab .pos{color:var(--good);font-weight:700}
+.ltvartab .neg{color:var(--bad);font-weight:700}
+.ltvartab .bps{font-weight:800}
+.ltvar-empty{padding:14px;font-size:12px;color:var(--mut)}
+
+/* --- non-numeric marker on breaching rows in the tree ------------------- */
+#tree tr.varbreach td:nth-child(1) .varmark{
+  display:inline-block;width:7px;height:7px;border-radius:2px;
+  background:#B8893B;margin-right:6px;flex:0 0 auto;
+  box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+#tree tr.varbreach td:nth-child(4){box-shadow:inset 0 -2px 0 rgba(184,137,59,.45)}
