@@ -41,8 +41,27 @@ An unrunnable gate is a failure, not a pass, so these were fixed first:
 4. `pytest` is not importable as `python3 -m pytest`; the working binary is
    `/root/.local/bin/pytest`.
 
-`ASSERTIONS` in the gate is still the template default and must be replaced with the
-Definition of Done's page conditions before gate item 5 can mean anything.
+5. **`ASSERTIONS` filled from the Definition of Done** (iteration 1). Eleven assertions,
+   one per page condition the DoD states: HTTP 200; heading; all five strategies
+   rendered; every section names its strategy; every shortlisted row carries pass/fail
+   criteria; every criterion shows figure + ISO as-of date + source; no figure post-dates
+   the screen's as-of date; every `[data-proxy="true"]` shows the `[E]` tag and a numeric
+   component count; no untagged imputed/estimated/sector-average value; every
+   zero-candidate strategy states a reason; no horizontal overflow.
+
+   The implied DOM contract is documented in a comment block above `ASSERTIONS` and the
+   page must be built to it. Attributes rather than prose, because a gate reading prose
+   cannot distinguish a real as-of date from the words "as-of".
+
+   **The gate was itself tested** against a synthetic fixture (scratchpad, not committed
+   — it is a harness fixture, not market data, and no screen consumes it):
+   - Conforming fixture → all 11 assertions `[PASS]`. The fixture server's favicon 404
+     still produced `BLOCKED`, confirming `FAIL_ON_CONSOLE_ERROR` works.
+   - Six mutations, each violating one condition — figure dated after the screen as-of
+     date; proxy stripped of `[E]` and component count; empty result with a blank reason;
+     criterion missing its source; untagged "sector average" value; a strategy renamed so
+     one of the five goes missing. **Each tripped exactly its own assertion and no
+     others.** The gate discriminates rather than merely failing.
 
 ---
 
@@ -149,6 +168,39 @@ Definition of Done imposes three further requirements that most sources cannot m
 Mocking, stubbing or hardcoding data to get past this is explicitly listed under "What
 does NOT count as done", so no code was written against a placeholder adapter.
 
+#### B1 update — screener.in nominated by the controller, ruled out on two counts
+
+The controller directed: "Use screener.in thats free". Re-verified explicitly:
+
+```
+https://www.screener.in/                          -> curl: (56) CONNECT tunnel failed, response 403
+https://screener.in/                              -> curl: (56) CONNECT tunnel failed, response 403
+https://www.screener.in/api/company/search/?q=... -> curl: (56) CONNECT tunnel failed, response 403
+```
+
+Verbose trace confirms the refusal is at `CONNECT www.screener.in:443` to the egress
+gateway, i.e. an organization network-policy denial, not TLS, not user-agent. It cannot
+be worked around from inside this container and must not be retried.
+
+Two further disqualifications that persist even if the host were allowlisted:
+
+1. **No per-figure publication or filing date.** screener.in labels statements by fiscal
+   period ("Mar 2024"), not by filing date. In India the gap is months (annual reports
+   well after FY-end; quarterly results ~45 days after quarter-end). DoD item 6 requires
+   a test *proving* no figure published after the as-of date entered a result; a fiscal
+   period label cannot carry that proof. The task's Environment section states the source
+   "must expose, per figure, both the value and its publication or filing date."
+2. **No point-in-time universe.** Pages reflect currently listed companies only. Any
+   historical as-of date would screen a survivor-only set, which the DoD lists as a
+   disqualifier.
+
+Additionally it publishes no documented API; bulk retrieval means scraping authenticated
+HTML, against its terms of use.
+
+**Conclusion:** screener.in cannot satisfy the frozen Definition of Done. Awaiting the
+controller's decision between allowlisting plus a DoD amendment, a different source, or a
+supplied snapshot. No code written against it.
+
 ### B2 — SPEC AMBIGUITY: five threshold questions
 
 The task says to halt rather than choose where the spec is ambiguous about a threshold.
@@ -205,10 +257,28 @@ passing in gate output.
 | 8 | Full audit trail on every row | blocked by B1 |
 | 9 | `[E]`-tagged fallback proxies with component count, no untagged substitution | blocked by B1 + B2 (C2) |
 | 10 | Zero-candidate strategies render an explicit reason, never widened | blocked by B1 |
-| 11 | `node playwright_gate.js` exits 0, zero console errors | harness runnable; ASSERTIONS not yet filled; app does not exist |
+| 11 | `node playwright_gate.js` exits 0, zero console errors | harness runnable and self-tested; ASSERTIONS filled from the DoD; still exits 1 because no app exists |
 | 12 | No baseline test regressed | trivially held — baseline pass set is empty |
 
 ---
+
+## 5a. Controller decisions on record
+
+**Iteration 1.** Asked to choose a data route and how to reconcile the DoD with what free
+Indian sources can supply. Answers:
+
+- Data access: **"Allowlist screener.in"**.
+- DoD: **"Keep DoD frozen"** — only a source carrying real publication dates and
+  point-in-time constituents is acceptable.
+
+**These two answers are in tension and the tension is unresolved.** Keeping the DoD frozen
+requires per-figure publication dates and a point-in-time universe including delisted
+names; screener.in supplies neither, allowlisted or not (see B1 update). Allowlisting
+fixes reachability only. Re-verified after the decision: `www.screener.in:443` still
+returns `403` at CONNECT across three attempts, so the allowlist is not yet in effect
+either — network policy is set at environment creation and likely needs a new session.
+
+Not resolved by assumption. Re-raised with the controller.
 
 ## 6. Current hypothesis / next step on unblock
 
