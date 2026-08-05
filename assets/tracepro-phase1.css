@@ -1,0 +1,173 @@
+/* ==========================================================================
+   TRACE-Pro Phase 1 - readability and bulk overrides (Look-Through + Pricing)
+   Presentation only. Nothing in this sheet can change a computed figure.
+   Soft SaaS Mint operational surface over the existing Apollo navy/teal.
+   ========================================================================== */
+
+#tab-lt, #tab-rfx {
+  --mint-50:#f2faf7;  --mint-100:#e4f4ee;  --mint-200:#cfe9e0;
+  --mint-300:#a9d8ca;  --mint-600:#0f7a63;
+  --rail-idle:#dbe3ec;
+  --hier-w:340px;
+  --nav-col-w:150px;
+
+  /* hierarchy depth ramp: eight steps, each clearly distinct at a glance */
+  --lv0:#0b1f3a;   /* product   */
+  --lv1:#0f7a63;   /* feeder    */
+  --lv2:#3aa17e;   /* SPV       */
+  --lv3:#7fb069;
+  --lv4:#c9a24a;
+  --lv5:#c0722f;
+  --lv6:#9a5b8f;
+  --lv7:#5a6b86;
+}
+
+/* ---------------------------------------------------------------- rail --
+   A persistent left rail. Every ancestor level leaves a guide line behind,
+   and the row's own level is a solid colour chip, so a controller can see
+   which block a row belongs to without counting indents. */
+.lvrail{display:inline-flex;align-items:stretch;align-self:stretch;
+  height:23px;vertical-align:middle;margin-right:7px;flex:0 0 auto}
+.lvrail i{display:block;width:12px;position:relative;flex:0 0 12px}
+.lvrail i::before{content:"";position:absolute;left:4px;top:-8px;bottom:-8px;
+  width:1.5px;background:var(--rail-idle);border-radius:1px}
+.lvrail .lvchip{display:block;width:5px;flex:0 0 5px;border-radius:3px;
+  background:var(--rail-idle);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+
+#tree tr[data-level="0"] .lvchip{background:var(--lv0)}
+#tree tr[data-level="1"] .lvchip{background:var(--lv1)}
+#tree tr[data-level="2"] .lvchip{background:var(--lv2)}
+#tree tr[data-level="3"] .lvchip{background:var(--lv3)}
+#tree tr[data-level="4"] .lvchip{background:var(--lv4)}
+#tree tr[data-level="5"] .lvchip{background:var(--lv5)}
+#tree tr[data-level="6"] .lvchip{background:var(--lv6)}
+#tree tr[data-level="7"] .lvchip{background:var(--lv7)}
+
+/* ------------------------------------------------------- group blocks --
+   The problem this fixes: nothing separated one fund's block from the next.
+   A group row is now a banded header that also carries the block subtotal. */
+#tree tr.grouprow > td{
+  background:var(--mint-50);
+  border-top:1px solid var(--mint-200);
+  font-weight:650}
+#tree tr.grouprow[data-level="1"] > td{background:var(--mint-100)}
+#tree tr.grouprow > td:first-child{box-shadow:inset 3px 0 0 -1px var(--mint-300)}
+#tree tr.grouprow:hover > td{background:var(--mint-100)}
+
+#tree tr.blockstart > td{border-top:2px solid var(--mint-300)}
+
+.sublabel{display:inline-block;margin-left:8px;padding:1px 6px;border-radius:999px;
+  font-size:8.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--mint-600);background:#fff;border:1px solid var(--mint-200);
+  vertical-align:middle}
+#tree tr.grouprow td[data-subtotal-col]{font-weight:800;color:var(--navy)}
+
+/* ------------------------------------------------------ frozen columns --
+   Identity (hierarchy) and NAV stay on screen at any horizontal scroll. */
+#lttablewrap{overflow:auto}
+#tree{min-width:1120px}
+
+/* The identity column sizes to its content up to a cap, so names are not squeezed;
+   the NAV column is then pinned at the width actually measured after layout
+   (decorateTree writes --hier-w), which is what keeps the two panes from colliding. */
+/* No text-overflow on the cell itself: .nm is an inline-block, and an inline-block that
+   does not fit is dropped whole rather than clipped, which blanked long fund names.
+   .nm already carries its own ellipsis, so capping its width is what truncates. */
+#tree th:nth-child(1),#tree td:nth-child(1){
+  position:sticky;left:0;z-index:3;background:#fff;
+  white-space:nowrap;overflow:hidden}
+#tree td:nth-child(1) .nm{max-width:330px}
+#tree th:nth-child(3),#tree td:nth-child(3){
+  position:sticky;left:var(--hier-w,340px);z-index:2;background:#fff;
+  width:var(--nav-col-w);min-width:var(--nav-col-w)}
+#tree thead th:nth-child(1){z-index:6;background:#f3f6fb}
+#tree thead th:nth-child(3){z-index:5;background:#f3f6fb}
+
+/* sticky cells must stay opaque, and must inherit the row's own tint */
+#tree tr.grouprow td:nth-child(1),#tree tr.grouprow td:nth-child(3){background:var(--mint-50)}
+#tree tr.grouprow[data-level="1"] td:nth-child(1),
+#tree tr.grouprow[data-level="1"] td:nth-child(3){background:var(--mint-100)}
+#tree tr.sel td:nth-child(1),#tree tr.sel td:nth-child(3){background:#eaf1fb}
+#tree tr.grand td:nth-child(1),#tree tr.grand td:nth-child(3){background:#f3f6fb}
+/* a hairline that reads as the edge of the frozen pane */
+#tree th:nth-child(3),#tree td:nth-child(3){box-shadow:1px 0 0 var(--line)}
+
+/* ------------------------------------------------------ keyboard focus --*/
+#tree tbody tr:focus,#rectable .rectbl tbody tr:focus{outline:none}
+#tree tbody tr:focus-visible,#rectable .rectbl tbody tr:focus-visible,
+#tree tbody tr.kbrow,#rectable .rectbl tbody tr.kbrow{
+  outline:2px solid var(--mint-600);outline-offset:-2px}
+#tree tbody tr.kbrow > td:nth-child(1){box-shadow:inset 3px 0 0 var(--mint-600)}
+
+/* ------------------------------------------------- waterfall as filter --*/
+#ltwf [data-wf-seg]{cursor:pointer;position:relative;
+  transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease}
+#ltwf [data-wf-seg]:hover{transform:translateY(-2px);
+  box-shadow:0 10px 22px -14px rgba(11,31,58,.55)}
+#ltwf [data-wf-seg]:focus-visible{outline:2px solid var(--mint-600);outline-offset:3px}
+#ltwf [data-wf-seg].wfon{box-shadow:0 0 0 2px var(--mint-600) inset,
+  0 10px 22px -14px rgba(11,31,58,.5)}
+#ltwf.wffiltered [data-wf-seg]:not(.wfon){opacity:.55}
+
+.wfnote{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin:8px 0 2px;padding:7px 11px;border-radius:9px;
+  background:var(--mint-50);border:1px solid var(--mint-200);
+  font-size:11.5px;color:var(--navy)}
+.wfnote b{font-weight:800}
+.wfnote button{border:1px solid var(--mint-300);background:#fff;color:var(--mint-600);
+  border-radius:7px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.wfnote button:hover{background:var(--mint-100)}
+
+/* ------------------------------------------------- bulk override panel --*/
+.bulkov{border:1px solid var(--line);border-radius:13px;background:#fff;
+  padding:13px 15px;margin:10px 0 12px}
+.bo-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.bo-t{font-size:13.5px;font-weight:800;color:var(--navy)}
+.bo-s{font-size:11.5px;color:var(--mut);margin-top:3px;max-width:720px;line-height:1.5}
+.bo-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bo-up{cursor:pointer}
+.bo-fmt{font-size:11px;color:var(--mut);margin-top:8px}
+.bo-fmt code{background:var(--mint-50);border:1px solid var(--mint-200);
+  border-radius:5px;padding:1px 5px;font-size:10.5px;color:var(--mint-600);font-weight:700}
+
+.bo-out{margin-top:11px}
+.bo-prod{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:9px;margin-bottom:11px}
+.bo-card{border:1px solid var(--mint-200);background:var(--mint-50);
+  border-radius:10px;padding:9px 11px}
+.bo-card .l{font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--mut)}
+.bo-card .ba{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:4px}
+.bo-card .bf{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}
+.bo-card .ar{color:var(--mint-600);font-weight:800}
+.bo-card .af{font-size:14.5px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.bo-card .dl{font-size:11.5px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums}
+.bo-card .dl.pos{color:var(--good)}.bo-card .dl.neg{color:var(--bad)}
+
+.botab{width:100%;border-collapse:collapse;font-size:11.5px;
+  font-variant-numeric:tabular-nums}
+.botab th{text-align:right;font-size:9.5px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--mut);padding:6px 8px;border-bottom:2px solid var(--line)}
+.botab th.l,.botab td.l{text-align:left}
+.botab td{padding:5.5px 8px;border-bottom:1px solid #eef1f4;text-align:right}
+.botab tbody tr:hover{background:var(--mint-50)}
+.botab .pos{color:var(--good);font-weight:700}
+.botab .neg{color:var(--bad);font-weight:700}
+.botab .zero{color:var(--mut)}
+.bo-kind{display:inline-block;padding:1px 6px;border-radius:999px;font-size:9px;
+  font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  background:var(--mint-100);color:var(--mint-600);border:1px solid var(--mint-200)}
+.bo-sec{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--mut);margin:13px 0 5px}
+
+.bo-rej{margin-top:12px;border:1px solid #f0d2cd;background:#fdf6f5;
+  border-radius:10px;padding:10px 12px}
+.bo-rej .rt{font-size:11.5px;font-weight:800;color:var(--bad);margin-bottom:6px}
+.bo-rej .botab th{border-bottom-color:#f0d2cd}
+.bo-rej .botab td{border-bottom-color:#f6e5e2}
+.bo-reason{color:var(--bad);font-weight:600}
+
+@media (max-width:900px){
+  #tab-lt{--hier-w:230px}
+  .bo-actions{margin-left:0}
+}

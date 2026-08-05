@@ -1,0 +1,14 @@
+{
+  "name": "trace-pro-phase1",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TRACE-Pro Phase 1: Look-Through readability and bulk administrator marks",
+  "scripts": {
+    "build": "node tools/verify_roundtrip.js && node tools/patch.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "snapshot": "node tools/snapshot_figures.js dist/TRACE_Platform.html --compare baseline/figures.json",
+    "selfcontained": "node tools/check_selfcontained.js dist/TRACE_Platform.html",
+    "browser": "node playwright_gate.js dist/TRACE_Platform.html",
+    "gate": "npm run build && npm run snapshot && npm test && npm run browser && npm run selfcontained"
+  }
+}

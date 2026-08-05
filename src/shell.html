@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRACE Platform</title>
+<style>
+  :root{
+    --cream:#f6f1e7; --cream-2:#efe8d8; --paper:#ffffff;
+    --navy:#1b2a4a; --navy-2:#26385c; --teal:#0a7d68; --teal-ink:#0a6a58;
+    --ink:#1b2a4a; --muted:#5c6675; --line:#e5ddcc; --line-2:#ded4be;
+    --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Apple Color Emoji",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+  [hidden]{display:none !important;}
+
+  /* ---------- Landing launcher ---------- */
+  #landing{min-height:100vh;display:flex;flex-direction:column;
+    background:
+      radial-gradient(1100px 520px at 84% -12%, rgba(10,125,104,.06), transparent 60%),
+      radial-gradient(900px 480px at 6% 108%, rgba(27,42,74,.05), transparent 60%),
+      var(--cream);}
+  .land-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:26px 42px 0;}
+  .brandrow{display:flex;align-items:baseline;gap:14px;}
+  .platform-title{margin:0;font-family:var(--serif);font-weight:600;letter-spacing:-.015em;
+    color:var(--navy);font-size:clamp(26px,3.4vw,40px);line-height:1.02;}
+  .platform-badge{font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--teal-ink);border:1px solid var(--line-2);
+    background:rgba(10,125,104,.06);border-radius:999px;padding:5px 11px;transform:translateY(-3px);}
+  .wordmark{font-family:var(--sans);font-weight:700;letter-spacing:.30em;color:var(--navy);font-size:14px;white-space:nowrap;}
+  .land-sub{color:var(--muted);font-size:15px;line-height:1.55;margin:14px 42px 0;max-width:820px;}
+  .land-sub b{color:var(--navy);font-weight:600;}
+  .land-body{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 42px 64px;}
+  .cards{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;width:100%;max-width:1000px;}
+  .card{flex:1 1 400px;max-width:470px;background:var(--paper);border:1px solid var(--line);
+    border-radius:18px;padding:30px 30px 26px;cursor:pointer;text-align:left;
+    box-shadow:0 1px 0 rgba(27,42,74,.03);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;}
+  .card:hover{transform:translateY(-5px);box-shadow:0 22px 46px -22px rgba(27,42,74,.42);border-color:var(--teal);}
+  .card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;}
+  .card-top{display:flex;align-items:center;gap:14px;}
+  .card-icon{width:46px;height:46px;flex:0 0 auto;color:var(--teal);
+    background:rgba(10,125,104,.08);border:1px solid rgba(10,125,104,.18);border-radius:12px;padding:9px;}
+  .card-kicker{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .card-name{font-family:var(--serif);font-weight:600;color:var(--navy);font-size:30px;line-height:1;margin:2px 0 0;}
+  .card-tag{color:var(--muted);font-size:14.5px;line-height:1.55;margin:18px 0 0;}
+  .card-tag b{color:var(--navy);font-weight:600;}
+  .card-cta{display:flex;align-items:center;gap:7px;margin-top:20px;color:var(--teal-ink);font-weight:600;font-size:13px;}
+  .card-cta svg{width:15px;height:15px;}
+
+  /* ---------- Module view + slim top bar ---------- */
+  #moduleView{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--cream);}
+  #topbar{height:44px;min-height:44px;display:flex;align-items:center;gap:14px;
+    padding:0 14px;background:var(--paper);border-bottom:1px solid var(--line);}
+  .home-btn{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;
+    color:var(--navy);cursor:pointer;font:600 13px/1 var(--sans);padding:7px 9px;border-radius:8px;}
+  .home-btn:hover{background:var(--cream-2);}
+  .home-btn svg{width:16px;height:16px;}
+  .bar-div{width:1px;height:22px;background:var(--line-2);}
+  .seg{display:inline-flex;border:1px solid var(--navy);border-radius:9px;overflow:hidden;background:var(--paper);}
+  .seg-btn{appearance:none;border:0;background:transparent;color:var(--navy);
+    font:600 13px/1 var(--sans);letter-spacing:.015em;padding:8px 16px;cursor:pointer;}
+  .seg-btn+.seg-btn{border-left:1px solid var(--navy);}
+  .seg-btn.active{background:var(--navy);color:#fff;}
+  .seg-btn:not(.active):hover{background:var(--cream-2);}
+  .subtag{color:var(--muted);font-size:12px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .bar-word{margin-left:auto;font-family:var(--sans);font-weight:700;letter-spacing:.28em;color:var(--navy);font-size:13px;}
+  @media (max-width:860px){ .subtag{display:none;} }
+
+  #frames{position:relative;flex:1 1 auto;min-height:0;}
+  .mod-frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--paper);}
+  .mod-frame:not(.active){display:none;}
+</style>
+</head>
+<body>
+
+  <!-- ===================== LANDING LAUNCHER ===================== -->
+  <main id="landing">
+    <div class="land-head">
+      <div class="brandrow">
+        <h1 class="platform-title">TRACE Platform</h1>
+        <span class="platform-badge">NAV Gap Suite</span>
+      </div>
+      <div class="wordmark">APOLLO</div>
+    </div>
+    <p class="land-sub">A material gap between <b>NAV</b> and <b>Derived Market Value</b> is one of two breaks.
+      Pick the vertical that fits the problem in front of you.</p>
+
+    <div class="land-body">
+      <div class="cards">
+
+        <!-- TRACE card -->
+        <div class="card" id="card-trace" data-mod="trace" role="button" tabindex="0" aria-label="Open TRACE">
+          <div class="card-top">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.5 13.5l3-3"/>
+              <path d="M9.2 11.4 7.5 13.1a3 3 0 0 0 4.24 4.24l1.7-1.7"/>
+              <path d="M14.8 12.6l1.7-1.7a3 3 0 0 0-4.24-4.24l-1.7 1.7"/>
+              <path d="M4.5 4.5l2.2 2.2M19.5 19.5l-2.2-2.2M3.6 12H1.5M22.5 12h-2.1"/>
+            </svg>
+            <div>
+              <div class="card-kicker">Double-counting vertical</div>
+              <div class="card-name">TRACE</div>
+            </div>
+          </div>
+          <p class="card-tag"><b>Catches double-counting</b> &mdash; a wrong or missing Allocation-Tracker link making the same value count twice.</p>
+          <div class="card-cta">Open TRACE
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+
+        <!-- TRACE-Pro card -->
+        <div class="card" id="card-pro" data-mod="pro" role="button" tabindex="0" aria-label="Open TRACE-Pro">
+          <div class="card-top">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.4"/>
+              <path d="M12 7.4V12l3.1 2"/>
+            </svg>
+            <div>
+              <div class="card-kicker">Valuation-timing vertical</div>
+              <div class="card-name">TRACE-Pro</div>
+            </div>
+          </div>
+          <p class="card-tag"><b>Explains valuation-timing gaps</b> &mdash; bottom-up NAV repricing and look-through pricing, at scale across funds and products.</p>
+          <div class="card-cta">Open TRACE-Pro
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================== MODULE VIEW (slim bar + two isolated iframes) ===================== -->
+  <div id="moduleView" hidden>
+    <div id="topbar">
+      <button class="home-btn" id="homeBtn" type="button" aria-label="Back to launcher">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/></svg>
+        Home
+      </button>
+      <span class="bar-div" aria-hidden="true"></span>
+      <div class="seg" role="tablist" aria-label="Choose vertical">
+        <button class="seg-btn active" id="seg-trace" data-mod="trace" role="tab" aria-selected="true" type="button">TRACE</button>
+        <button class="seg-btn" id="seg-pro" data-mod="pro" role="tab" aria-selected="false" type="button">TRACE-Pro</button>
+      </div>
+      <span class="subtag" id="subtag"></span>
+      <span class="bar-word">APOLLO</span>
+    </div>
+    <div id="frames">
+      <!-- Two isolated iframes. srcdoc is assigned lazily as a PROPERTY on first visit,
+           then kept alive (hidden) when toggling so each module's state persists.
+           NOTE: allow="fullscreen *" (not the bare "fullscreen") is required so the
+           Fullscreen permission is delegated to these *srcdoc* iframes. The default
+           allowlist for allow="fullscreen" is 'src', which resolves to the iframe's
+           src-URL origin -- but a srcdoc iframe has no src URL, so 'src' is empty and
+           Fullscreen ends up DENIED (featurePolicy.fullscreen === false), which makes the
+           module's requestFullscreen() log a "Permissions policy violation". Using the
+           "*" allowlist grants it to the (trusted, first-party) module document. -->
+      <iframe id="frame-trace" class="mod-frame" title="TRACE" allow="fullscreen *" allowfullscreen style="width:100%;height:100%;border:0"></iframe>
+      <iframe id="frame-pro"   class="mod-frame" title="TRACE-Pro" allow="fullscreen *" allowfullscreen style="width:100%;height:100%;border:0"></iframe>
+    </div>
+  </div>
+
+  <!-- ===================== EMBEDDED MODULES (verbatim, iframe-isolated) ===================== -->
+<script>
+window.MOD_TRACE = "@@MOD_TRACE@@";
+</script>
+<script>
+window.MOD_TRACEPRO = "@@MOD_TRACEPRO@@";
+</script>
+
+  <!-- ===================== PLATFORM SHELL LOGIC ===================== -->
+  <script id="shell-logic">
+  (function(){
+    "use strict";
+    var landing    = document.getElementById("landing");
+    var moduleView = document.getElementById("moduleView");
+    var frames = {
+      trace: document.getElementById("frame-trace"),
+      pro:   document.getElementById("frame-pro")
+    };
+    var loaded  = { trace:false, pro:false };
+    var segBtns = document.querySelectorAll(".seg-btn");
+    var subtag  = document.getElementById("subtag");
+    var SHORT = {
+      trace: "Catches double-counting — wrong or missing Allocation-Tracker links.",
+      pro:   "Explains valuation-timing gaps — NAV repricing at scale."
+    };
+
+    // Lazy-create: assign srcdoc as a PROPERTY the first time a module is opened.
+    function ensureLoaded(which){
+      if (loaded[which]) return;
+      var code = (which === "trace") ? window.MOD_TRACE : window.MOD_TRACEPRO;
+      frames[which].srcdoc = code;   // PROPERTY assignment (srcdoc iframe inherits parent origin)
+      loaded[which] = true;
+    }
+
+    // Toggle handler: lazy-create on first open, then show the active iframe and hide the other
+    // (both stay alive in the DOM so their state persists across toggles).
+    function showFrame(which){
+      ensureLoaded(which);
+      for (var k in frames){
+        if (frames.hasOwnProperty(k)){
+          frames[k].classList.toggle("active", k === which);
+        }
+      }
+      for (var i=0;i<segBtns.length;i++){
+        var on = (segBtns[i].getAttribute("data-mod") === which);
+        segBtns[i].classList.toggle("active", on);
+        segBtns[i].setAttribute("aria-selected", on ? "true" : "false");
+      }
+      if (subtag) subtag.textContent = SHORT[which] || "";
+    }
+
+    function openModule(which){
+      landing.hidden = true;
+      moduleView.hidden = false;
+      showFrame(which);
+    }
+
+    // Home: return to the launcher. iframes are NOT destroyed -> module state persists.
+    function goHome(){
+      moduleView.hidden = true;
+      landing.hidden = false;
+    }
+
+    // Wire landing cards (click + keyboard).
+    var cards = document.querySelectorAll(".card[data-mod]");
+    for (var c=0;c<cards.length;c++){
+      (function(card){
+        var w = card.getAttribute("data-mod");
+        card.addEventListener("click", function(){ openModule(w); });
+        card.addEventListener("keydown", function(e){
+          if (e.key === "Enter" || e.key === " "){ e.preventDefault(); openModule(w); }
+        });
+      })(cards[c]);
+    }
+
+    // Wire the segmented toggle.
+    for (var s=0;s<segBtns.length;s++){
+      (function(btn){
+        btn.addEventListener("click", function(){ showFrame(btn.getAttribute("data-mod")); });
+      })(segBtns[s]);
+    }
+
+    // Wire Home.
+    var homeBtn = document.getElementById("homeBtn");
+    if (homeBtn) homeBtn.addEventListener("click", goHome);
+
+    // Expose a tiny API (handy for testing / no functional requirement).
+    window.__platform = { openModule: openModule, showFrame: showFrame, goHome: goHome };
+  })();
+  </script>
+
+</body>
+</html>

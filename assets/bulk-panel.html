@@ -1,0 +1,20 @@
+  <section class="bulkov" id="bulkov" aria-labelledby="bo-title">
+    <div class="bo-head">
+      <div>
+        <div class="bo-t" id="bo-title">Bulk administrator marks</div>
+        <div class="bo-s">Upload one CSV covering many SPVs at once. Every row is priced
+          through the same look-through engine the tabs use, then reported per SPV and for
+          the product as a whole. Rows that cannot be priced are listed below with a
+          reason and never reach the calculation.</div>
+      </div>
+      <div class="bo-actions">
+        <label class="btn bo-up" for="bofile">Upload overrides (CSV)</label>
+        <input type="file" id="bofile" accept=".csv,text/csv" hidden>
+        <button class="btn" id="boclear" type="button">Clear</button>
+      </div>
+    </div>
+    <div class="bo-fmt">Columns: <code>code</code>, then one of
+      <code>market_value</code> or <code>nav</code>. A header row is optional.</div>
+    <div class="bo-out" id="boout" hidden></div>
+    <div class="bo-rej" id="borej" hidden></div>
+  </section>
