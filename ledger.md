@@ -355,6 +355,60 @@ A fidelity test that cannot detect drift is decoration. Six mutations, each reve
 | 4 look-ahead + reproducibility | — | not built; blocked on data |
 | 5 `node playwright_gate.js` | **1** | no app yet; assertions filled and self-tested |
 
+## 5c. Iteration 3 — audit-trail record type, look-ahead guard, reproducibility
+
+Next two steps in the operating loop's build order, both buildable without market data.
+`app/audit.py`, `tests/test_lookahead_guard.py`, `tests/test_reproducibility.py`.
+
+### The guard is structural, not a separate pass
+
+`Figure` requires `period_end` (the period it describes) and `published_on` (when it
+was filed) as separate mandatory fields, because conflating them is the look-ahead bug
+and in India they are months apart. The guard runs inside
+`StrategyResult.__post_init__`, so **a result carrying a late figure cannot be
+constructed at all**. A check running beside the pipeline can be forgotten; one in the
+constructor cannot. Boundary is inclusive — published on the as-of date was public that
+day.
+
+Provenance is likewise enforced by the types: a `Figure` without a source, a `Criterion`
+without figures or a spec reference, a `ShortlistRow` without criteria, or an empty
+`StrategyResult` without a reason all raise `ProvenanceError` at construction. A proxy
+must disclose a component count, and a component count on a non-proxy is rejected — so
+an untagged substitution has to be a deliberate act, not an omission.
+
+### Mutation-tested
+
+| Mutation to app/audit.py | Result |
+|---|---|
+| Guard deleted entirely | 4 failed |
+| Boundary flipped to `>=`, rejecting figures published on the as-of date | 5 failed |
+| Guard checks only the first row | 1 failed |
+| Proxy no longer required to disclose a component count | 1 failed |
+| Empty result no longer requires a reason | 1 failed |
+| Figures serialized through a `set` (hash-order nondeterminism) | 1 failed |
+| (restored) | **94 passed** |
+
+**One mutation survived and the reason is recorded rather than papered over.** Replacing
+the renderer with `repr(float(value))` did not fail any test. On inspection that is
+correct: `repr` is deterministic, so it is a display-precision defect, not a
+reproducibility one. The mutation was mislabelled, the test was not weak.
+
+It did expose a real gap. Two runs inside one process share a hash seed, so a `set`
+reaching the output iterates identically both times and hides. Added
+`test_byte_identical_across_processes_with_different_hash_seeds`, which serializes in
+three subprocesses under `PYTHONHASHSEED` 0, 1 and 12345 and compares bytes. It is the
+only test that catches the set-iteration mutation above.
+
+### Gate after iteration 3
+
+| Gate item | Exit | Note |
+|---|---|---|
+| 1 `pytest -q` | **0** | 94 passed |
+| 2 spec-fidelity | **0** | mutation-tested, 6 drifts caught |
+| 3 reference tests | — | **blocked on data** |
+| 4 look-ahead + reproducibility | **0** | both pass at record level; full satisfaction needs the engine |
+| 5 `node playwright_gate.js` | **1** | no app yet |
+
 ## 6. Current hypothesis / next step on unblock
 
 The build order in the operating loop is sound and unchanged: constants module → data
