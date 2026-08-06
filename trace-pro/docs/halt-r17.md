@@ -1,6 +1,28 @@
 # HALT — R17 and the frozen baseline cannot both hold
 
-**Status:** blocked, awaiting your decision. Nothing has been amended.
+**Status: still awaiting your decision.** Nothing has been amended. The three options at the foot of
+this file are unchanged and none has been chosen.
+
+To be explicit, because it would be easy to misrepresent: the reply to this HALT was "fix them all",
+given against a review where R17 was presented as a three-way choice rather than a fix. That is not a
+selection of any option, and it is not recorded here as one. R17 remains a **FAIL** in the meantime,
+which is the accurate state and is what the scorecard and the gate report.
+
+**What was fixed anyway, because it required no decision and moved no figure.** R17's bar is "one
+documented rule per quantity class". The precision cannot be unified, but the *number of places deciding it* could be,
+and four were reduced to one:
+
+| Was | Now |
+|---|---|
+| `price-table.ts` typed `bps.toFixed(0)` | calls `formatBpsInteger` (exception E2) |
+| `reconciliation/detail.ts` typed it twice, in prose | calls `formatBpsInteger` |
+| `glossary/terms.ts` typed it | calls `formatBpsInteger` |
+
+`grep -rn 'toFixed(0)' src --include=*.ts` now returns nothing outside `src/domain/money.ts`, where
+the two exceptions are declared and each names the strict baseline keys that force it. Verified after
+the change: parity 1020/1020, 978 strict, 42 declared-label, 0 digit violations, **0 diffs** — the
+rendered strings are byte-identical, which is the point. What remains is a precision that is wrong by
+the rubric's bar and right by the baseline's, decided in one place instead of four.
 
 The mission says: *"If you believe one is genuinely wrong, HALT and tell me why; do not amend it and
 continue."* This is that. Two frozen artifacts contradict each other, and I cannot satisfy both.
@@ -62,9 +84,10 @@ intent, so a future re-cut deletes them. That is the most honest state reachable
 of the two artifacts. An independent critic still grades R17 **FAIL**, and I agree with that grade:
 documented variance is still variance, and the rubric said "applied everywhere".
 
-One genuine loose end that is *not* blocked and should be fixed regardless: `price-table.ts:101`
-still inlines `bps.toFixed(0)` instead of calling `formatBpsInteger`. That is a third literal of a
-formatting rule and is fixable with no parity effect, since the output is identical.
+The loose end this section used to record — `price-table.ts` inlining `bps.toFixed(0)` rather than
+calling `formatBpsInteger` — is **closed**, along with two more copies it had not spotted in
+`reconciliation/detail.ts` and one in `glossary/terms.ts`. See the table at the top of this file. That
+was the whole of the work available without a decision from you.
 
 ## Your options — my recommendation is (a)
 

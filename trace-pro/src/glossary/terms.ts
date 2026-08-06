@@ -17,7 +17,7 @@
  * because no data may reach the DOM through innerHTML. `glossaryPlainText` strips them, and the
  * rendered textContent is therefore exactly the original's — which is what parity is measured on.
  */
-import { formatUsd, formatUsdParens, formatCount, formatPercent, formatPrice } from '../domain/money.js';
+import { formatUsd, formatUsdParens, formatCount, formatPercent, formatPrice, formatBpsInteger } from '../domain/money.js';
 import type { LegacyPricingFixture, RepricingFixture, RepricingFund } from '../domain/types.js';
 import { glossaryPricingTerms } from './terms-pricing.js';
 import { glossaryValueTerms } from './terms-value.js';
@@ -177,7 +177,7 @@ export function glossaryFacts(
     derivedMv: formatUsd(ex?.ltv ?? null),
     revisedMv: formatUsd(ex?.rev ?? null),
     repricingPnl: formatUsdParens(pnl),
-    bps: bps.toFixed(0),
+    bps: formatBpsInteger(bps),
     coOwners,
     apexList: repricing.apex.join(', '),
     productNav: formatUsd(repricing.N),

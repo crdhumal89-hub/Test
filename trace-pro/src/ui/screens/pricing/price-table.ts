@@ -7,7 +7,7 @@
  * bands behind the bps chip come from `src/domain/exceptions.ts`; there is no threshold here.
  */
 import { flagForFund, WARN_BPS, BAD_BPS } from '../../../domain/exceptions.js';
-import { bpsOf, formatPrice, formatUsd, formatUsdParens } from '../../../domain/money.js';
+import { bpsOf, formatBpsInteger, formatPrice, formatUsd, formatUsdParens } from '../../../domain/money.js';
 import type { PricingView, RepricingFixture, RepricingFund } from '../../../domain/types.js';
 import { el, replace, activate, loadingState, emptyState, errorState } from '../../primitives/dom.js';
 import { parity } from '../../parity.js';
@@ -95,11 +95,19 @@ export function pricingRoleLabel(fund: RepricingFund, repricing: RepricingFixtur
   return fund.terminal ? 'Lowest level' : '';
 }
 
-/** The bps chip: the level gain or loss over the fund's own NAV, at 0dp, as the original rendered it. */
+/**
+ * The bps chip: the level gain or loss over the fund's own NAV.
+ *
+ * Routed through `formatBpsInteger` — exception E2 in `src/domain/money.ts` — rather than typing
+ * `toFixed(0)` here. The precision is still 0dp and still wrong by R17's bar, but there is now ONE
+ * place that decides it instead of two, and that place names the 26 strict baseline keys forcing it.
+ * See `docs/halt-r17.md`: the rule and the frozen baseline genuinely contradict each other, so this
+ * is the whole of the fix that does not require changing a reported figure.
+ */
 export function pricingBpsChip(fund: RepricingFund, view: PricingView): string {
   if (view === 'after') return '0';
   const bps = bpsOf(fund.pnlLevel, fund.nav);
-  return bps == null ? PRICING_DASH : bps.toFixed(0);
+  return bps == null ? PRICING_DASH : formatBpsInteger(bps);
 }
 
 export function pricingFilterFunds(

@@ -10,6 +10,7 @@ import {
   formatPercent,
   formatCount,
   formatPrice,
+  formatBpsInteger,
 } from '../../../domain/money.js';
 import type { LookthroughNode, PricingView, RepricingFixture } from '../../../domain/types.js';
 import { el, replace, trapFocus } from '../../primitives/dom.js';
@@ -49,12 +50,12 @@ export function renderNodeDetail(
     view,
     describe: (usd, bps) => ({
       nonPosition:
-        `NAV is ${formatUsdParens(usd)} (${bps.toFixed(0)} bps) away from the bottom-up repriced ` +
+        `NAV is ${formatUsdParens(usd)} (${formatBpsInteger(bps)} bps) away from the bottom-up repriced ` +
         'value — assets or liabilities inside NAV, such as cash, fees or receivables, that are not ' +
         'held as positions.',
       pricing:
         `Repricing the underlyings from their own NAVs moves value by ${formatUsdParens(usd)} ` +
-        `(${bps.toFixed(0)} bps) against today's position marks.`,
+        `(${formatBpsInteger(bps)} bps) against today's position marks.`,
     }),
   });
 
