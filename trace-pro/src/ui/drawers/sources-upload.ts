@@ -24,7 +24,8 @@
  * a validated fault becomes a state, and an unexpected exception becomes a state AND is re-thrown on
  * a fresh task so the console listener in the headless suite still sees a real failure (R14).
  */
-import { applyNavOnly, repriceFromPositions, structureFromTree } from '../../domain/repricing.js';
+import { applyNavOnly, structureFromTree } from '../../domain/repricing.js';
+import { repriceFromPositions } from '../../domain/repricing-positions.js';
 import { splitCsvLine } from '../../domain/ingest/cells.js';
 import { navJoinToModel, readNavReport } from '../../domain/ingest/nav-report.js';
 import {
@@ -185,6 +186,27 @@ function sourcesApplyNav(store: Store, rows: string[][], file: string, view: Sou
     ));
     return;
   }
+  if (result.kind === 'duplicate-fund') {
+    sourcesSetState(view, errorState(
+      `“${file}” gives ${result.code} two different net asset values.`,
+      `Row ${result.row} says ${formatUsdCents(result.second)} where an earlier row says ` +
+        `${formatUsdCents(result.first)}. Whichever the export wrote first would have become every ` +
+        'price this app publishes for that fund, so nothing was applied — the shipped figures are ' +
+        'still on display. Upload the report without its duplicate or subtotal rows.',
+      sourcesRetry(input)
+    ));
+    return;
+  }
+  if (result.kind === 'non-numeric-nav') {
+    sourcesSetState(view, errorState(
+      `The ENDING_NAV column in “${file}” is not all figures.`,
+      `Row ${result.row}, fund ${result.code}, holds “${result.cell}” where a net asset value belongs. ` +
+        'A fund that reports no NAV leaves that cell empty or writes #N/A, which this app reads as ' +
+        '“no NAV”; text means the column is not the one its header claims, so nothing was applied.',
+      sourcesRetry(input)
+    ));
+    return;
+  }
 
   const known = Object.keys(store.repricing.gqByFund);
   const joined = navJoinToModel(result.navByFund, known);
@@ -248,7 +270,13 @@ function sourcesApplyPositions(store: Store, rows: string[][], file: string, vie
     ));
     return;
   }
-  const repricing = repriceFromPositions(index, store.repricing.navByFund, product, store.state.asof);
+  const repricing = repriceFromPositions(
+    index,
+    store.repricing.navByFund,
+    product,
+    store.state.asof,
+    store.state.productCode
+  );
   store.setModel({ lookthrough, repricing });
   const applied =
     `Position report “${file}” applied — ${formatCount(repricing.nFunds)} funds and ` +

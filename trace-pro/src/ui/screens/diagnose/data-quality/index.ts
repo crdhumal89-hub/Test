@@ -35,7 +35,8 @@ const DATA_QUALITY_ALL = 'All fund entities';
  * real controls — so a `term()` inside one would be a control inside a control (R6c); this lens
  * therefore takes R2's route (a), one visible expansion placed above every use of them.
  */
-const DATA_QUALITY_VOCABULARY = ['spv', 'vpm', 'nav'];
+// `spv` moved to the shell's own line, which precedes the entity search that already uses it.
+const DATA_QUALITY_VOCABULARY = ['vpm', 'nav'];
 
 /** Every scope the issue log can take: the whole universe, or one fund entity's reachable world. */
 function dataQualityScopeIndex(universe: UniverseFixture): ComboOption[] {

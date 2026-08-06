@@ -59,7 +59,9 @@ const OWNERSHIP_SEARCH_LIMIT = 40;
  * alone. Placed immediately after the question, and repeated in the loading and error frames,
  * because a reader who only ever sees the error state has still met the vocabulary.
  */
-const OWNERSHIP_VOCABULARY = ['spv', 'vpm', 'global_units_global_quantity', 'nav'];
+// `spv` is not here: the shell's own line (DIAGNOSE_VOCABULARY) expands it above the entity
+// search, whose option badges read `SPV`, so this line could not be its first use.
+const OWNERSHIP_VOCABULARY = ['vpm', 'global_units_global_quantity', 'nav'];
 
 /**
  * Every position the firm-wide universe knows: SPVs, funds and — once a position report has been

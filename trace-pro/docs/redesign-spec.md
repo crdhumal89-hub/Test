@@ -209,10 +209,14 @@ Unmapped identifiers **22** Low.
 **Controls:** search box (terms, aliases, definitions) · 7 category chips (All + 6 sections) ·
 count readout `N of M terms`.
 
-**Content:** 35 terms in 6 sections — *The three price columns* (5), *Value & P&L columns* (9),
-*Look-through & market value* (4), *NAV & reconciliation* (8), *Structure & ownership* (5),
-*Sources & systems* (4). Each card carries plain language, SOURCE, METHOD, aliases, and a worked
-example computed from live data (pinned to `SPORTHFC` and `DEUCE2FC`).
+**Content:** 35 terms in 6 sections — *The three price columns* (4), *Value & P&L columns* (4),
+*Look-through & market value* (7), *NAV & reconciliation* (10), *Structure & ownership* (6),
+*Sources & systems* (4). (Counted from the `card({…})` calls inside each `section(…)` at lines
+2267–2476 of the original; the per-section figures first recorded here — 5, 9, 4, 8, 5, 4 — summed to
+the right total but were wrong section by section. The rebuild's split matches the measured counts:
+`src/glossary/terms-{pricing,value,lookthrough,nav,structure,sources}.ts` hold 4, 4, 7, 10, 6, 4.)
+Each card carries plain language, SOURCE, METHOD, aliases, and a worked example computed from live data
+(pinned to `SPORTHFC` and `DEUCE2FC`).
 
 **Dead or duplicated:** this is the best-written part of the application, and it is the seventh
 tab — reachable only by leaving the screen that raised the question. Its content is duplicated as

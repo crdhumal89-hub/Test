@@ -11,14 +11,18 @@
  * "not a NAV report" (an error state naming the columns it wanted) from "a NAV report with no rows"
  * (an empty state) from "applied" — rubric R4's three states for the upload slots.
  */
-import { csvRows, normaliseCode, normaliseHeader, parseFigure } from './cells.js';
+import { csvRows, isBlankFigure, normaliseCode, normaliseHeader, parseFigure } from './cells.js';
 
 export type NavReportResult =
   | { kind: 'applied'; navByFund: Record<string, number>; codes: string[]; layout: 'pivot' | 'feed' }
   | { kind: 'empty'; layout: 'pivot' | 'feed' }
   | { kind: 'position-report' }
   | { kind: 'no-nav-column' }
-  | { kind: 'no-layout' };
+  | { kind: 'no-layout' }
+  /** Two rows give one fund two different net asset values, so neither can be trusted. */
+  | { kind: 'duplicate-fund'; code: string; first: number; second: number; row: number }
+  /** The ENDING_NAV cell of a fund row holds text, so the column is not what it claims to be. */
+  | { kind: 'non-numeric-nav'; code: string; cell: string; row: number };
 
 /** How far into the file a header row may hide. The original's window, unchanged. */
 const NAV_HEADER_WINDOW = 8;
@@ -76,8 +80,16 @@ function navLocateHeader(
  * Fund code → this period's NAV, from either layout the original accepted:
  *   pivot — `PRODUCT`, `FUND_CODE`, `ENDING_NAV` (or `Sum of ENDING_NAV`);
  *   feed  — a fund-code column plus a true per-fund ending-NAV column, `PRODUCT` optional.
- * The first value seen for a code wins, as it did before, so a pivot's subtotal rows cannot
- * overwrite the fund they subtotal.
+ *
+ * A code that REPEATS with the same figure is still tolerated, which is what the original's
+ * first-value-wins rule was protecting: a pivot's subtotal of a one-fund group restates that fund's
+ * own NAV, and reading it twice cannot change an answer. A code that repeats with a DIFFERENT figure
+ * is refused by name. First-value-wins silently resolved that case too, and the value it picked was
+ * whichever row the export happened to write first — so a fund with two share-class rows published a
+ * price off one class instead of their sum, with nothing on screen to say so.
+ *
+ * A fund row whose ENDING_NAV cell holds TEXT is refused by name for the same reason: skipping it
+ * quietly drops that fund's NAV out of Σ apex NAV and out of every price derived from it.
  */
 export function readNavReport(rows: readonly string[][]): NavReportResult {
   const header = navLocateHeader(rows);
@@ -97,9 +109,17 @@ export function readNavReport(rows: readonly string[][]): NavReportResult {
     if (!row || row.length <= widest) continue;
     const code = normaliseCode(row[header.fundIndex]);
     if (!code || normaliseHeader(code) === 'fundcode') continue;
-    const value = parseFigure(row[header.navIndex]);
-    if (value == null) continue;
-    if (code in navByFund) continue;
+    const raw = row[header.navIndex];
+    const value = parseFigure(raw);
+    if (value == null) {
+      if (isBlankFigure(raw)) continue;
+      return { kind: 'non-numeric-nav', code, cell: String(raw ?? '').trim(), row: i + 1 };
+    }
+    const seen = navByFund[code];
+    if (seen !== undefined) {
+      if (seen === value) continue;
+      return { kind: 'duplicate-fund', code, first: seen, second: value, row: i + 1 };
+    }
     navByFund[code] = value;
     codes.push(code);
   }

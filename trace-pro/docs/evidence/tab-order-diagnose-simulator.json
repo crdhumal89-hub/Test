@@ -1,5 +1,37 @@
 [
  {
+  "key": "button[] SPV: A special-purpose vehicle / holding entity th",
+  "tag": "button",
+  "role": "",
+  "w": 23,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
+  "key": "button[] DC: Double-count. The error of adding up NAVs that",
+  "tag": "button",
+  "role": "",
+  "w": 17,
+  "h": 17,
+  "outlineStyle": "solid",
+  "outlineWidth": "2px",
+  "tones": [
+   "rgb(13, 139, 122)",
+   "rgb(255, 255, 255)"
+  ],
+  "fill": "rgb(246, 241, 231)",
+  "ringContrast": 3.74,
+  "toneSeparation": 4.21
+ },
+ {
   "key": "input[combobox] Choose the entity to examine across all four lense",
   "tag": "input",
   "role": "combobox",
@@ -112,22 +144,6 @@
   "toneSeparation": 4.21
  },
  {
-  "key": "button[] SPV: A special-purpose vehicle / holding entity th",
-  "tag": "button",
-  "role": "",
-  "w": 23,
-  "h": 17,
-  "outlineStyle": "solid",
-  "outlineWidth": "2px",
-  "tones": [
-   "rgb(13, 139, 122)",
-   "rgb(255, 255, 255)"
-  ],
-  "fill": "rgb(246, 241, 231)",
-  "ringContrast": 3.74,
-  "toneSeparation": 4.21
- },
- {
   "key": "button[] MV: Carried MV / Position MV. The market value at ",
   "tag": "button",
   "role": "",
@@ -212,22 +228,6 @@
   "tag": "button",
   "role": "",
   "w": 26,
-  "h": 17,
-  "outlineStyle": "solid",
-  "outlineWidth": "2px",
-  "tones": [
-   "rgb(13, 139, 122)",
-   "rgb(255, 255, 255)"
-  ],
-  "fill": "rgb(246, 241, 231)",
-  "ringContrast": 3.74,
-  "toneSeparation": 4.21
- },
- {
-  "key": "button[] DC: Double-count. The error of adding up NAVs that",
-  "tag": "button",
-  "role": "",
-  "w": 17,
   "h": 17,
   "outlineStyle": "solid",
   "outlineWidth": "2px",

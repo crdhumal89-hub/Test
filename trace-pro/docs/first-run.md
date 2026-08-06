@@ -19,8 +19,11 @@ This file names them in advance. The bar it sets is deliberately hard to wriggle
 
 Selectors were marked **(contract)** while a screen or lens was unbuilt (`docs/ledger.md`) — the ids
 that screen must render, chosen so the R5 test could be written before the screen existed rather than
-fitted to it afterwards. **All of them now render**; the markers are kept in the Simulator table with
-a note, so the substitution is auditable.
+fitted to it afterwards. **All of them now render**, and no table below carries a `(contract)` marker
+any longer — the last two, on the Simulator rows, went when those two elements landed. The
+substitution stays auditable through the dated amendment notes that record each one rather than
+through the markers themselves: `grep -n '(contract)' docs/first-run.md` returns this paragraph and
+those notes, and no table row.
 
 Shared chrome must be in the viewport on every screen, because R3 forbids a figure being readable
 while its as-of date is not: `#masthead`, `#active-product` (product name), `#asof` (the as-of date,
@@ -119,15 +122,41 @@ subject and the choice of instrument, both without a click.
 | The four lenses, with the active one marked | `#lens-tabs [role="tab"]` | Structure · Ownership · Data quality · Simulator |
 | The active lens's own question | `#structure-question` / `#ownership-question` / `#data-quality-question` / `#simulator-question` | the sentence for the lens below |
 
-**Amended 2026-08-04 (R5).** The row above used to name a single id, `#lens-question`. **No element
-with that id has ever been rendered.** Each lens renders its own question under its own id, listed in
-the lens tables below, and that is the shipped design: `mountStructureLens` and friends own their
-question because a lens's question belongs to the lens, not to the shell. The contract is corrected to
-name the four ids that exist rather than one that does not. This is a documentation fix, not a
-weakening — the assertion still requires a visible question sentence above the fold on every lens, and
-`.lens-question` remains a live CSS class, which is the thing that made the phantom id plausible.
-Renaming the four ids to one would mean editing `diagnose/index.ts` and all four lens files; if that is
-preferred it is a separate change, in files this pass does not own.
+**Amended 2026-08-04 (R5); the amendment note itself corrected since.** The row above used to name a
+single id, `#lens-question`. This note used to say in bold that no element with that id had ever been
+rendered. **That was false.** The id existed and was then deleted, and the history says so in one
+command:
+
+```
+$ git log --all --oneline -S"id: 'lens-question'" -- trace-pro/src
+b01ccd3 Phase 2 (5/n): all three screens wired, exports built, four agent findings fixed
+7752a15 Phase 2 (3/n): parity tagging, Diagnose shell, combobox, component styles
+```
+
+`7752a15` **added** it: `mountDiagnose` rendered `el('p', { class: 'lens-question', id:
+'lens-question' })` between the lens tabs and the lens body, and `renderLens` filled it on every
+switch with `qs('#lens-question', host).textContent = LENS_QUESTION[lens]`. `b01ccd3` **removed** it,
+deleting the element and the `LENS_QUESTION` record together when each lens took ownership of its own
+question — the comment that replaced it still stands at `src/ui/screens/diagnose/index.ts:44`: *"No
+question line here: each lens renders its own as the first text in its content region, which is where
+R1 requires it. Two copies of the same sentence is worse than one."* So the contract named an id that
+had been **deleted**, not one that never existed — and it was `b01ccd3` that deleted it, in the same
+commit that created this file naming it (`git show b01ccd3:trace-pro/docs/first-run.md | grep
+lens-question` → *"| The active lens's own question | `#lens-question` | the sentence for the lens
+below |"*). The contract was written against the shell as it stood minutes earlier and not re-read
+after the same change moved the question into the lenses.
+
+The conclusion is unchanged, and this is still a correction rather than a weakening. The four per-lens
+ids do render (`mountStructureLens`, `mountOwnershipLens`, `mountDataQualityLens`,
+`mountSimulatorLens`, each `class: 'screen-question'` with its own id) and each is above the fold:
+`tests/e2e/rubric-order.spec.ts` requires a `.screen-question` / `.lens-question` element to be the
+first text painted on all six routes and inside the first 400px, and R5's own table in
+`tests/e2e/rubric.spec.ts` names `#structure-question` and `#data-quality-question` outright. What made
+the phantom plausible is that the rule outlived the element: `.lens-question` is still declared at
+`src/ui/styles/components.css:82` and still matched by those test selectors, while nothing renders the
+class — `grep -rn 'lens-question' src/` returns that one CSS line and nothing else. Renaming the four
+ids to one would mean editing `diagnose/index.ts` and all four lens files; if that is preferred it is a
+separate change, in files this pass does not own.
 
 **Fails if:** the entity combobox is empty on arrival, or the lens tabs need a scroll.
 
@@ -154,12 +183,17 @@ $2,785.79 counterpart of the waterfall's Σ-feeder figure (`docs/issues.md` §L)
 exactly this reason — `docs/redesign-spec.md` §5.4), or a product NAV appears anywhere without its
 basis.
 
-**Amended 2026-08-04 (R5).** `#structure-stage` carries an inline `height: 640px`, which put the
-bottom of its `svg` at 1195 — 195px past the fold. It is clamped with `max-height: 42vh`
-(`src/ui/styles/components.css`), which is 420px at the graded viewport against 444px of room below
-the caption; `max-height` is used because an inline `height` cannot be beaten by a stylesheet without
-`!important`, which is banned. Full screen is exempt via `#structure-stage[style*='position:fixed']`,
-so the `structure.fullscreen.*` parity scene is unaffected. Measured after: svg 560…978.
+**Amended 2026-08-04 (R5), values corrected since.** `#structure-stage` carries an inline
+`height: 640px`, which put the bottom of its `svg` at 1195 — 195px past the fold. It is clamped with
+`max-height`, because an inline `height` cannot be beaten by a stylesheet without `!important`, which
+is banned. The clamp is **`max-height: 40vh`** and it lives in **`src/ui/styles/lenses.css:23`**, not
+the 42vh in `components.css` this note first recorded: `c354df9` moved the four lens sections out of
+`components.css` when it hit 403 lines, and `ccb2a6e` cut 42vh to 40vh because the R2 vocabulary line
+took 17px of the room below the caption and left the stage bottom at 996 of 1000 — passing by 4px,
+which is not a margin. The reasoning is in the rule's own comment. Full screen is exempt via
+`#structure-stage[style*='position:fixed']` (`lenses.css:24`), so the `structure.fullscreen.*` parity
+scene is unaffected. The `svg 560…978` measured here was taken at 42vh, before `ccb2a6e`; the current
+geometry is asserted by the R5 test rather than re-quoted, because this pass could not run the browser.
 
 ### 3b. Ownership lens
 
@@ -183,12 +217,15 @@ the evidence), or the lens opens with nothing searched.
 **Amended 2026-08-04 (R5/R6).** `#ownership-ribbon` measured **0px high**: `owner-tree.ts` renders
 `.own-ribbon` / `.own-seg`, and neither class had a single line of CSS. So the primary answer this row
 names was invisible, *and* its 39 segments were 39 zero-height tab stops for R6. Both classes are now
-styled in `components.css` — an 18px strip, `min-width: 5px` per segment so the smallest holder is a
+styled at `src/ui/styles/lenses.css:107-119` (this note first said `components.css`; `c354df9` split
+the lens sections out of it) — an 18px strip, `min-width: 5px` per segment so the smallest holder is a
 real target, and no `overflow: hidden` on the strip, because that is precisely what erased the focus
 ring on the pricing-basis control. Three of the eight segment colours were also lightened past the
 point where a focus ring could contrast with them and have been darkened (`owner-tree.ts`). The
 identity line above it, which concatenated to `…code APPOURITotal qty: 1,330,020,204100%`, is styled
-too. Measured after: ribbon 433…451, 40 segments, every one ≥ 5×16px with a 3.28:1 ring or better.
+too. Measured then: ribbon 433…451 — 18px, which is the strip height the stylesheet still sets — 40
+segments, every one ≥ 5×16px with a 3.28:1 ring or better. The vertical position predates the
+vocabulary line `ccb2a6e` added to this lens; the strip's own dimensions are unchanged.
 
 ### 3c. Data quality lens
 
@@ -209,8 +246,10 @@ severity split.
 
 ### 3d. Simulator lens
 
-**Question required:** "If this fund's value or units move, what happens to product NAV, and
-through which holders?" (`LENS_QUESTION.simulator`)
+**Question rendered:** "If this fund's value or units move, what happens to product NAV, and
+through which holders?" (`SIMULATOR_QUESTION`, `src/ui/screens/diagnose/simulator/intro.ts` — the
+`LENS_QUESTION.simulator` this row used to cite was the shell's record, deleted with `#lens-question`
+in `b01ccd3`)
 
 **Primary answer: the resting state — what product NAV and this entity are worth *before* any
 shock — and where to type the shock.**
@@ -229,13 +268,17 @@ baseline plus the way in.
 run completes.
 
 **Amended 2026-08-04 (R5).** The two **(contract)** markers are gone because the elements now exist.
-Three things were wrong and all three are fixed in `simulator/index.ts` and `components.css`:
+Three things were wrong and all three are fixed in `simulator/index.ts` and, since `c354df9` split it
+out of `components.css`, `src/ui/styles/lenses.css`:
 
 1. `#simulator-baseline` and `#simulator-subject` **were never rendered at all**. They are now the two
    tiles directly under the lens question — the resting state, which is the only honest first-run answer
    for a simulator, since no shock has been entered.
-2. `#simulator-shock` sat at y=1333, below a 620px stage and two help paragraphs. The stage is now
-   440px and the shock panel sits **beside** it; the run line, the caption and the two help paragraphs
+2. `#simulator-shock` sat at y=1333, below a 620px stage and two help paragraphs. The stage is
+   **392px** (`SIMULATOR_STAGE_STYLE`, `simulator/index.ts:33`; it was the 440px this note first
+   recorded, then 420 in `c354df9`, and `51afda5` took it to 392 so Run's bottom cleared 1000 once the
+   R2 vocabulary line landed above it) and the shock panel sits **beside** it, in a
+   `minmax(320px, 34%)` column (`lenses.css:68`); the run line, the caption and the two help paragraphs
    moved below the scene. They are the graph's text alternative and the erratum on the two renamed
    sweep controls — not the first-run answer, and the run line is not named in this file.
 3. The lens arrived saying "Nothing selected yet" while the Diagnose subject bar read `APPOURI`,
@@ -247,7 +290,10 @@ Three things were wrong and all three are fixed in `simulator/index.ts` and `com
 
 The contract row asserts the four inner control ids as well as the panel, because a panel that is
 technically in the viewport while its inputs are not would satisfy the letter and not the bar. Measured
-after: baseline and subject 419…490, stage 543…983, market-value input 817…845, Run 917…945.
+after, at the 440px stage this note was written against: baseline and subject 419…490, stage 543…983,
+market-value input 817…845, Run 917…945. `51afda5` re-cut the stage to 392px and its own comment records
+the replacement geometry (panel bottom 974, Run 955); these four ranges are not re-measured here,
+because this pass could not run the browser.
 
 ## 4. Drawers
 
@@ -264,9 +310,18 @@ reachability:
 
 ## Keeping the test in step with this file
 
-**Closed 2026-08-04.** The mismatch recorded here — the test asserting one selector per route, three of
-them CSS-only classes that were never rendered, and `#simulator-runline`, which appears nowhere in this
-document — is gone. `tests/e2e/rubric.spec.ts` now holds a `FIRST_RUN` table whose rows are **the rows
+**Closed 2026-08-04.** The mismatch recorded here — the test asserting one selector per route, and
+asserting `#simulator-runline` for the Simulator, which no table in this document names — is gone.
+
+*Correction to this paragraph.* It used to say that three of those six selectors were "CSS-only classes
+that were never rendered". That was false. `git show 1b630d2^:trace-pro/tests/e2e/rubric.spec.ts` shows
+the six were two `[data-parity]` attribute selectors plus `#structure-caption`, `#ownership-checks`,
+`#data-quality-kpi` and `#simulator-runline` — four ids, no classes — and `git grep "id: '<id>'"
+1b630d2^ -- trace-pro/src` finds every one of the four rendering at that commit, as all four still do.
+The defect was that one selector per route is not the primary answer this file names; it was not that
+the selectors were phantoms.
+
+`tests/e2e/rubric.spec.ts` now holds a `FIRST_RUN` table whose rows are **the rows
 of the tables above**, selector for selector, with a count where this file says "the first five", plus
 `CHROME_ROWS` for the shared chrome and `DIAGNOSE_ROWS` for the Diagnose shell. Every one of them is
 asserted with `rect.top >= 0 && rect.bottom <= innerHeight && height > 0` and, at the end of each route,
@@ -275,8 +330,8 @@ asserted with `rect.top >= 0 && rect.bottom <= innerHeight && height > 0` and, a
 For the record, because this is the third time these selectors have moved: the previous two passes
 changed the *test* to match whatever the app already did. This pass changed the *app*. The only edit to
 the contract is the `#lens-question` → four per-lens ids correction above, which names elements that
-ship instead of one that never did, and the Simulator rows, which lost their `(contract)` markers
-because the elements they name now exist. No selector was replaced with a looser one and `isAboveFold`
+ship instead of one that `b01ccd3` had deleted, and the Simulator rows, which lost their `(contract)`
+markers because the elements they name now exist. No selector was replaced with a looser one and `isAboveFold`
 was not relaxed.
 
 | Route | What the test asserts now | Count |
@@ -294,8 +349,9 @@ was not relaxed.
 
 `src/main.ts` seeds `defaultPosition` from `data/manifest.json`, which names **`APPOURI`** — the same
 position `tests/baseline.json` pins the Ownership lens on. That satisfies (a) non-empty and (b) a
-fixture field rather than a code path (`docs/redesign-spec.md` Q5), so `docs/issues.md` §O1's stated
-reason ("the fixture field does not exist yet") is stale.
+fixture field rather than a code path (`docs/redesign-spec.md` Q5). `docs/issues.md` §O1 is now
+dispositioned against that field; its earlier reason — that the fixture field did not exist yet, and
+that the seed resolved to `ASCON` — was stale and has been corrected there.
 
 **What is left, narrowed 2026-08-04.** `APPOURI` is a firm-wide universe position, not a fund in this
 product's cascade, so it is not a *shockable* subject. The Simulator lens handles that locally, without

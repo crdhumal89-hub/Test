@@ -170,7 +170,7 @@
  "upload-nav-applied": {
   "reached": "a NAV report with every fund lifted 1% applied in the drawer",
   "selector": "#reconciliation-waterfall",
-  "rendered": "LOOK-THROUGH VALUE $2,060,224,441 look-through of underlyings · current marks + Pricing difference $22,596,383 +108.5 bps bottom-up NAV repricing REPRICED VALUE $2,082,820,824 NAV-repriced bottom-up + Non-position difference $0 +0.0 bps cash, fees, receivables NAV $2,082,820,824 sum of top-level feeder NAVs · NAV report ✓ ties to the cent Pricing difference $22,596,383 + Non-position difference $0 = $22,596,383 = NAV − look-through value $22,596,383",
+  "rendered": "LOOK-THROUGH VALUE $2,060,224,441 look-through of underlyings · current marks + Pricing difference $9,741,427 +46.8 bps bottom-up NAV repricing REPRICED VALUE $2,069,965,868 NAV-repriced bottom-up + Non-position difference $12,854,956 +61.7 bps cash, fees, receivables NAV $2,082,820,824 sum of top-level feeder NAVs · NAV report ✓ ties to the cent Pricing difference $9,741,427 + Non-position difference $12,854,956 = $22,596,383 = NAV − look-through value $22,596,383",
   "screenshot": "docs/evidence/states/upload-nav-applied.png"
  },
  "upload-position-loading": {
@@ -200,7 +200,7 @@
  "upload-nav-loading": {
   "reached": "a 200,000-row NAV report chosen in the NAV slot; the reader yields between chunks",
   "selector": "#sources-state-nav .state-loading",
-  "rendered": "Loading “nav-large.csv” — 56,000 rows read so far…",
+  "rendered": "Loading “nav-large.csv” — 68,000 rows read so far…",
   "screenshot": "docs/evidence/states/upload-nav-loading.png"
  },
  "upload-position-empty": {

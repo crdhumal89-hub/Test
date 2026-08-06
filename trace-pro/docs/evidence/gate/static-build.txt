@@ -1,17 +1,19 @@
 $ npm run build
 # sub-gate: STATIC — Build
 # exit code: 0
+# git HEAD: 790d6daf3b4163d3b7db6734d0eaf80178b68a76 (working tree dirty at capture)
+# captured: 2026-08-06T13:35:59.376Z
 # ----------------------------------------------------------------------------
 
 > trace-pro@0.1.0 build
 > vite build
 
 vite v8.2.0 building client environment for production...
-[2Ktransforming...✓ 67 modules transformed.
+[2Ktransforming...✓ 69 modules transformed.
 rendering chunks...
 computing gzip size...
 dist/index.html                   0.58 kB │ gzip:  0.39 kB
 dist/assets/index-BOEAn9_h.css   26.20 kB │ gzip:  5.77 kB
-dist/assets/index-C878PWa7.js   212.70 kB │ gzip: 69.46 kB
+dist/assets/index-cqOdJT0E.js   215.18 kB │ gzip: 70.44 kB
 
-✓ built in 114ms
+✓ built in 150ms

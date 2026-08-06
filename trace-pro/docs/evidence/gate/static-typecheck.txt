@@ -1,6 +1,8 @@
 $ npm run typecheck
 # sub-gate: STATIC — Typecheck
 # exit code: 0
+# git HEAD: 790d6daf3b4163d3b7db6734d0eaf80178b68a76 (working tree dirty at capture)
+# captured: 2026-08-06T13:36:02.562Z
 # ----------------------------------------------------------------------------
 
 > trace-pro@0.1.0 typecheck

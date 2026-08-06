@@ -56,6 +56,25 @@ export function parseFigure(raw: unknown): number | null {
   return negative ? -value : value;
 }
 
+/**
+ * Does this cell MEAN "no figure", as against holding one this reader cannot make sense of?
+ *
+ * `parseFigure` answers null to both, and the difference decides whether a file can be trusted. A
+ * fund that reports no NAV leaves the cell empty, or writes `-`, `—`, `#N/A` or the `nan` / `none` /
+ * `NaT` a dataframe export emits: all of those are a stated absence and the row is simply skipped.
+ * A cell holding WORDS is a column that is not the column its header claims to be, and reading a
+ * whole book of prices out of it would be a silent fabrication — so the callers refuse instead.
+ */
+export function isBlankFigure(raw: unknown): boolean {
+  const text = String(raw ?? '')
+    .trim()
+    .replace(/,/g, '')
+    .replace(/\$/g, '')
+    .trim();
+  if (text === '' || text === '-' || text === '—' || text.startsWith('#')) return true;
+  return /^(nan|none|nat)$/i.test(text);
+}
+
 /** A header cell reduced to letters and digits, so spacing, case and punctuation cannot matter. */
 export function normaliseHeader(raw: unknown): string {
   return String(raw ?? '')

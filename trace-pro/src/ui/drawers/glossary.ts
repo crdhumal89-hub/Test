@@ -11,13 +11,13 @@ import {
   GLOSSARY_SECTIONS,
   GLOSSARY_TERM_COUNT,
   glossaryFacts,
-  glossaryHaystack,
   glossarySlug,
   glossaryTerms,
 } from '../../glossary/terms.js';
-import type { GlossaryCategory, GlossarySection, GlossaryTerm } from '../../glossary/terms.js';
+import type { GlossaryCategory } from '../../glossary/terms.js';
 import type { Store } from '../../state/store.js';
 import { el, replace, trapFocus, emptyState, errorState } from '../primitives/dom.js';
+import { glossaryCard, type GlossaryCardRef } from './glossary-card.js';
 import { termBindGlossary } from '../primitives/term.js';
 
 export const GLOSSARY_INTRO =
@@ -25,115 +25,14 @@ export const GLOSSARY_INTRO =
   'number comes from) and METHOD (how it is calculated). Start with the three price columns below ' +
   'if you are unsure why there are three.';
 
+/**
+ * `bps` is glossed in place. The crawler excludes the definition CARDS from R2 — they are where
+ * abbreviations belong — but not this box, and rightly: a placeholder is a label, not a definition,
+ * and it is the one string in the drawer a reader meets before any card. It cannot be a
+ * glossary-linked term either, so the gloss goes where the word is.
+ */
 const GLOSSARY_SEARCH_HINT =
-  'Search terms, aliases & definitions — e.g. publish, applied, bps, ownership';
-
-/** `**bold**`, `*italic*` and `` `code` `` in the term prose. No data ever reaches innerHTML. */
-const GLOSSARY_MARKS = /\*\*([^*]+)\*\*|\*([^*]+)\*|`([^`]+)`/g;
-
-function glossaryRich(marked: string): (Node | string)[] {
-  const out: (Node | string)[] = [];
-  let last = 0;
-  for (const match of marked.matchAll(GLOSSARY_MARKS)) {
-    const at = match.index;
-    if (at > last) out.push(marked.slice(last, at));
-    if (match[1] != null) out.push(el('b', { text: match[1] }));
-    else if (match[2] != null) out.push(el('i', { text: match[2] }));
-    else out.push(el('code', { text: match[3] ?? '' }));
-    last = at + match[0].length;
-  }
-  if (last < marked.length) out.push(marked.slice(last));
-  return out;
-}
-
-function glossaryMetaRow(label: string, marked: string, valueClass?: string): HTMLElement {
-  return el('div', { class: 'glsmeta' + (valueClass ? ' glsmean' : '') }, [
-    el('span', { class: 'glslab', text: label }),
-    el('span', { class: valueClass ?? '' }, glossaryRich(marked)),
-  ]);
-}
-
-function glossaryPriceTable(term: GlossaryTerm): HTMLElement | null {
-  if (!term.priceTable?.length) return null;
-  const table = el('table', { class: 'mini glspxtbl' });
-  table.append(
-    el('thead', {}, [
-      el('tr', {}, [
-        el('th', { class: 'l', scope: 'col', text: 'Price column' }),
-        el('th', { scope: 'col', text: 'Value' }),
-        el('th', { class: 'l', scope: 'col', text: 'How it is built' }),
-      ]),
-    ])
-  );
-  const body = el('tbody');
-  for (const row of term.priceTable) {
-    body.append(
-      el('tr', {}, [
-        el('td', { class: 'l' }, [
-          el('span', { class: 'glskey', text: row.column }),
-          row.note ? el('span', { class: 'sm', text: row.note }) : null,
-        ]),
-        el('td', { class: 'px mono', text: row.value }),
-        el('td', { class: 'l' }, [
-          document.createTextNode(row.build),
-          el('span', { class: 'sm', text: row.detail }),
-        ]),
-      ])
-    );
-  }
-  table.append(body);
-  return table;
-}
-
-interface GlossaryCardRef {
-  slug: string;
-  haystack: string;
-  node: HTMLElement;
-}
-
-function glossaryCard(term: GlossaryTerm, section: GlossarySection): GlossaryCardRef {
-  const slug = glossarySlug(term.term);
-  const headingId = `glossary-term-${slug}`;
-  const card = el('article', {
-    class: `glscard g-${section.key}${term.wide ? ' wide' : ''}`,
-    'data-term': slug,
-    'aria-labelledby': headingId,
-    tabindex: '0',
-  });
-
-  const heading = el('h4', { class: 'glsterm', id: headingId }, [document.createTextNode(term.term)]);
-  for (const alias of term.aliases) heading.append(el('span', { class: 'glsalias', text: alias }));
-
-  card.append(
-    el('span', { class: 'glstag', text: section.tag }),
-    heading,
-    // The definition. This element is what parity reads, and its text is the original's verbatim.
-    el('div', { class: 'glsmeta glsmean' }, [
-      el('span', { class: 'glslab', text: 'Meaning' }),
-      el(
-        'span',
-        { class: 'glsplain', 'data-parity': `glossary.term.${slug}.definition` },
-        glossaryRich(term.plain)
-      ),
-    ]),
-    glossaryMetaRow('Source', term.source),
-    glossaryMetaRow('Method', term.method)
-  );
-
-  const priceTable = glossaryPriceTable(term);
-  if (term.example || priceTable) {
-    const worked = el('div', { class: 'glsex' }, [
-      el('div', {
-        class: 'glsexh',
-        text: 'Worked example' + (term.exampleLabel ? ' · ' + term.exampleLabel : ''),
-      }),
-    ]);
-    if (priceTable) worked.append(priceTable);
-    if (term.example) worked.append(el('p', { class: 'glsexp' }, glossaryRich(term.example)));
-    card.append(worked);
-  }
-  return { slug, haystack: glossaryHaystack(term), node: card };
-}
+  'Search terms, aliases & definitions — e.g. publish, applied, bps (basis points), ownership';
 
 interface GlossarySectionRef {
   key: GlossaryCategory;

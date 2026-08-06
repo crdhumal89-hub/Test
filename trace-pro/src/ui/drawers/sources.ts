@@ -270,7 +270,19 @@ export function mountSourcesDrawer(host: HTMLElement, store: Store): () => void 
             ],
             [
               'simulator.json',
-              'SIM',
+              /*
+               * Glossed HERE, in the cell, not only in the paragraph above the table.
+               *
+               * This is the original's name for this DATASET. The rubric's R2 denylist also carries
+               * `sim`, but that token is the original's TAB id — a different referent that happens to
+               * share three letters, and one this rebuild renders nowhere, because the lens is called
+               * "Simulator". While the only gloss was the prose above ("… and SIM (simulator)"), the
+               * crawler was discharging the cell with a definition of a different thing, several
+               * hundred characters upstream, and passing. Putting the gloss in the cell distinguishes
+               * the two referents by construction: this row's file is `simulator.json`, so
+               * "(simulator)" can only be read as naming that dataset.
+               */
+              'SIM (simulator)',
               `${formatCount(Object.keys(simulator.funds).length)} funds, ${formatCount(simulator.edges.length)} ownership edges`,
               'Simulator lens',
             ],

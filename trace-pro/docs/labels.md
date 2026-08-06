@@ -16,8 +16,12 @@ Two rules, both mechanical:
 Where the vocabulary changes, `docs/rename-map.json` is the machine-checked declaration — a frozen
 per-key statement of the exact string the rebuild must render, guarded by an assertion that every
 numeric token in the string survives unchanged ("words may change; digits may not"). It covers the
-38 baseline keys whose text carries a retired term; the other 982 stay byte-identical to
-`tests/baseline.json`. This file is the human-readable half of the same contract: what each label
+**42** baseline keys whose text carries a retired term — `docs/rename-map.json` → `keys` has 42 entries
+and `npm run gate:parity` reports "42 declared-label keys"; the other **978** stay byte-identical to
+`tests/baseline.json` and are compared strictly. (This paragraph said 38 and 982, which matched neither
+the map nor the gate. `node scripts/classify-keys.mjs` reports 41 keys that *must* be declared because
+their baseline text carries a retired term; the 42nd, `chrome.footer_assertion`, is declared because §M
+required the over-claiming footer sentence to be rewritten, not because a term retired.) This file is the human-readable half of the same contract: what each label
 means, and what precision it is rendered at. Where the two could ever disagree, the rename map wins,
 because the gate reads it.
 
@@ -184,7 +188,7 @@ as a parity diff rather than as a quiet reformat.
 | **Unit prices** | 6 dp, always — a publish price is a six-decimal figure even when it is 1.000000 | leading `-` | `formatPrice` (plain) / `formatPriceGrouped` (thousands-separated) |
 | **Unit-price change** | 6 dp, explicit sign | `-0.001234` | `formatPriceDelta` |
 | **bps** | 1 dp, explicit sign, `bps` suffix — `+18.7 bps` | sign carries it | `formatBpsOf` (from a gap and a base) / `formatBpsSigned` (bare column) |
-| **bps, 0 dp** — only two places, both inherited: the compact chips the original renders at 0 dp, and the plain-English break sentences (`ltFlag`, line 1082, uses `.toFixed(0)` inside prose) | 0 dp, explicit sign | sign carries it | `formatBpsCompact`; `describe()` in `src/ui/screens/reconciliation/detail.ts` |
+| **bps, 0 dp** — three inherited places, each pinned by a strict baseline key: the compact bridge chips, the price table's bps column, and the plain-English break sentences (`ltFlag`, line 1082, uses `.toFixed(0)` inside its prose at 1087–1088) | 0 dp | E1 signed, with a ` bps` suffix; E2 unsigned and unsuffixed, because that is what the baseline pins — the suffix is written outside it in the break sentences | E1 `formatBpsCompact` (`pricing/bridge.ts`); E2 `formatBpsInteger` (`pricing/price-table.ts`, `renderNodeDetail` in `reconciliation/detail.ts`, and the worked example in `glossary/terms.ts`). Both exceptions are declared in `src/domain/money.ts`; see `docs/halt-r17.md`. There is no `describe()` in `detail.ts` — this cell used to name one |
 | **Percentages** (direct, effective, cumulative share) | 2 dp, always both decimals, `%` suffix — `99.56%`, `3.10%` | leading `-` | `formatPercent` |
 | **Unit counts** (units held, units outstanding) | 0 dp, thousands separators, rounded at the boundary only — the underlying figure keeps its cents | leading `-` | `formatCount` |
 | **Nothing to show** | em dash `—`, never `0`, never blank inside a figure cell | — | `formatPrice`, `formatUsdCompact*`, `formatUsdCents*` return `—`; the tree renders `—` for an absent NAV and for a difference under $1 |

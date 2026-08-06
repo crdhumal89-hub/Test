@@ -2,7 +2,7 @@
  * Reading an uploaded Position Report into the two models every screen is drawn from.
  *
  * Two ports, both from the original: `buildMaps` (1048) becomes `positionIndexFromRows`, and
- * `buildModel` (1059) becomes `lookthroughFromPositions`. `domain/repricing.ts` already carried
+ * `buildModel` (1059) becomes `lookthroughFromPositions`. `domain/repricing-positions.ts` carries
  * `repriceFromPositions`, which is the other half; between them an uploaded report replaces the
  * look-through hierarchy AND every value derived from it, so the tree, the waterfall, the prices and
  * the walk cannot disagree with each other after an upload. That is the whole reason the tree is
@@ -14,7 +14,7 @@
 import type { LookthroughFixture, LookthroughNode, NodeKind } from '../types.js';
 import type { PositionIndex } from '../lookthrough.js';
 import { lookThroughValue, ownershipShare } from '../lookthrough.js';
-import { normaliseCell, normaliseHeader, parseFigure } from './cells.js';
+import { isBlankFigure, normaliseCell, normaliseHeader, parseFigure } from './cells.js';
 
 /** The columns the report is read through. Each name is matched header-insensitively. */
 const POSITION_COLUMNS = {
@@ -51,17 +51,61 @@ export function positionColumns(header: readonly string[]): PositionColumnMap {
   };
 }
 
+/** The four columns the report is read through, with the names the refusals use for them. */
+const POSITION_NEEDED = [
+  ['fundCode', 'Fund Code'],
+  ['spvCode', 'SPV Fund Code'],
+  ['quantity', 'Quantity VPM'],
+  ['marketValue', 'MV USD'],
+] as const satisfies readonly (readonly [keyof PositionColumnMap, string])[];
+
+/** Which of those four carry figures rather than codes. */
+const POSITION_FIGURES = ['quantity', 'marketValue'] as const;
+
+/**
+ * What is wrong with ONE row under the header, in plain language — or null.
+ *
+ * Two faults, and both of them used to read as a row of zeros. A row that STOPS before the columns
+ * this report is read through is a truncated file: the cells past its end come back undefined, which
+ * `parseFigure` answers null to and the index turns into 0, so a file cut off mid-row landed a fund
+ * holding nothing at all and every screen redrew around it. A row with TEXT where a quantity or a
+ * market value belongs is the same fabrication with a different cause. Neither can be distinguished
+ * from a real zero once it is in the index, so both are named here instead.
+ *
+ * A row that is entirely empty is a blank line in the middle of a file, which is not a fault.
+ */
+function positionRowProblem(row: readonly string[], columns: PositionColumnMap, at: number): string | null {
+  if (row.every((c) => normaliseCell(c) === '')) return null;
+  for (const [key, label] of POSITION_NEEDED) {
+    if (row.length <= columns[key]) {
+      return (
+        `row ${at} stops before its ${label} column — it carries ${row.length} cells where ` +
+        `${label} is column ${columns[key] + 1}, so the file looks truncated`
+      );
+    }
+  }
+  for (const key of POSITION_FIGURES) {
+    const raw = row[columns[key]];
+    if (isBlankFigure(raw) || parseFigure(raw) != null) continue;
+    const label = POSITION_NEEDED.find(([k]) => k === key)?.[1] ?? key;
+    return `row ${at} has “${String(raw ?? '').trim()}” in its ${label} column, which is not a figure`;
+  }
+  return null;
+}
+
 /** What a report has to carry before it can be read at all, in plain language — or null. */
 export function positionReportProblem(rows: readonly string[][]): string | null {
   const header = rows[0];
   if (!header || rows.length < 2) return 'the file has no rows under its header';
   const columns = positionColumns(header);
-  const missing: string[] = [];
-  if (columns.fundCode < 0) missing.push('Fund Code');
-  if (columns.spvCode < 0) missing.push('SPV Fund Code');
-  if (columns.quantity < 0) missing.push('Quantity VPM');
-  if (columns.marketValue < 0) missing.push('MV USD');
+  const missing = POSITION_NEEDED.filter(([key]) => columns[key] < 0).map(([, label]) => label);
   if (missing.length) return `it carries no ${missing.join(', no ')} column`;
+  for (let i = 1; i < rows.length; i += 1) {
+    const row = rows[i];
+    if (!row) continue;
+    const problem = positionRowProblem(row, columns, i + 1);
+    if (problem) return problem;
+  }
   return null;
 }
 

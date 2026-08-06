@@ -207,7 +207,13 @@ export function structureRenderLegend(): HTMLElement {
     el('span', {
       class: 'status-line',
       text: 'Node size ∝ look-through value. Drag · scroll to zoom · hover to highlight.',
-      title: 'Derived MV is the look-through value at current marks',
+      /*
+       * The expansion comes FIRST, inside the tooltip. `.graph-legend`'s textContent is pinned by
+       * `structure.legend`, so nothing can be added to what is rendered here, and an attribute cannot
+       * be a glossary-linked term — so R2's route (a) has to be satisfied within this one string, and
+       * it is the reader's whole reading unit anyway.
+       */
+      title: 'MV = market value. “Derived MV” was the original’s name for this look-through value at current marks.',
     })
   );
   return legend;

@@ -235,7 +235,7 @@ describe('R9 · every truncation length is stated once', () => {
     // rather than in production. Located by content, not by line, so unrelated edits above them
     // cannot turn a real regression into a passing test or a passing state into a failure.
     const holders = rulesGrep(/\.slice\(\s*0\s*,\s*TRUNCATE\.simHolders\s*\)/);
-    expect(rulesWhere(holders)).toEqual(['src/domain/repricing.ts:277']);
+    expect(rulesWhere(holders)).toEqual(['src/domain/repricing-positions.ts:152']);
     const leaves = rulesGrep(/\.slice\(\s*0\s*,\s*TRUNCATE\.simLeaves\s*\)/);
     expect(rulesWhere(leaves)).toEqual([
       'src/ui/screens/diagnose/simulator/shock-panel.ts:169',
@@ -254,7 +254,7 @@ describe('R9 · every truncation length is stated once', () => {
     );
     expect(rulesWhere(raw)).toEqual([
       // string-length cap (10) on the generated product code, not a row limit.
-      'src/domain/repricing.ts:306',
+      'src/domain/repricing-positions.ts:21',
       // string-length cap (14) on an entity code drawn into the SVG.
       'src/ui/screens/diagnose/simulator/graph.ts:217',
       // string-length caps (24 and 40) on a security id and its name in the same table.

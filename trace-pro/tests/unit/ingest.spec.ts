@@ -16,7 +16,7 @@ import {
   positionIndexFromRows,
   positionReportProblem,
 } from '../../src/domain/ingest/position-report.js';
-import { repriceFromPositions } from '../../src/domain/repricing.js';
+import { repriceFromPositions } from '../../src/domain/repricing-positions.js';
 
 describe('cells', () => {
   it('splits quoted commas and doubled quotes', () => {
@@ -75,9 +75,23 @@ describe('NAV report', () => {
     expect(readNavReportText('Some,Meeting,Minutes\n1,2,3\n').kind).toBe('no-layout');
   });
 
-  it('takes the first value per code, so a subtotal row cannot overwrite its fund', () => {
-    const result = readNavReportText('Fund Code,ENDING_NAV\nASCON,10\nASCON,999\n');
-    expect(result.kind === 'applied' && result.navByFund).toEqual({ ASCON: 10 });
+  /**
+   * The original took the first value per code and said nothing, which protected the pivot case —
+   * a subtotal row restating a one-fund group — and silently resolved the case where two rows
+   * genuinely disagree. Repeating a figure is still tolerated, because reading the same number twice
+   * cannot change an answer; disagreeing is now named, with the row and both figures, because the
+   * one that used to win was whichever the export happened to write first.
+   */
+  it('tolerates a repeated figure and refuses two that disagree, by name', () => {
+    const same = readNavReportText('Fund Code,ENDING_NAV\nASCON,10\nASCON,10.00\n');
+    expect(same.kind === 'applied' && same.navByFund).toEqual({ ASCON: 10 });
+    expect(readNavReportText('Fund Code,ENDING_NAV\nASCON,10\nASCON,999\n')).toEqual({
+      kind: 'duplicate-fund',
+      code: 'ASCON',
+      first: 10,
+      second: 999,
+      row: 3,
+    });
   });
 
   it('joins a whitespace-dirty, case-variant feed code onto the model’s own spelling', () => {

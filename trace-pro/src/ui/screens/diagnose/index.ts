@@ -11,9 +11,24 @@ import type { Store } from '../../../state/store.js';
 import { LENSES } from '../../chrome/shell.js';
 import { el, replace, qs, activate } from '../../primitives/dom.js';
 import { createCombobox, type ComboNotice, type ComboOption } from '../../primitives/combobox.js';
+import { termBindGlossary, termVocabularyLine } from '../../primitives/term.js';
 
 export const DIAGNOSE_QUESTION =
   'Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?';
+
+/**
+ * The vocabulary of the SHELL, not of a lens — and it has to live here rather than in the four lens
+ * lines below, because everything it names is rendered ABOVE them.
+ *
+ * `SPV` is the kind badge on every non-terminal option in the entity list (41 of them on this
+ * product), the search box's placeholder and its own empty-state sentence. `DC` sits inside three
+ * registered entity names the list shows as option details ("AP Sports Debt Holdings II (DC), L.P.").
+ * All of that is inside `#diagnose-subject`, which a reader meets before any lens mounts, so a lens
+ * vocabulary line could never be the first use of either — R2 measures first use by position, and
+ * these were bare on every lens until this line existed. The lens lines now carry only what each
+ * lens adds.
+ */
+const DIAGNOSE_VOCABULARY = ['spv', 'double_count'];
 
 /** A lens is mounted lazily and told to tear down when the user leaves it. */
 export type LensMount = (host: HTMLElement, store: Store) => (() => void) | void;
@@ -36,9 +51,11 @@ export function mountDiagnose(
   universeAccess: DiagnoseUniverseAccess,
   lenses: DiagnoseLenses
 ): () => void {
+  termBindGlossary(store);
   replace(
     host,
     el('p', { class: 'screen-question', id: 'diagnose-question', text: DIAGNOSE_QUESTION }),
+    termVocabularyLine(DIAGNOSE_VOCABULARY, 'diagnose-vocabulary'),
     el('div', { class: 'diagnose-subject', id: 'diagnose-subject' }),
     el('div', { class: 'lens-tabs', id: 'lens-tabs', role: 'tablist', 'aria-label': 'Diagnostic lenses' }),
     // No question line here: each lens renders its own as the first text in its content region,

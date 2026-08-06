@@ -29,6 +29,7 @@ draws nothing there (e.g. the role chip on a mid-level fund).
 
 An entry's `screen`, `view` (`before`/`after`) and `steps` form a *scene*. Every scene gets a
 **fresh browser context**, so `sessionStorage` cannot leak between scenes or runs. Steps are the
-documented default interactions, implemented in `scripts/snapshot.mjs`: `expandAll`,
+documented default interactions, implemented in `scripts/lib/steps.mjs` (`applyStep`, which
+`scripts/snapshot.mjs` imports and calls per scene) — eleven cases, exactly this list: `expandAll`,
 `ltRow:CODE`, `rfxRow:CODE`, `rfxView:table|walk`, `stageFullscreen:str|sim`, `simFullReprice`,
 `ownRow:N`, `ownSearch:CODE`, `issScope:LABEL`, `glsSearch:Q`, `glsChip:GROUP`.

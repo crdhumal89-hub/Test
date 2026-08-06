@@ -18,8 +18,11 @@ and four were reduced to one:
 | `reconciliation/detail.ts` typed it twice, in prose | calls `formatBpsInteger` |
 | `glossary/terms.ts` typed it | calls `formatBpsInteger` |
 
-`grep -rn 'toFixed(0)' src --include=*.ts` now returns nothing outside `src/domain/money.ts`, where
-the two exceptions are declared and each names the strict baseline keys that force it. Verified after
+`grep -rn 'toFixed(0)' src --include=*.ts` now returns no *call* outside `src/domain/money.ts`, where
+the two exceptions are declared and each names the strict baseline keys that force it. It returns four
+lines: the one live call at `money.ts:116`, the E1 formatter at `money.ts:103`, and two comments —
+`money.ts:112`, whose "currently inlines `bps.toFixed(0)`" is itself now stale, and
+`price-table.ts:102`, which records the routing. Verified after
 the change: parity 1020/1020, 978 strict, 42 declared-label, 0 digit violations, **0 diffs** — the
 rendered strings are byte-identical, which is the point. What remains is a precision that is wrong by
 the rubric's bar and right by the baseline's, decided in one place instead of four.
@@ -40,7 +43,7 @@ I am not touching either.
 `ASCHON`'s repricing gain-or-loss in basis points is computed by one expression, written identically
 in two files:
 
-- `src/ui/screens/pricing/price-table.ts:101` — `const bps = bpsOf(fund.pnlLevel, fund.nav);`
+- `src/ui/screens/pricing/price-table.ts:109` — `const bps = bpsOf(fund.pnlLevel, fund.nav);`
 - `src/ui/screens/pricing/repricing-walk.ts:133` — `const bps = bpsOf(fund.pnlLevel, fund.nav);`
 
 The frozen baseline pins the rendered result of that one expression twice, at two precisions:

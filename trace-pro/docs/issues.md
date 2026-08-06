@@ -11,7 +11,8 @@ is omitted here; where an item is still open it says so, with an owner.
 - **Carried** — the condition still exists, deliberately, with a reason and an owner. "Carried" is
   never a synonym for "forgotten": four of the carried items below are carried *because* changing
   them would change a reported figure, which this run is forbidden to do.
-- **Open** — found while writing this register, not yet dispositioned. Two rows.
+- **Open** — needs a decision from an owner outside this rebuild. One row (O1) plus the two unassigned
+  data referrals in §L and §M; the standing count at the foot of the file is the list.
 
 Original under study: `reference/TRACE-Pro-original.html`, 934,142 bytes, 2,520 lines, read-only.
 Line numbers below are lines of that file and were re-verified against it for this document, not
@@ -29,7 +30,10 @@ checked 34 files (20 shipped UI sources)
 STRUCTURE CHECK PASSED
 ```
 
-(The identifier count rises as screens land; the assertion that matters is "all unique".)
+(The file and identifier counts rise as screens land — two runs an hour apart during this revision
+reported 102 then 105 files and 557 then 564 identifiers — so no snapshot of them stays true and none is
+quoted as current. What this register turns on is invariant and was re-measured: "all unique", inline
+`on*=` **0**, `!important` **0**, `STRUCTURE CHECK PASSED`.)
 
 ---
 
@@ -111,11 +115,26 @@ sequence in `docs/ledger.md`.
 entirely separate `GMAX` subsystem (~25 `gmax*` functions from line 2131). Two mechanisms, one
 behaviour.
 
-**Resolved.** The owning screen or lens is built; see `src/ui/screens/`.
-built (`docs/ledger.md`, Done items 3 and 4), and `grep -rni 'fullscreen|rfxfs|gmax' src/` returns
-nothing, so the rebuild currently has zero implementations rather than one. The approved landing
-place is a single `stageFullscreen.*` module (spec §3.2). Owner: the rebuild engineer, at the
-Structure-lens step. This row must be re-graded, not assumed, when that lens lands.
+**Resolved — one mechanism, re-graded against the built lens.** This row previously said the rebuild
+had *zero* implementations, on the strength of `grep -rni 'fullscreen|rfxfs|gmax' src/` returning
+nothing. That grep is a literal string search, not an alternation — `grep -rniE` is the command, and it
+returns four lines, all in `src/ui/screens/diagnose/structure/index.ts`. There is exactly one
+implementation:
+
+- `toggleFull` in `structure/index.ts` swaps the stage's inline style for `STRUCTURE_FULLSCREEN_STYLE`
+  (`index.ts:48`, `position:fixed;inset:0;width:100vw;height:100vh`), reveals `#structure-readout`, and
+  flips the button's `aria-pressed`; `src/ui/styles/lenses.css:24` exempts that state from the stage's
+  40vh clamp. The parity scene reaches it through `data-parity-scene="step:stageFullscreen:str"`
+  (`scripts/lib/steps.mjs:106`).
+- Nothing else in `src/` has a full-screen control: `rfxfs` and `GMAX` have no counterpart, and the
+  Pricing screen and the Simulator lens have none — `grep -rniE 'fullscreen|rfxfs|gmax' src/` finds no
+  hit outside that one file.
+
+So the defect — two mechanisms for one behaviour — is gone, at one mechanism rather than none. Two
+things are worth stating rather than implying: the code sits inline in the Structure lens, not in the
+single `stageFullscreen.*` module the spec named (§3.2), and the Simulator's full screen was not carried
+over at all, which is a scope fact and not a fix. Owner: the rebuild engineer, if the module boundary is
+wanted.
 
 ## F. Four independent copies of the materiality rule
 
@@ -130,7 +149,12 @@ export const MATERIAL_USD = 250_000;
 export const MATERIAL_BPS = 50;
 ```
 
-`grep -rn '250_000\|250000' src/` returns exactly one line. The warn/bad bps bands (`WARN_BPS` 25,
+`grep -rn '250_000\|250000' src/` returns **two** lines, and only one of them is executable:
+`src/domain/exceptions.ts:12` above, plus `src/glossary/terms-nav.ts:120`, where the threshold appears
+inside an `alsoFind` search-alias string on the glossary card that defines the rule. A card that *states*
+the rule is documentation, not a second copy of it, which is why `scripts/check-issues.mjs` skips
+`src/glossary/` when it enforces "one definition" and why `tests/unit/rules.spec.ts` asserts the floor
+"appears in exactly one executable place in `src/`". The warn/bad bps bands (`WARN_BPS` 25,
 `BAD_BPS` 50) and every top-N truncation the original scattered inline (8, 10, 14, 40, 200, and the
 simulator's 8 / 14) are likewise single-sourced there, as `TRUNCATE`.
 
@@ -180,8 +204,11 @@ at 0 on every lint run.
 10 `console.warn` sites wrapping swallowed failures, plus bare `catch(_e){}`, so a broken panel
 looked like an empty panel; and one `alert()` when the spreadsheet library was missing.
 
-**Resolved in what exists.** `grep -rn 'console\.' src/` and `grep -rn 'alert(' src/` both return
-nothing. `no-empty` with `allowEmptyCatch: false` is an error-level ESLint rule
+**Resolved in what exists.** `grep -rn 'console\.' src/` returns two lines and `grep -rn 'alert(' src/`
+returns one, and all three are comments naming this defect —
+`src/ui/screens/diagnose/structure/graph.ts:217` and `src/ui/screens/diagnose/simulator/data-state.ts:56`
+(*"`src/` may not call `console.*`"*) and `src/export/excel.ts:6` (the original's `alert()`). There is
+no call site of either. `no-empty` with `allowEmptyCatch: false` is an error-level ESLint rule
 (`eslint.config.js`). Fixture failures raise a typed `FixtureError` carrying the URL and the
 underlying cause (`src/data/load.ts`), and `src/main.ts` renders it as a plain-language error state
 with a "Try again" action **and then re-throws**, so the headless suite sees a real failure instead
@@ -276,7 +303,7 @@ original wording above the restatement so the substitution is auditable).
 
 | # | Item | Disposition |
 |---|---|---|
-| O1 | `renderBreakout('APPOURI')` hard-coded at line 2498 — the Ownership screen opens on Apollo Pour I, a demo choice, in shipped code | **Open.** The literal is gone: the opening entity is now `AppState.selectedEntity`, seeded from `StoreInit.defaultPosition` (`src/state/store.ts`). But `src/main.ts` currently seeds it from the first `kind === 'vehicle'` node of the look-through tree, which resolves to **`ASCON`**, not `APPOURI` — and `APPOURI` is not in that tree at all, it lives in `universe.json`. `tests/baseline.json` pins the Ownership lens on `APPOURI` (`ownership.APPOURI.*`), so as seeded this will not reach parity. Spec Q5 approved a fixture field `universe.defaultPosition` seeded to `APPOURI`; that field does not exist yet. Owner: the rebuild engineer, before the Ownership lens is graded. |
+| O1 | `renderBreakout('APPOURI')` hard-coded at line 2498 — the Ownership screen opens on Apollo Pour I, a demo choice, in shipped code | **Open, on a narrower point than this row used to state.** The literal is gone: the opening entity is `AppState.selectedEntity`, seeded from `StoreInit.defaultPosition` (`src/state/store.ts:120`). The reason recorded here before — that `src/main.ts` seeded it from the first `kind === 'vehicle'` node, resolving to `ASCON`, and that spec Q5's fixture field "does not exist yet" — was **false**: `data/manifest.json` carries `"defaultPosition": "APPOURI"` and `src/main.ts:41` reads it, so the seed is `APPOURI`, the position `tests/baseline.json` pins the Ownership lens on, and `npm run gate:parity` resolves all 1020 keys including `ownership.APPOURI.*`. What is still open is a different defect: `APPOURI` is a universe position and not a fund in this product's cascade, so it cannot be *shocked*. The Simulator lens falls back to the largest top-level feeder locally without writing to the store; the clean fix is a second manifest field (e.g. `defaultShockSubject`). See `docs/first-run.md`, final section. Owner: the rebuild engineer. |
 | O2 | The `lt` help paragraph restates glossary term #22 ("The additive reconciliation") verbatim in substance — the definition lives in two places | **Carried, by design.** The Reconciliation screen keeps one plain-language paragraph (`renderHelp` in `src/ui/screens/reconciliation/index.ts`) because R2 requires each term to be expanded on first use *on that screen*; the glossary is the single definition of record and is one action away from every screen (R7). The duplication is now one paragraph against 35 glossary terms, not inline help on two screens. |
 | O3 | `styleFocus()` and `strMakePills()` — single-call helpers on `str` | **Resolved.** The Structure lens is built (`src/ui/screens/diagnose/structure/`), and both helpers are folded into one render across `index.ts`, `graph.ts`, `layout.ts` and `controls.ts`. |
 | O4 | The Structure "Dynamic" layout is the only `d3.forceSimulation` on the screen — a tick-driven async layout, and the one genuine snapshot hazard | **Carried, and pinned.** Vertical is the default and is what the harness captures; Dynamic is exercised for crash-freedom only, never for value parity (spec §5.4). |
@@ -284,7 +311,7 @@ original wording above the restatement so the substitution is auditable).
 | O6 | `simBaseVal()` / `simBasePx()` re-derive Before/After pricing that `liveMVof()` / `revMVof()` already derive for `lt` | **Resolved.** The Simulator lens is built (`src/ui/screens/diagnose/simulator/`) and uses the single definitions in `src/domain/cascade.ts` and `src/domain/reconciliation.ts`; it derives no pricing of its own. |
 | O7 | `SIM.maxlevel` and `REVBASE.maxlevel` dead | **Carried — data of record.** Counted in §B; retained in the fixtures because they are somebody's data lineage and cost 2 bytes. Owner: whoever owns the extract that produced them. |
 | O8 | `UNI.counts` dead; the Issue Log screen is otherwise honest and needs the least work | **Carried — data of record.** Counted in §B; `UNI.counts.selfloops` reports 64 where the bucket has 43 rows and `UNI.edges` ships 0 self-referencing edges, so two of the three figures are stale. Nothing on screen reads them. Owner: the upstream extract. The 200-row bucket cap is now `TRUNCATE.issueRows`, defined once. |
-| O9 | The glossary — the best-written part of the application — is the seventh tab, reachable only by leaving the screen that raised the question, and its content is duplicated as inline help on `lt` and `rfx` | **Carried, with the fix designed and half-built.** Approved IA (Alternative B) demotes it to a drawer reachable in one action from everywhere, including by the `G` key (`wireShell` in `src/ui/chrome/shell.ts` binds it today; the buttons are rendered in the masthead). The drawer body and the 35 terms are mid-build (`src/glossary/terms.ts`). Not gradeable against R7 until it lands. |
+| O9 | The glossary — the best-written part of the application — is the seventh tab, reachable only by leaving the screen that raised the question, and its content is duplicated as inline help on `lt` and `rfx` | **Resolved, re-graded against the shipped drawer.** This row used to say the drawer body and the terms were "mid-build"; they ship. Approved IA (Alternative B) demoted the glossary to a drawer reachable in one action from everywhere: `#open-glossary` in the masthead (`src/ui/chrome/shell.ts:162`) or the `G` key (`shell.ts:367`), with the body in `src/ui/drawers/glossary.ts` (397 lines) and all 35 terms in `src/glossary/terms*.ts` — `GLOSSARY_TERM_COUNT = 35` (`terms.ts:222`), `tests/e2e/rubric.spec.ts:212` asserts all 35 are present, and the parity gate resolves `glossary.term.__row_count = "35"` plus 41 other `glossary.*` keys against the rebuilt app. The one duplication that remains is the Reconciliation help paragraph, carried deliberately as O2. |
 | O10 | The Before/After control is global and re-renders most screens; it is hidden on `str`, `iss`, `gls` by `pmScopeUI()` because pricing does not move those | **Resolved in the chrome.** `renderViewNote` in `src/ui/chrome/shell.ts` shows the basis wherever any figure depends on it and hides it on the lenses where nothing does (R12); the active basis is named in words ("Current marks" / "Repriced"), not as `a`/`b`. |
 | O11 | The After view relabels columns rather than renaming quantities — `renderTable()` (line 1354) swaps `Current px` → `Applied px`, `Derived MV` → `Repriced MV`, `Repricing P&L` → `P&L (reconciled)` — so one label covers two quantities and one quantity answers to two labels | **Carried into a documented rule.** The label→quantity mapping, and the two collisions it removes, are `docs/labels.md`. One live gap is recorded there: the hierarchy's look-through column keeps the sub-label "current marks" in the repriced view while `liveValueOf` returns the repriced quantity. |
 
@@ -294,9 +321,13 @@ original wording above the restatement so the substitution is auditable).
 
 | Disposition | Rows |
 |---|---|
-| Resolved, with a file or a machine check named | A (5 bindings), C, F, G, H, I, J, K, N, O10 |
-| Carried, with a reason and a named owner or owning step | B, D, E, L, M, O2–O9, O11 |
-| Open, needs a decision from an owner outside this rebuild | the two unassigned data referrals in L and M — the $2,785.79 dual product NAV, and the five non-conserving entities |
+| Resolved, with a file or a machine check named | A (5 bindings), C, E, F, G, H, I, J, K, N, O3, O6, O9, O10 |
+| Carried, with a reason and a named owner or owning step | B, D, L, M, O2, O4, O5, O7, O8, O11 |
+| Open, needs a decision from an owner outside this rebuild | O1 (a shockable default for the Simulator), plus the two unassigned data referrals in L and M — the $2,785.79 dual product NAV, and the five non-conserving entities |
+
+This table is read off the dispositions above, and it had drifted from them: it listed E, O3, O6 and O9
+as carried while each of those sections says **Resolved**, and it omitted O1 from the open row. Every
+row is now the disposition its own section states.
 
 Nothing in `docs/redesign-spec.md` §1.1–1.8 is absent from this register, and that is asserted
 mechanically rather than by reading: `node scripts/check-issues.mjs` fails if an inventoried defect

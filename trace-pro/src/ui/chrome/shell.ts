@@ -14,21 +14,31 @@ import { formatUsd } from '../../domain/money.js';
 import { mountGlossaryDrawer } from '../drawers/glossary.js';
 import { mountSourcesDrawer } from '../drawers/sources.js';
 
-export const SCREENS: { id: ScreenId; label: string; question: string }[] = [
+/**
+ * `question` is the sentence the screen renders (R1). `hint` is the nav link's TOOLTIP, and it is a
+ * separate string for one reason: an attribute holds text, not elements, so a tooltip cannot take
+ * R2's route (b) — it cannot be a glossary-linked term. Route (a) is the only one open to it, so any
+ * abbreviation it uses is expanded inside the tooltip itself. Only the Reconciliation question
+ * contains one; the other two hints are their questions, unchanged.
+ */
+export const SCREENS: { id: ScreenId; label: string; question: string; hint: string }[] = [
   {
     id: 'reconciliation',
     label: 'Reconciliation',
     question: 'Does NAV agree with what the product holds, and where is the difference?',
+    hint: 'Does NAV (net asset value) agree with what the product holds, and where is the difference?',
   },
   {
     id: 'pricing',
     label: 'Pricing',
     question: 'What unit price do I publish today, and what does repricing do to value?',
+    hint: 'What unit price do I publish today, and what does repricing do to value?',
   },
   {
     id: 'diagnose',
     label: 'Diagnose',
     question: 'Why is this entity off — how is it wired, who owns it, is its data sound, what if it moves?',
+    hint: 'Why is this entity off — how is it wired, who owns it, is its data sound, what if it moves?',
   },
 ];
 
@@ -220,7 +230,7 @@ function renderNav(store: Store): void {
       'data-screen': screen.id,
       'data-parity-scene': `screen:${SCREEN_SCENE[screen.id]}`,
       'aria-current': current ? 'page' : null,
-      title: screen.question,
+      title: screen.hint,
     });
     link.append(el('span', { class: 'nav-label', text: screen.label }));
     list.append(el('li', {}, [link]));
@@ -263,13 +273,21 @@ function renderViewNote(store: Store): void {
   // The two headline figures ride along, as they did in the original: a controller reading the
   // basis should see what that basis costs without moving.
   const pricingDifference = store.state.view === 'after' ? 0 : store.repricing.dPricing;
+  /*
+   * `termAnnotate` on both: this band is chrome, so its `NAV` and its `SPV` are the FIRST a reader
+   * meets on every basis-dependent screen — earlier than any screen's own vocabulary line, which is
+   * why leaving them bare could not be discharged further down (R2). It adds and removes no
+   * characters, so `chrome.pricing_view_note` still reads byte for byte what the baseline pins.
+   */
   replace(
     host,
     el('span', { class: 'view-tag', text: note.tag }),
-    el('span', { class: 'view-text', text: note.text }),
-    el('span', { class: 'view-figures' }, [
-      `Pricing difference ${formatUsd(pricingDifference)} · NAV ${formatUsd(store.repricing.N)}`,
-    ])
+    el('span', { class: 'view-text' }, termAnnotate(note.text)),
+    el(
+      'span',
+      { class: 'view-figures' },
+      termAnnotate(`Pricing difference ${formatUsd(pricingDifference)} · NAV ${formatUsd(store.repricing.N)}`)
+    )
   );
 }
 

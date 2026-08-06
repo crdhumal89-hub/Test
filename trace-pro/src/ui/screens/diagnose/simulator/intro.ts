@@ -33,17 +33,22 @@ export const SIMULATOR_QUESTION =
  * `<button>`, and the rest sit inside graph nodes, table headers and chips that are already
  * controls (R6c forbids a control inside a control). So this lens leans on R2's route (a) — one
  * visible expansion, rendered before every use of it — and this is that line.
+ *
+ * `SPV` and `DC` are no longer on it. Both are also used by the Diagnose shell ABOVE this lens — the
+ * entity search badges every non-terminal option `SPV` and shows registered entity names carrying
+ * "(DC)" — so the shell's own line is the first use of each, and repeating them here would be a
+ * second expansion of something already expanded.
  */
 const SIMULATOR_VOCABULARY = [
   'nav',
-  'spv',
+  // `spv` and `double_count` are on the shell's own line, above the entity search whose option
+  // badges and option details already use both — so this line was never their first use.
   'carried_mv_position_mv',
   'global_units_global_quantity',
   'publish_px_vs_current_applied_px_vs_revised_px',
   'pricing',
   'bps',
   'apex_fund_feeder_terminal_fund',
-  'double_count',
 ];
 
 /**

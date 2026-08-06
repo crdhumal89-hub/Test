@@ -3,126 +3,204 @@
   "firstPainted": {
    "top": 182,
    "left": 22,
+   "height": 23,
    "id": "reconciliation-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Does this product’s agree with the value of what it holds, and where is the difference?"
   },
+  "geometry": {
+   "fold": 1000,
+   "mastheadBottom": 60,
+   "navBottom": 126,
+   "screenTop": 164,
+   "contentTop": 182,
+   "questionTop": 182,
+   "questionHeight": 23
+  },
+  "questionPainted": true,
   "question": {
    "top": 182,
    "left": 22,
+   "height": 23,
    "id": "reconciliation-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Does this product’s agree with the value of what it holds, and where is the difference?"
   },
+  "paintedCount": 165,
   "aboveTheQuestion": []
  },
  "Pricing": {
   "firstPainted": {
    "top": 182,
    "left": 22,
+   "height": 23,
    "id": "pricing-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "What unit price do I publish for each fund today, and what does repricing do to value?"
   },
+  "geometry": {
+   "fold": 1000,
+   "mastheadBottom": 60,
+   "navBottom": 126,
+   "screenTop": 164,
+   "contentTop": 182,
+   "questionTop": 182,
+   "questionHeight": 23
+  },
+  "questionPainted": true,
   "question": {
    "top": 182,
    "left": 22,
+   "height": 23,
    "id": "pricing-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "What unit price do I publish for each fund today, and what does repricing do to value?"
   },
+  "paintedCount": 369,
   "aboveTheQuestion": []
  },
  "Structure": {
   "firstPainted": {
    "top": 144,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "geometry": {
+   "fold": 1000,
+   "mastheadBottom": 60,
+   "navBottom": 126,
+   "screenTop": 126,
+   "contentTop": 144,
+   "questionTop": 144,
+   "questionHeight": 46
+  },
+  "questionPainted": true,
   "question": {
    "top": 144,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "paintedCount": 140,
   "aboveTheQuestion": []
  },
  "Ownership": {
   "firstPainted": {
    "top": 144,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "geometry": {
+   "fold": 1000,
+   "mastheadBottom": 60,
+   "navBottom": 126,
+   "screenTop": 126,
+   "contentTop": 144,
+   "questionTop": 144,
+   "questionHeight": 46
+  },
+  "questionPainted": true,
   "question": {
    "top": 144,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "paintedCount": 411,
   "aboveTheQuestion": []
  },
  "Data quality": {
   "firstPainted": {
    "top": 144,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "geometry": {
+   "fold": 1000,
+   "mastheadBottom": 60,
+   "navBottom": 126,
+   "screenTop": 126,
+   "contentTop": 144,
+   "questionTop": 144,
+   "questionHeight": 46
+  },
+  "questionPainted": true,
   "question": {
    "top": 144,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "paintedCount": 42,
   "aboveTheQuestion": []
  },
  "Simulator": {
   "firstPainted": {
    "top": 182,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "geometry": {
+   "fold": 1000,
+   "mastheadBottom": 60,
+   "navBottom": 126,
+   "screenTop": 164,
+   "contentTop": 182,
+   "questionTop": 182,
+   "questionHeight": 46
+  },
+  "questionPainted": true,
   "question": {
    "top": 182,
    "left": 22,
+   "height": 46,
    "id": "diagnose-question",
    "tag": "P",
    "isQuestion": true,
    "inQuestion": true,
    "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?"
   },
+  "paintedCount": 312,
   "aboveTheQuestion": []
  }
 }

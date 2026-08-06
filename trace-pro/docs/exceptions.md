@@ -47,9 +47,12 @@ file makes no claim about the other three structural checks; the current state o
 
 ## Scope of the two rules
 
-`scripts/check-limits.mjs` scans **shipped UI sources only** — everything under `src/`, plus
-`index.html` and the stylesheets. Harness scripts under `scripts/` are excluded because they are not
-shipped, and the checker necessarily contains the very patterns it searches for. It strips `/* */`
+For these two rules, `scripts/check-limits.mjs` scans **shipped UI sources only** — everything under
+`src/`, plus `index.html` and the stylesheets. Harness scripts under `scripts/` are excluded because
+they are not shipped, and the checker necessarily contains the very patterns it searches for. (That
+narrowing is the `SHIPPED` filter in the script, and it governs rules 4 and 5 alone: the 400-line and
+2,000-character rules walk `src`, `scripts`, `tests/unit` and `tests/e2e`, which is why the run below
+could fail on a file under `src/` while the counts this register governs stayed at zero.) It strips `/* */`
 and `//` comments before scanning, so prose *about* `!important` (there is some, in the header of
 `src/ui/styles/app.css`) is not mistaken for a declaration.
 

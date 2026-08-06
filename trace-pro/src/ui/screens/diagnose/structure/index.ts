@@ -107,13 +107,14 @@ function structureDepthOf(data: readonly StructureDatum[], node: StructureDatum)
 }
 
 /**
- * The abbreviations this lens renders: `NAV` in the full-screen readout and the basis note, `SPV`
- * in the legend's "SPV / holding" swatch and in the entity names, `apex` nowhere on screen but in
- * the concept the basis note explains, `DC` inside two registered entity names the graph labels
- * (SVG text, which cannot hold a control — so route (a) is the only route open there).
- * Expanded and linked above all of them (rubric R2).
+ * The abbreviations this lens ADDS: `NAV`, in the full-screen readout and the basis note. `SPV` (the
+ * legend's "SPV / holding" swatch, the entity names) and `DC` (inside two registered entity names the
+ * graph labels, in SVG text, which cannot hold a control — so route (a) is the only route open there)
+ * moved to `DIAGNOSE_VOCABULARY`, which the shell renders above the entity search: the search's own
+ * option badges use both, so the shell was already the first use of each and this line could not be.
+ * Expanded and linked above every use of them either way (rubric R2).
  */
-const STRUCTURE_VOCABULARY = ['nav', 'spv', 'double_count'];
+const STRUCTURE_VOCABULARY = ['nav'];
 
 export function mountStructureLens(host: HTMLElement, store: Store): () => void {
   termBindGlossary(store);

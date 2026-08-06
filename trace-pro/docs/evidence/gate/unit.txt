@@ -1,6 +1,8 @@
 $ npm test
 # sub-gate: UNIT — Unit tests (domain)
 # exit code: 0
+# git HEAD: 790d6daf3b4163d3b7db6734d0eaf80178b68a76 (working tree dirty at capture)
+# captured: 2026-08-06T13:36:08.871Z
 # ----------------------------------------------------------------------------
 
 > trace-pro@0.1.0 test
@@ -9,16 +11,18 @@ $ npm test
 
  RUN  v4.1.10 /home/user/Test/trace-pro
 
- ✓ tests/unit/rules.spec.ts (9 tests) 46ms
- ✓ tests/unit/ownership.spec.ts (20 tests) 50ms
- ✓ tests/unit/ownership-differential.spec.ts (3 tests) 96ms
- ✓ tests/unit/cascade.spec.ts (27 tests) 18ms
- ✓ tests/unit/lookthrough.spec.ts (26 tests) 36ms
- ✓ tests/unit/ingest.spec.ts (14 tests) 11ms
- ✓ tests/unit/reconciliation.spec.ts (29 tests) 10ms
+ ✓ tests/unit/ownership.spec.ts (20 tests) 61ms
+ ✓ tests/unit/ownership-differential.spec.ts (3 tests) 124ms
+ ✓ tests/unit/rules.spec.ts (9 tests) 40ms
+ ✓ tests/unit/ingest-roundtrip.spec.ts (12 tests) 84ms
+ ✓ tests/unit/lookthrough.spec.ts (26 tests) 29ms
+ ✓ tests/unit/cascade.spec.ts (27 tests) 23ms
+ ✓ tests/unit/ingest-refusals.spec.ts (16 tests) 32ms
+ ✓ tests/unit/ingest.spec.ts (14 tests) 13ms
+ ✓ tests/unit/reconciliation.spec.ts (29 tests) 11ms
 
- Test Files  7 passed (7)
-      Tests  128 passed (128)
-   Start at  12:59:29
-   Duration  765ms (transform 356ms, setup 0ms, import 664ms, tests 267ms, environment 1ms)
+ Test Files  9 passed (9)
+      Tests  156 passed (156)
+   Start at  13:36:07
+   Duration  1.13s (transform 469ms, setup 0ms, import 1.16s, tests 419ms, environment 1ms)
 

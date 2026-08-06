@@ -1,0 +1,175 @@
+# TRACE-Pro — the gate, run by a machine instead of by hand.
+#
+# Every green gate this project has recorded so far was a manual local run. That means the gate
+# proved something about one working tree at one moment, and nothing at all about the next change.
+# This workflow runs the same four sub-gates the mission defines — STATIC (build, typecheck, lint),
+# UNIT, UX CRITIC (Playwright), PARITY — on every push and every pull request, as separate steps so
+# the Actions UI names which one broke.
+#
+# WORKING DIRECTORY. package.json lives in `trace-pro/`, not at the repository root, so every `run`
+# step below inherits `working-directory: trace-pro` from `defaults`. Paths in `with:` blocks are NOT
+# affected by that default and are written repo-root-relative (`trace-pro/...`).
+#
+# FROZEN ARTIFACTS, AND WHY A RED PR CAN BE CORRECT. `npm run lint` calls
+# `scripts/check-frozen.mjs`, which requires that `parity-map.json`, `tests/baseline.json`,
+# `docs/ux-rubric.md` and `reference/TRACE-Pro-original.html` were each introduced by exactly one
+# commit and never touched since. A pull request that edits any of those four CANNOT go green here,
+# and that is the intended behaviour, not a bug in this workflow: the parity gate is only evidence if
+# the baseline predates the code it grades, and the rubric is only a bar if it cannot be lowered to
+# fit what got built. The mission's instruction when one of them looks wrong is to HALT and say why
+# — not to amend it. If you are reading this because your PR is red on that check, that is the
+# conversation to have; do not "fix" it by relaxing this file.
+name: gate
+
+on:
+  push:
+  pull_request:
+
+# A newer push to the same ref makes the older run's verdict irrelevant.
+concurrency:
+  group: gate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: trace-pro
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # Where Playwright looks for browsers. Chromium is pre-installed here on the sandbox this
+      # project is developed in, and the "Chromium" step below installs into the same path when the
+      # runner has no such directory.
+      PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+      # Suppresses the browser download that `npm ci` would otherwise trigger from playwright's
+      # postinstall. Measured, in playwright-core 1.56.1
+      # (lib/server/registry/index.js:1269, installBrowsersForNpmInstall): this variable is read
+      # ONLY on the npm-install path, so it does not block the explicit `playwright install` below.
+      # Verified locally: `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npx playwright install --dry-run
+      # chromium` still resolves and reports its install plan, exit 0.
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      NO_COLOR: '1'
+
+    steps:
+      # fetch-depth: 0 is LOAD-BEARING. check-frozen.mjs derives the freeze from git history
+      # (`git log -- <path>` must report exactly one commit per frozen file), so a shallow checkout
+      # does not merely inconvenience it — it makes the check vacuous. Measured on this repository:
+      # with full history, a commit that appends one line to docs/ux-rubric.md gives
+      # "AMENDED docs/ux-rubric.md — 2 commits touch it" and exit 1; the identical commit in a
+      # `--depth 1` clone reports "1 commit" for all four files and "FROZEN CHECK PASSED", exit 0.
+      # Depth 1 would therefore hand out a green freeze check to precisely the change it exists to
+      # stop.
+      - name: Checkout (full history — the frozen check reads git log)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          # 22.x is what the gate has been measured on locally (v22.22.2).
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: trace-pro/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # No unconditional `playwright install`: on the sandbox this project is developed in, chromium
+      # 141.0.7390.37 (build 1194) and chromium_headless_shell are already unpacked in
+      # /opt/pw-browsers, and re-downloading them is a slow way to get the same bytes. A
+      # GitHub-hosted ubuntu-latest runner has no /opt/pw-browsers, so on that runner the else-branch
+      # installs chromium INTO that path — the same path PLAYWRIGHT_BROWSERS_PATH points the test run
+      # at — rather than into ~/.cache, so both environments launch the same way and neither needs a
+      # second code path. `--with-deps` pulls the shared libraries a headless chromium needs on a
+      # bare runner.
+      #
+      # The last block resolves the executable Playwright will actually launch and stats it, so a
+      # missing browser fails HERE rather than reading as a skipped suite. It is not
+      # `playwright install --dry-run`: measured, dry-run prints the install plan and exits 0 whether
+      # or not the browser is on disk, so it verifies nothing. The stat does: with the path present
+      # it prints /opt/pw-browsers/chromium-1194/chrome-linux/chrome and exits 0; pointed at an empty
+      # directory it exits 1 with ENOENT.
+      - name: Chromium (pre-installed if present, installed into the same path if not)
+        run: |
+          set -euo pipefail
+          if [ -d "$PLAYWRIGHT_BROWSERS_PATH" ] && [ -n "$(ls -A "$PLAYWRIGHT_BROWSERS_PATH")" ]; then
+            echo "pre-installed browsers found in $PLAYWRIGHT_BROWSERS_PATH:"
+            ls -1 "$PLAYWRIGHT_BROWSERS_PATH"
+          else
+            echo "no $PLAYWRIGHT_BROWSERS_PATH on this runner — installing chromium into it"
+            sudo mkdir -p "$PLAYWRIGHT_BROWSERS_PATH"
+            sudo chown "$(id -u):$(id -g)" "$PLAYWRIGHT_BROWSERS_PATH"
+            npx playwright install --with-deps chromium
+          fi
+          node --input-type=module -e '
+            import { chromium } from "@playwright/test";
+            import fs from "node:fs";
+            const exe = chromium.executablePath();
+            fs.accessSync(exe, fs.constants.X_OK);
+            console.log("chromium executable: " + exe);
+          '
+
+      # ---------------------------------------------------------------- STATIC
+      - name: STATIC — build
+        run: npm run build
+
+      - name: STATIC — typecheck
+        run: npm run typecheck
+
+      # eslint + check-frozen + check-limits (400-line ceiling, no inline on*=, no !important,
+      # unique top-level identifiers) + check-issues + fixture round-trip + parity key
+      # classification. One npm script, six machine checks; see package.json.
+      - name: STATIC — lint, frozen artifacts, structure limits, fixtures, key classification
+        run: npm run lint
+
+      # ---------------------------------------------------------------- UNIT
+      - name: UNIT — domain tests (vitest)
+        run: npm test
+
+      # ---------------------------------------------------------------- UX CRITIC
+      # playwright.config.ts owns its own webServer, and that server BUILDS before it serves
+      # (`npm run build && vite preview`), so this cannot pass against a stale dist/.
+      - name: UX CRITIC — headless suite (Playwright, app + offline projects)
+        run: npx playwright test
+
+      # ---------------------------------------------------------------- PARITY
+      # 1020 keys against the frozen baseline: 978 byte-identical, 42 declared relabels in which
+      # words may change and digits may not. Exit 0 requires 0 unresolved, 0 digit violations,
+      # 0 diffs.
+      - name: PARITY — semantic parity vs the frozen baseline
+        run: node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json --expect-renamed
+
+      # ---------------------------------------------------------------- evidence
+      # `!cancelled()` rather than `always()`: a RED run must still produce its evidence pack — a red
+      # pack is the deliverable when the gate is red, and it is the artifact you want most when a run
+      # fails — but a run that `cancel-in-progress` killed above has nothing to evidence, and
+      # `always()` would spend five more minutes re-running the suites to say so.
+      #
+      # This step RE-RUNS the sub-gates rather than reusing the logs already committed under
+      # docs/evidence/gate/. That is deliberate: evidence-pack.mjs writes every row of PHASE3.md from
+      # an exit code it collected from a child process it spawned itself, and `--reuse` would make
+      # the uploaded artifact describe whichever local run last committed those logs instead of this
+      # CI run. Slower, and honest. Its own exit code is the conjunction of the sub-gates, so it also
+      # fails the job independently of the steps above.
+      - name: Evidence pack (regenerated from this run)
+        if: ${{ !cancelled() }}
+        run: node scripts/evidence-pack.mjs
+
+      - name: Upload evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: trace-pro-gate-evidence-${{ github.run_id }}
+          # Repo-root-relative: the `defaults.run.working-directory` above applies to `run` steps
+          # only.
+          path: |
+            trace-pro/docs/evidence/PHASE3.md
+            trace-pro/docs/evidence/gate/*.txt
+          if-no-files-found: error
+          retention-days: 30

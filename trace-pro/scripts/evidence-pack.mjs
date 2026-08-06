@@ -10,18 +10,43 @@
  * "expected" list to compare against, and the markdown is written whether the gate is green or red —
  * a red pack is the deliverable when the gate is red.
  *
- *   node scripts/evidence-pack.mjs            # run every gate, write the pack
- *   node scripts/evidence-pack.mjs --reuse    # re-assemble from logs already in docs/evidence/gate
+ * Each log header carries the git HEAD sha the run was taken at, so `--reuse` can prove the logs it
+ * assembles came from one commit instead of trusting whatever is on disk.
+ *
+ *   node scripts/evidence-pack.mjs                            # run every gate, write the pack
+ *   node scripts/evidence-pack.mjs --reuse                    # re-assemble from logs at this HEAD
+ *   node scripts/evidence-pack.mjs --reuse --allow-stale      # ... even if they are from another commit
  */
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { table, fence } from './lib/md.mjs';
+import { uxCriticSection } from './lib/scorecards.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const GATE_DIR = join(ROOT, 'docs/evidence/gate');
 const PACK = join(ROOT, 'docs/evidence/PHASE3.md');
 const REUSE = process.argv.includes('--reuse');
+const ALLOW_STALE = process.argv.includes('--allow-stale');
+const SHA_LINE = '# git HEAD: ';
+
+/** The commit the pack is about. `unknown` when git cannot answer, which never matches a log. */
+function headSha() {
+  const res = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' });
+  const sha = (res.stdout ?? '').trim();
+  return res.status === 0 && /^[0-9a-f]{40}$/.test(sha) ? sha : null;
+}
+
+/** Whether the working tree differs from HEAD, recorded so a pack from a dirty tree says so. */
+function worktreeDirty() {
+  const res = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
+  if (res.status !== 0) return null;
+  return (res.stdout ?? '').trim().length > 0;
+}
+
+const HEAD = headSha();
+const DIRTY = worktreeDirty();
 
 /**
  * The gate, as four named sub-gates. The order is the mission's: nothing downstream is worth
@@ -63,18 +88,35 @@ function run(step) {
     `$ ${step.cmd} ${step.args.join(' ')}\n` +
     `# sub-gate: ${step.gate} — ${step.title}\n` +
     `# exit code: ${code}\n` +
+    SHA_LINE + (HEAD ?? 'unknown') + (DIRTY ? ' (working tree dirty at capture)' : '') + '\n' +
+    `# captured: ${new Date().toISOString()}\n` +
     '# ' + '-'.repeat(76) + '\n';
   writeFileSync(logPath(step.slug), header + output + (res.error ? `\n[spawn error] ${res.error.message}\n` : ''));
-  return { code, output, seconds };
+  return { code, output, seconds, sha: HEAD };
 }
 
 /** Read a log back when --reuse, so the pack can be re-assembled without re-running an hour of tests. */
 function reuse(step) {
   const path = logPath(step.slug);
-  if (!existsSync(path)) return { code: null, output: '', seconds: null };
+  if (!existsSync(path)) return { code: null, output: '', seconds: null, sha: null };
   const text = readFileSync(path, 'utf8');
   const m = /^# exit code: (\d+)$/m.exec(text);
-  return { code: m ? Number(m[1]) : null, output: text, seconds: null };
+  const sha = new RegExp('^' + SHA_LINE + '([0-9a-f]{40})').exec(text.split('\n').find((l) => l.startsWith(SHA_LINE)) ?? '');
+  return { code: m ? Number(m[1]) : null, output: text, seconds: null, sha: sha ? sha[1] : null };
+}
+
+/**
+ * Logs that cannot be shown to belong to the current HEAD. A log written before this script recorded
+ * a sha has none, and a log from another commit has the wrong one; both make the pack a mixture of
+ * runs, so both count as stale. Missing logs are a separate problem (they render as NO LOG).
+ */
+function staleLogs(results) {
+  return results.filter((r) => r.code != null && (HEAD == null || r.sha !== HEAD));
+}
+
+function staleReason(r) {
+  if (HEAD == null) return '`' + r.slug + '.txt` — current HEAD is unknown, so no log can be matched to it';
+  return '`' + r.slug + '.txt` — ' + (r.sha ? 'captured at ' + r.sha.slice(0, 12) : 'no `' + SHA_LINE.trim() + '` header');
 }
 
 /**
@@ -140,12 +182,23 @@ function sourceTree() {
   return out;
 }
 
-function table(rows) {
-  return rows.map((r) => '| ' + r.join(' | ') + ' |').join('\n');
-}
-
-function fence(text, lang = '') {
-  return '```' + lang + '\n' + text.replace(/```/g, '`­``').trimEnd() + '\n```';
+/**
+ * The provenance banner. A pack assembled from logs this script could not tie to the current commit
+ * says so in its first lines, above the verdict, because a reader who stops at the verdict is exactly
+ * the reader who needs to know.
+ */
+function staleBanner(stale) {
+  if (!stale.length) return [];
+  return [
+    '> **THIS PACK IS STALE — ASSEMBLED WITH `--allow-stale`.**',
+    '> ' + stale.length + ' of the ' + GATES.length + ' gate logs below could not be tied to the current HEAD (`' +
+      (HEAD ? HEAD.slice(0, 12) : 'unknown') + '`):',
+    ...stale.map((r) => '> - ' + staleReason(r)),
+    '>',
+    '> The figures below therefore describe a mixture of commits, not this one. Re-run',
+    '> `npm run evidence` before treating any verdict here as this commit\'s result.',
+    '',
+  ];
 }
 
 function main() {
@@ -158,6 +211,20 @@ function main() {
     process.stdout.write(`${mark.padEnd(9)} ${step.gate.padEnd(10)} ${step.title}\n`);
   }
 
+  const stale = REUSE ? staleLogs(results) : [];
+  if (stale.length && !ALLOW_STALE) {
+    process.stderr.write(
+      '\nREFUSING TO ASSEMBLE: ' + stale.length + ' of ' + GATES.length + ' gate logs are not from the current HEAD (' +
+        (HEAD ? HEAD.slice(0, 12) : 'unknown') + ').\n' +
+        stale.map((r) => '  ' + staleReason(r).replace(/`/g, '') + '\n').join('') +
+        'A pack built from these would mix runs from different commits.\n' +
+        'Re-run `npm run evidence` to capture fresh logs, or pass --allow-stale to assemble anyway\n' +
+        '(the pack then carries a STALE banner above its verdict).\n' +
+        relative(ROOT, PACK) + ' was NOT written.\n'
+    );
+    process.exit(2);
+  }
+
   const green = results.every((r) => r.code === 0);
   const parity = parityFacts(results.find((r) => r.slug === 'parity')?.output ?? '');
   const unit = testFacts(results.find((r) => r.slug === 'unit')?.output ?? '');
@@ -165,21 +232,27 @@ function main() {
   const files = sourceTree();
   const overLong = files.filter((f) => f.lines > 400 && /^src\//.test(f.path));
 
-  const head = readFileSync(join(ROOT, 'docs/ux-scorecard.md'), 'utf8');
-  const scoreLine = /\*\*PASS\*\*\s*\|\s*\*\*(\d+)\*\*/.exec(head);
-  const failLine = /\*\*FAIL\*\*\s*\|\s*\*\*(\d+)\*\*/.exec(head);
-
   const md = [
     '# TRACE-Pro — Phase 3 evidence pack',
     '',
+    ...staleBanner(stale),
     'Generated by `node scripts/evidence-pack.mjs`. Every figure below was collected by that script',
     'from a child process it ran; the verbatim output of each sub-gate is in `docs/evidence/gate/`.',
-    'The verdict is the conjunction of the exit codes and nothing else.',
+    'The gate result is the conjunction of the exit codes and nothing else; the UX CRITIC verdict is',
+    'read from the most recent scorecard, and the two are reported separately rather than blended.',
+    '',
+    'Commit: `' + (HEAD ?? 'unknown — git could not be read') + '`' +
+      (DIRTY === null ? '' : DIRTY ? ', working tree DIRTY at assembly.' : ', working tree clean at assembly.') +
+      ' Logs ' + (REUSE ? 'reused from disk and checked against that sha' : 'captured in this run and stamped with it') + '.',
     '',
     '## Verdict',
     '',
     '**GATE RESULT: ' + (green ? 'PASS' : 'FAIL') + '** — ' +
-      results.filter((r) => r.code === 0).length + ' of ' + results.length + ' sub-gate steps exited 0.',
+      results.filter((r) => r.code === 0).length + ' of ' + results.length + ' sub-gate steps exited 0.' +
+      (stale.length ? ' **From ' + stale.length + ' stale log(s) — see the banner above.**' : ''),
+    '',
+    'That figure is exit codes only. It does not include the rubric-graded UX CRITIC verdict below,',
+    'which is a human scorecard and can be RED while every command here exits 0.',
     '',
     table([
       ['Sub-gate', 'Step', 'Command', 'Exit', 'Verdict', 'Log'],
@@ -228,10 +301,7 @@ function main() {
     '',
     '## UX CRITIC',
     '',
-    'Scored in `docs/ux-scorecard.md` against `docs/ux-rubric.md` (18 criteria, frozen at Phase 0).',
-    'Most recent recorded pass: **' + (scoreLine?.[1] ?? '?') + ' PASS / ' + (failLine?.[1] ?? '?') + ' FAIL**.',
-    'The rubric\'s own rule is that the gate passes only when all 18 pass with cited evidence, so a',
-    'non-zero FAIL count above means this sub-gate is RED regardless of the test suites.',
+    ...uxCriticSection(ROOT),
     '',
     '## Structure limits',
     '',

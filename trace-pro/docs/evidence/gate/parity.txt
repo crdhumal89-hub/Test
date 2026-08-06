@@ -1,6 +1,8 @@
 $ node scripts/snapshot.mjs --target dist/ --diff tests/baseline.json --expect-renamed
 # sub-gate: PARITY — Semantic parity vs frozen baseline
 # exit code: 0
+# git HEAD: 790d6daf3b4163d3b7db6734d0eaf80178b68a76 (working tree dirty at capture)
+# captured: 2026-08-06T13:40:55.730Z
 # ----------------------------------------------------------------------------
 target        : dist/
 scenes        : 22
