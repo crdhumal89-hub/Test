@@ -1,0 +1,62 @@
+{
+ "#/reconciliation": {
+  "toggleHeight": 31,
+  "toggleHidden": false,
+  "noteHeight": 38,
+  "noteTag": "Before pricing",
+  "pressed": [
+   "before=true",
+   "after=false"
+  ]
+ },
+ "#/pricing": {
+  "toggleHeight": 31,
+  "toggleHidden": false,
+  "noteHeight": 38,
+  "noteTag": "Before pricing",
+  "pressed": [
+   "before=true",
+   "after=false"
+  ]
+ },
+ "#/diagnose/structure": {
+  "toggleHeight": 0,
+  "toggleHidden": true,
+  "noteHeight": 0,
+  "noteTag": "",
+  "pressed": [
+   "before=true",
+   "after=false"
+  ]
+ },
+ "#/diagnose/ownership": {
+  "toggleHeight": 0,
+  "toggleHidden": true,
+  "noteHeight": 0,
+  "noteTag": "",
+  "pressed": [
+   "before=true",
+   "after=false"
+  ]
+ },
+ "#/diagnose/data-quality": {
+  "toggleHeight": 0,
+  "toggleHidden": true,
+  "noteHeight": 0,
+  "noteTag": "",
+  "pressed": [
+   "before=true",
+   "after=false"
+  ]
+ },
+ "#/diagnose/simulator": {
+  "toggleHeight": 31,
+  "toggleHidden": false,
+  "noteHeight": 38,
+  "noteTag": "Before pricing",
+  "pressed": [
+   "before=true",
+   "after=false"
+  ]
+ }
+}

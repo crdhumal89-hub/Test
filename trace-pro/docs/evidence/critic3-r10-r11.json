@@ -1,0 +1,638 @@
+{
+ "before": {
+  "reconciliation": {
+   "headers": [
+    {
+     "table": "tree",
+     "label": "Hierarchy — fund ▸ SPV ▸ security",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "VPM symbol",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "NAVreported",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Look-through valuecurrent marks",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Repriced valuebottom-up from NAV",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Pricing differencerepriced − look-through",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Non-position differenceNAV − repriced",
+     "firstCellParity": null
+    }
+   ],
+   "steps": [
+    {
+     "cls": "wf-step end",
+     "text": "Look-through value$2,060,224,441look-through of underlyings · current marks",
+     "parity": "reconciliation.waterfall.start_label"
+    },
+    {
+     "cls": "wf-op",
+     "text": "+Pricing difference$385,897+1.9 bpsbottom-up NAV repricing",
+     "parity": "reconciliation.waterfall.delta_pricing_label"
+    },
+    {
+     "cls": "wf-step mid",
+     "text": "Repriced value$2,060,610,338NAV-repriced bottom-up",
+     "parity": "reconciliation.waterfall.revised_mv"
+    },
+    {
+     "cls": "wf-op",
+     "text": "+Non-position difference$1,588,498+7.7 bpscash, fees, receivables",
+     "parity": "reconciliation.waterfall.delta_nonposition_label"
+    },
+    {
+     "cls": "wf-step end",
+     "text": "NAV$2,062,198,836sum of top-level feeder NAVs · NAV report",
+     "parity": "reconciliation.waterfall.nav"
+    },
+    {
+     "cls": "chip chip-bad",
+     "text": "5Missing NAV",
+     "parity": "reconciliation.exception.Missing_NAV"
+    },
+    {
+     "cls": "chip chip-bad",
+     "text": "1Dangling SPV",
+     "parity": "reconciliation.exception.Dangling_SPV"
+    },
+    {
+     "cls": "chip chip-warn",
+     "text": "8Material non-position gap",
+     "parity": "reconciliation.exception.Material_non-position_gap"
+    }
+   ]
+  },
+  "pricing": {
+   "headers": [
+    {
+     "table": "rectable",
+     "label": "Fund",
+     "firstCellParity": "pricing.fund.SPORTHLD.name"
+    },
+    {
+     "table": "rectable",
+     "label": "Symbol",
+     "firstCellParity": "pricing.fund.SPORTHLD.symbol"
+    },
+    {
+     "table": "rectable",
+     "label": "Price to publish",
+     "firstCellParity": "pricing.fund.SPORTHLD.publish_px"
+    },
+    {
+     "table": "rectable",
+     "label": "Current mark",
+     "firstCellParity": "pricing.fund.SPORTHLD.current_px"
+    },
+    {
+     "table": "rectable",
+     "label": "Repriced unit price",
+     "firstCellParity": "pricing.fund.SPORTHLD.revised_px"
+    },
+    {
+     "table": "rectable",
+     "label": "Look-through value",
+     "firstCellParity": "pricing.fund.SPORTHLD.derived_mv"
+    },
+    {
+     "table": "rectable",
+     "label": "Repriced value",
+     "firstCellParity": "pricing.fund.SPORTHLD.revised_mv"
+    },
+    {
+     "table": "rectable",
+     "label": "Repricing gain or loss",
+     "firstCellParity": "pricing.fund.SPORTHLD.repricing_pnl"
+    },
+    {
+     "table": "rectable",
+     "label": "bps",
+     "firstCellParity": "pricing.fund.SPORTHLD.pnl_bps"
+    },
+    {
+     "table": "tbl",
+     "label": "Level ▾",
+     "firstCellParity": "pricing.walk.fund.CRIMH.level"
+    },
+    {
+     "table": "tbl",
+     "label": "Fund",
+     "firstCellParity": null
+    },
+    {
+     "table": "tbl",
+     "label": "Symbol",
+     "firstCellParity": null
+    },
+    {
+     "table": "tbl",
+     "label": "Global Qty",
+     "firstCellParity": "pricing.walk.fund.CRIMH.global_qty"
+    },
+    {
+     "table": "tbl",
+     "label": "NAV",
+     "firstCellParity": "pricing.walk.fund.CRIMH.nav"
+    },
+    {
+     "table": "tbl",
+     "label": "Price before",
+     "firstCellParity": "pricing.walk.fund.CRIMH.price_before"
+    },
+    {
+     "table": "tbl",
+     "label": "Value before",
+     "firstCellParity": "pricing.walk.fund.CRIMH.value_before"
+    },
+    {
+     "table": "tbl",
+     "label": "Price after",
+     "firstCellParity": "pricing.walk.fund.CRIMH.price_after"
+    },
+    {
+     "table": "tbl",
+     "label": "Value after",
+     "firstCellParity": "pricing.walk.fund.CRIMH.value_after"
+    },
+    {
+     "table": "tbl",
+     "label": "Δ Price",
+     "firstCellParity": "pricing.walk.fund.CRIMH.delta_price"
+    },
+    {
+     "table": "tbl",
+     "label": "Δ Value (P&L)",
+     "firstCellParity": "pricing.walk.fund.CRIMH.delta_value"
+    },
+    {
+     "table": "tbl",
+     "label": "Δ bps",
+     "firstCellParity": "pricing.walk.fund.CRIMH.delta_bps"
+    }
+   ],
+   "steps": [
+    {
+     "cls": "score-tile",
+     "text": "Look-through value · USD$2,060,224,441look-through · current marks",
+     "parity": "pricing.score.derived_mv"
+    },
+    {
+     "cls": "score-tile",
+     "text": "+ Pricing difference · USD$385,897bottom-up repricing gain or loss · +1.9 bps",
+     "parity": "pricing.score.delta_pricing_usd"
+    },
+    {
+     "cls": "score-tile",
+     "text": "= Repriced value · USD$2,060,610,338NAV-repriced bottom-up",
+     "parity": "pricing.score.revised_mv"
+    },
+    {
+     "cls": "score-tile",
+     "text": "+ Non-position difference · USD$1,588,498cash/fees/receivables · +7.7 bps",
+     "parity": "pricing.score.delta_nonposition_usd"
+    },
+    {
+     "cls": "score-tile",
+     "text": "= NAV · USD$2,062,198,836sum of top-level feeder NAVs · 8 flagged",
+     "parity": "pricing.score.nav"
+    }
+   ]
+  },
+  "structure": {
+   "headers": [],
+   "steps": []
+  },
+  "ownership": {
+   "headers": [
+    {
+     "table": "revtree",
+     "label": "Owner (expand ▸ upward)",
+     "firstCellParity": null
+    },
+    {
+     "table": "revtree",
+     "label": "VPM symbol",
+     "firstCellParity": null
+    },
+    {
+     "table": "revtree",
+     "label": "SPV fund code",
+     "firstCellParity": null
+    },
+    {
+     "table": "revtree",
+     "label": "Qty held",
+     "firstCellParity": "ownership.APPOURI.owner.CSTR.qty_held"
+    },
+    {
+     "table": "revtree",
+     "label": "Direct shareof the level below",
+     "firstCellParity": "ownership.APPOURI.owner.CSTR.immediate_pct"
+    },
+    {
+     "table": "revtree",
+     "label": "% of APPOUR1-SPVcumulative · effective",
+     "firstCellParity": "ownership.APPOURI.owner.CSTR.cumulative_pct"
+    }
+   ],
+   "steps": [
+    {
+     "cls": "chip chip-ok",
+     "text": "✓ Owners reconcile to 100%",
+     "parity": "ownership.APPOURI.immediate_check"
+    },
+    {
+     "cls": "chip chip-ok",
+     "text": "✓ Ultimate owners = 100%",
+     "parity": "ownership.APPOURI.ultimate_check"
+    }
+   ]
+  },
+  "data-quality": {
+   "headers": [],
+   "steps": []
+  },
+  "simulator": {
+   "headers": [
+    {
+     "table": "mini",
+     "label": "Fund",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "NAV",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Direct share",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Attributed value",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Security",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Market value",
+     "firstCellParity": null
+    }
+   ],
+   "steps": [
+    {
+     "cls": "kv",
+     "text": "NAV (value)$1,795,754,765.06Units outstanding (firm-wide)1,752,553,740Price per unit1.024650Book value of the stake (as booked)$1,795,754,76",
+     "parity": null
+    }
+   ]
+  }
+ },
+ "after": {
+  "reconciliation": {
+   "headers": [
+    {
+     "table": "tree",
+     "label": "Hierarchy — fund ▸ SPV ▸ security",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "VPM symbol",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "NAVreported",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Look-through valueat repriced marks",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Repriced valuebottom-up from NAV",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Pricing differencereconciled",
+     "firstCellParity": null
+    },
+    {
+     "table": "tree",
+     "label": "Non-position differenceNAV − repriced",
+     "firstCellParity": null
+    }
+   ],
+   "steps": [
+    {
+     "cls": "wf-step end",
+     "text": "Look-through value at repriced marks$2,060,610,338every component at its repriced price",
+     "parity": "reconciliation.after.start_label"
+    },
+    {
+     "cls": "wf-op",
+     "text": "+Pricing difference$0+0.0 bpsreconciled · no pricing break",
+     "parity": "reconciliation.after.delta_pricing_usd"
+    },
+    {
+     "cls": "wf-step mid",
+     "text": "Repriced value$2,060,610,338NAV-repriced bottom-up",
+     "parity": "reconciliation.after.revised_mv"
+    },
+    {
+     "cls": "wf-op",
+     "text": "+Non-position difference$1,588,498+7.7 bpsnon-trade · cash, fees, receivables",
+     "parity": "reconciliation.after.delta_nonposition_usd"
+    },
+    {
+     "cls": "wf-step end",
+     "text": "NAV$2,062,198,836sum of top-level feeder NAVs · NAV report",
+     "parity": "reconciliation.after.nav"
+    },
+    {
+     "cls": "chip chip-bad",
+     "text": "5Missing NAV",
+     "parity": "reconciliation.exception.Missing_NAV"
+    },
+    {
+     "cls": "chip chip-bad",
+     "text": "1Dangling SPV",
+     "parity": "reconciliation.exception.Dangling_SPV"
+    },
+    {
+     "cls": "chip chip-warn",
+     "text": "8Non-position residual (non-trade)",
+     "parity": "reconciliation.exception.Non-position_residual_non-trade_"
+    }
+   ]
+  },
+  "pricing": {
+   "headers": [
+    {
+     "table": "rectable",
+     "label": "Fund",
+     "firstCellParity": null
+    },
+    {
+     "table": "rectable",
+     "label": "Symbol",
+     "firstCellParity": null
+    },
+    {
+     "table": "rectable",
+     "label": "Price to publish",
+     "firstCellParity": null
+    },
+    {
+     "table": "rectable",
+     "label": "Repriced mark",
+     "firstCellParity": "pricing.after.fund.SPORTHLD.applied_px"
+    },
+    {
+     "table": "rectable",
+     "label": "Repriced unit price",
+     "firstCellParity": null
+    },
+    {
+     "table": "rectable",
+     "label": "Look-through value at repriced marks",
+     "firstCellParity": "pricing.after.fund.SPORTHLD.repriced_mv"
+    },
+    {
+     "table": "rectable",
+     "label": "Repriced value",
+     "firstCellParity": "pricing.after.fund.SPORTHLD.revised_mv"
+    },
+    {
+     "table": "rectable",
+     "label": "Repricing gain or loss (reconciled)",
+     "firstCellParity": "pricing.after.fund.SPORTHLD.pnl"
+    },
+    {
+     "table": "rectable",
+     "label": "bps",
+     "firstCellParity": null
+    },
+    {
+     "table": "tbl",
+     "label": "Level ▾",
+     "firstCellParity": "pricing.walk.fund.CRIMH.level"
+    },
+    {
+     "table": "tbl",
+     "label": "Fund",
+     "firstCellParity": null
+    },
+    {
+     "table": "tbl",
+     "label": "Symbol",
+     "firstCellParity": null
+    },
+    {
+     "table": "tbl",
+     "label": "Global Qty",
+     "firstCellParity": "pricing.walk.fund.CRIMH.global_qty"
+    },
+    {
+     "table": "tbl",
+     "label": "NAV",
+     "firstCellParity": "pricing.walk.fund.CRIMH.nav"
+    },
+    {
+     "table": "tbl",
+     "label": "Price before",
+     "firstCellParity": "pricing.walk.fund.CRIMH.price_before"
+    },
+    {
+     "table": "tbl",
+     "label": "Value before",
+     "firstCellParity": "pricing.walk.fund.CRIMH.value_before"
+    },
+    {
+     "table": "tbl",
+     "label": "Price after",
+     "firstCellParity": "pricing.walk.fund.CRIMH.price_after"
+    },
+    {
+     "table": "tbl",
+     "label": "Value after",
+     "firstCellParity": "pricing.walk.fund.CRIMH.value_after"
+    },
+    {
+     "table": "tbl",
+     "label": "Δ Price",
+     "firstCellParity": "pricing.walk.fund.CRIMH.delta_price"
+    },
+    {
+     "table": "tbl",
+     "label": "Δ Value (P&L)",
+     "firstCellParity": "pricing.walk.fund.CRIMH.delta_value"
+    },
+    {
+     "table": "tbl",
+     "label": "Δ bps",
+     "firstCellParity": "pricing.walk.fund.CRIMH.delta_bps"
+    }
+   ],
+   "steps": [
+    {
+     "cls": "score-tile",
+     "text": "Look-through value at repriced marks · USD$2,060,610,338every component at revised price",
+     "parity": "pricing.score.derived_mv"
+    },
+    {
+     "cls": "score-tile",
+     "text": "+ Pricing difference · USD$0reconciled · no pricing break",
+     "parity": "pricing.score.delta_pricing_usd"
+    },
+    {
+     "cls": "score-tile",
+     "text": "= Repriced value · USD$2,060,610,338NAV-repriced bottom-up",
+     "parity": "pricing.score.revised_mv"
+    },
+    {
+     "cls": "score-tile",
+     "text": "+ Non-position difference · USD$1,588,498cash/fees/receivables · +7.7 bps",
+     "parity": "pricing.score.delta_nonposition_usd"
+    },
+    {
+     "cls": "score-tile",
+     "text": "= NAV · USD$2,062,198,836sum of top-level feeder NAVs · 8 flagged",
+     "parity": "pricing.score.nav"
+    }
+   ]
+  },
+  "structure": {
+   "headers": [],
+   "steps": []
+  },
+  "ownership": {
+   "headers": [
+    {
+     "table": "revtree",
+     "label": "Owner (expand ▸ upward)",
+     "firstCellParity": null
+    },
+    {
+     "table": "revtree",
+     "label": "VPM symbol",
+     "firstCellParity": null
+    },
+    {
+     "table": "revtree",
+     "label": "SPV fund code",
+     "firstCellParity": null
+    },
+    {
+     "table": "revtree",
+     "label": "Qty held",
+     "firstCellParity": "ownership.APPOURI.owner.CSTR.qty_held"
+    },
+    {
+     "table": "revtree",
+     "label": "Direct shareof the level below",
+     "firstCellParity": "ownership.APPOURI.owner.CSTR.immediate_pct"
+    },
+    {
+     "table": "revtree",
+     "label": "% of APPOUR1-SPVcumulative · effective",
+     "firstCellParity": "ownership.APPOURI.owner.CSTR.cumulative_pct"
+    }
+   ],
+   "steps": [
+    {
+     "cls": "chip chip-ok",
+     "text": "✓ Owners reconcile to 100%",
+     "parity": "ownership.APPOURI.immediate_check"
+    },
+    {
+     "cls": "chip chip-ok",
+     "text": "✓ Ultimate owners = 100%",
+     "parity": "ownership.APPOURI.ultimate_check"
+    }
+   ]
+  },
+  "data-quality": {
+   "headers": [],
+   "steps": []
+  },
+  "simulator": {
+   "headers": [
+    {
+     "table": "mini",
+     "label": "Fund",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "NAV",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Direct share",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Attributed value",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Security",
+     "firstCellParity": null
+    },
+    {
+     "table": "mini",
+     "label": "Market value",
+     "firstCellParity": null
+    }
+   ],
+   "steps": [
+    {
+     "cls": "kv",
+     "text": "NAV (value)$1,795,754,765.06Units outstanding (firm-wide)1,752,553,740Price per unit1.024650Book value of the stake (as booked)$1,795,754,76",
+     "parity": null
+    }
+   ]
+  }
+ },
+ "productNavSumFeeders": {
+  "figure": "",
+  "stepText": ""
+ },
+ "productNavFundEntity": {
+  "figure": "Product NAV $2,062,196,050.07",
+  "readout": "Apollo Sports Capital · full screenProduct NAV $2,062,196,050.07 · fund-entity basisOne entity stamp, not the sum of the top-level feeders — every other screen shows that one."
+ }
+}

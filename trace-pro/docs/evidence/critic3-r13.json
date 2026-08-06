@@ -1,0 +1,27 @@
+{
+ "reconCsvAfter": {
+  "basisRow": "Pricing basis,Repriced,Product,Apollo Sports Capital,As of,2026-06-30",
+  "navColumn": "NAV USD",
+  "navOnScreen": "$2,062,198,836",
+  "productRowNav": "2062198835.86"
+ },
+ "reconWorkbook": {
+  "sheets": [
+   "Summary",
+   "Reconciliation"
+  ],
+  "bytes": 35595
+ },
+ "sendToPricing": {
+  "header": "Symbol,Respective Qty,Local Price,Local MV",
+  "sporthfcLine": "SPORTHFCSPV,117634387.19,1.025389,120620994.57",
+  "publishOnScreen": "1.025389"
+ },
+ "pricingWorkbook": {
+  "sheets": [
+   "Summary",
+   "Pricing"
+  ],
+  "bytes": 34509
+ }
+}

@@ -1,0 +1,56 @@
+{
+ "assertedRows": 46,
+ "selectorsNotInFirstRunMd": [
+  {
+   "label": "all five waterfall steps",
+   "selector": "#reconciliation-waterfall .wf-step, #reconciliation-waterfall .wf-op",
+   "need": 5
+  },
+  {
+   "label": "NAV basis",
+   "selector": "#reconciliation-waterfall .wf-basis",
+   "need": 1
+  },
+  {
+   "label": "pricing difference bps",
+   "selector": "[data-parity=\"reconciliation.waterfall.delta_pricing_bps\"]",
+   "need": 1
+  },
+  {
+   "label": "non-position difference $",
+   "selector": "[data-parity=\"reconciliation.waterfall.delta_nonposition_usd\"]",
+   "need": 1
+  },
+  {
+   "label": "non-position difference bps",
+   "selector": "[data-parity=\"reconciliation.waterfall.delta_nonposition_bps\"]",
+   "need": 1
+  },
+  {
+   "label": "repricing P&L bps",
+   "selector": "[data-parity=\"pricing.score.delta_pricing_detail\"]",
+   "need": 1
+  }
+ ],
+ "labelsNotInFirstRunMd": [
+  "all five waterfall steps",
+  "pricing difference $",
+  "pricing difference bps",
+  "non-position difference $",
+  "non-position difference bps",
+  "repricing P&L bps",
+  "first five price rows",
+  "first five publish prices",
+  "concentration in words",
+  "first five owner rows",
+  "product NAV unshocked, with its basis",
+  "the three shock inputs and Run, no panel to open",
+  "market value input",
+  "units input",
+  "NAV input",
+  "active product",
+  "screen nav",
+  "diagnose question",
+  "entity combobox, already populated"
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "blockedRequests": [],
+ "consoleProblems": [],
+ "screens": {
+  "#/reconciliation": {
+   "questionVisible": true,
+   "figures": 58
+  },
+  "#/pricing": {
+   "questionVisible": true,
+   "figures": 560
+  },
+  "#/diagnose/structure": {
+   "questionVisible": true,
+   "figures": 145
+  },
+  "#/diagnose/ownership": {
+   "questionVisible": true,
+   "figures": 143
+  },
+  "#/diagnose/data-quality": {
+   "questionVisible": true,
+   "figures": 20
+  },
+  "#/diagnose/simulator": {
+   "questionVisible": true,
+   "figures": 81
+  }
+ },
+ "drawers": {
+  "glossaryCards": 35,
+  "sourcesDrawerTextLength": 4609,
+  "fileInputs": 2
+ },
+ "exports": [
+  {
+   "label": "export csv",
+   "file": "/home/user/Test/trace-pro/test-results/critic3-downloads/lookthrough-TRACE-Pro_lookthrough_Apollo_Sports_Capital_current-marks_2026-06-30.csv",
+   "bytes": 22515
+  },
+  {
+   "label": "download excel",
+   "file": "/home/user/Test/trace-pro/test-results/critic3-downloads/recon-TRACE-Pro_Reconciliation_SPORT_2026-06-30.xlsx",
+   "bytes": 35551
+  },
+  {
+   "label": "export pricing",
+   "file": "/home/user/Test/trace-pro/test-results/critic3-downloads/send-to-pricing-TRACE-Pro Pricing Export (SPORT) 2026-06-30.csv",
+   "bytes": 995
+  },
+  {
+   "label": "download excel",
+   "file": "/home/user/Test/trace-pro/test-results/critic3-downloads/pricing-TRACE-Pro_Pricing_SPORT_2026-06-30.xlsx",
+   "bytes": 34509
+  }
+ ],
+ "csvFirstLines": [
+  "Pricing basis,Current marks,Product,Apollo Sports Capital,As of,2026-06-30",
+  "Level,Kind,Name,Code,Issuer,Units,Direct share %,Effective share %,Value of whole entity USD,Look-through value USD,Repriced value USD,NAV USD,Pricing difference USD,Non-position difference USD,Position value USD,Look-through minus as-booked USD",
+  "0,product,Apollo Sports Capital,Apollo Sports Capital,,0,100.0000,100.000000,2060224441.40,2060224441.40,2060610338.29,2062198835.86,385896.89,1588497.57,2061831574.92,-1607133.52"
+ ],
+ "sendCsvFirstLines": [
+  "Symbol,Respective Qty,Local Price,Local MV",
+  "SPORTHLD - SPV,1752553740.21,1.024650,1795754765.06",
+  "SPORT - SPV,1689417411.52,0.997778,1685663441.41"
+ ],
+ "workbookSheets": {
+  "recon": [
+   "Summary",
+   "Reconciliation"
+  ],
+  "pricing": [
+   "Summary",
+   "Pricing"
+  ]
+ }
+}

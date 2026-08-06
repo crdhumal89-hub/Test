@@ -1,0 +1,34 @@
+{
+ "before": [
+  {
+   "label": "Fund",
+   "families": [
+    "pricing.fund.<CODE>.name",
+    "no-parity"
+   ]
+  },
+  {
+   "label": "Symbol",
+   "families": [
+    "pricing.fund.<CODE>.symbol",
+    "no-parity"
+   ]
+  },
+  {
+   "label": "NAV",
+   "families": [
+    "pricing.walk.fund.<CODE>.nav",
+    "no-parity"
+   ]
+  }
+ ],
+ "after": [
+  {
+   "label": "NAV",
+   "families": [
+    "pricing.walk.fund.<CODE>.nav",
+    "no-parity"
+   ]
+  }
+ ]
+}

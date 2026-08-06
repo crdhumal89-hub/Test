@@ -1,0 +1,200 @@
+{
+ "reconciliation": {
+  "occurrences": 1872,
+  "V1_theirs": [
+   {
+    "token": "DC",
+    "count": 12,
+    "context": "Open the breakdown for AP Deuce Intermediate Holdings I (DC), L.P.",
+    "where": "row rowv vehicle@aria-label",
+    "host": "screen",
+    "attribute": "aria-label"
+   }
+  ],
+  "V2_caseInsensitive": [
+   {
+    "token": "DC",
+    "bare": 12,
+    "of": 12,
+    "samples": [
+     {
+      "text": "Open the breakdown for AP Deuce Intermediate Holdings I (DC), L.P.",
+      "attr": "aria-label",
+      "where": "row rowv vehicle@aria-label"
+     },
+     {
+      "text": "Collapse AP Deuce Intermediate Holdings I (DC), L.P.",
+      "attr": "aria-label",
+      "where": "twist@aria-label"
+     },
+     {
+      "text": "AP Deuce Intermediate Holdings I (DC), L.P.",
+      "attr": null,
+      "where": "row-name"
+     }
+    ]
+   }
+  ],
+  "V3_wordlikeOwnApexOnly": [
+   {
+    "token": "sim",
+    "bare": 2,
+    "of": 2,
+    "samples": [
+     {
+      "text": "No backend. The five fixtures in data/ were extracted from the original TRACE-Pro artifact",
+      "attr": null,
+      "where": "note"
+     },
+     {
+      "text": "SIM (simulator)",
+      "attr": null,
+      "where": "l"
+     }
+    ]
+   },
+   {
+    "token": "DC",
+    "bare": 12,
+    "of": 12,
+    "samples": [
+     {
+      "text": "Open the breakdown for AP Deuce Intermediate Holdings I (DC), L.P.",
+      "attr": "aria-label",
+      "where": "row rowv vehicle@aria-label"
+     },
+     {
+      "text": "Collapse AP Deuce Intermediate Holdings I (DC), L.P.",
+      "attr": "aria-label",
+      "where": "twist@aria-label"
+     },
+     {
+      "text": "AP Deuce Intermediate Holdings I (DC), L.P.",
+      "attr": null,
+      "where": "row-name"
+     }
+    ]
+   }
+  ]
+ },
+ "pricing": {
+  "occurrences": 1133,
+  "V1_theirs": [],
+  "V2_caseInsensitive": [],
+  "V3_wordlikeOwnApexOnly": [
+   {
+    "token": "sim",
+    "bare": 2,
+    "of": 2,
+    "samples": [
+     {
+      "text": "No backend. The five fixtures in data/ were extracted from the original TRACE-Pro artifact",
+      "attr": null,
+      "where": "note"
+     },
+     {
+      "text": "SIM (simulator)",
+      "attr": null,
+      "where": "l"
+     }
+    ]
+   }
+  ]
+ },
+ "structure": {
+  "occurrences": 509,
+  "V1_theirs": [],
+  "V2_caseInsensitive": [],
+  "V3_wordlikeOwnApexOnly": [
+   {
+    "token": "sim",
+    "bare": 2,
+    "of": 2,
+    "samples": [
+     {
+      "text": "No backend. The five fixtures in data/ were extracted from the original TRACE-Pro artifact",
+      "attr": null,
+      "where": "note"
+     },
+     {
+      "text": "SIM (simulator)",
+      "attr": null,
+      "where": "l"
+     }
+    ]
+   }
+  ]
+ },
+ "ownership": {
+  "occurrences": 826,
+  "V1_theirs": [],
+  "V2_caseInsensitive": [],
+  "V3_wordlikeOwnApexOnly": [
+   {
+    "token": "sim",
+    "bare": 2,
+    "of": 2,
+    "samples": [
+     {
+      "text": "No backend. The five fixtures in data/ were extracted from the original TRACE-Pro artifact",
+      "attr": null,
+      "where": "note"
+     },
+     {
+      "text": "SIM (simulator)",
+      "attr": null,
+      "where": "l"
+     }
+    ]
+   }
+  ]
+ },
+ "data-quality": {
+  "occurrences": 243,
+  "V1_theirs": [],
+  "V2_caseInsensitive": [],
+  "V3_wordlikeOwnApexOnly": [
+   {
+    "token": "sim",
+    "bare": 2,
+    "of": 2,
+    "samples": [
+     {
+      "text": "No backend. The five fixtures in data/ were extracted from the original TRACE-Pro artifact",
+      "attr": null,
+      "where": "note"
+     },
+     {
+      "text": "SIM (simulator)",
+      "attr": null,
+      "where": "l"
+     }
+    ]
+   }
+  ]
+ },
+ "simulator": {
+  "occurrences": 689,
+  "V1_theirs": [],
+  "V2_caseInsensitive": [],
+  "V3_wordlikeOwnApexOnly": [
+   {
+    "token": "sim",
+    "bare": 2,
+    "of": 2,
+    "samples": [
+     {
+      "text": "No backend. The five fixtures in data/ were extracted from the original TRACE-Pro artifact",
+      "attr": null,
+      "where": "note"
+     },
+     {
+      "text": "SIM (simulator)",
+      "attr": null,
+      "where": "l"
+     }
+    ]
+   }
+  ]
+ }
+}

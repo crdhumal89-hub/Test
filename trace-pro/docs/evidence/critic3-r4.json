@@ -1,0 +1,78 @@
+{
+ "treeError": {
+  "present": true,
+  "role": "alert",
+  "ariaLive": null,
+  "text": "The look-through hierarchy could not be laid out. This product’s look-through data arrived incomplete: 149 of 149 rows carry no position in ",
+  "buttons": [
+   "Reload this product’s data"
+  ]
+ },
+ "treeEmpty": {
+  "present": true,
+  "role": "status",
+  "ariaLive": null,
+  "text": "Apollo Sports Capital has no look-through rows as of 2026-06-30, so there is nothing to walk fund by fund. Its reported totals above still s",
+  "buttons": [
+   "Reload this product’s data"
+  ]
+ },
+ "priceTableError": {
+  "present": true,
+  "role": "alert",
+  "ariaLive": null,
+  "text": "The table of prices to publish could not be built. This product’s repricing data arrived incomplete: 26 of 26 fund rows carry no usable valu",
+  "buttons": [
+   "Reload this product’s data"
+  ]
+ },
+ "walkError": {
+  "present": true,
+  "role": "alert",
+  "ariaLive": null,
+  "text": "The repricing walk could not be built. This product’s repricing data arrived incomplete: 26 of 26 fund rows carry no usable value to price f",
+  "buttons": [
+   "Reload this product’s data"
+  ]
+ },
+ "priceTableEmpty": {
+  "present": true,
+  "role": "status",
+  "ariaLive": null,
+  "text": "No fund matches “zzzz”. All 26 funds are still here. Clear the filter",
+  "buttons": [
+   "Clear the filter"
+  ]
+ },
+ "stateHelperContract": {
+  "errorNodes": [],
+  "emptyNodes": [
+   "status",
+   "status"
+  ]
+ },
+ "universeFailed_ownership": {
+  "lensError": {
+   "present": true,
+   "role": "alert",
+   "ariaLive": null,
+   "text": "The firm-wide ownership universe could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/universe.json. Check that the da",
+   "buttons": [
+    "Try again"
+   ]
+  },
+  "ownershipSearchExists": 0
+ },
+ "universeFailed_dataQuality": {
+  "lensError": {
+   "present": true,
+   "role": "alert",
+   "ariaLive": null,
+   "text": "The firm-wide ownership universe could not be loaded. Could not reach data/apollo-sports-capital/2026-06-30/universe.json. Check that the da",
+   "buttons": [
+    "Try again"
+   ]
+  },
+  "scopeComboExists": 0
+ }
+}

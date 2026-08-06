@@ -1,0 +1,23 @@
+{
+ "expandedRows": {
+  "expanded": 150,
+  "afterReturn": 150,
+  "survived": true
+ },
+ "filterText": {
+  "typed": "SPORT",
+  "filteredRows": 15,
+  "afterReturnValue": "SPORT",
+  "afterReturnRows": 15
+ },
+ "sortColumn": {
+  "sortedFirstRow": "Apollo Sports Capital (Onshore), L.P.ASCON ASCON-SPV 1.11770",
+  "ariaSortCellsAfterSort": 1,
+  "afterReturnFirstRow": "Apollo Sports Capital (Onshore), L.P.ASCON ASCON-SPV 1.11770",
+  "afterReturnAriaSortCells": 1
+ },
+ "selectionAcrossBasis": {
+  "chosen": "SPORTHFCSPV",
+  "afterToggle": "SPORTHFCSPV"
+ }
+}

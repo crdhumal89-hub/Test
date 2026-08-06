@@ -1,0 +1,81 @@
+{
+ "priceTable_bps": {
+  "header": "bps",
+  "samples": [
+   "2",
+   "2",
+   "0",
+   "1",
+   "0",
+   "1"
+  ],
+  "decimalCounts": [
+   0
+  ]
+ },
+ "priceTable_publish": {
+  "header": "Price to publish",
+  "samples": [
+   "1.024650",
+   "0.997778",
+   "0.993783",
+   "1.009603",
+   "1.004749",
+   "1.000000"
+  ],
+  "decimalCounts": [
+   6
+  ]
+ },
+ "priceTable_ltv": {
+  "header": "Look-through value",
+  "samples": [
+   "$1,768,255,188",
+   "$1,697,506,595",
+   "$644,268,070",
+   "$338,775,700",
+   "$301,424,771",
+   "$295,004,967"
+  ],
+  "decimalCounts": [
+   0
+  ]
+ },
+ "walk_deltaBps": {
+  "header": "Δ bps",
+  "samples": [
+   "—",
+   "—",
+   "—",
+   "+2.0",
+   "+22.2",
+   "—"
+  ],
+  "decimalCounts": [
+   1
+  ]
+ },
+ "walk_deltaPrice": {
+  "header": "Price before",
+  "samples": [
+   "1.139585",
+   "1.139571",
+   "1.036025",
+   "1.055907",
+   "1.039240",
+   "1.139554"
+  ],
+  "decimalCounts": [
+   6
+  ]
+ },
+ "sameQuantityThreeWays": {
+  "price table pnl_bps": "2",
+  "walk delta_bps": "+1.9",
+  "bridge gap_bps": "-958 bps"
+ },
+ "reconciliationWaterfallBps": {
+  "pricing": "+1.9 bps",
+  "nonposition": "+7.7 bps"
+ }
+}

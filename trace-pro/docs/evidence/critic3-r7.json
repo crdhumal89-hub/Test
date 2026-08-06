@@ -1,0 +1,51 @@
+{
+ "withSourcesOpen_click": {
+  "sourcesDrawerOpen": true,
+  "glossaryButtonBox": {
+   "x": 1384,
+   "y": 14,
+   "w": 80,
+   "h": 31
+  },
+  "whatIsAtItsCentre": "header.drawer-head",
+  "centreIsInsideDrawer": true,
+  "glossaryCardsBefore": 0,
+  "glossaryCardsAfterTheClick": 0
+ },
+ "withSourcesOpen_keypress": {
+  "focusWasOn": "button#sources-close[type=button]",
+  "glossaryCards": 35,
+  "sourcesDrawerStillOpen": 0
+ },
+ "withSourcesOpen_keypress_fromFileInput": {
+  "glossaryCards": 0,
+  "sourcesDrawerStillOpen": 1
+ },
+ "deepLink": {
+  "label": "NAV",
+  "cards": 35,
+  "drawerText": "Glossary Every term used in TRACE-Pro, in plain language — with its SOURCE (which report/system the number comes from) and METHOD (how it is calculated). Start with the three price columns below if you are unsure why there are three. × Find a term35 terms All Pricing Value & P&L Look-through & MV NAV & Reconciliation S"
+ },
+ "perLens": {
+  "structure": {
+   "cards": 35,
+   "entityBefore": "APPOURI",
+   "entityAfter": "APPOURI"
+  },
+  "ownership": {
+   "cards": 35,
+   "entityBefore": "APPOURI",
+   "entityAfter": "APPOURI"
+  },
+  "data-quality": {
+   "cards": 35,
+   "entityBefore": "APPOURI",
+   "entityAfter": "APPOURI"
+  },
+  "simulator": {
+   "cards": 35,
+   "entityBefore": "APPOURI",
+   "entityAfter": "APPOURI"
+  }
+ }
+}

@@ -1,0 +1,36 @@
+{
+ "kpi": "High severity 31 Medium 52 Low 22 Total issues 105 All fund entities · scanned universe",
+ "badge": "105",
+ "buckets": [
+  {
+   "head": "Self-mapping (fund holds its own code)43 · Medium▸",
+   "countText": "43 · Medium",
+   "countAria": null,
+   "headAria": null
+  },
+  {
+   "head": "Circular mapping (mutual / looping ownership)2 · High▸",
+   "countText": "2 · High",
+   "countAria": null,
+   "headAria": null
+  },
+  {
+   "head": "Missing / dangling SPV code29 · High▸",
+   "countText": "29 · High",
+   "countAria": null,
+   "headAria": null
+  },
+  {
+   "head": "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+   "countText": "9 · Medium",
+   "countAria": null,
+   "headAria": null
+  },
+  {
+   "head": "Unmapped identifiers (missing VPM symbol / name)22 · Low▸",
+   "countText": "22 · Low",
+   "countAria": null,
+   "headAria": null
+  }
+ ]
+}

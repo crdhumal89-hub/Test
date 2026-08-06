@@ -10,7 +10,7 @@
  * on BODY. Nothing here reads a role and stops.
  */
 import { test, expect } from '@playwright/test';
-import { ROUTES, settled, gotoRoute, writeEvidence } from './helpers.js';
+import { ROUTES, settled, gotoRoute, writeEvidence, recordProblems, expectClean } from './helpers.js';
 
 
 /** sRGB relative luminance, WCAG 2.x. */
@@ -217,4 +217,60 @@ test.describe('R6 — focus is visible and everything is reachable by keyboard',
     expect(report['row detail'], 'the row detail must return focus to its row').toBe(id);
     writeEvidence('focus-restore.json', report);
   });
+});
+
+/**
+ * R7's failing clause, which had no test at all: "one action" from ANYWHERE, including from inside
+ * another overlay — and an overlay you can open but not dismiss is not one action either.
+ *
+ * Two measured defects sat in this gap. The `g` shortcut skipped any `INPUT`, and the Data sources
+ * drawer's two upload slots are file inputs one Tab from its default focus, so from there the glossary
+ * took two actions (close the drawer, then press g); the masthead's own Glossary button could not
+ * supply the missing one, because a modal drawer at `z-index: 40` covers the masthead at `35` and a
+ * click at the button's coordinates lands on `header.drawer-head`. And when one drawer replaced
+ * another, focus ended on `#screen` rather than inside the new drawer, so Escape — which `trapFocus`
+ * listens for on the drawer CONTAINER — did nothing, leaving the glossary open with no keyboard exit.
+ */
+test('R7 — the glossary opens in one action from inside another drawer, and closes again', async ({ page }) => {
+  const { problems } = recordProblems(page);
+  await gotoRoute(page, '#/reconciliation');
+
+  const openDialogs = (): Promise<string[]> =>
+    page.evaluate(() =>
+      [...document.querySelectorAll('#drawer-host [role="dialog"]')]
+        .filter((d) => !d.hasAttribute('hidden'))
+        .map((d) => d.id)
+    );
+
+  await page.locator('#open-sources').click();
+  await expect(page.locator('#sources-drawer')).toBeVisible();
+
+  // The masthead button really is occluded here — this is why the keyboard route has to carry it.
+  const occludedBy = await page.evaluate(() => {
+    const button = document.getElementById('open-glossary');
+    if (!button) return null;
+    const box = button.getBoundingClientRect();
+    const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+    return hit?.id || hit?.className || hit?.tagName || null;
+  });
+  expect(occludedBy, 'a modal drawer is expected to cover the masthead button').not.toBe('open-glossary');
+
+  // ONE action, from a file input inside the other drawer.
+  await page.locator('#sources-file-nav').focus();
+  await page.keyboard.press('g');
+  await expect(page.locator('#glossary-drawer')).toBeVisible();
+  expect(await page.locator('.glscard').count(), 'the glossary must render its cards').toBeGreaterThan(10);
+  expect(await openDialogs()).toEqual(['glossary-drawer']);
+
+  // Focus must be INSIDE it, or Escape cannot reach the container that listens for Escape.
+  const landed = await page.evaluate(() => {
+    const active = document.activeElement as HTMLElement | null;
+    return active?.closest('[role="dialog"]')?.id ?? null;
+  });
+  expect(landed, 'focus must land inside the drawer that just opened').toBe('glossary-drawer');
+
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#glossary-drawer')).toBeHidden();
+  expect(await openDialogs(), 'Escape must leave no drawer open').toEqual([]);
+  expectClean(problems);
 });

@@ -1,0 +1,26 @@
+{
+ "diagnoseEntity": {
+  "present": true,
+  "text": "No entity matches that. Clear the box to see every fund and SPV in this product.",
+  "namesRecovery": true,
+  "hasButton": 0
+ },
+ "ownershipSearch": {
+  "present": true,
+  "text": "No position in the firm-wide universe matches that. Clear the box to see everything, or search the SPV fund code instead.",
+  "namesRecovery": true,
+  "hasButton": 0
+ },
+ "dataQualityScope": {
+  "present": true,
+  "text": "No fund entity matches that. Clear the box to see all of them, or pick “All fund entities” to scan the whole universe.",
+  "namesRecovery": true,
+  "hasButton": 0
+ },
+ "pricingFilter": {
+  "text": "No fund matches “zzzz”. All 26 funds are still here. Clear the filter",
+  "buttons": [
+   "Clear the filter"
+  ]
+ }
+}

@@ -1,0 +1,148 @@
+{
+ "reconciliation_before": {
+  "waterfall": "LOOK-THROUGH VALUE $2,060,224,441 look-through of underlyings · current marks + Pricing difference $385,897 +1.9 bps bottom-up NAV repricing REPRICED VALUE $2,060,610,338 NAV-repriced bottom-up + Non-position difference $1,588,498 +7.7 bps cash, fees, receivables NAV $2,062,198,836 sum of top-level feeder NAVs · NAV report ✓ ties to the cent Pricing difference $385,897 + Non-position difference $1,588,498 = $1,974,394 = NAV − look-through value $1,974,394",
+  "treeHeaders": [
+   "Hierarchy — fund ▸ SPV ▸ security",
+   "VPM symbol",
+   "NAV reported",
+   "Look-through value current marks",
+   "Repriced value bottom-up from NAV",
+   "Pricing difference repriced − look-through",
+   "Non-position difference NAV − repriced"
+  ],
+  "viewNote": "BEFORE PRICING Current as-booked reality — positions at their current marks (look-through value) and reported NAV, with today's pricing gaps & breaks still shown. Pricing difference $385,897 · NAV $2,"
+ },
+ "pricing_before": {
+  "priceHeaders": [
+   "Fund",
+   "Symbol",
+   "Price to publish",
+   "Current mark",
+   "Repriced unit price",
+   "Look-through value",
+   "Repriced value",
+   "Repricing gain or loss",
+   "bps"
+  ],
+  "scoreStrip": "LOOK-THROUGH VALUE · USD $2,060,224,441 look-through · current marks + PRICING DIFFERENCE · USD $385,897 bottom-up repricing gain or loss · +1.9 bps = REPRICED VALUE · USD $2,060,610,338 NAV-repriced bottom-up + NON-POSITION DIFFERENCE · USD $1,588,498 cash/fees/receivables · +7.7 bps = NAV · USD $2,062,198,836 sum of top-level feeder NAVs · 8 flagged"
+ },
+ "reconciliation_after": {
+  "waterfall": "LOOK-THROUGH VALUE AT REPRICED MARKS $2,060,610,338 every component at its repriced price + Pricing difference $0 +0.0 bps reconciled · no pricing break REPRICED VALUE $2,060,610,338 NAV-repriced bottom-up + Non-position difference $1,588,498 +7.7 bps non-trade · cash, fees, receivables NAV $2,062,198,836 sum of top-level feeder NAVs · NAV report ✓ ties to the cent Pricing difference $0 + Non-position difference $1,588,498 = $1,588,498 = NAV − repriced value $1,588,498",
+  "treeHeaders": [
+   "Hierarchy — fund ▸ SPV ▸ security",
+   "VPM symbol",
+   "NAV reported",
+   "Look-through value at repriced marks",
+   "Repriced value bottom-up from NAV",
+   "Pricing difference reconciled",
+   "Non-position difference NAV − repriced"
+  ],
+  "viewNote": "AFTER PRICING Ideal fully-repriced view — every fund / SPV / holding valued at its repriced unit price, flown bottom-up to the product. The look-through pricing gap is reconciled (≈ $0); the only resi"
+ },
+ "pricing_after": {
+  "priceHeaders": [
+   "Fund",
+   "Symbol",
+   "Price to publish",
+   "Repriced mark",
+   "Repriced unit price",
+   "Look-through value at repriced marks",
+   "Repriced value",
+   "Repricing gain or loss (reconciled)",
+   "bps"
+  ],
+  "scoreStrip": "LOOK-THROUGH VALUE AT REPRICED MARKS · USD $2,060,610,338 every component at revised price + PRICING DIFFERENCE · USD $0 reconciled · no pricing break = REPRICED VALUE · USD $2,060,610,338 NAV-repriced bottom-up + NON-POSITION DIFFERENCE · USD $1,588,498 cash/fees/receivables · +7.7 bps = NAV · USD $2,062,198,836 sum of top-level feeder NAVs · 8 flagged"
+ },
+ "structureReadout": "Apollo Sports Capital · full screenProduct NAV $2,062,196,050.07 · fund-entity basisOne entity stamp, not the sum of the top-level feeders — every other screen shows that one.",
+ "structureBasis": "Two product net asset values (NAV) exist and both are right, so neither is labelled just “Product NAV”. This lens’s full-screen readout shows Product NAV, fund-entity basis $2,062,196,050.07 — the one NAV stamped on the fund entity. Every other screen shows Product NAV, Σ top-level feeders $2,062,19",
+ "trap_Applied_pricing": {
+  "before": [],
+  "after": []
+ },
+ "trap_Applied_ownership": {
+  "before": [],
+  "after": []
+ },
+ "trap_RepricedMV_pricing": {
+  "before": [
+   {
+    "where": "score-label",
+    "text": "= Repriced value · USD"
+   },
+   {
+    "where": "score-detail",
+    "text": "-repriced bottom-up"
+   },
+   {
+    "where": "pricing-banner",
+    "text": "Reprice the deepest funds first — a lowest-level fund's repriced unit price = ; a holder's"
+   },
+   {
+    "where": "B",
+    "text": "the repriced value $2,060,610,338"
+   },
+   {
+    "where": "B",
+    "text": "repriced value"
+   },
+   {
+    "where": "r",
+    "text": "Repriced unit price"
+   },
+   {
+    "where": "r",
+    "text": "Repriced value"
+   }
+  ],
+  "after": [
+   {
+    "where": "score-label",
+    "text": "Look-through value at repriced marks · USD"
+   },
+   {
+    "where": "score-label",
+    "text": "= Repriced value · USD"
+   },
+   {
+    "where": "score-detail",
+    "text": "-repriced bottom-up"
+   },
+   {
+    "where": "pricing-banner",
+    "text": "Reprice the deepest funds first — a lowest-level fund's repriced unit price = ; a holder's"
+   },
+   {
+    "where": "B",
+    "text": "the repriced value $2,060,610,338"
+   },
+   {
+    "where": "bridge-end-label",
+    "text": "Repriced look-through value · USD"
+   },
+   {
+    "where": "bridge-end-basis",
+    "text": "underlyings NAV-repriced · pricing reconciled"
+   },
+   {
+    "where": "B",
+    "text": "repriced value"
+   },
+   {
+    "where": "r",
+    "text": "Repriced mark"
+   },
+   {
+    "where": "r",
+    "text": "Repriced unit price"
+   },
+   {
+    "where": "r",
+    "text": "Look-through value at repriced marks"
+   },
+   {
+    "where": "r",
+    "text": "Repriced value"
+   }
+  ]
+ }
+}

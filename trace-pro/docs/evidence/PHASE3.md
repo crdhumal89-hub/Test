@@ -5,7 +5,7 @@ from a child process it ran; the verbatim output of each sub-gate is in `docs/ev
 The gate result is the conjunction of the exit codes and nothing else; the UX CRITIC verdict is
 read from the most recent scorecard, and the two are reported separately rather than blended.
 
-Commit: `790d6daf3b4163d3b7db6734d0eaf80178b68a76`, working tree DIRTY at assembly. Logs captured in this run and stamped with it.
+Commit: `0e7a2478b2dad012055a2980b7f295d784035b19`, working tree DIRTY at assembly. Logs captured in this run and stamped with it.
 
 ## Verdict
 
@@ -47,29 +47,30 @@ into a script would prove nothing, because the same commit could change both.
 | Suite | Passed | Failed |
 | --- | --- | --- |
 | `npm test` (Vitest, domain) | 156 | 0 |
-| `npx playwright test` (all projects) | 117 | — |
+| `npx playwright test` (all projects) | 125 | — |
 
 ## UX CRITIC
 
-2 scorecard(s) discovered by globbing `docs/ux-scorecard*.md`, graded against `docs/ux-rubric.md` (18 criteria, frozen at Phase 0).
+3 scorecard(s) discovered by globbing `docs/ux-scorecard*.md`, graded against `docs/ux-rubric.md` (18 criteria, frozen at Phase 0).
 Each row is that file's own Result table, parsed by `scripts/lib/scorecards.mjs`; the ordering is
 by `git log -1 --format=%ct -- <file>`, newest first.
 
 | Scorecard | Dated | Date basis | PASS | FAIL | Failing criteria | Role |
 | --- | --- | --- | --- | --- | --- | --- |
-| `docs/ux-scorecard-2.md` | 2026-08-04 11:22:50 UTC | git commit | 15 | 3 | R2, R4, R17 | **drives the verdict (most recent)** |
+| `docs/ux-scorecard-3.md` | 2026-08-06 14:33:27 UTC | file mtime, uncommitted | 15 | 3 | R2, R7, R17 | **drives the verdict (most recent)** |
+| `docs/ux-scorecard-2.md` | 2026-08-04 11:22:50 UTC | git commit | 15 | 3 | R2, R4, R17 | superseded |
 | `docs/ux-scorecard.md` | 2026-08-03 23:17:44 UTC | git commit | 5 | 13 | R2, R3, R4, R5, R6, R7, R8, R9, R10, R12, R13, R14, R17 | superseded |
 
-**UX CRITIC verdict: RED** — `docs/ux-scorecard-2.md` is the most
-recent scorecard by git commit date (2026-08-04 11:22:50 UTC) and it records **15 PASS / 3 FAIL**.
+**UX CRITIC verdict: RED** — `docs/ux-scorecard-3.md` is the most
+recent scorecard by git commit date (2026-08-06 14:33:27 UTC) and it records **15 PASS / 3 FAIL**.
 The rubric's own rule is that the gate passes only when all 18 criteria pass with
 cited evidence, so the non-zero FAIL count means this sub-gate is RED regardless of the test suites.
 
-Superseded, kept so the history is legible: `docs/ux-scorecard.md` (5 PASS / 13 FAIL).
+Superseded, kept so the history is legible: `docs/ux-scorecard-2.md` (15 PASS / 3 FAIL), `docs/ux-scorecard.md` (5 PASS / 13 FAIL).
 
 ## Structure limits
 
-113 source files under `src/`, `scripts/` and `tests/`. No file under `src/` exceeds 400 lines.
+116 source files under `src/`, `scripts/` and `tests/`. No file under `src/` exceeds 400 lines.
 
 ### Ten largest files
 
@@ -77,7 +78,6 @@ Superseded, kept so the history is legible: `docs/ux-scorecard.md` (5 PASS / 13 
 | --- | --- |
 | `tests/baseline.json` | 1031 |
 | `tests/e2e/exports.spec.ts` | 400 |
-| `src/ui/chrome/shell.ts` | 396 |
 | `src/ui/screens/diagnose/structure/graph.ts` | 394 |
 | `tests/unit/ingest-roundtrip.spec.ts` | 382 |
 | `src/ui/screens/diagnose/simulator/index.ts` | 381 |
@@ -85,6 +85,7 @@ Superseded, kept so the history is legible: `docs/ux-scorecard.md` (5 PASS / 13 
 | `src/ui/screens/diagnose/simulator/graph.ts` | 373 |
 | `src/ui/screens/pricing/price-table.ts` | 369 |
 | `src/ui/drawers/sources-upload.ts` | 367 |
+| `src/domain/ingest/position-report.ts` | 359 |
 
 ## Verbatim gate output
 
@@ -96,17 +97,17 @@ Superseded, kept so the history is legible: `docs/ux-scorecard.md` (5 PASS / 13 
 > vite build
 
 vite v8.2.0 building client environment for production...
-[2Ktransforming...✓ 69 modules transformed.
+[2Ktransforming...✓ 71 modules transformed.
 rendering chunks...
 computing gzip size...
 dist/index.html                   0.58 kB │ gzip:  0.39 kB
 dist/assets/index-BOEAn9_h.css   26.20 kB │ gzip:  5.77 kB
-dist/assets/index-cqOdJT0E.js   215.18 kB │ gzip: 70.44 kB
+dist/assets/index-tHvaEjFW.js   215.77 kB │ gzip: 70.61 kB
 
-✓ built in 150ms
+✓ built in 149ms
 ````
 
-Full log: `docs/evidence/gate/static-build.txt` (0.7s)
+Full log: `docs/evidence/gate/static-build.txt` (0.6s)
 
 ### STATIC — Typecheck (exit 0)
 
@@ -116,7 +117,7 @@ Full log: `docs/evidence/gate/static-build.txt` (0.7s)
 > tsc --noEmit
 ````
 
-Full log: `docs/evidence/gate/static-typecheck.txt` (3.2s)
+Full log: `docs/evidence/gate/static-typecheck.txt` (3.3s)
 
 ### STATIC — Lint + structure limits + fixtures (exit 0)
 
@@ -243,7 +244,7 @@ Full log: `docs/evidence/gate/static-typecheck.txt` (3.2s)
 RESULT: PASS — 728 figures / 14 empty / 278 text; 41 declared-label keys, all 41 digit-guarded
 ````
 
-Full log: `docs/evidence/gate/static-lint.txt` (4.4s)
+Full log: `docs/evidence/gate/static-lint.txt` (4.3s)
 
 ### STATIC — Parity key classification (exit 0)
 
@@ -382,150 +383,150 @@ Full log: `docs/evidence/gate/static-keys.txt` (0.2s)
 
  RUN  v4.1.10 /home/user/Test/trace-pro
 
- ✓ tests/unit/ownership.spec.ts (20 tests) 61ms
- ✓ tests/unit/ownership-differential.spec.ts (3 tests) 124ms
- ✓ tests/unit/rules.spec.ts (9 tests) 40ms
- ✓ tests/unit/ingest-roundtrip.spec.ts (12 tests) 84ms
- ✓ tests/unit/lookthrough.spec.ts (26 tests) 29ms
- ✓ tests/unit/cascade.spec.ts (27 tests) 23ms
- ✓ tests/unit/ingest-refusals.spec.ts (16 tests) 32ms
+ ✓ tests/unit/ownership.spec.ts (20 tests) 78ms
+ ✓ tests/unit/ownership-differential.spec.ts (3 tests) 119ms
+ ✓ tests/unit/rules.spec.ts (9 tests) 58ms
+ ✓ tests/unit/ingest-roundtrip.spec.ts (12 tests) 108ms
+ ✓ tests/unit/lookthrough.spec.ts (26 tests) 31ms
+ ✓ tests/unit/cascade.spec.ts (27 tests) 21ms
+ ✓ tests/unit/ingest-refusals.spec.ts (16 tests) 28ms
  ✓ tests/unit/ingest.spec.ts (14 tests) 13ms
  ✓ tests/unit/reconciliation.spec.ts (29 tests) 11ms
 
  Test Files  9 passed (9)
       Tests  156 passed (156)
-   Start at  13:36:07
-   Duration  1.13s (transform 469ms, setup 0ms, import 1.16s, tests 419ms, environment 1ms)
+   Start at  14:47:30
+   Duration  1.22s (transform 458ms, setup 0ms, import 1.20s, tests 467ms, environment 1ms)
 ````
 
-Full log: `docs/evidence/gate/unit.txt` (1.7s)
+Full log: `docs/evidence/gate/unit.txt` (1.8s)
 
 ### UX CRITIC — Headless suite (Playwright) (exit 0)
 
 ````
-… 11 earlier lines in the full log …
-  ✓    9 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Ownership — every tab stop has a box, a role and a ≥3:1 ring (2.9s)
-  ✓   10 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Data quality — every tab stop has a box, a role and a ≥3:1 ring (785ms)
-  ✓   11 [app] › tests/e2e/rubric-focus.spec.ts:122:5 › R6 — focus is visible and everything is reachable by keyboard › Simulator — every tab stop has a box, a role and a ≥3:1 ring (1.8s)
-  ✓   12 [app] › tests/e2e/rubric-focus.spec.ts:159:3 › R6 — focus is visible and everything is reachable by keyboard › the ring is actually painted, not clipped away by an ancestor (2.4s)
-  ✓   13 [app] › tests/e2e/rubric-focus.spec.ts:192:3 › R6 — focus is visible and everything is reachable by keyboard › every overlay restores focus to the control that opened it (3.4s)
-  ✓   14 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Reconciliation paints its question above all other text (623ms)
-  ✓   15 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Pricing paints its question above all other text (739ms)
-  ✓   16 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Structure paints its question above all other text (626ms)
-  ✓   17 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Ownership paints its question above all other text (655ms)
-  ✓   18 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Data quality paints its question above all other text (553ms)
-  ✓   19 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Simulator paints its question above all other text (707ms)
-  ✓   20 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › tree-empty · lookthrough.json served with nodes: [] (676ms)
-  ✓   21 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › tree-error · lookthrough.json served with every row’s path deleted (655ms)
-  ✓   22 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › price-table-empty · the Pricing filter typed as zzzz, which matches none of the 26 funds (1.1s)
-  ✓   23 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › price-table-error · repricing.json served with every fund’s ltv and rev as a non-number (709ms)
-  ✓   24 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › repricing-walk-empty · the walk subview chosen, then the filter typed as zzzz (1.4s)
-  ✓   25 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › repricing-walk-error · repricing.json malformed, then the walk subview chosen (1.0s)
-  ✓   26 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › structure-lens-empty · lookthrough.json served with nodes: [] (572ms)
-  ✓   27 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › structure-graph-error · lookthrough.json served with a second root, so the layout cannot build one tree (635ms)
-  ✓   28 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › simulator-lens-empty · simulator.json served with funds: {} (596ms)
-  ✓   29 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › simulator-lens-error · simulator.json served with its top-level feeder list deleted (622ms)
-  ✓   30 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › ownership-lens-empty · universe.json served with its edges, entities and search index emptied (638ms)
-  ✓   31 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › ownership-lens-error · every universe.json request aborted (587ms)
-  ✓   32 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › data-quality-empty · universe.json served with issues: [] (633ms)
-  ✓   33 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › data-quality-error · every universe.json request aborted (586ms)
-  ✓   34 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › combobox-empty · the Diagnose entity search typed as zzzznothing (1.0s)
-  ✓   35 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › combobox-error · universe.json aborted once, then the Diagnose entity list opened (917ms)
-  ✓   36 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-nav-empty · a NAV report with a header row and nothing under it (838ms)
-  ✓   37 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-nav-error · a file with none of a NAV report’s columns chosen in the NAV slot (819ms)
-  ✓   38 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-position-empty · a position report whose only row is for a different fund entity (845ms)
-  ✓   39 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-position-error · a two-column file with none of a position report’s columns (849ms)
-  ✓   40 [app] › tests/e2e/rubric-vocabulary.spec.ts:43:3 › R2 — no bare abbreviation survives outside the glossary › the denylist is the rubric’s, token for token (2ms)
-  ✓   41 [app] › tests/e2e/rubric-vocabulary.spec.ts:55:3 › R2 — no bare abbreviation survives outside the glossary › a gloss is credited only when its letters correspond to the token (6ms)
-  ✓   42 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Reconciliation leaves no denylist token bare (11.2s)
-  ✓   43 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Pricing leaves no denylist token bare (11.4s)
-  ✓   44 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Structure leaves no denylist token bare (11.2s)
-  ✓   45 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Ownership leaves no denylist token bare (11.2s)
-  ✓   46 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Data quality leaves no denylist token bare (11.0s)
-  ✓   47 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Simulator leaves no denylist token bare (11.3s)
-  ✓   48 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Reconciliation opens with one question (615ms)
-  ✓   49 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Pricing opens with one question (706ms)
-  ✓   50 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Structure opens with one question (610ms)
-  ✓   51 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Ownership opens with one question (611ms)
-  ✓   52 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Data quality opens with one question (569ms)
-  ✓   53 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Simulator opens with one question (670ms)
-  ✓   54 [app] › tests/e2e/rubric.spec.ts:50:1 › R3 — a figure is never readable while its as-of date is not (2.7s)
-  ✓   55 [app] › tests/e2e/rubric.spec.ts:161:1 › R5 — the primary answer is above the fold on load, with no click (3.2s)
-  ✓   56 [app] › tests/e2e/rubric.spec.ts:204:1 › R7 — the glossary is one action from every screen, and keeps state (6.6s)
-  ✓   57 [app] › tests/e2e/rubric.spec.ts:221:1 › R7 — the keyboard route to the glossary works too (958ms)
-  ✓   58 [app] › tests/e2e/rubric.spec.ts:239:1 › R12 — the basis is stated where it matters and absent where it does nothing (12.9s)
-  ✓   59 [app] › tests/e2e/rubric.spec.ts:289:1 › R12 — switching the basis relabels or moves every basis-sensitive figure (942ms)
-  ✓   60 [app] › tests/e2e/rubric.spec.ts:300:1 › R14 — nothing fails silently across a full walk of the app (6.3s)
-  ✓   61 [app] › tests/e2e/rubric.spec.ts:313:1 › R16 — the Diagnose entity selection survives every lens switch (3.2s)
-  ✓   62 [app] › tests/e2e/rubric.spec.ts:337:1 › R18 — an empty result offers a way out, not a dead end (944ms)
-  ✓   63 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Reconciliation renders with no console problem (620ms)
-  ✓   64 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Pricing renders with no console problem (723ms)
-  ✓   65 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Structure renders with no console problem (653ms)
-  ✓   66 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Ownership renders with no console problem (723ms)
-  ✓   67 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Data quality renders with no console problem (596ms)
-  ✓   68 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Simulator renders with no console problem (693ms)
-  ✓   69 [app] › tests/e2e/screens.spec.ts:24:1 › Reconciliation: the reconciliation ties, and the figures are the frozen ones (612ms)
-  ✓   70 [app] › tests/e2e/screens.spec.ts:34:1 › Reconciliation: expand all reveals the whole tree, collapse returns to the default (1.4s)
-  ✓   71 [app] › tests/e2e/screens.spec.ts:46:1 › Reconciliation: a row opens its breakdown, Escape closes it and restores focus (1.3s)
-  ✓   72 [app] › tests/e2e/screens.spec.ts:57:1 › Reconciliation: an exception chip jumps to the offending fund (995ms)
-  ✓   73 [app] › tests/e2e/screens.spec.ts:66:1 › Pricing: the score strip and bridge carry the frozen figures (719ms)
-  ✓   74 [app] › tests/e2e/screens.spec.ts:76:1 › Pricing: the walk total ties to the waterfall (674ms)
-  ✓   75 [app] › tests/e2e/screens.spec.ts:84:1 › Ownership: the default position resolves and its owners reconcile (633ms)
-  ✓   76 [app] › tests/e2e/screens.spec.ts:93:1 › Data quality: the five buckets and their counts (564ms)
-  ✓   77 [app] › tests/e2e/screens.spec.ts:102:1 › Simulator: the staged reprice completes and lands on the waterfall, to the cent (1.1s)
-  ✓   78 [app] › tests/e2e/screens.spec.ts:123:1 › Structure: the full-screen readout shows the fund-entity NAV and labels its basis (594ms)
-  ✓   79 [app] › tests/e2e/screens.spec.ts:133:1 › exports: all four produce a non-empty file (1.4s)
-  ✓   80 [app] › tests/e2e/states-lenses.spec.ts:33:1 › structure lens · LOADING while the graph library is still arriving (8.4s)
-  ✓   81 [app] › tests/e2e/states-lenses.spec.ts:54:1 › structure lens · EMPTY when the look-through file lists no entities (644ms)
-  ✓   82 [app] › tests/e2e/states-lenses.spec.ts:77:1 › simulator lens · LOADING while the graph library is still arriving (8.5s)
-  ✓   83 [app] › tests/e2e/states-lenses.spec.ts:92:1 › simulator lens · EMPTY when the simulator file lists no funds (676ms)
-  ✓   84 [app] › tests/e2e/states-lenses.spec.ts:111:1 › simulator lens · ERROR when the simulator file is malformed, announced and re-thrown (728ms)
-  ✓   85 [app] › tests/e2e/states-lenses.spec.ts:148:1 › structure graph · a caught layout error surfaces outside the SVG and is recorded (733ms)
-  ✓   86 [app] › tests/e2e/states-lenses.spec.ts:188:1 › structure graph · the healthy path draws the graph and records nothing (637ms)
-  ✓   87 [app] › tests/e2e/states-universe.spec.ts:29:1 › universe fixture · LOADING while the 472 KiB fetch is outstanding (8.5s)
-  ✓   88 [app] › tests/e2e/states-universe.spec.ts:47:1 › universe fixture · ERROR when the fetch fails, and the retry actually recovers (921ms)
-  ✓   89 [app] › tests/e2e/states-universe.spec.ts:71:1 › ownership lens · EMPTY when the universe knows nothing about the selected position (684ms)
-  ✓   90 [app] › tests/e2e/states-universe.spec.ts:88:1 › ownership lens · ERROR when the universe it depends on cannot be fetched (653ms)
-  ✓   91 [app] › tests/e2e/states-universe.spec.ts:105:1 › ownership lens · LOADING states the file it is waiting for, not a bare spinner (386ms)
-  ✓   92 [app] › tests/e2e/states-universe.spec.ts:119:1 › data quality lens · LOADING while the universe it scans is in flight (353ms)
-  ✓   93 [app] › tests/e2e/states-universe.spec.ts:132:1 › data quality lens · EMPTY when the scanned universe reports no issues (690ms)
-  ✓   94 [app] › tests/e2e/states-universe.spec.ts:148:1 › data quality lens · ERROR when the universe it scans cannot be fetched (679ms)
-  ✓   95 [app] › tests/e2e/states-universe.spec.ts:166:1 › combobox list · LOADING says which of its two sources has not arrived (489ms)
-  ✓   96 [app] › tests/e2e/states-universe.spec.ts:186:1 › combobox list · EMPTY names the recovery, and the recovery works (1.4s)
-  ✓   97 [app] › tests/e2e/states-universe.spec.ts:205:1 › combobox list · ERROR is announced in the list and recovers from beside it (932ms)
-  ✓   98 [app] › tests/e2e/states-upload.spec.ts:109:1 › upload slots · both are real file inputs, in the drawer that describes them (849ms)
-  ✓   99 [app] › tests/e2e/states-upload.spec.ts:136:1 › NAV slot · LOADING while a large report is being read (2.1s)
-  ✓  100 [app] › tests/e2e/states-upload.spec.ts:174:1 › NAV slot · EMPTY when the report has no fund rows to apply (877ms)
-  ✓  101 [app] › tests/e2e/states-upload.spec.ts:191:1 › NAV slot · ERROR when the file is not a NAV report, announced with what was wanted (872ms)
-  ✓  102 [app] › tests/e2e/states-upload.spec.ts:208:1 › NAV slot · a position report in the NAV slot is named, not silently ignored (724ms)
-  ✓  103 [app] › tests/e2e/states-upload.spec.ts:221:1 › NAV slot · an applied report reprices the reconciliation, and yesterday’s NAV column is ignored (1.5s)
-  ✓  104 [app] › tests/e2e/states-upload.spec.ts:249:1 › position slot · LOADING while the spreadsheet library is still arriving (853ms)
-  ✓  105 [app] › tests/e2e/states-upload.spec.ts:268:1 › position slot · EMPTY when the report describes no holdings for this product (845ms)
-  ✓  106 [app] › tests/e2e/states-upload.spec.ts:288:1 › position slot · ERROR when the columns it needs are missing (875ms)
-  ✓  107 [app] › tests/e2e/states-upload.spec.ts:305:1 › position slot · an applied report rebuilds the hierarchy the tree draws (1.3s)
-  ✓  108 [app] › tests/e2e/states.spec.ts:26:1 › tree · LOADING while a fixture fetch is outstanding (8.3s)
-  ✓  109 [app] › tests/e2e/states.spec.ts:41:1 › tree · EMPTY when the product has no look-through rows (680ms)
-  ✓  110 [app] › tests/e2e/states.spec.ts:58:1 › tree · ERROR when the hierarchy arrives malformed (708ms)
-  ✓  111 [app] › tests/e2e/states.spec.ts:80:1 › price table · LOADING while a fixture fetch is outstanding (8.4s)
-  ✓  112 [app] › tests/e2e/states.spec.ts:94:1 › price table · EMPTY when the filter matches nothing, and the recovery works (1.4s)
-  ✓  113 [app] › tests/e2e/states.spec.ts:113:1 › price table · ERROR when the fund rows arrive malformed (736ms)
-  ✓  114 [app] › tests/e2e/states.spec.ts:142:1 › repricing walk · LOADING while a fixture fetch is outstanding (9.1s)
-  ✓  115 [app] › tests/e2e/states.spec.ts:159:1 › repricing walk · EMPTY when the filter matches nothing, and the recovery works (1.8s)
-  ✓  116 [app] › tests/e2e/states.spec.ts:178:1 › repricing walk · ERROR when the fund rows arrive malformed (1.1s)
-  ✓  117 [offline] › tests/e2e/offline.spec.ts:11:1 › the whole app runs with every off-origin request blocked (6.6s)
+… 19 earlier lines in the full log …
+  ✓   17 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Structure paints its question above all other text (679ms)
+  ✓   18 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Ownership paints its question above all other text (717ms)
+  ✓   19 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Data quality paints its question above all other text (565ms)
+  ✓   20 [app] › tests/e2e/rubric-order.spec.ts:133:5 › R1 — the question is the first thing painted, not merely first in the DOM › Simulator paints its question above all other text (719ms)
+  ✓   21 [app] › tests/e2e/rubric-vocabulary-interacted.spec.ts:112:5 › R2 — no bare abbreviation survives on a state you reach by using the app › reconciliation-expanded leaves no denylist token bare (1.5s)
+  ✓   22 [app] › tests/e2e/rubric-vocabulary-interacted.spec.ts:112:5 › R2 — no bare abbreviation survives on a state you reach by using the app › reconciliation-expanded-repriced leaves no denylist token bare (2.1s)
+  ✓   23 [app] › tests/e2e/rubric-vocabulary-interacted.spec.ts:112:5 › R2 — no bare abbreviation survives on a state you reach by using the app › reconciliation-row-detail leaves no denylist token bare (2.0s)
+  ✓   24 [app] › tests/e2e/rubric-vocabulary-interacted.spec.ts:112:5 › R2 — no bare abbreviation survives on a state you reach by using the app › pricing-walk leaves no denylist token bare (1.3s)
+  ✓   25 [app] › tests/e2e/rubric-vocabulary-interacted.spec.ts:112:5 › R2 — no bare abbreviation survives on a state you reach by using the app › pricing-repriced leaves no denylist token bare (1.3s)
+  ✓   26 [app] › tests/e2e/rubric-vocabulary-interacted.spec.ts:112:5 › R2 — no bare abbreviation survives on a state you reach by using the app › data-quality-expanded leaves no denylist token bare (1.3s)
+  ✓   27 [app] › tests/e2e/rubric-vocabulary-interacted.spec.ts:112:5 › R2 — no bare abbreviation survives on a state you reach by using the app › simulator-after-shock leaves no denylist token bare (2.5s)
+  ✓   28 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › tree-empty · lookthrough.json served with nodes: [] (680ms)
+  ✓   29 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › tree-error · lookthrough.json served with every row’s path deleted (643ms)
+  ✓   30 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › price-table-empty · the Pricing filter typed as zzzz, which matches none of the 26 funds (1.1s)
+  ✓   31 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › price-table-error · repricing.json served with every fund’s ltv and rev as a non-number (677ms)
+  ✓   32 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › repricing-walk-empty · the walk subview chosen, then the filter typed as zzzz (1.4s)
+  ✓   33 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › repricing-walk-error · repricing.json malformed, then the walk subview chosen (1.0s)
+  ✓   34 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › structure-lens-empty · lookthrough.json served with nodes: [] (565ms)
+  ✓   35 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › structure-graph-error · lookthrough.json served with a second root, so the layout cannot build one tree (640ms)
+  ✓   36 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › simulator-lens-empty · simulator.json served with funds: {} (615ms)
+  ✓   37 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › simulator-lens-error · simulator.json served with its top-level feeder list deleted (647ms)
+  ✓   38 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › ownership-lens-empty · universe.json served with its edges, entities and search index emptied (680ms)
+  ✓   39 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › ownership-lens-error · every universe.json request aborted (655ms)
+  ✓   40 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › data-quality-empty · universe.json served with issues: [] (661ms)
+  ✓   41 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › data-quality-error · every universe.json request aborted (609ms)
+  ✓   42 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › combobox-empty · the Diagnose entity search typed as zzzznothing (1.1s)
+  ✓   43 [app] › tests/e2e/rubric-vocabulary-states.spec.ts:221:5 › R2 — the empty and error states leave no denylist token bare › combobox-error · universe.json aborted once, then the Diagnose entity list opened (965ms)
+  ✓   44 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-nav-empty · a NAV report with a header row and nothing under it (866ms)
+  ✓   45 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-nav-error · a file with none of a NAV report’s columns chosen in the NAV slot (852ms)
+  ✓   46 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-position-empty · a position report whose only row is for a different fund entity (843ms)
+  ✓   47 [app] › tests/e2e/rubric-vocabulary-uploads.spec.ts:88:5 › R2 — the upload slots’ empty and error states leave no denylist token bare › upload-position-error · a two-column file with none of a position report’s columns (883ms)
+  ✓   48 [app] › tests/e2e/rubric-vocabulary.spec.ts:43:3 › R2 — no bare abbreviation survives outside the glossary › the denylist is the rubric’s, token for token (2ms)
+  ✓   49 [app] › tests/e2e/rubric-vocabulary.spec.ts:55:3 › R2 — no bare abbreviation survives outside the glossary › a gloss is credited only when its letters correspond to the token (7ms)
+  ✓   50 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Reconciliation leaves no denylist token bare (11.2s)
+  ✓   51 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Pricing leaves no denylist token bare (11.4s)
+  ✓   52 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Structure leaves no denylist token bare (11.2s)
+  ✓   53 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Ownership leaves no denylist token bare (11.2s)
+  ✓   54 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Data quality leaves no denylist token bare (12.1s)
+  ✓   55 [app] › tests/e2e/rubric-vocabulary.spec.ts:81:5 › R2 — no bare abbreviation survives outside the glossary › Simulator leaves no denylist token bare (12.0s)
+  ✓   56 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Reconciliation opens with one question (657ms)
+  ✓   57 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Pricing opens with one question (764ms)
+  ✓   58 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Structure opens with one question (649ms)
+  ✓   59 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Ownership opens with one question (720ms)
+  ✓   60 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Data quality opens with one question (584ms)
+  ✓   61 [app] › tests/e2e/rubric.spec.ts:25:5 › R1 — every screen states the question it answers › Simulator opens with one question (700ms)
+  ✓   62 [app] › tests/e2e/rubric.spec.ts:50:1 › R3 — a figure is never readable while its as-of date is not (2.8s)
+  ✓   63 [app] › tests/e2e/rubric.spec.ts:161:1 › R5 — the primary answer is above the fold on load, with no click (3.4s)
+  ✓   64 [app] › tests/e2e/rubric.spec.ts:204:1 › R7 — the glossary is one action from every screen, and keeps state (6.7s)
+  ✓   65 [app] › tests/e2e/rubric.spec.ts:221:1 › R7 — the keyboard route to the glossary works too (990ms)
+  ✓   66 [app] › tests/e2e/rubric.spec.ts:239:1 › R12 — the basis is stated where it matters and absent where it does nothing (13.1s)
+  ✓   67 [app] › tests/e2e/rubric.spec.ts:289:1 › R12 — switching the basis relabels or moves every basis-sensitive figure (948ms)
+  ✓   68 [app] › tests/e2e/rubric.spec.ts:300:1 › R14 — nothing fails silently across a full walk of the app (6.3s)
+  ✓   69 [app] › tests/e2e/rubric.spec.ts:313:1 › R16 — the Diagnose entity selection survives every lens switch (3.2s)
+  ✓   70 [app] › tests/e2e/rubric.spec.ts:337:1 › R18 — an empty result offers a way out, not a dead end (969ms)
+  ✓   71 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Reconciliation renders with no console problem (611ms)
+  ✓   72 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Pricing renders with no console problem (661ms)
+  ✓   73 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Structure renders with no console problem (628ms)
+  ✓   74 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Ownership renders with no console problem (721ms)
+  ✓   75 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Data quality renders with no console problem (607ms)
+  ✓   76 [app] › tests/e2e/screens.spec.ts:12:5 › every screen renders › Simulator renders with no console problem (703ms)
+  ✓   77 [app] › tests/e2e/screens.spec.ts:24:1 › Reconciliation: the reconciliation ties, and the figures are the frozen ones (594ms)
+  ✓   78 [app] › tests/e2e/screens.spec.ts:34:1 › Reconciliation: expand all reveals the whole tree, collapse returns to the default (1.4s)
+  ✓   79 [app] › tests/e2e/screens.spec.ts:46:1 › Reconciliation: a row opens its breakdown, Escape closes it and restores focus (1.3s)
+  ✓   80 [app] › tests/e2e/screens.spec.ts:57:1 › Reconciliation: an exception chip jumps to the offending fund (976ms)
+  ✓   81 [app] › tests/e2e/screens.spec.ts:66:1 › Pricing: the score strip and bridge carry the frozen figures (691ms)
+  ✓   82 [app] › tests/e2e/screens.spec.ts:76:1 › Pricing: the walk total ties to the waterfall (654ms)
+  ✓   83 [app] › tests/e2e/screens.spec.ts:84:1 › Ownership: the default position resolves and its owners reconcile (621ms)
+  ✓   84 [app] › tests/e2e/screens.spec.ts:93:1 › Data quality: the five buckets and their counts (571ms)
+  ✓   85 [app] › tests/e2e/screens.spec.ts:102:1 › Simulator: the staged reprice completes and lands on the waterfall, to the cent (1.1s)
+  ✓   86 [app] › tests/e2e/screens.spec.ts:123:1 › Structure: the full-screen readout shows the fund-entity NAV and labels its basis (599ms)
+  ✓   87 [app] › tests/e2e/screens.spec.ts:133:1 › exports: all four produce a non-empty file (1.3s)
+  ✓   88 [app] › tests/e2e/states-lenses.spec.ts:33:1 › structure lens · LOADING while the graph library is still arriving (8.4s)
+  ✓   89 [app] › tests/e2e/states-lenses.spec.ts:54:1 › structure lens · EMPTY when the look-through file lists no entities (709ms)
+  ✓   90 [app] › tests/e2e/states-lenses.spec.ts:77:1 › simulator lens · LOADING while the graph library is still arriving (8.5s)
+  ✓   91 [app] › tests/e2e/states-lenses.spec.ts:92:1 › simulator lens · EMPTY when the simulator file lists no funds (678ms)
+  ✓   92 [app] › tests/e2e/states-lenses.spec.ts:111:1 › simulator lens · ERROR when the simulator file is malformed, announced and re-thrown (687ms)
+  ✓   93 [app] › tests/e2e/states-lenses.spec.ts:148:1 › structure graph · a caught layout error surfaces outside the SVG and is recorded (719ms)
+  ✓   94 [app] › tests/e2e/states-lenses.spec.ts:188:1 › structure graph · the healthy path draws the graph and records nothing (613ms)
+  ✓   95 [app] › tests/e2e/states-universe.spec.ts:29:1 › universe fixture · LOADING while the 472 KiB fetch is outstanding (8.4s)
+  ✓   96 [app] › tests/e2e/states-universe.spec.ts:47:1 › universe fixture · ERROR when the fetch fails, and the retry actually recovers (879ms)
+  ✓   97 [app] › tests/e2e/states-universe.spec.ts:71:1 › ownership lens · EMPTY when the universe knows nothing about the selected position (705ms)
+  ✓   98 [app] › tests/e2e/states-universe.spec.ts:88:1 › ownership lens · ERROR when the universe it depends on cannot be fetched (655ms)
+  ✓   99 [app] › tests/e2e/states-universe.spec.ts:105:1 › ownership lens · LOADING states the file it is waiting for, not a bare spinner (354ms)
+  ✓  100 [app] › tests/e2e/states-universe.spec.ts:119:1 › data quality lens · LOADING while the universe it scans is in flight (368ms)
+  ✓  101 [app] › tests/e2e/states-universe.spec.ts:132:1 › data quality lens · EMPTY when the scanned universe reports no issues (702ms)
+  ✓  102 [app] › tests/e2e/states-universe.spec.ts:148:1 › data quality lens · ERROR when the universe it scans cannot be fetched (656ms)
+  ✓  103 [app] › tests/e2e/states-universe.spec.ts:166:1 › combobox list · LOADING says which of its two sources has not arrived (439ms)
+  ✓  104 [app] › tests/e2e/states-universe.spec.ts:186:1 › combobox list · EMPTY names the recovery, and the recovery works (1.3s)
+  ✓  105 [app] › tests/e2e/states-universe.spec.ts:205:1 › combobox list · ERROR is announced in the list and recovers from beside it (1.1s)
+  ✓  106 [app] › tests/e2e/states-upload.spec.ts:109:1 › upload slots · both are real file inputs, in the drawer that describes them (877ms)
+  ✓  107 [app] › tests/e2e/states-upload.spec.ts:136:1 › NAV slot · LOADING while a large report is being read (2.7s)
+  ✓  108 [app] › tests/e2e/states-upload.spec.ts:174:1 › NAV slot · EMPTY when the report has no fund rows to apply (866ms)
+  ✓  109 [app] › tests/e2e/states-upload.spec.ts:191:1 › NAV slot · ERROR when the file is not a NAV report, announced with what was wanted (861ms)
+  ✓  110 [app] › tests/e2e/states-upload.spec.ts:208:1 › NAV slot · a position report in the NAV slot is named, not silently ignored (740ms)
+  ✓  111 [app] › tests/e2e/states-upload.spec.ts:221:1 › NAV slot · an applied report reprices the reconciliation, and yesterday’s NAV column is ignored (1.6s)
+  ✓  112 [app] › tests/e2e/states-upload.spec.ts:249:1 › position slot · LOADING while the spreadsheet library is still arriving (875ms)
+  ✓  113 [app] › tests/e2e/states-upload.spec.ts:268:1 › position slot · EMPTY when the report describes no holdings for this product (858ms)
+  ✓  114 [app] › tests/e2e/states-upload.spec.ts:288:1 › position slot · ERROR when the columns it needs are missing (910ms)
+  ✓  115 [app] › tests/e2e/states-upload.spec.ts:305:1 › position slot · an applied report rebuilds the hierarchy the tree draws (1.2s)
+  ✓  116 [app] › tests/e2e/states.spec.ts:26:1 › tree · LOADING while a fixture fetch is outstanding (8.4s)
+  ✓  117 [app] › tests/e2e/states.spec.ts:41:1 › tree · EMPTY when the product has no look-through rows (722ms)
+  ✓  118 [app] › tests/e2e/states.spec.ts:58:1 › tree · ERROR when the hierarchy arrives malformed (727ms)
+  ✓  119 [app] › tests/e2e/states.spec.ts:80:1 › price table · LOADING while a fixture fetch is outstanding (8.4s)
+  ✓  120 [app] › tests/e2e/states.spec.ts:94:1 › price table · EMPTY when the filter matches nothing, and the recovery works (1.5s)
+  ✓  121 [app] › tests/e2e/states.spec.ts:113:1 › price table · ERROR when the fund rows arrive malformed (755ms)
+  ✓  122 [app] › tests/e2e/states.spec.ts:142:1 › repricing walk · LOADING while a fixture fetch is outstanding (10.1s)
+  ✓  123 [app] › tests/e2e/states.spec.ts:159:1 › repricing walk · EMPTY when the filter matches nothing, and the recovery works (1.8s)
+  ✓  124 [app] › tests/e2e/states.spec.ts:178:1 › repricing walk · ERROR when the fund rows arrive malformed (1.1s)
+  ✓  125 [offline] › tests/e2e/offline.spec.ts:11:1 › the whole app runs with every off-origin request blocked (6.7s)
 
-  117 passed (4.3m)
-(node:13345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+  125 passed (4.6m)
+(node:1799) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:13345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:1799) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:14520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:3066) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:14520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:3066) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
 ````
 
-Full log: `docs/evidence/gate/e2e.txt` (260.0s)
+Full log: `docs/evidence/gate/e2e.txt` (279.5s)
 
 ### PARITY — Semantic parity vs frozen baseline (exit 0)
 
@@ -554,5 +555,5 @@ label basis   : REBUILT APP — the 37+ declared keys must render docs/rename-ma
 RESULT: PASS (exit 0)
 ````
 
-Full log: `docs/evidence/gate/parity.txt` (26.8s)
+Full log: `docs/evidence/gate/parity.txt` (27.7s)
 

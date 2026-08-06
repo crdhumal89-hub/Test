@@ -200,7 +200,7 @@
  "upload-nav-loading": {
   "reached": "a 200,000-row NAV report chosen in the NAV slot; the reader yields between chunks",
   "selector": "#sources-state-nav .state-loading",
-  "rendered": "Loading “nav-large.csv” — 68,000 rows read so far…",
+  "rendered": "Loading “nav-large.csv” — 48,000 rows read so far…",
   "screenshot": "docs/evidence/states/upload-nav-loading.png"
  },
  "upload-position-empty": {

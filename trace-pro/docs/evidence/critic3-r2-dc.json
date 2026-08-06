@@ -1,0 +1,80 @@
+{
+ "collapsedRows": 10,
+ "collapsedDC": [],
+ "expandedRows": 150,
+ "expandedDC": [
+  {
+   "text": "Open the breakdown for AP Deuce Intermediate Holdings I (DC), L.P.",
+   "attr": "aria-label",
+   "where": "row rowv vehicle@aria-label",
+   "linked": false
+  },
+  {
+   "text": "Collapse AP Deuce Intermediate Holdings I (DC), L.P.",
+   "attr": "aria-label",
+   "where": "twist@aria-label",
+   "linked": false
+  },
+  {
+   "text": "AP Deuce Intermediate Holdings I (DC), L.P.",
+   "attr": null,
+   "where": "row-name",
+   "linked": false
+  },
+  {
+   "text": "Open the breakdown for AP Sports Intermediate Holdings Velocity (DC), L.P.",
+   "attr": "aria-label",
+   "where": "row rowv vehicle flagged warn@aria-label",
+   "linked": false
+  },
+  {
+   "text": "Collapse AP Sports Intermediate Holdings Velocity (DC), L.P.",
+   "attr": "aria-label",
+   "where": "twist@aria-label",
+   "linked": false
+  },
+  {
+   "text": "AP Sports Intermediate Holdings Velocity (DC), L.P.",
+   "attr": null,
+   "where": "row-name",
+   "linked": false
+  },
+  {
+   "text": "Open the breakdown for AP Deuce Intermediate Holdings I (DC), L.P.",
+   "attr": "aria-label",
+   "where": "row rowv vehicle@aria-label",
+   "linked": false
+  },
+  {
+   "text": "Collapse AP Deuce Intermediate Holdings I (DC), L.P.",
+   "attr": "aria-label",
+   "where": "twist@aria-label",
+   "linked": false
+  },
+  {
+   "text": "AP Deuce Intermediate Holdings I (DC), L.P.",
+   "attr": null,
+   "where": "row-name",
+   "linked": false
+  },
+  {
+   "text": "Open the breakdown for AP Sports Debt Holdings II (DC), L.P.",
+   "attr": "aria-label",
+   "where": "row rowv vehicle flagged warn@aria-label",
+   "linked": false
+  },
+  {
+   "text": "Collapse AP Sports Debt Holdings II (DC), L.P.",
+   "attr": "aria-label",
+   "where": "twist@aria-label",
+   "linked": false
+  },
+  {
+   "text": "AP Sports Debt Holdings II (DC), L.P.",
+   "attr": null,
+   "where": "row-name",
+   "linked": false
+  }
+ ],
+ "vocabularyStrip": "Terms on this screen: NAV = net asset value · SPV = special purpose vehicle · VPM = the valuation portfolio accounting system · bps = basis points, one hundredth of a percent. Each dotted term opens its glossary definition."
+}

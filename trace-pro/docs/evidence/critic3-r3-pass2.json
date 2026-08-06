@@ -1,0 +1,25 @@
+{
+ "reconciliation": [],
+ "pricing": [],
+ "structure": [],
+ "ownership": [],
+ "data-quality": [
+  {
+   "where": "dq-count",
+   "parity": "data_quality.bucket.Circular_mapping_mutual_looping_ownership_.count_and_severity",
+   "text": "2 · High",
+   "parentText": "Circular mapping (mutual / looping ownership)2 · High▸",
+   "panelText": "Circular mapping (mutual / looping ownership)2 · High▸Two or more funds own each other in a loop. The engine resolves it by fixed-point so totals still reconcile, but a circular holding is a structura",
+   "top": 703
+  },
+  {
+   "where": "dq-count",
+   "parity": "data_quality.bucket.Incomplete_look-through_double-count_flag_nothing_beneath_.count_and_severity",
+   "text": "9 · Medium",
+   "parentText": "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸",
+   "panelText": "Incomplete look-through (double-count flag, nothing beneath)9 · Medium▸An intra-group holding is flagged to be eliminated on look-through (double-count = Y), but the target entity has no underlying po",
+   "top": 785
+  }
+ ],
+ "simulator": []
+}

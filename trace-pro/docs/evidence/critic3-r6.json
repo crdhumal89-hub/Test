@@ -1,0 +1,194 @@
+{
+ "sortable table headers": {
+  "count": 9,
+  "sample": [
+   {
+    "tag": "th",
+    "role": "columnheader",
+    "name": "Sort by Fund",
+    "tabindex": "0",
+    "w": 544,
+    "h": 35
+   },
+   {
+    "tag": "th",
+    "role": "columnheader",
+    "name": "Sort by Symbol",
+    "tabindex": "0",
+    "w": 148,
+    "h": 35
+   },
+   {
+    "tag": "th",
+    "role": "columnheader",
+    "name": "Sort by Price to publish",
+    "tabindex": "0",
+    "w": 121,
+    "h": 35
+   }
+  ],
+  "allHaveRole": true,
+  "allFocusable": true,
+  "allNamed": true
+ },
+ "accordion headers": {
+  "count": 5,
+  "sample": [
+   {
+    "tag": "h3",
+    "role": null,
+    "name": "Self-mapping (fund holds its own code)43",
+    "tabindex": null,
+    "w": 1556,
+    "h": 25
+   },
+   {
+    "tag": "h3",
+    "role": null,
+    "name": "Circular mapping (mutual / looping owner",
+    "tabindex": null,
+    "w": 1556,
+    "h": 25
+   },
+   {
+    "tag": "h3",
+    "role": null,
+    "name": "Missing / dangling SPV code29 · High▸",
+    "tabindex": null,
+    "w": 1556,
+    "h": 25
+   }
+  ],
+  "allHaveRole": false,
+  "allFocusable": false,
+  "allNamed": true
+ },
+ "graph nodes": {
+  "count": 46,
+  "sample": [
+   {
+    "tag": "g",
+    "role": "button",
+    "name": "Apollo Sports Capital — Apollo Sports Capital, 100.00% of its holder",
+    "tabindex": "0",
+    "w": 101,
+    "h": 64
+   },
+   {
+    "tag": "g",
+    "role": "button",
+    "name": "ASCHON — Apollo Sports Capital Holdings (Onshore), L.P., 100.00% of its holder",
+    "tabindex": "-1",
+    "w": 43,
+    "h": 38
+   },
+   {
+    "tag": "g",
+    "role": "button",
+    "name": "DUNK — AP Dunk SPV, LLC, 100.00% of its holder",
+    "tabindex": "-1",
+    "w": 30,
+    "h": 22
+   }
+  ],
+  "allHaveRole": true,
+  "allFocusable": false,
+  "allNamed": true
+ },
+ "ribbon segments": {
+  "count": 39,
+  "sample": [
+   {
+    "tag": "div",
+    "role": "button",
+    "name": "Apollo Credit Strategies Master Fund Ltd., 11.45% — go to its row",
+    "tabindex": "0",
+    "w": 178,
+    "h": 16
+   },
+   {
+    "tag": "div",
+    "role": "button",
+    "name": "Apollo Credit Strategies Absolute Return Aggregator C, L.P., 10.11% — go to its row",
+    "tabindex": "0",
+    "w": 157,
+    "h": 16
+   },
+   {
+    "tag": "div",
+    "role": "button",
+    "name": "Apollo Accord+ II Aggregator C, L.P., 9.04% — go to its row",
+    "tabindex": "0",
+    "w": 140,
+    "h": 16
+   }
+  ],
+  "allHaveRole": true,
+  "allFocusable": true,
+  "allNamed": true
+ },
+ "flag chips": {
+  "count": 3,
+  "sample": [
+   {
+    "tag": "span",
+    "role": "button",
+    "name": "Jump to the first fund flagged Missing NAV",
+    "tabindex": "0",
+    "w": 118,
+    "h": 32
+   },
+   {
+    "tag": "span",
+    "role": "button",
+    "name": "Jump to the first fund flagged Dangling SPV",
+    "tabindex": "0",
+    "w": 125,
+    "h": 32
+   },
+   {
+    "tag": "span",
+    "role": "button",
+    "name": "Jump to the first fund flagged Material non-position gap",
+    "tabindex": "0",
+    "w": 192,
+    "h": 32
+   }
+  ],
+  "allHaveRole": true,
+  "allFocusable": true,
+  "allNamed": true
+ },
+ "tree rows": {
+  "count": 10,
+  "sample": [
+   {
+    "tag": "tr",
+    "role": "button",
+    "name": "Open the breakdown for Apollo Sports Capital",
+    "tabindex": "0",
+    "w": 1554,
+    "h": 50
+   },
+   {
+    "tag": "tr",
+    "role": "button",
+    "name": "Open the breakdown for Apollo Sports Capital Holdings (Onshore), L.P.",
+    "tabindex": "0",
+    "w": 1554,
+    "h": 50
+   },
+   {
+    "tag": "tr",
+    "role": "button",
+    "name": "Open the breakdown for Apollo Sports Capital (Onshore), L.P.",
+    "tabindex": "0",
+    "w": 1554,
+    "h": 50
+   }
+  ],
+  "allHaveRole": false,
+  "allFocusable": false,
+  "allNamed": true
+ }
+}

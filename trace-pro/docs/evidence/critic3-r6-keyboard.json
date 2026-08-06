@@ -1,0 +1,55 @@
+{
+ "graphRoving": {
+  "nodes": 46,
+  "tabbable": 1,
+  "trail": [
+   "ArrowRight -> ASCHON",
+   "ArrowRight -> DUNK",
+   "ArrowDown -> SPORTHLD",
+   "ArrowLeft -> DUNK",
+   "End -> DUNK",
+   "Home -> DUNK"
+  ]
+ },
+ "graphActivate": {
+  "focusedCode": "DUNK",
+  "selectedAfterEnter": ""
+ },
+ "accordion": [
+  {
+   "control": "button[role=]",
+   "ariaExpanded": "false",
+   "tabIndex": 0,
+   "name": "Self-mapping (fund holds its own code)43 · Medium▸"
+  },
+  {
+   "control": "button[role=]",
+   "ariaExpanded": "false",
+   "tabIndex": 0,
+   "name": "Circular mapping (mutual / looping ownership)2 · High▸"
+  },
+  {
+   "control": "button[role=]",
+   "ariaExpanded": "false",
+   "tabIndex": 0,
+   "name": "Missing / dangling SPV code29 · High▸"
+  },
+  {
+   "control": "button[role=]",
+   "ariaExpanded": "false",
+   "tabIndex": 0,
+   "name": "Incomplete look-through (double-count flag, nothing beneath)"
+  },
+  {
+   "control": "button[role=]",
+   "ariaExpanded": "false",
+   "tabIndex": 0,
+   "name": "Unmapped identifiers (missing VPM symbol / name)22 · Low▸"
+  }
+ ],
+ "accordionKeyboard": {
+  "visibleBodiesBefore": 0,
+  "visibleBodiesAfter": 1,
+  "ariaExpandedAfter": "true"
+ }
+}

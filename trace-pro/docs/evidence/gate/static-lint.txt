@@ -1,8 +1,8 @@
 $ npm run lint
 # sub-gate: STATIC — Lint + structure limits + fixtures
 # exit code: 0
-# git HEAD: 790d6daf3b4163d3b7db6734d0eaf80178b68a76 (working tree dirty at capture)
-# captured: 2026-08-06T13:36:07.012Z
+# git HEAD: 0e7a2478b2dad012055a2980b7f295d784035b19 (working tree dirty at capture)
+# captured: 2026-08-06T14:47:30.090Z
 # ----------------------------------------------------------------------------
 
 > trace-pro@0.1.0 lint
@@ -16,8 +16,8 @@ frozen artifacts — one commit each, working tree equal to it
   reference/TRACE-Pro-original.html    Phase 1  f98dcd678748   934,142 B     sha256:c57e0392ee9b8cfe…  1 commit
 
 FROZEN CHECK PASSED
-checked 113 files (68 shipped UI sources)
-  top-level identifiers in src/: 565, all unique
+checked 116 files (70 shipped UI sources)
+  top-level identifiers in src/: 569, all unique
   inline on*= attributes: 0
   !important declarations: 0
 

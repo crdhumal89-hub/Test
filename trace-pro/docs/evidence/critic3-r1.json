@@ -1,0 +1,104 @@
+{
+ "reconciliation": [
+  {
+   "id": "reconciliation-question",
+   "cls": "screen-question",
+   "text": "Does this product’s NAV agree with the value of what it holds, and where is the difference?",
+   "length": 91,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 182
+  }
+ ],
+ "pricing": [
+  {
+   "id": "pricing-question",
+   "cls": "screen-question",
+   "text": "What unit price do I publish for each fund today, and what does repricing do to value?",
+   "length": 86,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 182
+  }
+ ],
+ "structure": [
+  {
+   "id": "diagnose-question",
+   "cls": "screen-question",
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+   "length": 103,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 144
+  },
+  {
+   "id": "structure-question",
+   "cls": "screen-question",
+   "text": "How is this product wired — who owns whom, and where is concentration?",
+   "length": 70,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 344
+  }
+ ],
+ "ownership": [
+  {
+   "id": "diagnose-question",
+   "cls": "screen-question",
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+   "length": 103,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 144
+  },
+  {
+   "id": "ownership-question",
+   "cls": "screen-question",
+   "text": "Who ultimately owns this position, and in what proportion?",
+   "length": 58,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 344
+  }
+ ],
+ "data-quality": [
+  {
+   "id": "diagnose-question",
+   "cls": "screen-question",
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+   "length": 103,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 144
+  },
+  {
+   "id": "data-quality-question",
+   "cls": "screen-question",
+   "text": "What is wrong with the source data before I trust any figure above?",
+   "length": 67,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 344
+  }
+ ],
+ "simulator": [
+  {
+   "id": "diagnose-question",
+   "cls": "screen-question",
+   "text": "Why is this entity off — how is it wired, who owns it, is its data sound, and what happens if it moves?",
+   "length": 103,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 182
+  },
+  {
+   "id": "simulator-question",
+   "cls": "screen-question",
+   "text": "If this fund’s value or units move, what happens to product NAV, and through which holders?",
+   "length": 91,
+   "endsWithQuestionMark": true,
+   "visible": true,
+   "top": 382
+  }
+ ]
+}

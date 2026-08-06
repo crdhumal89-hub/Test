@@ -48,18 +48,18 @@
   "scen b": "absent from this screen",
   "mv100": "absent from this screen",
   "dcN": "absent from this screen",
-  "NAV": "no bare occurrence — 35 glossary-linked, 27 after an expansion on this screen, 1 glossed in place [shape 1: \"NAV = net asset value \"]",
-  "bps": "no bare occurrence — 6 glossary-linked, 14 after an expansion on this screen [shape 1: \"bps = basis points, one hundredth of a percent . Ea\"]",
+  "NAV": "no bare occurrence — 36 glossary-linked, 27 after an expansion on this screen, 1 glossed in place [shape 1: \"NAV = net asset value \"]",
+  "bps": "no bare occurrence — 6 glossary-linked, 14 after an expansion on this screen [shape 1: \"bps = basis points, one hundredth of a percent \"]",
   "SPV": "no bare occurrence — 9 glossary-linked, 15 after an expansion on this screen [shape 1: \"SPV = special purpose vehicle \"]",
   "VPM": "no bare occurrence — 6 glossary-linked, 5 after an expansion on this screen [shape 1: \"VPM = the valuation portfolio accounting system \"]",
   "Δ": "absent from this screen",
   "FR": "absent from this screen",
-  "DC": "absent from this screen"
+  "DC": "no bare occurrence — 3 glossary-linked [shape 1: \"DC = double count — and, inside a registered entit\"]"
  },
  "findings": [],
- "occurrences": 405,
- "textNodes": 330,
- "attributeValues": 75,
+ "occurrences": 410,
+ "textNodes": 333,
+ "attributeValues": 77,
  "attributesRead": [
   "title",
   "aria-label",
@@ -67,8 +67,8 @@
   "placeholder"
  ],
  "byAttribute": {
-  "title": 28,
-  "aria-label": 46,
+  "title": 29,
+  "aria-label": 47,
   "aria-description": 0,
   "placeholder": 1
  },

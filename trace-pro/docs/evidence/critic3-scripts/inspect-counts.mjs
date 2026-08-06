@@ -1,0 +1,15 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const c = await b.newContext({ viewport:{width:1600,height:1000}, locale:'en-US', timezoneId:'UTC' });
+const p = await c.newPage();
+await p.goto('http://127.0.0.1:5199/#/reconciliation', { waitUntil:'load' });
+await p.waitForFunction(()=>!document.documentElement.dataset.fetching);
+await p.waitForTimeout(700);
+console.log('EXCEPTIONS PANEL:', JSON.stringify((await p.locator('#reconciliation-exceptions').innerText()).replace(/\s+/g,' ')));
+console.log('CHIP HTML:', await p.locator('#reconciliation-exceptions .chip').first().evaluate(n=>n.outerHTML));
+await p.goto('http://127.0.0.1:5199/?v=2#/diagnose/data-quality', { waitUntil:'load' });
+await p.waitForFunction(()=>!document.documentElement.dataset.fetching);
+await p.waitForTimeout(700);
+console.log('DQ PANEL HEAD:', JSON.stringify((await p.locator('#data-quality-kpi').innerText()).replace(/\s+/g,' ')));
+console.log('DQ BUCKET 2 HTML:', await p.locator('.dq-bucket').nth(1).evaluate(n=>n.outerHTML.slice(0,700)));
+await b.close();

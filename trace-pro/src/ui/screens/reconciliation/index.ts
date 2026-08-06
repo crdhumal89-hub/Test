@@ -26,7 +26,13 @@ export const RECONCILIATION_QUESTION =
  * `bps` beside every difference. The list is short on purpose: a term that is not on the screen
  * does not belong on its vocabulary line.
  */
-const RECONCILIATION_VOCABULARY = ['nav', 'spv', 'vpm', 'bps'];
+/*
+ * `double_count` is here because four entity names in this product's tree carry a literal "(DC)" —
+ * "AP Deuce Intermediate Holdings I (DC), L.P." and three more. They are invisible until the tree is
+ * expanded, which is why every other screen listing DC had it and this one did not: the R2 crawl only
+ * ever visited the collapsed default. Pricing and Diagnose already disclose the same case.
+ */
+const RECONCILIATION_VOCABULARY = ['nav', 'spv', 'vpm', 'bps', 'double_count'];
 
 export function mountReconciliation(host: HTMLElement, store: Store): () => void {
   // Every term() on this screen opens the glossary at its own definition through this binding.

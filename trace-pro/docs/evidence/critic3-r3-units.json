@@ -1,0 +1,5093 @@
+{
+ "summary": {
+  "reconciliation": {
+   "figures": 65,
+   "bare": 3,
+   "bareSamples": [
+    {
+     "where": "chip-count",
+     "parity": "reconciliation.exception.Missing_NAV.count",
+     "text": "5",
+     "unitFrom": null,
+     "top": 488,
+     "asofVisibleSimultaneously": true
+    },
+    {
+     "where": "chip-count",
+     "parity": "reconciliation.exception.Dangling_SPV.count",
+     "text": "1",
+     "unitFrom": null,
+     "top": 488,
+     "asofVisibleSimultaneously": true
+    },
+    {
+     "where": "chip-count",
+     "parity": "reconciliation.exception.Material_non-position_gap.count",
+     "text": "8",
+     "unitFrom": null,
+     "top": 488,
+     "asofVisibleSimultaneously": true
+    }
+   ]
+  },
+  "pricing": {
+   "figures": 196,
+   "bare": 0,
+   "bareSamples": []
+  },
+  "structure": {
+   "figures": 55,
+   "bare": 1,
+   "bareSamples": [
+    {
+     "where": "B",
+     "parity": null,
+     "text": "45 ownership links",
+     "unitFrom": null,
+     "top": 478,
+     "asofVisibleSimultaneously": true
+    }
+   ]
+  },
+  "ownership": {
+   "figures": 157,
+   "bare": 4,
+   "bareSamples": [
+    {
+     "where": "#ownership-status",
+     "parity": null,
+     "text": "2,500 positions searchable · the selection is shared with every Diagno",
+     "unitFrom": null,
+     "top": 412,
+     "asofVisibleSimultaneously": true
+    },
+    {
+     "where": "note",
+     "parity": null,
+     "text": "Showing the largest 12 of 39.",
+     "unitFrom": null,
+     "top": 1394,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "btn own-rollup-more",
+     "parity": null,
+     "text": "Show all 39 ultimate owners",
+     "unitFrom": null,
+     "top": 1410,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "callout-title",
+     "parity": null,
+     "text": "Ownership does not conserve everywhere — 5 of 506 held positions do no",
+     "unitFrom": null,
+     "top": 1472,
+     "asofVisibleSimultaneously": false
+    }
+   ]
+  },
+  "data-quality": {
+   "figures": 10,
+   "bare": 3,
+   "bareSamples": [
+    {
+     "where": "dq-count",
+     "parity": "data_quality.bucket.Circular_mapping_mutual_looping_ownership_.count_and_severity",
+     "text": "2 · High",
+     "unitFrom": null,
+     "top": 703,
+     "asofVisibleSimultaneously": true
+    },
+    {
+     "where": "dq-count",
+     "parity": "data_quality.bucket.Missing_dangling_SPV_code.count_and_severity",
+     "text": "29 · High",
+     "unitFrom": null,
+     "top": 744,
+     "asofVisibleSimultaneously": true
+    },
+    {
+     "where": "dq-count",
+     "parity": "data_quality.bucket.Unmapped_identifiers_missing_VPM_symbol_name_.count_and_severity",
+     "text": "22 · Low",
+     "unitFrom": null,
+     "top": 826,
+     "asofVisibleSimultaneously": true
+    }
+   ]
+  },
+  "simulator": {
+   "figures": 124,
+   "bare": 12,
+   "bareSamples": [
+    {
+     "where": "mono",
+     "parity": null,
+     "text": "1.024650",
+     "unitFrom": null,
+     "top": 714,
+     "asofVisibleSimultaneously": true
+    },
+    {
+     "where": "B",
+     "parity": null,
+     "text": "27 nodes",
+     "unitFrom": null,
+     "top": 1041,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "B",
+     "parity": null,
+     "text": "3 top-level feeders",
+     "unitFrom": null,
+     "top": 1041,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "B",
+     "parity": null,
+     "text": "36 ownership edges",
+     "unitFrom": null,
+     "top": 1041,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "#simulator-relabel",
+     "parity": null,
+     "text": "Those two controls are now labelled and , and the ledger sits beside t",
+     "unitFrom": null,
+     "top": 1194,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "H5",
+     "parity": null,
+     "text": "Level 0",
+     "unitFrom": null,
+     "top": 1924,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "H5",
+     "parity": null,
+     "text": "Level 1",
+     "unitFrom": null,
+     "top": 2009,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "H5",
+     "parity": null,
+     "text": "Level 2",
+     "unitFrom": null,
+     "top": 2151,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "H5",
+     "parity": null,
+     "text": "Level 3",
+     "unitFrom": null,
+     "top": 2264,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "H5",
+     "parity": null,
+     "text": "Level 4",
+     "unitFrom": null,
+     "top": 2691,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "H5",
+     "parity": null,
+     "text": "Level 5",
+     "unitFrom": null,
+     "top": 2918,
+     "asofVisibleSimultaneously": false
+    },
+    {
+     "where": "H5",
+     "parity": null,
+     "text": "Level 6",
+     "unitFrom": null,
+     "top": 3003,
+     "asofVisibleSimultaneously": false
+    }
+   ]
+  }
+ },
+ "detail": {
+  "reconciliation": [
+   {
+    "where": "#reconciliation-status",
+    "parity": "reconciliation.status_line",
+    "text": "Apollo Sports Capital · Look-through value $2,060,224,441 → Repriced v",
+    "unitFrom": "own text",
+    "top": 247,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "wf-value",
+    "parity": "reconciliation.waterfall.derived_mv",
+    "text": "$2,060,224,441",
+    "unitFrom": "own text",
+    "top": 323,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "wf-op-value pos",
+    "parity": "reconciliation.waterfall.delta_pricing_usd",
+    "text": "$385,897",
+    "unitFrom": "own text",
+    "top": 340,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "wf-op-bps",
+    "parity": "reconciliation.waterfall.delta_pricing_bps",
+    "text": "+1.9 bps",
+    "unitFrom": "own text",
+    "top": 360,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "wf-value",
+    "parity": "reconciliation.waterfall.revised_mv",
+    "text": "$2,060,610,338",
+    "unitFrom": "own text",
+    "top": 323,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "wf-op-value pos",
+    "parity": "reconciliation.waterfall.delta_nonposition_usd",
+    "text": "$1,588,498",
+    "unitFrom": "own text",
+    "top": 340,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "wf-op-bps",
+    "parity": "reconciliation.waterfall.delta_nonposition_bps",
+    "text": "+7.7 bps",
+    "unitFrom": "own text",
+    "top": 360,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "wf-value",
+    "parity": "reconciliation.waterfall.nav",
+    "text": "$2,062,198,836",
+    "unitFrom": "own text",
+    "top": 323,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "$385,897",
+    "unitFrom": "own text",
+    "top": 433,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "$1,588,498",
+    "unitFrom": "own text",
+    "top": 433,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "$1,974,394",
+    "unitFrom": "own text",
+    "top": 433,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "$1,974,394",
+    "unitFrom": "own text",
+    "top": 433,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "chip-count",
+    "parity": "reconciliation.exception.Missing_NAV.count",
+    "text": "5",
+    "unitFrom": null,
+    "top": 488,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "chip-count",
+    "parity": "reconciliation.exception.Dangling_SPV.count",
+    "text": "1",
+    "unitFrom": null,
+    "top": 488,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "chip-count",
+    "parity": "reconciliation.exception.Material_non-position_gap.count",
+    "text": "8",
+    "unitFrom": null,
+    "top": 488,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "#reconciliation-help",
+    "parity": null,
+    "text": "Read it as one addition: (what the underlyings are worth at today’s ma",
+    "unitFrom": "own text",
+    "top": 526,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$2,062,198,836",
+    "unitFrom": "own text",
+    "top": 684,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$2,060,224,441",
+    "unitFrom": "own text",
+    "top": 684,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": null,
+    "text": "$2,060,610,338",
+    "unitFrom": "own text",
+    "top": 684,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$385,897",
+    "unitFrom": "own text",
+    "top": 694,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "+1.9 bps",
+    "unitFrom": "own text",
+    "top": 711,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$1,588,498",
+    "unitFrom": "own text",
+    "top": 694,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "+7.7 bps",
+    "unitFrom": "own text",
+    "top": 711,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.apex.ASCHON.nav",
+    "text": "$266,441,285",
+    "unitFrom": "own text",
+    "top": 734,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.apex.ASCHON.derived_mv",
+    "text": "$291,966,468",
+    "unitFrom": "own text",
+    "top": 734,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "reconciliation.apex.ASCHON.revised_mv",
+    "text": "$292,016,326",
+    "unitFrom": "own text",
+    "top": 734,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$49,859",
+    "unitFrom": "own text",
+    "top": 743,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "+1.9 bps",
+    "unitFrom": "own text",
+    "top": 760,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "neg",
+    "parity": null,
+    "text": "($25,575,041)",
+    "unitFrom": "own text",
+    "top": 743,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "-959.9 bps",
+    "unitFrom": "own text",
+    "top": 760,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$280,015,043",
+    "unitFrom": "own text",
+    "top": 783,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$281,726,438",
+    "unitFrom": "own text",
+    "top": 783,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": null,
+    "text": "$281,776,297",
+    "unitFrom": "own text",
+    "top": 783,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$49,859",
+    "unitFrom": "own text",
+    "top": 793,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "+1.8 bps",
+    "unitFrom": "own text",
+    "top": 810,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "neg",
+    "parity": null,
+    "text": "($1,761,254)",
+    "unitFrom": "own text",
+    "top": 793,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "-62.9 bps",
+    "unitFrom": "own text",
+    "top": 810,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$10,240,030",
+    "unitFrom": "own text",
+    "top": 833,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": null,
+    "text": "$10,240,030",
+    "unitFrom": "own text",
+    "top": 833,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.apex.DUNK.nav",
+    "text": "$2,786",
+    "unitFrom": "own text",
+    "top": 867,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.apex.DUNK.derived_mv",
+    "text": "$2,786",
+    "unitFrom": "own text",
+    "top": 867,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "reconciliation.apex.DUNK.revised_mv",
+    "text": "$2,786",
+    "unitFrom": "own text",
+    "top": 867,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$2,786",
+    "unitFrom": "own text",
+    "top": 900,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": null,
+    "text": "$2,786",
+    "unitFrom": "own text",
+    "top": 900,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.apex.SPORTHLD.nav",
+    "text": "$1,795,754,765",
+    "unitFrom": "own text",
+    "top": 934,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.apex.SPORTHLD.derived_mv",
+    "text": "$1,768,255,188",
+    "unitFrom": "own text",
+    "top": 934,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "reconciliation.apex.SPORTHLD.revised_mv",
+    "text": "$1,768,591,226",
+    "unitFrom": "own text",
+    "top": 934,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$336,038",
+    "unitFrom": "own text",
+    "top": 944,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "+1.9 bps",
+    "unitFrom": "own text",
+    "top": 960,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$27,163,539",
+    "unitFrom": "own text",
+    "top": 944,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "+151.3 bps",
+    "unitFrom": "own text",
+    "top": 960,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$1,685,663,441",
+    "unitFrom": "own text",
+    "top": 984,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$1,697,506,595",
+    "unitFrom": "own text",
+    "top": 984,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": null,
+    "text": "$1,697,842,633",
+    "unitFrom": "own text",
+    "top": 984,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$336,038",
+    "unitFrom": "own text",
+    "top": 993,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "+2.0 bps",
+    "unitFrom": "own text",
+    "top": 1010,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "neg",
+    "parity": null,
+    "text": "($12,179,191)",
+    "unitFrom": "own text",
+    "top": 993,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps",
+    "parity": null,
+    "text": "-72.3 bps",
+    "unitFrom": "own text",
+    "top": 1010,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": null,
+    "text": "$70,748,593",
+    "unitFrom": "own text",
+    "top": 1033,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": null,
+    "text": "$70,748,593",
+    "unitFrom": "own text",
+    "top": 1033,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.totals.nav",
+    "text": "$2,062,198,836",
+    "unitFrom": "own text",
+    "top": 1067,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "reconciliation.totals.derived_mv",
+    "text": "$2,060,224,441",
+    "unitFrom": "own text",
+    "top": 1067,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "reconciliation.totals.revised_mv",
+    "text": "$2,060,610,338",
+    "unitFrom": "own text",
+    "top": 1067,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$385,897",
+    "unitFrom": "own text",
+    "top": 1077,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$1,588,498",
+    "unitFrom": "own text",
+    "top": 1077,
+    "asofVisibleSimultaneously": false
+   }
+  ],
+  "pricing": [
+   {
+    "where": "#pricing-status",
+    "parity": null,
+    "text": "Publishing for · 26 funds · as of 2026-06-30",
+    "unitFrom": "own text",
+    "top": 267,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-value",
+    "parity": "pricing.score.derived_mv",
+    "text": "$2,060,224,441",
+    "unitFrom": "own text",
+    "top": 344,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-value pos",
+    "parity": "pricing.score.delta_pricing_usd",
+    "text": "$385,897",
+    "unitFrom": "own text",
+    "top": 344,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-detail",
+    "parity": "pricing.score.delta_pricing_detail",
+    "text": "bottom-up repricing gain or loss · +1.9",
+    "unitFrom": "ancestor text \"+ Pricing difference · USD$385,897bottom-up repric\"",
+    "top": 373,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-value",
+    "parity": "pricing.score.revised_mv",
+    "text": "$2,060,610,338",
+    "unitFrom": "own text",
+    "top": 344,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-value pos",
+    "parity": "pricing.score.delta_nonposition_usd",
+    "text": "$1,588,498",
+    "unitFrom": "own text",
+    "top": 344,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-detail",
+    "parity": "pricing.score.delta_nonposition_detail",
+    "text": "cash/fees/receivables · +7.7",
+    "unitFrom": "ancestor text \"+ Non-position difference · USD$1,588,498cash/fees\"",
+    "top": 373,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-value",
+    "parity": "pricing.score.nav",
+    "text": "$2,062,198,836",
+    "unitFrom": "own text",
+    "top": 344,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "score-detail",
+    "parity": "pricing.score.nav_detail",
+    "text": "sum of top-level feeder NAVs · 8 flagged",
+    "unitFrom": "ancestor text \"= NAV · USD$2,062,198,836sum of top-level feeder N\"",
+    "top": 373,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "#pricing-banner",
+    "parity": "pricing.banner.narrative",
+    "text": "Reprice the deepest funds first — a lowest-level fund's repriced unit ",
+    "unitFrom": "own text",
+    "top": 433,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "the look-through value $2,060,224,441",
+    "unitFrom": "own text",
+    "top": 447,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "the repriced value $2,060,610,338",
+    "unitFrom": "own text",
+    "top": 466,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "$385,897",
+    "unitFrom": "own text",
+    "top": 466,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "$2,062,198,836",
+    "unitFrom": "own text",
+    "top": 466,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bridge-end-value",
+    "parity": "pricing.bridge.product_nav",
+    "text": "$2,062,198,836",
+    "unitFrom": "own text",
+    "top": 1160,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-end-basis",
+    "parity": "pricing.bridge.product_nav_basis",
+    "text": "sum of top-level feeder NAVs — the product's own NAV, the sum of all 2",
+    "unitFrom": "own text",
+    "top": 1189,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-gap",
+    "parity": "pricing.bridge.gap_usd",
+    "text": "$1,974,394",
+    "unitFrom": "own text",
+    "top": 1164,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-bps pos",
+    "parity": "pricing.bridge.gap_bps",
+    "text": "+10 bps gap",
+    "unitFrom": "own text",
+    "top": 1184,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-end-value",
+    "parity": "pricing.bridge.derived_mv",
+    "text": "$2,060,224,441",
+    "unitFrom": "own text",
+    "top": 1160,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-amount pos",
+    "parity": "pricing.bridge.driver.SPORTHLD.gap_usd",
+    "text": "$27,499,577",
+    "unitFrom": "own text",
+    "top": 1257,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-bps",
+    "parity": "pricing.bridge.driver.SPORTHLD.gap_bps",
+    "text": "+153 bps",
+    "unitFrom": "own text",
+    "top": 1274,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-amount neg",
+    "parity": "pricing.bridge.driver.ASCHON.gap_usd",
+    "text": "($25,525,183)",
+    "unitFrom": "own text",
+    "top": 1295,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-bps",
+    "parity": "pricing.bridge.driver.ASCHON.gap_bps",
+    "text": "-958 bps",
+    "unitFrom": "own text",
+    "top": 1311,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-amount pos",
+    "parity": "pricing.bridge.driver.DUNK.gap_usd",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1333,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bridge-bps",
+    "parity": "pricing.bridge.driver.DUNK.gap_bps",
+    "text": "+0 bps",
+    "unitFrom": "own text",
+    "top": 1349,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "#pricing-help",
+    "parity": null,
+    "text": "Read across one fund: its is its own net asset value ( ) divided by it",
+    "unitFrom": "own text",
+    "top": 1406,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "note",
+    "parity": null,
+    "text": "Money in USD, unit prices at 6 decimal places, bps = the fund's repric",
+    "unitFrom": "own text",
+    "top": 514,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTHLD.publish_px",
+    "text": "1.024650",
+    "unitFrom": "ancestor text \"Apollo Sports Capital Holdings (Overseas), L.P.SPO\"",
+    "top": 565,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTHLD.current_px",
+    "text": "1.008959",
+    "unitFrom": "ancestor text \"Apollo Sports Capital Holdings (Overseas), L.P.SPO\"",
+    "top": 565,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTHLD.revised_px",
+    "text": "1.009151",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 565,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTHLD.derived_mv",
+    "text": "$1,768,255,188",
+    "unitFrom": "own text",
+    "top": 565,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTHLD.revised_mv",
+    "text": "$1,768,591,226",
+    "unitFrom": "own text",
+    "top": 565,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTHLD.repricing_pnl",
+    "text": "$336,038",
+    "unitFrom": "own text",
+    "top": 565,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTHLD.pnl_bps",
+    "text": "2",
+    "unitFrom": "column header \"bps\"",
+    "top": 573,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORT.publish_px",
+    "text": "0.997778",
+    "unitFrom": "ancestor text \"Apollo Sports Capital (Overseas), L.P.SPORTSPORT -\"",
+    "top": 599,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORT.current_px",
+    "text": "1.004788",
+    "unitFrom": "ancestor text \"Apollo Sports Capital (Overseas), L.P.SPORTSPORT -\"",
+    "top": 599,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORT.revised_px",
+    "text": "1.004987",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 599,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORT.derived_mv",
+    "text": "$1,697,506,595",
+    "unitFrom": "own text",
+    "top": 599,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORT.revised_mv",
+    "text": "$1,697,842,633",
+    "unitFrom": "own text",
+    "top": 599,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORT.repricing_pnl",
+    "text": "$336,038",
+    "unitFrom": "own text",
+    "top": 599,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORT.pnl_bps",
+    "text": "2",
+    "unitFrom": "column header \"bps\"",
+    "top": 607,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.ASCHLUSD.publish_px",
+    "text": "0.993783",
+    "unitFrom": "ancestor text \"ASC Holdings, SCSpASCHLUSDASCHLD-SPV0.9937830.9945\"",
+    "top": 633,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.ASCHLUSD.current_px",
+    "text": "0.994584",
+    "unitFrom": "ancestor text \"ASC Holdings, SCSpASCHLUSDASCHLD-SPV0.9937830.9945\"",
+    "top": 633,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.ASCHLUSD.revised_px",
+    "text": "0.994584",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 633,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.ASCHLUSD.derived_mv",
+    "text": "$644,268,070",
+    "unitFrom": "own text",
+    "top": 633,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.ASCHLUSD.revised_mv",
+    "text": "$644,268,070",
+    "unitFrom": "own text",
+    "top": 633,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.ASCHLUSD.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 633,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.ASCHLUSD.pnl_bps",
+    "text": "0",
+    "unitFrom": "column header \"bps\"",
+    "top": 641,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTA.publish_px",
+    "text": "1.009603",
+    "unitFrom": "ancestor text \"AP Sports Aggregator A, L.P.SPORTASPORTA-SPV1.0096\"",
+    "top": 667,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTA.current_px",
+    "text": "1.011649",
+    "unitFrom": "ancestor text \"AP Sports Aggregator A, L.P.SPORTASPORTA-SPV1.0096\"",
+    "top": 667,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTA.revised_px",
+    "text": "1.011702",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 667,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTA.derived_mv",
+    "text": "$338,775,700",
+    "unitFrom": "own text",
+    "top": 667,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTA.revised_mv",
+    "text": "$338,793,375",
+    "unitFrom": "own text",
+    "top": 667,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTA.repricing_pnl",
+    "text": "$17,674",
+    "unitFrom": "own text",
+    "top": 667,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTA.pnl_bps",
+    "text": "1",
+    "unitFrom": "column header \"bps\"",
+    "top": 675,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.DEUCE.publish_px",
+    "text": "1.004749",
+    "unitFrom": "ancestor text \"AP Deuce Holdings, L.P.DEUCELowest levelDEUCE - SP\"",
+    "top": 701,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.DEUCE.current_px",
+    "text": "1.004749",
+    "unitFrom": "ancestor text \"AP Deuce Holdings, L.P.DEUCELowest levelDEUCE - SP\"",
+    "top": 701,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.DEUCE.revised_px",
+    "text": "1.004749",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 701,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.DEUCE.derived_mv",
+    "text": "$301,424,771",
+    "unitFrom": "own text",
+    "top": 701,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.DEUCE.revised_mv",
+    "text": "$301,424,771",
+    "unitFrom": "own text",
+    "top": 701,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.DEUCE.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 701,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.DEUCE.pnl_bps",
+    "text": "0",
+    "unitFrom": "column header \"bps\"",
+    "top": 709,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTFC.publish_px",
+    "text": "1.000000",
+    "unitFrom": "ancestor text \"AP Sports Debt Holdings (FC), L.P.SPORTFCSPORTFC -\"",
+    "top": 735,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTFC.current_px",
+    "text": "1.011649",
+    "unitFrom": "ancestor text \"AP Sports Debt Holdings (FC), L.P.SPORTFCSPORTFC -\"",
+    "top": 735,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTFC.revised_px",
+    "text": "1.011702",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 735,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTFC.derived_mv",
+    "text": "$295,004,967",
+    "unitFrom": "own text",
+    "top": 735,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTFC.revised_mv",
+    "text": "$295,020,358",
+    "unitFrom": "own text",
+    "top": 735,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTFC.repricing_pnl",
+    "text": "$15,391",
+    "unitFrom": "own text",
+    "top": 735,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTFC.pnl_bps",
+    "text": "1",
+    "unitFrom": "column header \"bps\"",
+    "top": 743,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.ASCON.publish_px",
+    "text": "1.117701",
+    "unitFrom": "ancestor text \"Apollo Sports Capital (Onshore), L.P.ASCONASCON-SP\"",
+    "top": 769,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.ASCON.current_px",
+    "text": "1.124532",
+    "unitFrom": "ancestor text \"Apollo Sports Capital (Onshore), L.P.ASCONASCON-SP\"",
+    "top": 769,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.ASCON.revised_px",
+    "text": "1.124731",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 769,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.ASCON.derived_mv",
+    "text": "$281,726,438",
+    "unitFrom": "own text",
+    "top": 769,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.ASCON.revised_mv",
+    "text": "$281,776,297",
+    "unitFrom": "own text",
+    "top": 769,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.ASCON.repricing_pnl",
+    "text": "$49,859",
+    "unitFrom": "own text",
+    "top": 769,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.ASCON.pnl_bps",
+    "text": "2",
+    "unitFrom": "column header \"bps\"",
+    "top": 777,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.ASCHON.publish_px",
+    "text": "1.024650",
+    "unitFrom": "ancestor text \"Apollo Sports Capital Holdings (Onshore), L.P.ASCH\"",
+    "top": 803,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.ASCHON.current_px",
+    "text": "1.122812",
+    "unitFrom": "ancestor text \"Apollo Sports Capital Holdings (Onshore), L.P.ASCH\"",
+    "top": 803,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.ASCHON.revised_px",
+    "text": "1.123004",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 803,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.ASCHON.derived_mv",
+    "text": "$291,966,468",
+    "unitFrom": "own text",
+    "top": 803,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.ASCHON.revised_mv",
+    "text": "$292,016,326",
+    "unitFrom": "own text",
+    "top": 803,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.ASCHON.repricing_pnl",
+    "text": "$49,859",
+    "unitFrom": "own text",
+    "top": 803,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.ASCHON.pnl_bps",
+    "text": "2",
+    "unitFrom": "column header \"bps\"",
+    "top": 811,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.DEUCE2FC.publish_px",
+    "text": "1.033055",
+    "unitFrom": "ancestor text \"AP Deuce Intermediate Holdings II (FC), L.P.DEUCE2\"",
+    "top": 837,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.DEUCE2FC.current_px",
+    "text": "1.032968",
+    "unitFrom": "ancestor text \"AP Deuce Intermediate Holdings II (FC), L.P.DEUCE2\"",
+    "top": 837,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.DEUCE2FC.revised_px",
+    "text": "1.033055",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 837,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.DEUCE2FC.derived_mv",
+    "text": "$263,720,458",
+    "unitFrom": "own text",
+    "top": 837,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.DEUCE2FC.revised_mv",
+    "text": "$263,742,651",
+    "unitFrom": "own text",
+    "top": 837,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.DEUCE2FC.repricing_pnl",
+    "text": "$22,193",
+    "unitFrom": "own text",
+    "top": 837,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.DEUCE2FC.pnl_bps",
+    "text": "1",
+    "unitFrom": "column header \"bps\"",
+    "top": 845,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.APAEV.publish_px",
+    "text": "1.036417",
+    "unitFrom": "ancestor text \"AP Sports Aggregator E-Velocity, L.P.APAEVAPAEV - \"",
+    "top": 871,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APAEV.current_px",
+    "text": "1.036025",
+    "unitFrom": "ancestor text \"AP Sports Aggregator E-Velocity, L.P.APAEVAPAEV - \"",
+    "top": 871,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APAEV.revised_px",
+    "text": "1.036025",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 871,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.APAEV.derived_mv",
+    "text": "$207,204,995",
+    "unitFrom": "own text",
+    "top": 871,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.APAEV.revised_mv",
+    "text": "$207,204,995",
+    "unitFrom": "own text",
+    "top": 871,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.APAEV.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 871,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.APAEV.pnl_bps",
+    "text": "0",
+    "unitFrom": "column header \"bps\"",
+    "top": 879,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.APIVDC.publish_px",
+    "text": "1.000000",
+    "unitFrom": "ancestor text \"AP Sports Intermediate Holdings Velocity (DC), L.P\"",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APIVDC.current_px",
+    "text": "1.036025",
+    "unitFrom": "ancestor text \"AP Sports Intermediate Holdings Velocity (DC), L.P\"",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APIVDC.revised_px",
+    "text": "1.036025",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.APIVDC.derived_mv",
+    "text": "$180,433,552",
+    "unitFrom": "own text",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.APIVDC.revised_mv",
+    "text": "$180,433,552",
+    "unitFrom": "own text",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.APIVDC.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.APIVDC.pnl_bps",
+    "text": "0",
+    "unitFrom": "column header \"bps\"",
+    "top": 913,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTEUR.publish_px",
+    "text": "1.006359",
+    "unitFrom": "ancestor text \"AP Sports Debt Holdings (EUR) S.a r.l.SPORTEURLowe\"",
+    "top": 939,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTEUR.current_px",
+    "text": "1.006242",
+    "unitFrom": "ancestor text \"AP Sports Debt Holdings (EUR) S.a r.l.SPORTEURLowe\"",
+    "top": 939,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTEUR.revised_px",
+    "text": "1.006359",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 939,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTEUR.derived_mv",
+    "text": "$152,479,743",
+    "unitFrom": "own text",
+    "top": 939,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTEUR.revised_mv",
+    "text": "$152,497,418",
+    "unitFrom": "own text",
+    "top": 939,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTEUR.repricing_pnl",
+    "text": "$17,674",
+    "unitFrom": "own text",
+    "top": 939,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTEUR.pnl_bps",
+    "text": "1",
+    "unitFrom": "column header \"bps\"",
+    "top": 947,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.DEUCE1DC.publish_px",
+    "text": "1.004749",
+    "unitFrom": "ancestor text \"AP Deuce Intermediate Holdings I (DC), L.P.DEUCE1D\"",
+    "top": 973,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.DEUCE1DC.current_px",
+    "text": "1.004749",
+    "unitFrom": "ancestor text \"AP Deuce Intermediate Holdings I (DC), L.P.DEUCE1D\"",
+    "top": 973,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.DEUCE1DC.revised_px",
+    "text": "1.004749",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 973,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.DEUCE1DC.derived_mv",
+    "text": "$151,938,180",
+    "unitFrom": "own text",
+    "top": 973,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.DEUCE1DC.revised_mv",
+    "text": "$151,938,180",
+    "unitFrom": "own text",
+    "top": 973,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.DEUCE1DC.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 973,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.DEUCE1DC.pnl_bps",
+    "text": "0",
+    "unitFrom": "column header \"bps\"",
+    "top": 981,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.APRAIL2.publish_px",
+    "text": "1.041553",
+    "unitFrom": "ancestor text \"AP Railroad Holdings II, L.P.APRAIL2Lowest levelAP\"",
+    "top": 1007,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APRAIL2.current_px",
+    "text": "1.039240",
+    "unitFrom": "ancestor text \"AP Railroad Holdings II, L.P.APRAIL2Lowest levelAP\"",
+    "top": 1007,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APRAIL2.revised_px",
+    "text": "1.041553",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1007,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.APRAIL2.derived_mv",
+    "text": "$140,389,076",
+    "unitFrom": "own text",
+    "top": 1007,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.APRAIL2.revised_mv",
+    "text": "$140,701,620",
+    "unitFrom": "own text",
+    "top": 1007,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.APRAIL2.repricing_pnl",
+    "text": "$312,544",
+    "unitFrom": "own text",
+    "top": 1007,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.APRAIL2.pnl_bps",
+    "text": "22",
+    "unitFrom": "column header \"bps\"",
+    "top": 1015,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTD.publish_px",
+    "text": "1.041553",
+    "unitFrom": "ancestor text \"AP Sports Aggregator D, L.P.SPORTDSPORTD-SPV1.0415\"",
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTD.current_px",
+    "text": "1.039240",
+    "unitFrom": "ancestor text \"AP Sports Aggregator D, L.P.SPORTDSPORTD-SPV1.0415\"",
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTD.revised_px",
+    "text": "1.041553",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTD.derived_mv",
+    "text": "$140,389,076",
+    "unitFrom": "own text",
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTD.revised_mv",
+    "text": "$140,701,620",
+    "unitFrom": "own text",
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTD.repricing_pnl",
+    "text": "$312,544",
+    "unitFrom": "own text",
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTD.pnl_bps",
+    "text": "22",
+    "unitFrom": "column header \"bps\"",
+    "top": 1049,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTB.publish_px",
+    "text": "1.029056",
+    "unitFrom": "ancestor text \"AP Sports Aggregator B, L.P.SPORTBLowest levelSPOR\"",
+    "top": 1075,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTB.current_px",
+    "text": "1.028796",
+    "unitFrom": "ancestor text \"AP Sports Aggregator B, L.P.SPORTBLowest levelSPOR\"",
+    "top": 1075,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTB.revised_px",
+    "text": "1.029056",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1075,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTB.derived_mv",
+    "text": "$132,315,330",
+    "unitFrom": "own text",
+    "top": 1075,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTB.revised_mv",
+    "text": "$132,348,815",
+    "unitFrom": "own text",
+    "top": 1075,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTB.repricing_pnl",
+    "text": "$33,485",
+    "unitFrom": "own text",
+    "top": 1075,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTB.pnl_bps",
+    "text": "3",
+    "unitFrom": "column header \"bps\"",
+    "top": 1083,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTHFC.publish_px",
+    "text": "1.025389",
+    "unitFrom": "ancestor text \"AP Sports Intermediate Holdings (FC), L.P.SPORTHFC\"",
+    "top": 1109,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTHFC.current_px",
+    "text": "1.043106",
+    "unitFrom": "ancestor text \"AP Sports Intermediate Holdings (FC), L.P.SPORTHFC\"",
+    "top": 1109,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTHFC.revised_px",
+    "text": "1.045419",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1109,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTHFC.derived_mv",
+    "text": "$122,705,103",
+    "unitFrom": "own text",
+    "top": 1109,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTHFC.revised_mv",
+    "text": "$122,977,266",
+    "unitFrom": "own text",
+    "top": 1109,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTHFC.repricing_pnl",
+    "text": "$272,162",
+    "unitFrom": "own text",
+    "top": 1109,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTHFC.pnl_bps",
+    "text": "23",
+    "unitFrom": "column header \"bps\"",
+    "top": 1117,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORT2DC.publish_px",
+    "text": "0.999999",
+    "unitFrom": "ancestor text \"AP Sports Debt Holdings II (DC), L.P.SPORT2DCSPORT\"",
+    "top": 1143,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORT2DC.current_px",
+    "text": "1.028795",
+    "unitFrom": "ancestor text \"AP Sports Debt Holdings II (DC), L.P.SPORT2DCSPORT\"",
+    "top": 1143,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORT2DC.revised_px",
+    "text": "1.029056",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1143,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORT2DC.derived_mv",
+    "text": "$115,219,774",
+    "unitFrom": "own text",
+    "top": 1143,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORT2DC.revised_mv",
+    "text": "$115,248,933",
+    "unitFrom": "own text",
+    "top": 1143,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORT2DC.repricing_pnl",
+    "text": "$29,159",
+    "unitFrom": "own text",
+    "top": 1143,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORT2DC.pnl_bps",
+    "text": "3",
+    "unitFrom": "column header \"bps\"",
+    "top": 1151,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.APCAXXII.publish_px",
+    "text": "1.056123",
+    "unitFrom": "ancestor text \"AP CA XXII, LLCAPCAXXIILowest levelAPCAXXII - SPV1\"",
+    "top": 1177,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APCAXXII.current_px",
+    "text": "1.055907",
+    "unitFrom": "ancestor text \"AP CA XXII, LLCAPCAXXIILowest levelAPCAXXII - SPV1\"",
+    "top": 1177,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APCAXXII.revised_px",
+    "text": "1.056123",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1177,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.APCAXXII.derived_mv",
+    "text": "$108,555,383",
+    "unitFrom": "own text",
+    "top": 1177,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.APCAXXII.revised_mv",
+    "text": "$108,577,576",
+    "unitFrom": "own text",
+    "top": 1177,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.APCAXXII.repricing_pnl",
+    "text": "$22,193",
+    "unitFrom": "own text",
+    "top": 1177,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.APCAXXII.pnl_bps",
+    "text": "2",
+    "unitFrom": "column header \"bps\"",
+    "top": 1185,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono pub-col",
+    "parity": "pricing.fund.SPORTC.publish_px",
+    "text": "1.000000",
+    "unitFrom": "ancestor text \"AP Sports Aggregator C, L.P.SPORTCLowest levelSPOR\"",
+    "top": 1211,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTC.current_px",
+    "text": "1.000000",
+    "unitFrom": "ancestor text \"AP Sports Aggregator C, L.P.SPORTCLowest levelSPOR\"",
+    "top": 1211,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTC.revised_px",
+    "text": "1.000000",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1211,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTC.derived_mv",
+    "text": "$100,000,000",
+    "unitFrom": "own text",
+    "top": 1211,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTC.revised_mv",
+    "text": "$100,000,001",
+    "unitFrom": "own text",
+    "top": 1211,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTC.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1211,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.SPORTC.pnl_bps",
+    "text": "0",
+    "unitFrom": "column header \"bps\"",
+    "top": 1219,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.DUNK.derived_mv",
+    "text": "$2,786",
+    "unitFrom": "own text",
+    "top": 1245,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.DUNK.revised_mv",
+    "text": "$2,786",
+    "unitFrom": "own text",
+    "top": 1245,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.DUNK.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1245,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "bps-chip",
+    "parity": "pricing.fund.DUNK.pnl_bps",
+    "text": "0",
+    "unitFrom": "column header \"bps\"",
+    "top": 1253,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.CRIMH.current_px",
+    "text": "1.139585",
+    "unitFrom": "ancestor text \"Crimson Holdco, Ltd.CRIMHLowest levelCRIMH-SPV—1.1\"",
+    "top": 1279,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.CRIMH.revised_px",
+    "text": "1.139585",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1279,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.CRIMH.derived_mv",
+    "text": "$1,189,262,733",
+    "unitFrom": "own text",
+    "top": 1279,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.CRIMH.revised_mv",
+    "text": "$1,189,262,733",
+    "unitFrom": "own text",
+    "top": 1279,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.CRIMH.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1279,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.CRIMT.current_px",
+    "text": "1.139571",
+    "unitFrom": "ancestor text \"Crimson Topco, Ltd.CRIMTCRIMT-SPV—1.1395711.139571\"",
+    "top": 1313,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.CRIMT.revised_px",
+    "text": "1.139571",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1313,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.CRIMT.derived_mv",
+    "text": "$1,189,328,112",
+    "unitFrom": "own text",
+    "top": 1313,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.CRIMT.revised_mv",
+    "text": "$1,189,328,112",
+    "unitFrom": "own text",
+    "top": 1313,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.CRIMT.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1313,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APAV.current_px",
+    "text": "1.036025",
+    "unitFrom": "ancestor text \"AP Aggregator Velocity, L.P.APAVLowest levelAPAV- \"",
+    "top": 1347,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.APAV.revised_px",
+    "text": "1.036025",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1347,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.APAV.derived_mv",
+    "text": "$207,204,995",
+    "unitFrom": "own text",
+    "top": 1347,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.APAV.revised_mv",
+    "text": "$207,204,995",
+    "unitFrom": "own text",
+    "top": 1347,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.APAV.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1347,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.CRIMAP.current_px",
+    "text": "1.139554",
+    "unitFrom": "ancestor text \"AP Crimson Holdings, SCSpCRIMAPCRIMAP-SPV—1.139554\"",
+    "top": 1381,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.CRIMAP.revised_px",
+    "text": "1.139554",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1381,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.CRIMAP.derived_mv",
+    "text": "$1,190,008,860",
+    "unitFrom": "own text",
+    "top": 1381,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.CRIMAP.revised_mv",
+    "text": "$1,190,008,860",
+    "unitFrom": "own text",
+    "top": 1381,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.CRIMAP.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1381,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTOP.current_px",
+    "text": "0.000000",
+    "unitFrom": "ancestor text \"SPORTOPSPORTOPLowest levelSPORTOP-SPV—0.0000000.00\"",
+    "top": 1415,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r mono",
+    "parity": "pricing.fund.SPORTOP.revised_px",
+    "text": "0.000000",
+    "unitFrom": "column header \"Repriced unit price\"",
+    "top": 1415,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "pricing.fund.SPORTOP.derived_mv",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1415,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r strong",
+    "parity": "pricing.fund.SPORTOP.revised_mv",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1415,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r pos",
+    "parity": "pricing.fund.SPORTOP.repricing_pnl",
+    "text": "$0",
+    "unitFrom": "own text",
+    "top": 1415,
+    "asofVisibleSimultaneously": false
+   }
+  ],
+  "structure": [
+   {
+    "where": "slider-value",
+    "parity": null,
+    "text": "1.0×",
+    "unitFrom": "own text",
+    "top": 448,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "slider-value",
+    "parity": null,
+    "text": "1.0×",
+    "unitFrom": "own text",
+    "top": 448,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "slider-value",
+    "parity": null,
+    "text": "60%",
+    "unitFrom": "own text",
+    "top": 448,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "#structure-caption",
+    "parity": null,
+    "text": "Text alternative for the graph: joined by , 6 levels deep. Concentrati",
+    "unitFrom": "own text",
+    "top": 476,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "46 entities",
+    "unitFrom": "own text",
+    "top": 478,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "45 ownership links",
+    "unitFrom": null,
+    "top": 478,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "85.83% of the product’s look-through value sits under SPORTHLD",
+    "unitFrom": "own text",
+    "top": 478,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 648,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 648,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 648,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 699,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 699,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 751,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "49.49%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "50.41%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "49.59%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "49.49%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "50.41%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "49.59%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 802,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 854,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 854,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 854,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 854,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 854,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 905,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "#structure-basis",
+    "parity": null,
+    "text": "Two product net asset values ( ) exist and both are right, so neither ",
+    "unitFrom": "own text",
+    "top": 1021,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "Product , fund-entity basis $2,062,196,050.07",
+    "unitFrom": "own text",
+    "top": 1042,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "Product , Σ top-level feeders $2,062,198,835.86",
+    "unitFrom": "own text",
+    "top": 1061,
+    "asofVisibleSimultaneously": false
+   }
+  ],
+  "ownership": [
+   {
+    "where": "#ownership-status",
+    "parity": null,
+    "text": "2,500 positions searchable · the selection is shared with every Diagno",
+    "unitFrom": null,
+    "top": 412,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-qty",
+    "parity": "ownership.APPOURI.total_qty",
+    "text": "Total qty: 1,330,020,204",
+    "unitFrom": "own text",
+    "top": 452,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-pie",
+    "parity": "ownership.APPOURI.pie",
+    "text": "100%",
+    "unitFrom": "own text",
+    "top": 452,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "chip chip-ok",
+    "parity": "ownership.APPOURI.immediate_check",
+    "text": "✓ Owners reconcile to 100%",
+    "unitFrom": "own text",
+    "top": 506,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "chip chip-ok",
+    "parity": "ownership.APPOURI.ultimate_check",
+    "text": "✓ Ultimate owners = 100%",
+    "unitFrom": "own text",
+    "top": 506,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-hint",
+    "parity": "ownership.APPOURI.counts_hint",
+    "text": "39 immediate owners · 39 ultimate parents · top 5 = 46.31%",
+    "unitFrom": "own text",
+    "top": 513,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CSTR.qty_held",
+    "text": "152,255,190",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 589,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CSTR.immediate_pct",
+    "text": "11.45%",
+    "unitFrom": "own text",
+    "top": 589,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.CSTR.cumulative_pct",
+    "text": "11.45%",
+    "unitFrom": "own text",
+    "top": 597,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.DEFINEDC.qty_held",
+    "text": "134,525,474",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 623,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.DEFINEDC.immediate_pct",
+    "text": "10.11%",
+    "unitFrom": "own text",
+    "top": 623,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.DEFINEDC.cumulative_pct",
+    "text": "10.11%",
+    "unitFrom": "own text",
+    "top": 631,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ACCPL2C.qty_held",
+    "text": "120,201,466",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 656,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ACCPL2C.immediate_pct",
+    "text": "9.04%",
+    "unitFrom": "own text",
+    "top": 656,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.ACCPL2C.cumulative_pct",
+    "text": "9.04%",
+    "unitFrom": "own text",
+    "top": 665,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAACSZ.qty_held",
+    "text": "104,449,133",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 690,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAACSZ.immediate_pct",
+    "text": "7.85%",
+    "unitFrom": "own text",
+    "top": 690,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.AAACSZ.cumulative_pct",
+    "text": "7.85%",
+    "unitFrom": "own text",
+    "top": 699,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAAHESZ.qty_held",
+    "text": "104,449,133",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 724,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAAHESZ.immediate_pct",
+    "text": "7.85%",
+    "unitFrom": "own text",
+    "top": 724,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.AAAHESZ.cumulative_pct",
+    "text": "7.85%",
+    "unitFrom": "own text",
+    "top": 732,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CHNT.qty_held",
+    "text": "75,000,000",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 758,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CHNT.immediate_pct",
+    "text": "5.64%",
+    "unitFrom": "own text",
+    "top": 758,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.CHNT.cumulative_pct",
+    "text": "5.64%",
+    "unitFrom": "own text",
+    "top": 766,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAACSZLX.qty_held",
+    "text": "69,988,882",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 791,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAACSZLX.immediate_pct",
+    "text": "5.26%",
+    "unitFrom": "own text",
+    "top": 791,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.AAACSZLX.cumulative_pct",
+    "text": "5.26%",
+    "unitFrom": "own text",
+    "top": 800,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAAOHESZ.qty_held",
+    "text": "69,988,882",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AAAOHESZ.immediate_pct",
+    "text": "5.26%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.AAAOHESZ.cumulative_pct",
+    "text": "5.26%",
+    "unitFrom": "own text",
+    "top": 834,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.TROPP.qty_held",
+    "text": "67,459,494",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 859,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.TROPP.immediate_pct",
+    "text": "5.07%",
+    "unitFrom": "own text",
+    "top": 859,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.TROPP.cumulative_pct",
+    "text": "5.07%",
+    "unitFrom": "own text",
+    "top": 867,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.FOXA.qty_held",
+    "text": "45,075,550",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 893,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.FOXA.immediate_pct",
+    "text": "3.39%",
+    "unitFrom": "own text",
+    "top": 893,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.FOXA.cumulative_pct",
+    "text": "3.39%",
+    "unitFrom": "own text",
+    "top": 901,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CALLIOPE.qty_held",
+    "text": "37,062,119",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 926,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CALLIOPE.immediate_pct",
+    "text": "2.79%",
+    "unitFrom": "own text",
+    "top": 926,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.CALLIOPE.cumulative_pct",
+    "text": "2.79%",
+    "unitFrom": "own text",
+    "top": 935,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ACSP.qty_held",
+    "text": "30,550,916",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 960,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ACSP.immediate_pct",
+    "text": "2.30%",
+    "unitFrom": "own text",
+    "top": 960,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.ACSP.cumulative_pct",
+    "text": "2.30%",
+    "unitFrom": "own text",
+    "top": 969,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "row-name",
+    "parity": null,
+    "text": "AMAPS 3 SMA LLC",
+    "unitFrom": "ancestor text \"Ult. ownerAMAPS 3 SMA LLCAMAPS3SAMAPS3SAMAPS3S20,1\"",
+    "top": 1003,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AMAPS3S.qty_held",
+    "text": "20,117,522",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 994,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AMAPS3S.immediate_pct",
+    "text": "1.51%",
+    "unitFrom": "own text",
+    "top": 994,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.AMAPS3S.cumulative_pct",
+    "text": "1.51%",
+    "unitFrom": "own text",
+    "top": 1002,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "row-name",
+    "parity": null,
+    "text": "AMAPS 2 SMA LLC",
+    "unitFrom": "ancestor text \"Ult. ownerAMAPS 2 SMA LLCAMAPS2SAMAPS2SAMAPS2S20,0\"",
+    "top": 1037,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AMAPS2S.qty_held",
+    "text": "20,033,578",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1028,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AMAPS2S.immediate_pct",
+    "text": "1.51%",
+    "unitFrom": "own text",
+    "top": 1028,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.AMAPS2S.cumulative_pct",
+    "text": "1.51%",
+    "unitFrom": "own text",
+    "top": 1036,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "row-name",
+    "parity": null,
+    "text": "AMAPS AssetCo 1 LLC",
+    "unitFrom": "ancestor text \"▸OwnerAMAPS AssetCo 1 LLCAMAPSA1AMAPSHLD-ALTAMAPSA\"",
+    "top": 1071,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AMAPSA1.qty_held",
+    "text": "20,033,578",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1061,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.AMAPSA1.immediate_pct",
+    "text": "1.51%",
+    "unitFrom": "own text",
+    "top": 1061,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.AMAPSA1.cumulative_pct",
+    "text": "1.51%",
+    "unitFrom": "own text",
+    "top": 1070,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.HSTCSAR2.qty_held",
+    "text": "18,831,563",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1095,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.HSTCSAR2.immediate_pct",
+    "text": "1.42%",
+    "unitFrom": "own text",
+    "top": 1095,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.HSTCSAR2.cumulative_pct",
+    "text": "1.42%",
+    "unitFrom": "own text",
+    "top": 1104,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.MOULT.qty_held",
+    "text": "18,030,220",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1129,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.MOULT.immediate_pct",
+    "text": "1.36%",
+    "unitFrom": "own text",
+    "top": 1129,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.MOULT.cumulative_pct",
+    "text": "1.36%",
+    "unitFrom": "own text",
+    "top": 1137,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.TPSFVCDO.qty_held",
+    "text": "17,729,716",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1163,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.TPSFVCDO.immediate_pct",
+    "text": "1.33%",
+    "unitFrom": "own text",
+    "top": 1163,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.TPSFVCDO.cumulative_pct",
+    "text": "1.33%",
+    "unitFrom": "own text",
+    "top": 1171,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.LINCFI.qty_held",
+    "text": "17,128,709",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1196,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.LINCFI.immediate_pct",
+    "text": "1.29%",
+    "unitFrom": "own text",
+    "top": 1196,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.LINCFI.cumulative_pct",
+    "text": "1.29%",
+    "unitFrom": "own text",
+    "top": 1205,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ATHRAASC.qty_held",
+    "text": "15,025,183",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1230,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ATHRAASC.immediate_pct",
+    "text": "1.13%",
+    "unitFrom": "own text",
+    "top": 1230,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.ATHRAASC.cumulative_pct",
+    "text": "1.13%",
+    "unitFrom": "own text",
+    "top": 1239,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.RWNHSMA.qty_held",
+    "text": "15,025,183",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1264,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.RWNHSMA.immediate_pct",
+    "text": "1.13%",
+    "unitFrom": "own text",
+    "top": 1264,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.RWNHSMA.cumulative_pct",
+    "text": "1.13%",
+    "unitFrom": "own text",
+    "top": 1272,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.DELPHI.qty_held",
+    "text": "13,021,825",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1298,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.DELPHI.immediate_pct",
+    "text": "0.98%",
+    "unitFrom": "own text",
+    "top": 1298,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.DELPHI.cumulative_pct",
+    "text": "0.98%",
+    "unitFrom": "own text",
+    "top": 1306,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.EXCEL.qty_held",
+    "text": "12,821,490",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1331,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.EXCEL.immediate_pct",
+    "text": "0.96%",
+    "unitFrom": "own text",
+    "top": 1331,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.EXCEL.cumulative_pct",
+    "text": "0.96%",
+    "unitFrom": "own text",
+    "top": 1340,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.APUN.qty_held",
+    "text": "12,520,986",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1365,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.APUN.immediate_pct",
+    "text": "0.94%",
+    "unitFrom": "own text",
+    "top": 1365,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.APUN.cumulative_pct",
+    "text": "0.94%",
+    "unitFrom": "own text",
+    "top": 1374,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CSGPSAG2.qty_held",
+    "text": "12,520,986",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1399,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CSGPSAG2.immediate_pct",
+    "text": "0.94%",
+    "unitFrom": "own text",
+    "top": 1399,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.CSGPSAG2.cumulative_pct",
+    "text": "0.94%",
+    "unitFrom": "own text",
+    "top": 1407,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.STCM.qty_held",
+    "text": "12,020,147",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1433,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.STCM.immediate_pct",
+    "text": "0.90%",
+    "unitFrom": "own text",
+    "top": 1433,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.STCM.cumulative_pct",
+    "text": "0.90%",
+    "unitFrom": "own text",
+    "top": 1441,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.PPFCSTR.qty_held",
+    "text": "11,419,139",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1466,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.PPFCSTR.immediate_pct",
+    "text": "0.86%",
+    "unitFrom": "own text",
+    "top": 1466,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.PPFCSTR.cumulative_pct",
+    "text": "0.86%",
+    "unitFrom": "own text",
+    "top": 1475,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ATLAS.qty_held",
+    "text": "10,717,964",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1500,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ATLAS.immediate_pct",
+    "text": "0.81%",
+    "unitFrom": "own text",
+    "top": 1500,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.ATLAS.cumulative_pct",
+    "text": "0.81%",
+    "unitFrom": "own text",
+    "top": 1509,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.LIBRA.qty_held",
+    "text": "10,517,628",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1534,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.LIBRA.immediate_pct",
+    "text": "0.79%",
+    "unitFrom": "own text",
+    "top": 1534,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.LIBRA.cumulative_pct",
+    "text": "0.79%",
+    "unitFrom": "own text",
+    "top": 1542,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "row-name",
+    "parity": null,
+    "text": "Apollo Oasis Partners, L.P. - Vintage 2 - Tranche A",
+    "unitFrom": "ancestor text \"Ult. ownerApollo Oasis Partners, L.P. - Vintage 2 \"",
+    "top": 1577,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.OAS2A.qty_held",
+    "text": "10,217,125",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1568,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.OAS2A.immediate_pct",
+    "text": "0.77%",
+    "unitFrom": "own text",
+    "top": 1568,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.OAS2A.cumulative_pct",
+    "text": "0.77%",
+    "unitFrom": "own text",
+    "top": 1576,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.MERCER.qty_held",
+    "text": "7,510,073",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1601,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.MERCER.immediate_pct",
+    "text": "0.56%",
+    "unitFrom": "own text",
+    "top": 1601,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.MERCER.cumulative_pct",
+    "text": "0.56%",
+    "unitFrom": "own text",
+    "top": 1610,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.GOLDFCI.qty_held",
+    "text": "7,011,752",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1635,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.GOLDFCI.immediate_pct",
+    "text": "0.53%",
+    "unitFrom": "own text",
+    "top": 1635,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.GOLDFCI.cumulative_pct",
+    "text": "0.53%",
+    "unitFrom": "own text",
+    "top": 1644,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ACEMMLFB.qty_held",
+    "text": "6,010,073",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1669,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.ACEMMLFB.immediate_pct",
+    "text": "0.45%",
+    "unitFrom": "own text",
+    "top": 1669,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.ACEMMLFB.cumulative_pct",
+    "text": "0.45%",
+    "unitFrom": "own text",
+    "top": 1677,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.KENT.qty_held",
+    "text": "6,010,073",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1703,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.KENT.immediate_pct",
+    "text": "0.45%",
+    "unitFrom": "own text",
+    "top": 1703,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.KENT.cumulative_pct",
+    "text": "0.45%",
+    "unitFrom": "own text",
+    "top": 1711,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "row-name",
+    "parity": null,
+    "text": "Provident 10 - TRF SMA",
+    "unitFrom": "ancestor text \"Ult. ownerProvident 10 - TRF SMAPROV10PROV10PROV10\"",
+    "top": 1746,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "code",
+    "parity": null,
+    "text": "PROV10",
+    "unitFrom": "ancestor text \"Ult. ownerProvident 10 - TRF SMAPROV10PROV10PROV10\"",
+    "top": 1745,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "l mono",
+    "parity": null,
+    "text": "PROV10",
+    "unitFrom": "ancestor text \"Ult. ownerProvident 10 - TRF SMAPROV10PROV10PROV10\"",
+    "top": 1736,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "l mono",
+    "parity": null,
+    "text": "PROV10",
+    "unitFrom": "column header \"SPV fund code\"",
+    "top": 1736,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.PROV10.qty_held",
+    "text": "5,707,555",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1736,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.PROV10.immediate_pct",
+    "text": "0.43%",
+    "unitFrom": "own text",
+    "top": 1736,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.PROV10.cumulative_pct",
+    "text": "0.43%",
+    "unitFrom": "own text",
+    "top": 1745,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.FGCHOLDA.qty_held",
+    "text": "5,008,394",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1770,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.FGCHOLDA.immediate_pct",
+    "text": "0.38%",
+    "unitFrom": "own text",
+    "top": 1770,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.FGCHOLDA.cumulative_pct",
+    "text": "0.38%",
+    "unitFrom": "own text",
+    "top": 1779,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "row-name",
+    "parity": null,
+    "text": "Apollo H-3 Credit Fund I, L.P.",
+    "unitFrom": "own text",
+    "top": 1813,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.H3CFI.qty_held",
+    "text": "5,008,394",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1804,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.H3CFI.immediate_pct",
+    "text": "0.38%",
+    "unitFrom": "own text",
+    "top": 1804,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.H3CFI.cumulative_pct",
+    "text": "0.38%",
+    "unitFrom": "own text",
+    "top": 1812,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.HYPERION.qty_held",
+    "text": "5,008,394",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1838,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.HYPERION.immediate_pct",
+    "text": "0.38%",
+    "unitFrom": "own text",
+    "top": 1838,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.HYPERION.cumulative_pct",
+    "text": "0.38%",
+    "unitFrom": "own text",
+    "top": 1846,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CFUL.qty_held",
+    "text": "4,006,716",
+    "unitFrom": "column header \"Qty held\"",
+    "top": 1871,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "r",
+    "parity": "ownership.APPOURI.owner.CFUL.immediate_pct",
+    "text": "0.30%",
+    "unitFrom": "own text",
+    "top": 1871,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-cum-value mono",
+    "parity": "ownership.APPOURI.owner.CFUL.cumulative_pct",
+    "text": "0.30%",
+    "unitFrom": "own text",
+    "top": 1880,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "l",
+    "parity": null,
+    "text": "= 100% of · 1,330,020,204 units",
+    "unitFrom": "own text",
+    "top": 1905,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "note",
+    "parity": null,
+    "text": "Each top-of-chain parent’s total effective share of the searched posit",
+    "unitFrom": "own text",
+    "top": 1287,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.AAAIDFA.share",
+    "text": "15.71% · 208,898,266",
+    "unitFrom": "own text",
+    "top": 1307,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.CSTR.share",
+    "text": "11.45% · 152,255,190",
+    "unitFrom": "own text",
+    "top": 1307,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.DEFINEDC.share",
+    "text": "10.11% · 134,525,474",
+    "unitFrom": "own text",
+    "top": 1307,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.ACCPL2C.share",
+    "text": "9.04% · 120,201,466",
+    "unitFrom": "own text",
+    "top": 1328,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.AAALUXA.share",
+    "text": "6.61% · 87,920,959",
+    "unitFrom": "own text",
+    "top": 1328,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.CHNTINHO.share",
+    "text": "5.64% · 75,000,000",
+    "unitFrom": "own text",
+    "top": 1328,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.TRMF.share",
+    "text": "4.35% · 57,847,764",
+    "unitFrom": "own text",
+    "top": 1349,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.AAALT.share",
+    "text": "3.91% · 52,056,805",
+    "unitFrom": "own text",
+    "top": 1349,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.FOXA.share",
+    "text": "3.39% · 45,075,550",
+    "unitFrom": "own text",
+    "top": 1349,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.CALLIOPE.share",
+    "text": "2.79% · 37,062,119",
+    "unitFrom": "own text",
+    "top": 1370,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.ACSP.share",
+    "text": "2.30% · 30,550,916",
+    "unitFrom": "own text",
+    "top": 1370,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-name",
+    "parity": null,
+    "text": "AMAPS 3 SMA LLC",
+    "unitFrom": "ancestor text \"AMAPS3SAMAPS 3 SMA LLC1.51% · 20,117,522\"",
+    "top": 1370,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "own-rollup-share mono",
+    "parity": "ownership.APPOURI.ultimate.AMAPS3S.share",
+    "text": "1.51% · 20,117,522",
+    "unitFrom": "own text",
+    "top": 1370,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "note",
+    "parity": null,
+    "text": "Showing the largest 12 of 39.",
+    "unitFrom": null,
+    "top": 1394,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "btn own-rollup-more",
+    "parity": null,
+    "text": "Show all 39 ultimate owners",
+    "unitFrom": null,
+    "top": 1410,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "SPAN",
+    "parity": "ownership.APPOURI.footnote",
+    "text": "Direct share = holder qty ÷ total qty of the entity in the row below. ",
+    "unitFrom": "own text",
+    "top": 1447,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "callout-title",
+    "parity": null,
+    "text": "Ownership does not conserve everywhere — 5 of 506 held positions do no",
+    "unitFrom": null,
+    "top": 1472,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "P",
+    "parity": null,
+    "text": "The fixed-point solve resolves the cross-holdings, but it cannot inven",
+    "unitFrom": "own text",
+    "top": 1493,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "LI",
+    "parity": null,
+    "text": "· 3.10% · MidCap FinCo Intermediate LLC",
+    "unitFrom": "own text",
+    "top": 1541,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "LI",
+    "parity": null,
+    "text": "· 129.29% · ABF Residential Loan Sub-Aggregator VI, L.P.",
+    "unitFrom": "own text",
+    "top": 1559,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "LI",
+    "parity": null,
+    "text": "· 99.56% · AP VCI Aggregator B, L.P.",
+    "unitFrom": "own text",
+    "top": 1577,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "LI",
+    "parity": null,
+    "text": "· 99.56% · AP VCI Intermediate B, LLC",
+    "unitFrom": "own text",
+    "top": 1595,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "LI",
+    "parity": null,
+    "text": "· 99.82% · AP VCI Aggregator A, L.P.",
+    "unitFrom": "own text",
+    "top": 1613,
+    "asofVisibleSimultaneously": false
+   }
+  ],
+  "data-quality": [
+   {
+    "where": "#data-quality-badge",
+    "parity": "data_quality.tab_badge",
+    "text": "105",
+    "unitFrom": "ancestor text \"Issues found105\"",
+    "top": 413,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-card-value",
+    "parity": "data_quality.high_count",
+    "text": "31",
+    "unitFrom": "ancestor text \"High severity31Medium52Low22Total issues105All fun\"",
+    "top": 472,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-card-value",
+    "parity": "data_quality.medium_count",
+    "text": "52",
+    "unitFrom": "ancestor text \"High severity31Medium52Low22Total issues105All fun\"",
+    "top": 514,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-card-value",
+    "parity": "data_quality.low_count",
+    "text": "22",
+    "unitFrom": "ancestor text \"High severity31Medium52Low22Total issues105All fun\"",
+    "top": 556,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-card-value",
+    "parity": "data_quality.total_count",
+    "text": "105",
+    "unitFrom": "ancestor text \"Total issues105All fund entities · scanned univers\"",
+    "top": 598,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-count",
+    "parity": "data_quality.bucket.Self-mapping_fund_holds_its_own_code_.count_and_severity",
+    "text": "43 · Medium",
+    "unitFrom": "ancestor text \"Self-mapping (fund holds its own code)43 · Medium▸\"",
+    "top": 662,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-count",
+    "parity": "data_quality.bucket.Circular_mapping_mutual_looping_ownership_.count_and_severity",
+    "text": "2 · High",
+    "unitFrom": null,
+    "top": 703,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-count",
+    "parity": "data_quality.bucket.Missing_dangling_SPV_code.count_and_severity",
+    "text": "29 · High",
+    "unitFrom": null,
+    "top": 744,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-count",
+    "parity": "data_quality.bucket.Incomplete_look-through_double-count_flag_nothing_beneath_.count_and_severity",
+    "text": "9 · Medium",
+    "unitFrom": "ancestor text \"Incomplete look-through (double-count flag, nothin\"",
+    "top": 785,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "dq-count",
+    "parity": "data_quality.bucket.Unmapped_identifiers_missing_VPM_symbol_name_.count_and_severity",
+    "text": "22 · Low",
+    "unitFrom": null,
+    "top": 826,
+    "asofVisibleSimultaneously": true
+   }
+  ],
+  "simulator": [
+   {
+    "where": "sim-tile-value mono",
+    "parity": null,
+    "text": "$2,062,198,835.86",
+    "unitFrom": "own text",
+    "top": 505,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "sim-tile-value mono",
+    "parity": null,
+    "text": "SPORTHLD - SPV · value $1,795,754,765.06 · 1.024650 per unit",
+    "unitFrom": "own text",
+    "top": 505,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "sim-tile-basis",
+    "parity": null,
+    "text": "Apollo Sports Capital Holdings (Overseas), L.P. · code SPORTHLD · Unit",
+    "unitFrom": "own text",
+    "top": 528,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": "simulator.product_nav",
+    "text": "$2.06bn",
+    "unitFrom": "own text",
+    "top": 571,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "seg",
+    "parity": null,
+    "text": "0.5×",
+    "unitFrom": "own text",
+    "top": 564,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "seg on",
+    "parity": null,
+    "text": "1×",
+    "unitFrom": "own text",
+    "top": 564,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "seg",
+    "parity": null,
+    "text": "2×",
+    "unitFrom": "own text",
+    "top": 564,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$2.06bn",
+    "unitFrom": "own text",
+    "top": 646,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$2,785.79",
+    "unitFrom": "own text",
+    "top": 698,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$291.97m",
+    "unitFrom": "own text",
+    "top": 698,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.122812",
+    "unitFrom": "ancestor text \"ASCHONApollo Sports Capital Holdi…$291.97mpx 1.122\"",
+    "top": 704,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$1.77bn",
+    "unitFrom": "own text",
+    "top": 698,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.008959",
+    "unitFrom": "ancestor text \"SPORTHLDApollo Sports Capital Holdi…$1.77bnpx 1.00\"",
+    "top": 704,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$281.73m",
+    "unitFrom": "own text",
+    "top": 749,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.124532",
+    "unitFrom": "ancestor text \"ASCONApollo Sports Capital (Onsh…$281.73mpx 1.1245\"",
+    "top": 756,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$1.70bn",
+    "unitFrom": "own text",
+    "top": 749,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.004788",
+    "unitFrom": "ancestor text \"SPORTApollo Sports Capital (Over…$1.70bnpx 1.00478\"",
+    "top": 756,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$338.78m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.011649",
+    "unitFrom": "ancestor text \"SPORTAAP Sports Aggregator A, L.P.$338.78mpx 1.011\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$140.39m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.039240",
+    "unitFrom": "ancestor text \"SPORTDAP Sports Aggregator D, L.P.$140.39mpx 1.039\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$100.00m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.000000",
+    "unitFrom": "ancestor text \"SPORTCAP Sports Aggregator C, L.P.$100.00mpx 1.000\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$207.20m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.036025",
+    "unitFrom": "ancestor text \"APAEVAP Sports Aggregator E-Velo…$207.20mpx 1.0360\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$151.94m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.004749",
+    "unitFrom": "ancestor text \"DEUCE1DCAP Deuce Intermediate Holdi…$151.94mpx 1.0\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$644.27m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 0.994584",
+    "unitFrom": "ancestor text \"ASCHLUSDASC Holdings, SCSp$644.27mpx 0.994584ASCHL\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$263.72m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.032968",
+    "unitFrom": "ancestor text \"DEUCE2FCAP Deuce Intermediate Holdi…$263.72mpx 1.0\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$132.32m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.028796",
+    "unitFrom": "ancestor text \"SPORTBAP Sports Aggregator B, L.P.$132.32mpx 1.028\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$122.71m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.043106",
+    "unitFrom": "ancestor text \"SPORTHFCAP Sports Intermediate Hold…$122.71mpx 1.0\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$295.00m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.011649",
+    "unitFrom": "ancestor text \"SPORTFCAP Sports Debt Holdings (FC…$295.00mpx 1.01\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$180.43m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.036025",
+    "unitFrom": "ancestor text \"APIVDCAP Sports Intermediate Hold…$180.43mpx 1.036\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$115.22m",
+    "unitFrom": "own text",
+    "top": 801,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.028795",
+    "unitFrom": "ancestor text \"SPORT2DCAP Sports Debt Holdings II …$115.22mpx 1.0\"",
+    "top": 807,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$152.48m",
+    "unitFrom": "own text",
+    "top": 853,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.006242",
+    "unitFrom": "ancestor text \"SPORTEURAP Sports Debt Holdings (EU…$152.48mpx 1.0\"",
+    "top": 859,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$140.39m",
+    "unitFrom": "own text",
+    "top": 853,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.039240",
+    "unitFrom": "ancestor text \"APRAIL2AP Railroad Holdings II, L.…$140.39mpx 1.03\"",
+    "top": 859,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$301.42m",
+    "unitFrom": "own text",
+    "top": 853,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.004749",
+    "unitFrom": "ancestor text \"DEUCEAP Deuce Holdings, L.P.$301.42mpx 1.004749DEU\"",
+    "top": 859,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "$108.56m",
+    "unitFrom": "own text",
+    "top": 853,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "px 1.055907",
+    "unitFrom": "ancestor text \"APCAXXIIAP CA XXII, LLC$108.56mpx 1.055907APCAXXII\"",
+    "top": 859,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 670,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 670,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 670,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 781,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "49.49%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 721,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "12.92%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 876,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 928,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "50.41%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "49.59%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 773,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 781,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 825,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 781,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "87.08%",
+    "unitFrom": "own text",
+    "top": 816,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": {},
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 721,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "$1,795,754,765.06",
+    "unitFrom": "own text",
+    "top": 668,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "1,752,553,740",
+    "unitFrom": "ancestor text \"Units outstanding (firm-wide)1,752,553,740\"",
+    "top": 691,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "1.024650",
+    "unitFrom": null,
+    "top": 714,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "$1,795,754,764.69",
+    "unitFrom": "own text",
+    "top": 737,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 760,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "$1,768,255,188.06",
+    "unitFrom": "own text",
+    "top": 783,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "#simulator-preview",
+    "parity": null,
+    "text": "New unit price 1.024650 (-0.000000), new value $1,795,754,765.06. Δ va",
+    "unitFrom": "own text",
+    "top": 899,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "pos",
+    "parity": null,
+    "text": "$0.00",
+    "unitFrom": "own text",
+    "top": 933,
+    "asofVisibleSimultaneously": true
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "$1.69bn",
+    "unitFrom": "own text",
+    "top": 1089,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "100.00%",
+    "unitFrom": "own text",
+    "top": 1089,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "$1.70bn",
+    "unitFrom": "own text",
+    "top": 1089,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H4",
+    "parity": null,
+    "text": "Ultimate securities · top 1 of 1",
+    "unitFrom": "ancestor text \"Ultimate securities · top 1 of 1SecurityMarket val\"",
+    "top": 1140,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "$70.75m",
+    "unitFrom": "own text",
+    "top": 1188,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "6",
+    "unitFrom": "ancestor text \"Whole-book reprice · not started. Reprice everythi\"",
+    "top": 1011,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "mono",
+    "parity": null,
+    "text": "$2.06bn",
+    "unitFrom": "own text",
+    "top": 1011,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "mono pos",
+    "parity": null,
+    "text": "+$0.00",
+    "unitFrom": "own text",
+    "top": 1011,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "#simulator-caption",
+    "parity": null,
+    "text": "Text alternative for the graph: — the product, its and 26 funds — join",
+    "unitFrom": "own text",
+    "top": 1039,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "27 nodes",
+    "unitFrom": null,
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "3 top-level feeders",
+    "unitFrom": null,
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "36 ownership edges",
+    "unitFrom": null,
+    "top": 1041,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "Selected: SPORTHLD — NAV $1,795,754,765.06, unit price 1.024650, effec",
+    "unitFrom": "own text",
+    "top": 1059,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "#simulator-relabel",
+    "parity": null,
+    "text": "Those two controls are now labelled and , and the ledger sits beside t",
+    "unitFrom": null,
+    "top": 1194,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "num mono",
+    "parity": "simulator.reprice.derived_before",
+    "text": "$2,060,224,441.40",
+    "unitFrom": "own text",
+    "top": 1309,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "num mono",
+    "parity": "simulator.reprice.pnl",
+    "text": "$385,896.89",
+    "unitFrom": "own text",
+    "top": 1351,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "num mono",
+    "parity": "simulator.reprice.revised",
+    "text": "$2,060,610,338.29",
+    "unitFrom": "own text",
+    "top": 1372,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "num mono",
+    "parity": "simulator.reprice.nonposition",
+    "text": "$1,588,497.57",
+    "unitFrom": "own text",
+    "top": 1393,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "num mono",
+    "parity": "simulator.reprice.product_nav",
+    "text": "$2,062,198,835.86",
+    "unitFrom": "own text",
+    "top": 1414,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "shockline",
+    "parity": "simulator.reprice.shockline",
+    "text": "Whole-book reprice · lowest level first → product. Pricing gap (pricin",
+    "unitFrom": "own text",
+    "top": 1447,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "B",
+    "parity": null,
+    "text": "$2,062,198,835.86",
+    "unitFrom": "own text",
+    "top": 1449,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "#simulator-tie",
+    "parity": null,
+    "text": "Read the five rows above as the Reconciliation waterfall: + = , + (cas",
+    "unitFrom": "own text",
+    "top": 1482,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "P",
+    "parity": null,
+    "text": "NAV 1,795,754,765 vs look-through value 1,768,255,188 = 27,499,577 (15",
+    "unitFrom": "own text",
+    "top": 1780,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "note",
+    "parity": null,
+    "text": "The same 27 nodes as the graph, as buttons: a keyboard-only route to s",
+    "unitFrom": "own text",
+    "top": 1889,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H5",
+    "parity": null,
+    "text": "Level 0",
+    "unitFrom": null,
+    "top": 1924,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H5",
+    "parity": null,
+    "text": "Level 1",
+    "unitFrom": null,
+    "top": 2009,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H5",
+    "parity": null,
+    "text": "Level 2",
+    "unitFrom": null,
+    "top": 2151,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H5",
+    "parity": null,
+    "text": "Level 3",
+    "unitFrom": null,
+    "top": 2264,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H5",
+    "parity": null,
+    "text": "Level 4",
+    "unitFrom": null,
+    "top": 2691,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H5",
+    "parity": null,
+    "text": "Level 5",
+    "unitFrom": null,
+    "top": 2918,
+    "asofVisibleSimultaneously": false
+   },
+   {
+    "where": "H5",
+    "parity": null,
+    "text": "Level 6",
+    "unitFrom": null,
+    "top": 3003,
+    "asofVisibleSimultaneously": false
+   }
+  ]
+ }
+}
